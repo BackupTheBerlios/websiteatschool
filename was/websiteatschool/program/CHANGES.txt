@@ -1,5 +1,34 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.1 2011/02/01 13:00:10 pfokker Exp $
+$Id: CHANGES.txt,v 1.2 2011/02/01 14:34:34 pfokker Exp $
+
+2011-02-01
+Today the complete development of WebsiteAtSchool was transferred
+to CVS at the development site BerliOS (http://developer.berlios.de),
+using the current version (which we used to call 0.1.7).
+
+We now start with a new phase in the development, i.e. a publicly
+visible CVS-server and official releases etc. This is a good
+opportunity to bump both the internal version and the external
+version (release) and start with a more or less clean slate.
+
+Furthermore, we will be generating a first 'official' release today.
+
+Changes in /program/version.php:
+- Bumped WAS_RELASE from 0.1.7 to 0.90.0
+- Bumped WAS_VERSION from 2010122100 to 2011020100
+- Bumped WAS_RELEASE_DATE from 2010-01-20 to 2011-02-01
+Changes in /program/lib/updatelib.php:
+- Added logic to update existing database versions to 2011020100
+
+
+*****************************************************************
+*****************************************************************
+*******                                                   *******
+*******   BELOW THIS LINE ONLY OLD AND OBSOLETE CHANGES   *******
+*******                                                   *******
+*****************************************************************
+*****************************************************************
+
 2011-02-01
 - changed development colours to something more appropriate
  

@@ -54,7 +54,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.org/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: updatelib.php,v 1.1 2011/02/01 13:00:33 pfokker Exp $
+ * @version $Id: updatelib.php,v 1.2 2011/02/01 14:34:34 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -435,7 +435,8 @@ function update_core(&$output) {
     }
     if (!update_core_2010120800($output)) { return; }
     if (!update_core_2010122100($output)) { return; }
-    // if (!update_core_2010123100($output)) { return; }
+    if (!update_core_2011020100($output)) { return; }
+    // if (!update_core_2011mmdd00($output)) { return; }
     // ...
 } // update_core()
 
@@ -458,7 +459,7 @@ function update_core_2010120800(&$output) {
 } // update_core_2010120800()
 
 
-/** perform actual update to version 2010120800
+/** perform actual update to version 2010122100
  *
  * @param object &$output collects the html output
  * @return bool TRUE on success, FALSE otherwise
@@ -475,5 +476,22 @@ function update_core_2010122100(&$output) {
     return update_core_version($output,2010122100);
 } // update_core_2010122100()
 
+
+/** perform actual update to version 2011020100
+ *
+ * @param object &$output collects the html output
+ * @return bool TRUE on success, FALSE otherwise
+ */
+function update_core_2011020100(&$output) {
+    global $CFG;
+    if ($CFG->version >= 2011020100) {
+        return TRUE;
+    }
+    // ...
+    // necessary updates go here (e.g. modify table def, etc. etc.)
+    // ..
+    // If all is well, we update the version number in the database AND in $CFG->version
+    return update_core_version($output,2011020100);
+} // update_core_2011020100()
 
 ?>
