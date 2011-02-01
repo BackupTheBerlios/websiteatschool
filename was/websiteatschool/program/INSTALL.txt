@@ -1,0 +1,18 @@
+/program/INSTALL.txt
+$Id: INSTALL.txt,v 1.1 2011/02/01 13:00:10 pfokker Exp $
+
+Quick Install of Website@School
+===============================
+
+1. Download the latest distribution version of Website@School
+   (either as a .ZIP-file or a tar.gz-file.).
+
+2. Unpack the distribution file somewhere on your webserver.
+   This will yield a number of files (index.php, admin.php, etc.)
+   in the CURRENT directory. Also, a subdirectory 'program'
+   with all the other program files will be created.
+
+3. Start the installation process by pointing your browser to
+   'program/install.php' and follow the directions.
+
+4. Your new website is ready.

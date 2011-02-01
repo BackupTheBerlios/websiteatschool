@@ -1,0 +1,533 @@
+/** /program/styles/admin_base.css - basic stylesheet for the cms interface
+ *
+ * This file is part of Website@School, a Content Management System especially designed for schools.
+ * Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker <peter@berestijn.nl>
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License version 3 as published by
+ * the Free Software Foundation supplemented with the Additional Terms, as set
+ * forth in the License Agreement for Website@School (see /program/license.html).
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
+ * for more details.
+ *
+ * You should have received a copy of the License Agreement for Website@School
+ * along with this program. If not, see http://websiteatschool.org/license.html
+ *
+ *
+ * This is the basic style sheet used when managing the website.
+ *
+ * The basic layout of an administrative page is determined by a set of
+ * sometimes nested DIV-elements, each with their own id.
+ * A generic page looks a bit like this
+ *
+ * top
+ * page
+ *   header
+ *     logo
+ *     quicktop
+ *     breadcrumb
+ *   navigation
+ *   messages
+ *   menu
+ *   sidebar
+ *   content
+ *   footer
+ *     quickbottom
+ *     address
+ * bottom
+ *
+ * The page is constructed in the page-div. The top and bottom div are
+ * only there to hold stuff that must be rendered before or after the
+ * actual page. Can be used to hold javascript popups/alerts.
+ *
+ * @author Peter Fokker <peter@berestijn.nl>
+ * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
+ * @license http://websiteatschool.org/license.html GNU AGPLv3+Additional Terms
+ * @package wascore
+ * @version $Id: admin_base.css,v 1.1 2011/02/01 13:00:56 pfokker Exp $
+ */
+
+body {
+  background-color: #FFFFFF;
+}
+
+img {
+  border: 1px #333300 solid;
+  border: none;
+}
+
+div {
+  border: 0px #000000 solid;
+}
+
+
+#page {
+  border: 0px #000000 solid;
+  background-color: #F0F0F0;
+  margin-top: 0px;
+  font-family: verdana,arial,helvetica,sans-serif;
+
+}
+#page a.dimmed:link,
+#page a.dimmed:visited {
+  font-weight: bold;
+  text-decoration: none;
+  color: #999;
+}
+#page a.dimmed:active,
+#page a.dimmed:hover {
+  font-weight: bold;
+  text-decoration: underline;
+  color: #F99;
+}
+
+#header {
+  top: 0px;
+  width: 100%;
+  background-color: #FFFFFF;
+  height: 71px;
+}
+
+#header h1, 
+#header h2 {
+  text-align: center;
+  margin-top: 0;
+  margin-left: 260px;
+  margin-bottom: 0;
+  margin-right: 160px;
+}
+#header h1 {
+  height: 42px;
+  font-size: 1.3em;
+}
+#header h2 {
+  height: 29px;
+  font-size: 1.2em;
+}
+#logo {
+  float: left;
+  border: 0px #FF0000 solid;
+}
+#quicktop {
+  float: right;
+  text-align: right;
+  font-size: 0.8em;
+  font-weight: bold;
+  line-height: 1.2em;
+}
+#quicktop a {
+  display: block;
+}
+#quicktop a:link,
+#quicktop a:visited {
+  text-decoration: none;
+  color: #00F;
+}
+#quicktop a:active,
+#quicktop a:hover {
+  text-decoration: underline;
+  color: #F00;
+}
+
+#navigation {
+  clear: both;
+  border-bottom: 2px #000000 solid;
+  height: 44px;
+}
+#navigation ul {
+  list-style: none;
+  margin: 0px;
+  padding-left: 0px;
+  padding-top: 2px;
+}
+#navigation li {
+  margin: 0px;
+  font-size: 1.2em;
+  padding: 5px 5px 0px 0px;
+  float: left;
+  margin-right: 0px;
+}
+#navigation li.right {
+  margin: 0px;
+  font-size: 1.2em;
+  padding: 5px 5px 0px 0px;
+  float: right;
+  margin-left: 0px;
+}
+#navigation a:link,
+#navigation a:visited {
+  font-weight: bold;
+  text-decoration: none;
+  color: #00F;
+}
+#navigation a:active,
+#navigation a:hover {
+  font-weight: bold;
+  text-decoration: underline;
+  color: #F00;
+}
+
+#messages {
+  clear: both;
+  background-color: #FFFF00;
+  padding: 1% 1% 1% 1%;
+}
+
+#menu {
+  clear: both;
+  float: left;
+  width: 200px;
+  border: 0px #000000 dashed;
+}
+#menu h2 {
+  margin-left: 20px;
+  text-align: left;
+  margin-top: 10;
+  margin-bottom: 0;
+}
+#menu ul {
+  list-style: none;
+  margin-left: 20px;
+  padding-left: 0px;
+  padding-top: 2px;
+}
+#menu li {
+  margin: 0px;
+  font-size: .9em;
+  padding: 5px 5px 0px 0px;
+  font-weight: bold;
+  line-height: 1.4em;
+}
+#menu a { }
+
+#menu a.current:link,
+#menu a.current:visited {
+  text-decoration: underline;
+}
+
+#menu a:link,
+#menu a:visited {
+  font-weight: bold;
+  text-decoration: none;
+  color: #00F;
+}
+#menu a:active,
+#menu a:hover {
+  font-weight: bold;
+  text-decoration: underline;
+  color: #F00;
+}
+/* 2008-10-03: this is a test, currently unused */
+#menu li { 
+  color: #000;
+}
+#menu li.dimmed {
+  color: #999;
+}
+
+#content {
+  font-size: 13px;
+  margin-left: 210px;
+  margin-right: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-left: 20px;
+  background-color: #FFFFFF;
+  border: 1px #FFFFFF solid;
+  min-height: 360px; /* CSS2, not in IE */
+}
+
+#content h2 {
+  margin-left: 0px;
+  text-align: left;
+  margin-top: 10;
+  margin-bottom: 20;
+}
+#content ul {
+  list-style: none;
+  margin-left: 0px;
+  padding-left: 0px;
+  padding-top: 2px;
+}
+#content li {
+  margin: 0px;
+  padding: 0px 5px 0px 105px;
+  font-weight: bold;
+  line-height: 1em;
+}
+
+#content li.level0 {
+  padding: 0px 0px 0px 20px;
+}
+
+#content li.list {
+  padding: 0px 0px 0px 20px;
+  line-height: 1.5em;
+}
+
+
+#content a:link,
+#content a:visited {
+  font-weight: bold;
+  text-decoration: none;
+  color: #00F;
+}
+#content a:active,
+#content a:hover {
+  font-weight: bold;
+  text-decoration: underline;
+  color: #F00;
+}
+#content span.icon {
+  font-family: courier, monospace;
+  font-size: 1.2em;
+  line-height: 1.1em;
+}
+
+#breadcrumbs {
+  line-height: 1.5em;
+  font-size: 11px;
+  font-weight: normal;
+}
+#breadcrumbs a:link,
+#breadcrumbs a:visited {
+  text-decoration: none;
+  color: #00F;
+}
+#breadcrumbs a:active,
+#breadcrumbs a:hover {
+  text-decoration: underline;
+  color: #F00;
+}
+
+#pagination {
+  line-height: 1.5em;
+  font-size: 11px;
+  font-weight: normal;
+}
+#pagination a:link,
+#pagination a:visited {
+  text-decoration: none;
+  color: #00F;
+}
+#pagination a:active,
+#pagination a:hover {
+  text-decoration: underline;
+  color: #F00;
+}
+#pagination a.current:link,
+#pagination a.current:visited {
+  text-decoration: underline;
+}
+
+
+
+
+#footer {
+  clear: both;
+  background-color: #CCC;
+  font-size: 0.8em;
+  line-height: 2em;
+  padding-left: 2px;
+}
+
+/* suppress the address for media="screen", perhaps display for media="print" */
+#address {
+  display: none;
+}
+
+
+/*
+ * Styling of input elements
+ */
+/* visual indication of the hotkey in a label is done via a U within a LABEL */
+label u {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+/* visual indication of the non-editable fields by 'dimming' the corresponding label */
+label.viewonly {
+  color: #999;
+}
+
+/* visual indication of an input field that didn't pass validation */
+.error {
+  color: #FF0000;
+}
+
+/* visual indication of editable fields (a light'ish yellow) */
+input,
+select,
+textarea {
+  background-color: #FFFFBF;
+}
+
+option {
+  font-family: mono;
+}
+/* This allows for a 'tree-like' display in drop down lists */
+option.level0 { margin-left: 0px; }
+option.level1 { margin-left: 20px; }
+option.level2 { margin-left: 40px; }
+option.level3 { margin-left: 60px; }
+option.level4 { margin-left: 80px; }
+option.level5 { margin-left: 100px; }
+option.level6 { margin-left: 120px; }
+option.level7 { margin-left: 140px; }
+option.level8 { margin-left: 160px; }
+option.level9 { margin-left: 180px; }
+
+
+/* This allows for a 'tree-like' display in tabular lists like pagemanager permissions in the aclmanager */
+span.level0 { margin-left: 0px; }
+span.level1 { margin-left: 20px; }
+span.level2 { margin-left: 40px; }
+span.level3 { margin-left: 60px; }
+span.level4 { margin-left: 80px; }
+span.level5 { margin-left: 100px; }
+span.level6 { margin-left: 120px; }
+span.level7 { margin-left: 140px; }
+span.level8 { margin-left: 160px; }
+span.level9 { margin-left: 180px; }
+
+
+input.button_save {
+  background-color: #E7E7E7;
+  background-image: url(../graphics/button_save.gif);
+  background-repeat: no-repeat;
+  padding-left: 20px;
+  margin-right: 30px;
+  font-weight: bold;
+}
+
+input.button_cancel {
+  background-color: #E7E7E7;
+  background-image: url(../graphics/button_cancel.gif);
+  background-repeat: no-repeat;
+  padding-left: 20px;
+  margin-right: 30px;
+  font-weight: bold;
+}
+
+input.button_delete {
+  background-color: #E7E7E7;
+  background-image: url(../graphics/button_delete.gif);
+  background-repeat: no-repeat;
+  padding-left: 20px;
+  margin-right: 30px;
+  font-weight: bold;
+}
+
+input.button_previous {
+  background-color: #E7E7E7;
+  background-image: url(../graphics/button_previous.gif);
+  background-repeat: no-repeat;
+  padding-left: 20px;
+  margin-right: 30px;
+  font-weight: bold;
+}
+
+input.button_next {
+  background-color: #E7E7E7;
+  background-image: url(../graphics/button_next.gif);
+  background-repeat: no-repeat;
+  padding-left: 20px;
+  margin-right: 30px;
+  font-weight: bold;
+}
+
+input.button_ok {
+  background-color: #E7E7E7;
+  background-image: url(../graphics/button_ok.gif);
+  background-repeat: no-repeat;
+  padding-left: 20px;
+  margin-right: 30px;
+  font-weight: bold;
+}
+
+/* ACL dialogs use a tabular input form
+ * We use alternating colours for the table rows
+ * to make it easier to follow
+ */
+#content table.acl_form {
+  padding: 20px 0 20px 0;
+}
+#content table.acl_form td {
+  padding: 3px 12px 3px 12px;
+}
+#content tr.header {
+  background-color: #DDDDFF;
+} 
+#content tr.odd {
+  background-color: #F0F0F0;
+} 
+#content tr.even {
+  background-color: #E7E7E7;
+}
+/* footer is currently unused */
+#content tr.footer {
+  background-color: #DDDDFF;
+} 
+
+/* FileManager (ImageBrowser-variant) uses this for thumbnails */
+/* The container width derived from (default) thumbnail dimensions
+ * by adding 20px: 100 + 20 = 120. The height of the container is
+ * the width + 40px, leaving 40px for delete button and filename
+ */
+div.thumbnail_container {
+  margin: 20px 20px 0px 0px;
+  border: 1px solid #000000;
+  width: 120px;
+  height: 160px;
+  float: left;
+  text-align: center;
+  background-color: #F0F0F0;
+}
+div.thumbnail_image {
+  height: 120px; /* this should match the width of thumbnail_container */
+  border: none;
+  overflow: hidden;
+  background-color: #FFFFFF;
+}
+div.thumbnail_image img {
+  display: inline;
+  margin: 5px;
+  border: 5px solid #FFFFFF;
+}
+div.thumbnail_image a:hover img {
+  border: 5px solid #FF0000;
+}
+div.thumbnail_delete  {
+  background-color: #E7E7E7;
+}
+div.thumbnail_description {
+  overflow: auto;
+  white-space: nowrap;
+}
+
+/* TranslateTool */
+
+div.translatetool_comment {
+  border: 1px solid #0000FF;
+  background-color: #F0F0FF;
+  padding: 2px;
+  margin: 4px 0px 4px 0px;
+}
+
+div.translatetool_label {
+  background-color: #F0F0F0;
+  padding: 2px;
+  margin: 4px 0px 4px 0px;
+}
+
+span.translatetool_code {
+  color: #FF0000;
+}
+
+
+
+/* eof /program/styles/admin_base.css */

@@ -1,0 +1,8 @@
+/program/HISTORY.txt
+$Id: HISTORY.txt,v 1.1 2011/02/01 13:00:01 pfokker Exp $
+
+History of Website@School
+=========================
+
+Website@School started in Amsterdam in 2002 and as they say: the rest is history.
+

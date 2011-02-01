@@ -1,0 +1,1185 @@
+/program/CHANGES.txt
+$Id: CHANGES.txt,v 1.1 2011/02/01 13:00:10 pfokker Exp $
+2011-02-01
+- changed development colours to something more appropriate
+ 
+2011-01-20
+- completely overhauled version of devel/tools/makedist.sh:
+  we can now generate 'official' releases too
+- updated copyright/license message in scripts in devel/tools
+- bumped release from 0.1.6 to 0.1.7 just to test the release
+  procedure. After checking in version.php we need to add a
+  revision tag with 'cvs rtag release-0_1_7 was' and see what
+  happens.
+
+2011-01-12
+- added a simple counter/index to translate tool: makes it
+  easier to refer to a particular translate string on the phone
+- added a devel tool to identify changed and added strings
+  between versions in a convenient single HTML-page
+  (langdiff.sh in the tools directory)
+- corrected a stupid typo in English and Dutch translations
+- bumped version from 0.1.5 to 0.1.6
+
+2011-01-10
+- Changed bottom line in main_admin.php: we now only display
+  the execution time, # of queries and TOD when in debug-mode.
+- Removed the (empty demo-like) stubs in the group manager and
+  user manager indicating configurable modules per user/group.
+  This makes it easier to create realistic screenshots for the
+  upcoming manual.
+- Bumped release from 0.1.4 to 0.1.5
+
+2010-12-20
+- completed the automatic execution of the update manager
+  (called whenever there is a mismatch in the core version)
+- added update manager to tools menu
+- bugfix: removed double escape in version check icon in start center
+- bumped release from 0.1.3 to to 0,1,4
+- bumped version from 2010120800 to 20101221 (just for testing purposes)
+
+2010-12-17
+- started with support for automatich update wizard
+  (driven by internal version number mismatch)
+- bumped version to 0.1.3
+
+2010-12-13
+- bugfix: missing closing '>' in buttons in install.php
+- bumped release to 0.1.2
+- bugfix: error with deleting of sections/nodes in pagemanager.
+
+2010-12-10
+- bugfix: if CFG->www_short is empty, the link to the public
+  site was broken [main_admin.php]
+- bumped release to 0.1.1
+
+2010-12-08
+- mass update of all source files, now with the correct
+  copyright text and link to license.html etc. (continued)
+- renamed DatabaseResult to DatabaseMysqlResult to prevent name
+  clashes once DatabasePostgresql and DatabasPostgresqlResult
+  once these are written
+- cleaned up various files (removed obsolete chunks of dead code)
+- added the 'registered trademark' message to the loginlib
+- removed the old (wrong) logo from the standard theme
+- updated base.css to increase height of quickbottom div
+- added a rel link to /program/graphics/favicon.ico (in
+  main_admin.php)
+- bumped external version from 0.0.7 to 0.1.0
+- bumped internal version from 2010092700 to 2010120800
+
+
+2010-12-07
+- cleanup of init.php; streamline the error_exit() routine
+- mass update of all source files, now with the correct
+  copyright text and link to license.html etc.
+- various cosmetics
+- added link to on-line license.html in LICENSE.txt too
+
+2010-12-02
+- added the final version of license.html with all the legalese
+- added /program/about.html with 'Appropriate Legal Notices'
+- modified the installer to check for the exact version of license.html
+- added global definition: WAS_ORIGINAL in version.php
+- added some more logic to the online version check
+- bumped release from 0.0.6 to 0.0.7
+- added a few graphics files for 'powered by' and 'based on'
+- added a new logo file of 284x71 (instead of 248x53)
+- incorporated the 'powered by' and 'based on' graphics in install.php
+- incorporated new logo in install.php
+- header height in base_admin.css from 53 to 71 pixels for new logo
+- added link to about.html via function appropriate_legal_notices() in
+  install.php
+- added link to about.html via function appropriate_legal_notices() in
+  main_admin.php
+- modified the translatable text in footer: we now force the English
+  'powered by' (or 'based on') even in other languages.
+- added an explanation for creating modified versions in '/program/about.html'
+- also changed the address for new users from schoutdi@knoware.nl to
+  online@websiteatschool.org
+
+2010-10-28
+- raised the priority of logmessage when a virus is detected
+  in filemanager.virusscan()
+
+2010-10-27
+- we now use UTF-8 in the default Theme class; send it
+  to browser via http-headers
+- stupid typo in Theme class corrected (bugfix)
+- new function: log view (in tools menu)
+- added two more job permissions and changed existing:
+  we now have separate permissions for translate tool,
+  backup an logview.
+
+2010-10-26
+- minor cosmetics: we now have a database backup named
+  host-database-prefix-date-time (either .zip or .sql)
+- we now have a 'hidden' feature that allows for downloading
+  the uncompressed .sql by specifying 'download=sql' instead
+  of 'download=zip'.
+
+2010-10-21
+- bugfix in rfc2047_qstring(): we now keep UTF8-tails together
+  with the first octet in the sequence in the same 'encoded-word'
+- completed backup function in tools menu
+
+2010-10-20
+- implemented a (database-specific) database/SQL-dump in mysql class
+- first draft of database dump downloader in tools (no check on user perms yet)
+- minor cosmetics
+
+2010-10-19
+- moved a few mail-related routines from waslib to email.class
+- adapted loginlib: we now use email class to send mail
+- added a header implying that we send UTF-8 in login dialog too
+- added an extra download feature: file.php/websiteatschool/languages
+  now returns a ZIP-file with all user-defined translations of
+  active languages
+
+2010-10-18
+- added a supersimple mailer class in email.class.php
+- adapted translatetool to use this new email class
+- minor cosmetics
+
+2010-10-17
+- fixed some bugs in filemanager.class.php
+- preliminary changes in interfacing to mail() command (viruscan)
+- cosmetics
+
+2010-10-15
+- implementation of RFC2047-style quoted-printable
+  mail header extensions in translate tool
+
+2010-10-11
+- implementation of conversion to quoted printable according
+  to RFC2045 section 6.7 (waslib.php)
+- adapted routine to submit translatations to deal with
+  quoted printable message
+- (finally) converted the program's native language to
+  UTF-8, at least in AdminOutput in main_admin.php
+  (we still need to deal with UTF-8 in the database)
+
+2010-10-06
+- translatetool.class.php: we can now really save user
+  translation files under CFG->datadir/languages/
+  (submit of translations is still work in progress)
+- (later) initial version of sending translation works
+  (more or less).
+- added a cache reset to $LANGUAGE to force re-read of
+  the userfile just written
+
+2010-10-05
+- minor changes in language.class.php:
+  . we now cache a list of _all_ (active+inactive) languages
+  . removed obsolete and unused routine get_languages()
+  . renamed get_language_names() to get_active_language_names()
+- minor changes in files which relied on the old language.class.php
+- nasty bug: a '.' in a fieldname yields a '_' in $_POST. Huh?
+  workaround: use a ':'
+
+2010-10-04
+- translatetool: 
+  . we now have visible codes in the translation dialog.
+  . we also have fields for metadata (per full_domain)
+  . still work in progress
+
+2010-09-30
+- translatetool: we can now show a domain menu in the edit translation
+  dialog but otherwise it is still work in progress
+
+2010-09-29
+- translatetool: we can now add new languages and edit existing ones
+  but it still work in progress
+
+2010-09-28
+- translatetool is work in progress
+
+2010-09-27
+- changed the way languages are handled: we now store the
+  name of the language expressed in the language itself in
+  the languages table which required a change in the tabledefs
+- bumped version from 2010070700 to 2010092700 because of the
+  changes in the database (table definition of 'languages').
+
+2010-09-23
+(after the summer break)
+- bugfix (finally) in language class where valid translations
+  were overwritten in memory when another phrase key was not found.
+
+2010-07-08
+- we now have a distinction between browsing files limited by
+  filename extension and uploading files limited by extension.
+  bottom line: in the file/image/flash browser the user can only
+  see and upload selected files, in the file _manager_ the user
+  can upload selected files but see _all_ files, including 'forbidden'
+  files (eg. some random script uploaded by an intruder)
+- new feature: if a file is detected (in filemanager) which would
+  currently not pass the test for allowable upload, the entry in the
+  filemanager listing is displayed with the CSS error class and
+  the preview links are completely disabled, preventing the user from
+  accidently previewing a rogue file.
+
+2010-07-07
+- now suppress menu too in filebrowser/imagebrowser (via .CSS)
+- started with support for new job 'flashbrowser' (cousin of 'imagebrowser')
+- added support for three new configuration parameters that limit
+  the allowable file extensions (as a shorthand for allowable file
+  types)
+- bumped version from 2010063000 to 2010070700 because of the three
+  new configuration options in the installer
+
+2010-07-02
+- initial version of thumbnail-based file/image browser (still incomplete)
+
+2010-07-01
+- added check on GD in installer
+- added a hint to print the summary page in installer
+
+2010-06-30
+- bumped WAS_VERSION from 2010052400 to 2010063000 because of
+  a typo last week (it should have read 2010062400 but the actual
+  value was 2010052400). Also, the new default value for 
+  'thumbnail_dimension' decreased from 150 to 100 pixels.
+- added support for thumbnails in the basic style sheet (based
+  on the new default dimension of 100).
+
+2010-06-24
+- added generation of thumbnails to file upload routine in file manager
+- added more about limits (file size, upload size) in file upload explanation
+- minor cosmetics
+- bumped WAS_VERSION from 2010051300 to 2010062400 because of new
+  configuration option 'thumbnail_dimension'
+
+
+2010-06-22
+- re-arranged code and added new file /program/lib/filelib.php
+
+2010-06-15
+- filemanager extended so it can double as a filebrowser via
+  job=filebrowser and image browser via job=imagebrowser
+- linked FCKEditor to the filebrowser and imagebrowser
+
+2010-06-14
+- draft version of link browser combined in filemanager (filebrowser)
+
+2010-05-04
+- done with file upload except for 1 small thing (sanitise file type)
+- minor cosmetics here and there
+
+2010-05-13
+- renamed new parameter 'files_upload_count' to 'upload_max_files'
+- bumped WAS_VERSION from 2010051200 to 2010051300 because of this
+- minor cosmetics here and there
+- implemented F_FILE in dialoglib
+
+2010-05-12
+- added comptibility check for Safe Mode (should be 'Off') in
+  install.php
+- added support for clamscan anti-virus in install.php
+- added extra configuration options in site config for clamscan
+- added configuration option fo maximum number of simultaneous uploads
+- bumped WAS_VERSION from 2010010700 to 20100512 because of extra
+  site configuration options
+
+2010-04-14
+- almost done with filemanager; what remains is file upload implementation
+
+2010-04-13
+- added file delete confirmation dialog to filemanager
+
+2010-03-31
+- filemanager: added a Javascript one-liner to select all files
+- filemanager: we can now add (create) subdirectories
+
+2010-02-13
+- filemanager:
+  . directory listing layout done
+  . sort option for three columns (ascending or descending)
+  . human-readable filesize
+  . various stubs for delete and add file/dir
+  still work in progress though
+
+2010-02-10
+- filemanager: navigation basically works but still: work in progress
+
+2010-02-08
+- filemanager is still work in progress
+
+2010-02-05
+- added some more navigation to file manager
+
+2010-02-03
+- traded filemanagerlib.php for filemanager.class.php
+
+2010-01-28
+- for now done with main_file.php: we can serve files from
+  the data directory using the correct (?) mime types etc.
+
+2010-01-20
+- Oops. Bug in tabledefs: there was no unique index on
+  areas.path. Fixed.
+- Done with download of source code: we now recognise
+  file.php/websiteatschool/program (program code) and
+  file.php/websiteatschool/manual (manual in current language)
+- More oops. Another bug in tabledefs: we didn't have
+  the unique index on path for users and groups either. Fixed.
+- Busy with file.php: validation and access control done.
+
+2010-01-19
+- started on file.php and download of source in .ZIP-file
+
+2010-01-13
+- created a new class Zip (in /program/lib/zip.class.php)
+  which allows for creating ZIP-archives on the fly, including
+  Deflate compression, file and archive type comments and zipping
+  from memory or from existing file.
+
+2010-01-09
+- removed a lot of superfluous files from /program/lib/fckeditor
+- suppressed the option 'fcksource=true' in dialoglib: the
+  user that sets that parameter in $_GET gets the plain text area
+  instead of the source-variation of FCKeditor (which is mostly
+  deleted from /program/lib/fckeditor and wouldn't work anyway).
+
+2010-01-08
+- added the full tarball FCKeditor_2.6.5.tar.gz to devel/imports
+  so we have the original source nearby
+- added type F_RICHTEXT as a gateway to the FCKeditor in dialoglib
+- first steps to actually incorporate FCKeditor 2.6.5 in directory
+  /program/lib/fckeditor ia CVS import function. We consider the
+  extensions gif png swf pfx and fla to be binary files, the rest
+  done via -ko.
+
+2010-01-07
+- added view-only field in edit user that shows the data directory
+  name
+- removed the 'advanced' option from the edit user menu because
+  there is no 'advanced' dialog (yet)
+- added editor selection to basic user properties, choices are:
+  plain and fckeditor
+- added the logic for groups path parameter
+- added r/o view of data dir name in edit function in areamanager
+- added r/o view of data dir name in edit function in usermanager
+- added r/o view of data dir name in edit function in groupmanager
+- corrected some typos
+- added unique index on path field in areas table
+- bumped version from 2010010600 to 2010010700 because of
+  changed tabledefinition
+- added the data path to the add area dialog
+- update demodata so we have readable area data dirs now instead of
+  numbers
+
+2010-01-06
+- we now also make subdirectories 'users' and 'groups' in the
+  data directory (next to 'areas' and 'languages') in the
+  installer
+- we no longer record the words 'areas' and 'users' and 'groups' in the
+  path fields in the corresponding tables, dirs are strictly separated
+  now.
+- added global configuration option for generating friendly URLs
+  instead of querystrings
+- added routine to sanitise filenames to waslib (used in creating
+  datadirectories for areas, users and groups)
+- we now check to see if the user tries to install with a username
+  that is also used in the demodata
+- we now actually create the datastructures in the datadir for
+  all demo-data users, groups and also the areas
+- bumped version from 2009120300 to 2010010600 because of
+  changed tabledefinitions
+- added more translation texts for new config items
+  'friendly_url' and 'editor'
+- fixed a few typos
+
+2009-12-22
+- done with pagemanager class
+- removed obsoleted pagemanagerlib.php
+
+2009-12-21
+- almost done with pagemanager class
+
+2009-12-19
+- 'playing' with stylesheet: we now see line-through on
+  'dimmed' links in high-visibility mode (works for funnel mode)
+
+2009-12-18
+- added funnel mode support to AdminOut
+
+2009-12-17
+- very busy re-arranging code in page manager
+
+2009-12-08
+- changed the has_..._permissions() routines in useraccount:
+  we now test for 1 or more permissions, not an exact match
+  anymore: ($perm & $mask) != 0 versus ($perm & $mask) == $mask.
+
+2009-12-04
+- finally decided on the issue of 'per-area' datadirectories:
+  we simply use $CFG->datadir/areas/<area_id>
+- reworked the permissions in the area manager
+- we no longer allow changes in the path property of areas;
+  the field isn't even shown anymore.
+
+2009-12-03
+- finally got rid of the tables users_areas and users_nodes
+  because they are now replaced by the acls-tables.
+- removed fields job_permissions and permissions from users table
+  because they are now replaced by the acls-tables.
+- implementing acls in the useraccount class (work in progress)
+- bumped version from 2009102100 to 2009120300 because of
+  changed/removed tables
+- removed PERMISSION_VIEW from useraccount.class.php because
+  it is now replaced by ACL_ROLE_INTRANET_ACCESS
+- removed PERMISSION_ADMIN (which was added 2008-10-01) from
+  area manager. It still needs to go from pagemanager.
+
+2009-11-30
+- added an item to the CMS dialog in the installer
+  to query the user for a generic demonstration data password
+  (will be assigned to all demo accounts)
+
+2009-11-04
+- done with demodata: we now have a public area with
+  16 pages and 6 sections and a private area with 8 pages
+  and 3 sections, alltogether in 2 languages (en and nl).
+  Pfew!
+
+2009-11-03
+- demodata() now adds 3 areas, 4 groups and 8 users in 2 languages
+- demodata() now also adds many nodes in 2 languages (work in progress)
+- reduced the htmlpage_demodata() and frugal_demodata()
+  to no-ops because all demodata is already inserted in the main
+  demodata() routine.
+
+2009-11-02
+- finished logic for datadirectory name based on dataroot
+  and quasi-random subdirectory (to obfuscate the datadir
+  if it happens to be located within the document root)
+- we now create an empty index.html in both dataroot and
+  datadir to prevent leakin information if dataroot is
+  located within document root.
+- added creation of subtree 'languages' to datadirectory,
+  also with empty index.html files
+
+2009-10-23
+- re-arranged the interface via manifest-files: we now
+  fill the array manifests[] (plural), just like tabledefs[]
+- main logic for installing is done, only thing left to do
+  is insert demodata
+- quick fix in set defaults for cms_dir
+
+2009-10-21
+- yet another changed tabledef: bumped version from
+  2009102000 to 2009102100
+- we now install themes and languages too (not just modules)
+
+2009-10-20
+- bumped version to from 2009101600 to 2009102000 because
+  of changed tabledefs 'modules', 'themes' and 'languages'
+- added manifest files for languages 'en' and 'nl'
+
+2009-10-19
+- changed manual.php: we made a start with linking topics 
+  and subtopics to html-files under /program/{$language}/
+- changed handling of help_topic in install wizard (subtopics)
+- we now actually create the data directory if it doesn't exist
+  already 
+- we now return a link to check for new versions rather than
+  the simple assumption 'OK' in the compatibility dialog in the
+  install wizard
+
+2009-10-16
+- removed fields manifest_script and install_script from modules
+  table; if necessary we can construct these from the manifest or
+  use 'well known' script names (like 'tabledefs.php' and
+  {$module}_manifest).
+- Bumped version from  2009061100 to 2009101600 because of change
+  in the datadefinition of the modules table.
+- We now are able to install modules via their manifest
+  (but not yet demodata)
+
+2009-10-15
+- extra debugging in database library and mysql class
+- almost done with actual installer
+
+2009-10-13
+- added more documentation to functions
+- added functionality to write config.php (if filesystem permits)
+
+2009-10-12
+- added a check on already installed
+- added optional version check in compatibility screen
+
+2009-10-05
+- the installer is still work in progress but all the dialogs are done
+
+2009-10-01
+- more checks/validation in the installer
+
+2009-09-30
+- re-arranged the code in install.php: we now have the InstallWizard class
+- re-arranged the order of the funnel: we now require valid
+  databaase credentials before we leak any information
+- added delays to the database validation if something goes
+  wrong, to scare off the spooks
+
+2009-09-29
+- added suppress_output mode to AdminOutput class
+
+2009-09-24
+- installer: work in progress
+
+2009-09-23
+- installer: work in progress
+
+2009-09-22
+- installer: work in progress
+- added an ad-hoc image for an OK-button
+
+2009-09-21
+- installer: work in progress
+
+2009-09-18
+- added style for previous and next buttons to admin_base.css + icon
+
+2009-09-10
+- we now require a new password twice when adding a new user
+- code cosmetics
+
+2009-07-24
+- done with pagemanager permissions in usermanager and groupmanager;
+  we can now store and retrieve permissions on node level.
+- added minor cosmetics in the expanding/collapsing of areas in
+  aclmanager: we now always keep the section to expand/collapse
+  visible on the current screen by setting the offset to the offset
+  of that area
+- updated translations
+
+2009-07-23
+- after a lot of time I finally got the pagemanager permissions in
+  the ACL Manager right: we can now actually save the settings via
+  a complex dialog (for the programmer) that deals with screens
+  (in long lists) and also allows for opening and closing areas.
+  *pfew*
+
+2009-07-01
+- more work on the pagemanager permissions dialog, including
+  walking the node tree in an area (work in progress)
+
+2009-06-30
+- moved pagination code to AdminOutput()
+
+2009-06-19
+- we now have fully implemented the 'related-acls' feature for
+  the user intranet access dialog and the user admin access dialog.
+- some more streamling in the install.php to navigate in tabledefs and
+  datadump
+
+2009-06-18
+- we now also delete user associations with a group/capacity when
+  a capacity is removed from a group in the groupmanager
+- (special request) we now have a jump-menu in the theme via which
+  a visitor can jump to any area available to her (logged-in users
+  also see private areas if they have permission)
+- added a users+groups summary to the account manager intro screen
+- added support for user privileges intranet and also user privileges
+  for admin, the latter including the related feature
+- various typo's corrected
+
+2009-06-17
+- we can now manipulate a user's group memberships: view, add, delete
+
+2009-06-16
+- completed pagination routine with a limit on links to show
+- changed default number of links to show to 7 (was 5)
+
+2009-06-11
+- added pagination to users list in user manager
+- added configuration parameters for pagination to $CFG via config
+  table
+- added 'memory' to users list: after editing you return to list/screen
+  you started from (if possible)
+- bump version to 2009061100
+
+2009-06-05
+- added function for sorted list of languages to $LANGUAGE
+- saving basic properties of user now works
+
+2009-06-04
+- minor tweaks in loginlib in order to reuse the password/salt-code
+- added 'add user'
+- added 'delete user'
+- started with 'edit user'
+- added more Dutch translations, again
+
+2009-05-31
+- done with acl for admin jobs
+- fine-tune in groupc apacity menu: suppress pagemanager link
+  if this group/capacity has no permission for page manager
+- more or less done with users overview (but Dutch translations lack)
+
+2009-05-30
+- code cleanup in group manager
+- more logging in group manager
+- some small convenient enhancements to the install.php
+  making it easier to keep track of the logging
+- delete group function now works
+- added more Dutch translations
+
+2009-05-29
+- we can now save group data, including checks on ACLs etc.
+
+2009-05-28
+- busy with implementing ACL-configuration starting with intranet permissions
+- added more and more information to the demodata: now with an acls-record
+  for every user and every group/capacity.
+
+2009-05-26
+- typo in tabledefs; bumped version to 2009052600
+
+2009-05-22
+- added a breadcrumb trail to the admin output object because
+  we really need this to remember where we are in the account manager
+- added list of users per group-capacity (task=capacityoverview)
+- minor cosmetics (inluding correction of type in name Helen
+  Parkhurst)
+- busy with the navigation between various screens dealing
+  with group-capacity properties
+
+
+2009-05-20
+- added some 55 dummy-users and 15 dumy-groups to demodata
+  in order to 'play' with the account manager
+- we now are able to add new groups, including up to 8
+  capacities per group  
+
+2009-05-19
+- group manager: we can now show a list of existing groups and
+  group-capacities including clickable links
+- addded some group data to the demodata
+- bumped the version to 2009051900 to make sure that the demodata
+  is re-created in the testversion
+
+2009-05-18
+- updated logo's, now with &reg;
+- added new icon for account manager
+- moved usermanager around together with the group manager;
+  there is now a top-level accountmanager for users and groups
+
+2009-05-14
+(after some two months of thinking we're back with more)
+- start with better access control via 6 new tables
+- added three tables for additional group-based access control
+- obsoleted two tables (users_areas and users_nodes) and
+  some fields in the users table: the functionality is now
+  available via ACLs.
+- bumped versions to 0.0.5 and 2009041500
+- Deprecated  the 'unsigned' attribyte in tabledefs because this is
+  a non-standard feature which MySQL happens to implement but
+  other DBMSs might not. In general 2^31 integers should suffice
+  anyway.
+
+2009-03-18
+- rearranged code for calculating the URL for version checker on
+  project's website
+- added support for Bazaar Style Style Sheets on static level and
+  on area level (not yet on node level; todo)
+
+2009-03-17
+- fixed bug in dialog_validate(): viewonly fields should not need to 
+  be validated because they are not supposed to change anyway
+- added routine for manipulating/editing the main site configuration
+  (via ConfigAssistant)
+- got rid of get_configuration(): we now use get_properties() for the
+  main config too
+- done with the area manager except 1 little detail (the handling
+  of the data directory)
+- added support for datatypes 'l' (picklist) and 'r' (radio) in
+  ConfigAssistant; the type 'c' (checklist) still needs to be done
+
+2009-03-14
+- bumped version internal number to 2009031400 because of significant
+  changes in the database (the extended configuration table format)
+- added begin of support for 'Cascading Cascading Style Sheets'
+  or 'Bazaar Style Style Sheets'.
+- added yet more demodata to show the possibilities of the area manager
+
+2009-03-06
+- almost done with area manager; we only need to copy the
+  theme parameters when adding a new area
+- rearranged/renamed some phrases in order to keep at least
+  a little overview
+
+2009-03-05
+- added a configassistant class as a quick tool for editing generic
+  configuration data (first used in editing theme properties in
+  areamanager)
+
+2009-02-27
+- moved all code dealing with area management to seperate class
+
+2009-02-26
+- added functionality to delete areas
+- started with functionality to add areas
+
+2009-02-25
+- added fields mtime, muser_id, ctime, cuser_id to areas table
+- bumped internal version to 2009022500
+- bumped external version to 0.0.4
+- added copy of webmaster account to account 'textmaster' to demodata:
+  easy checking text interface with permissions of webmaster
+- optimising queries on 'nodes' table by adding an index on field 'area_id'
+
+2009-02-24
+- (finally) started with configuration manager
+- added has_site_permissions() to user class so we can use access
+  control in area manager
+- moved some code from pagemanagerlib to waslib so we can reuse it
+
+2008-12-14
+- incorporated a stub with base.css so we can see what a page will
+  look like (more or less)
+- minor cosmetics in the demo data
+
+2008-12-10
+- more navigation in base theme: now tree-like menu
+- added language files en and nl to frugal theme
+- minor cosmetics
+
+2008-12-08
+- added table themes_areas_properties
+- added more demo data, including a quicklinks top + bottom in hidden sections
+- changes in the built-in theme object
+- bumped internal version to 2008120800
+- added some more functionality to the built-in theme object
+
+2008-12-04
+- removed global $NODE and $AREA; we use a local variable $area
+  in main_index() and information about the node is to be found in
+  the local variable $tree
+- obsoleted file area.class.php
+- obsoleted file modulelib.php
+- obsoleted file module.class.php
+
+2008-12-03
+- moved some more code from pagemanagerlib.php to waslib.php
+- we no 'fix' circular references in function is_under_embargo()
+  (this should be fixed and properly done in a database repair tool
+  or something)
+
+2008-12-01
+- moved build_tree() to waslib because it is used from main_index()
+  too and not just from main_admin()
+
+2008-11-26
+- some files re-arranged and renamed: e.g. /program/lib/adminlib.php
+  now lives in /program/main_admin.php
+- added stubs to /cron.php (which call /program/main_cron.php)
+  and /index.php (which call /program/main_index.php)
+- removed adminlib.php from CVS repository because it is now obsolete
+- added begin of support for Apache's PATH_INFO feature for specifying
+  area and node like index.php/aaa/nnn or index,php/nnn. This does
+  pose a few problems with relative urls... to be fixed
+
+2008-11-25
+- yet another change to the database: modules table
+- version bumped to 2008112500
+
+2008-11-24
+- added more logic to the garbage collection and expiry of obsolete
+  sessions
+- added unconditional garbage collection after successful login
+- added a default value for session_expiry to demodata
+- renamed global config option sessionname to session_name throughout
+- version bumped to 2008112400 because of change in demodata
+
+2008-11-21
+- first attempt to actually save htmlpage content
+- version bumped to 20081121 because of change in data definition
+
+2008-11-20
+- added three stubs for modules: htmlpage, mypage and guestbook
+- we now actually delegate the task of editing content to the module
+  admin code
+
+2008-11-17
+- we now take readonly into account when deleting nodes
+- documentation in dialoglib
+- minor cosmetics
+
+2008-11-10
+- save advanced node properties now working (except moving a non-empty
+  subtree to another area)
+- bumped internal version number (WAS_VERSION) from 2008020100 to
+  2008111000. This forces an error message/condition code 050, which
+  means that the database is not in sync with the program. Normally,
+  this would mean that an updater should be executed which changes
+  the database structure. In the development phase we simple need to
+  reload the demodata. Naturally I changed the version number in the
+  demodata too.
+- I also bumped the external version number from 0.0.1 to 0.0.2, just
+  to gain some experience with changing versions.
+- Added a FAQ about condition code 050.
+- Added a field 'locked_since' to the nodes table, allowing to make
+  the 'sorry, record is locked' message even more friendly
+
+2008-11-09
+- minor changes:
+  . default visibility for a new page is now 'hidden' as per Dirk's
+    request
+  . field order in basic node properties now has module as last
+    in the list
+  . a 'default node' now loses the default node bit when the node
+    is moved to another parent (preventing ending up with two
+    defaults).
+- added a class 'current' to options in the menu (currently there
+  are two menus: the area menu and the node edit menu). The current
+  item is underlined (via CSS).
+
+2008-11-08
+- we now manipulate the sort order in such a way that the sort order
+  of other nodes is increased/decreased in order to make room for the
+  moved node.
+
+2008-11-07
+- added stubs for module_connect() and module_disconnect() so we can
+  actually link a module to a node (and unlink too, obviously)
+- we can now almost save the data from the basic properties dialog
+  (everything except the sort order by itself)
+
+2008-11-06
+- we can now fill the dialogs for editing a node with data from database
+- added Dutch translations for all prompts etc.
+
+2008-11-05
+- rearranging the translations in /program/languages/em/admin.php
+- minor change in admin_basic.css so we can indent options in a drop down list (tree)
+- added a comment feature to the English translation file admin.php:
+  this allows for communicating the purpose and context of strings to
+  the translators
+- completeted the dialogs for basic and advanced editing of nodes (but
+  not yet the actual saving etc.)
+
+2008-11-04
+- removed PERMISSION_NODE_EDIT_CHILD from useraccount class, changed
+  into PERMISSION_NODE_EDIT_NODE because that makes more sense, I
+  think.
+- started with edit a node dialogs
+- cosmetics  
+
+2008-10-31
+- cleaning up code (it takes time to condense rough code and make it
+  more elegant)
+- added better logging to the alert feature
+- on special request: now new nodes are added at the top of their
+  section rather than at the end (some logic is more logic than other
+  logic)
+- we play a special trick when adding a node: we force switch to
+  custom view with all ancestors opened and any other sections
+  closed.
+
+2008-10-30
+- added a routine that churns out alert messages every now and then
+- added more logging + alert to change default routine
+- minor cosmetics
+
+2008-10-29
+- we now can add new sections and pages
+- we now accumulate alerts when a new page/section is added
+
+2008-10-28
+- a small diversion in the past week: add tables for alert function
+  (alerts, alerts_areas_nodes)
+- updated demodata to 'play' with alerts
+- added function to lock records of nodes table, alerts table
+
+2008-10-20
+- added even more functionality to dialoglib.php + documentation
+- first attempt to do a dialog in pagemanager (no save yet) with new lib
+
+2008-10-18
+- added more functionality to dialoglib.php
+
+2008-10-15
+- added dialoglib.php
+
+2008-10-13
+- moved some html-utilities to new file /program/lib/htmllib.php
+- added some links + translations to the start center
+- first start on 'add a section' code
+
+2008-10-10
+- re-arranged icons, added new icons for visible/invisible page
+- modified page preview to use a one-time access code via md5-hash 
+- documented all routines in pagemanagerlib.php, code cleanup
+- implemented the 'set home' function for nodes
+
+2008-10-09
+- changed layout of node tree a little bit:
+  . add a node is now displayed at the top of the tree
+  . we no longer show sort_order and node_id in the anchor text
+    (we do show the node_id in the mouse-over (title) though)
+- added logic to switch between collapsed, customised, expanded
+  tree view
+- we now have stubs in place for all tasks in pagemanager, 
+  including preview
+- we can now use index.php to show a preview (stub)
+
+2008-10-08
+- many changes in page manager: we now have an almost working tree
+  view that can expand and collapse
+
+2008-10-01
+- inserted a new permission: PERMISSION_ADMIN. If this bit is set in
+  the user's permissions (either site, area or node), the user has at
+  least one permission bit set to manipulate the site, area or node.
+  It is more or less shorthand for 'one of the permission bits is
+  set'.
+- we now have an area menu in pagemanager
+
+2008-09-30
+- a few tweaks in adminlib.php (http-equiv headers)
+- added a help topic in help button in navigation in adminlib.php
+
+2008-09-29
+- moved workhorse /program/admin.php to /program/lib/adminlib.php
+  to avoid confusion with file names (which 'admin.php' do you mean?)
+- further documented adminlib.php, tweaked the page layout
+
+2008-09-26
+- basic dispatcher in admin.php done
+- change in datadefinition: added field job_permissions to user table
+- change in datadefinition: added field high_visibility to user table
+- added support for high visibility via additional stylesheet
+- basic admin.php navigation is more or less done
+
+2008-09-22
+- further refined page layout for admin.php
+- added a basic version checker at http://siteatschool.org/version/index.php
+
+2008-09-21
+- started with admin.php
+
+2008-06-10
+- added shortcuts for $CFG->www and $CFG->progwww
+
+2008-05-28
+- changed $NODE, $AREA and $THEME into objects
+- added support for redirecting users if they accidently request a
+  page with an external link
+- made a start with a base class for themes
+- started with a minimalistic theme called 'frugal'
+- created start of a theme factory
+- minor cosmetics
+
+2008-05-09
+- changed the creation of the $DB global object: we now use a
+  database factory
+
+2008-04-29
+- removed some of the trigger_error() calls in
+  waslib/calculate_node(); only database errors now emit to screen if
+  debug is TRUE; the rest now use logger(...,LOG_DEBUG) which writes 
+  to the database in itself.
+- we now kick unauthorised users/passersby out of protected areas with
+  a fatal error 070 (cannot find node in area). They should login the
+  regular way IMHO. I re-used error code '070' on purpose in order not
+  to leak information about protected areas.
+
+2008-04-25
+- changed name of config parameter for language from 'language' to
+  'language_key' to stay in sync with other (database) fields dealing
+  with language codes.
+- moved all code dealing with translations and languages to a
+  separate file and into a special class.
+  
+
+2008-04-23
+- cleaned up loginlib.php, added more documentation
+- added logger() which logs important events in the database
+
+2008-04-21
+- done with t() and supporting routines
+- added en and nl translations for loginlib.php
+
+2008-04-16
+- busy with translating strings via function t()
+
+2008-04-11
+- changed interface for last_insert_id() method: use table+field instead of sequencename
+- added new table login_failures
+- loginlib.php now also implements the blacklist feature and the failures counters
+
+2008-04-09
+- login mostly works, except blacklisting/failure counts
+- added confirmation mail to user after succesful change of password
+
+2008-04-08
+- added a javascript alert in every login dialog (near the end)
+- created a random password/laissez passer-generator
+
+2008-04-07
+- changed password requirements in loginlib: now min 6 chars etc.
+- rearranged code in loginlib
+- added more demodata to play with
+
+2008-04-05
+- first draft of WAS-logo incorporated in login dialog
+
+2008-04-04
+- still working on login/logout and various failure modes and also
+  on the 2-step laissez-passer + bypass routine
+
+2008-04-03
+- still working on login/logout and various failure modes
+
+2008-04-02
+- started with login/logout routines, added file loginlib.php
+
+2008-04-01
+- rearranged some code
+- we now always read the complete config table in core
+- added more config parameters in demodata
+- refined session handling code
+- added if_exist_session() type of routine to make sure
+  we are not fooled by spurious cookies
+
+2008-03-30
+- added tabledef for users, sessions
+- added more support routines for database manipulation to waslib.php
+- added a new file dbsessionlib.php
+
+2008-03-19
+- renamed db_quoted() to db_escape_and_quote() to make the effect
+  more obvious
+- we now know the $node and the $area and even the $theme to use
+- re-arranged some code; moved to waslib.php
+- added even more demodata to 'play' with index.php
+  and we added a clickable breadcrumb trail (that was _easy_).
+
+2008-03-17
+- renamed the quote() method to escape() in Database class because it
+  may add confusion; the difference between escaping apostrofs and
+  adding apostrofs around a string in order to insert into the
+  database like in db_quote().
+- added a simple test-routine to dump data from the database
+
+2008-03-14
+- added optional parameters $limit and $offset to Database->query() method
+- we are now able to determine a valid area based on the user's request of
+  'area' and 'node'.
+
+2008-03-13
+- some more database manipulation routines added
+
+2008-03-12
+- evade the magic in magic_quotes_sybase by issuing a fatal error,
+  circumvent the magic in magic_quotes_gpc() with function magic_unquote()
+- changed the format of demodata from SQL-statements to nested arrays
+
+2008-03-03
+- added version check in init.php: the database version MUST match the
+  code version, or else...
+
+2008-02-29
+- started with demodata.php to play with
+
+2008-02-20
+- added a simple tabledef dumper to install.php so we can see tabledefs
+  in a tabluar form
+- more tabledefinitions in tabledefs.php
+
+2008-02-19
+- added much to the main tabledefs.php
+
+2008-02-16
+- added a subtree under /program/install for tabledefs of the main
+  system and also places for storing language specific demo data
+- started with main tabledefs
+- quick and dirty testcode in install.php to excercise/test the
+  tabledefs
+
+2008-02-15
+- moved a lot of test code from install.php to /devel/test directory
+  so I can 'play' with various subsystems without interfering with the
+  real code. Currently /deve/test/test.php is focused on excercising
+  the Database class.
+
+2008-02-14
+- added an extra dummy parameter to $DB->last_insert_id() as hook for
+  future extension with other database drivers
+- added a function $DB->table_exists()
+- added a test with some 128 fielddefs in install.php (for now)
+
+2008-02-12
+- added $DB->debug (default FALSE), can be set via constructor
+- added $DB->drop_table()
+- added $DB->create_table() using 'generic' (not MySQL-specific) datadefinition
+- added another file to 'play' with: /program/install.php
+- moved diff_microtime() to init.php
+
+2008-02-11
+- added new object type DatabaseResult to deal with queries returning data
+- added a few more stubs in index.php to casually test Database/DatabaseResult-classes
+
+2008-02-10
+- documented $CFG->debug
+- got a few more methods working in mysql.class.php + q&d tests in index.php
+
+2008-02-07
+- experiments with the 'poor mans' database factory were more or
+  less successful: the code works, but phpdoc fails badly when
+  the same class is defined multiple times within the same package.
+  However, a postgresql-driver in a separate @packages does work
+  with phpdoc. Oh well.
+- re-arranged some code in the Database-class: we now have a separate
+  method to connect to the server and open the database, we no
+  longer do that from the constructor. Also, we no longer bail out
+  on MySQL-errors because we can expect errors during install and
+  we don't want to bail out at that point.
+- added error and errno to Database class which store the results
+  from the underlying database, handy to find out what, exactly, went
+  wrong.
+- added the parameter $CFG-debug in init.php
+- moved the unset($CFG) from config(-example).php to index.php in
+  order to make certain that we won't be fooled by a stray global
+  set via $_GET or whatever user input
+- added a fake microtime() function in case it doesn't exist in the
+  environment. The fake version uses a fractional part of 0.0 but is
+  otherwise 100% compatible with the real microtime() string format.
+  The reported time will be off by at most 2 seconds, oh well.
+- Added a global object to record the performance, including the
+  time of start and stop of the script execution. Could be used to
+  identify bottlenecks.
+- rearranged the order of code in init.php
+- added error_reporting depending on the value of $CFG->debug.
+- brought the call to the new Database class in line with the new
+  class definition
+- removed the calls to error_exit() from the Database class; they
+  do not belong there.
+- documented the format of the release date variable in version.php to
+  include the full seconds-resolution ISO 8601 date
+- added more error checking in Database class via $DB->errno and
+  $DB->error
+
+2008-02-06
+- made a start with databaselib.php and mysql.class.php
+- some tweaking in version.php: now record full release date+time
+
+2008-02-04
+- re-arranged the comments in config-example.php, hopefully clarifies
+
+2008-02-01
+- added init.php
+- added version.php: keeps track of version of php-files (for
+  comparison with database to determine necessary update actions)
+
+2008-01-31
+- added preliminary versions of README, INSTALL, etc.
+- completed a quick and dirty script to generate documentation with
+  phpdoc
+- completed a script to generate both distribution version and
+  development version of W@S
+
+2008-01-28
+- committed a first version of /index.php and config-example.php to
+  CVS; we have now actually started creating program code

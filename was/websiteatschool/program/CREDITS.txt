@@ -1,0 +1,28 @@
+/program/CREDITS.txt
+$Id: CREDITS.txt,v 1.1 2011/02/01 13:00:01 pfokker Exp $
+
+Website@School Team
+===================
+
+Barry Faas - graphics designer
+Dirk Schouten - project leader
+Karin Abma - project leader
+Peter Fokker - main developer
+
+Translators
+===========
+
+...
+
+Contributors
+============
+
+...
+
+
+Sponsors
+========
+
+They donated money or equipment to the Website@School Project:
+
+...

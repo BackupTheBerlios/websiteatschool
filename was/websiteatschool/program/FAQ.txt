@@ -1,0 +1,22 @@
+/program/FAQ.txt
+$Id: FAQ.txt,v 1.1 2011/02/01 13:00:05 pfokker Exp $
+
+This file will contain answers to frequently asked questions.
+
+Q1: Can I temporarily close my website?
+A1: Yes. If a file called 'maintenance.html' exists in the top
+    level directory (i.e. the directory holding the main entry
+    points and also the file 'config.php'), a website visitor
+    will be redirected to that file 'maintenance.html' instead
+    of the real site.
+
+Q2: What is this message "condition code 010"?
+A2: It means that the site is not yet configured. Point your
+    browser to /program/install.php to start the installation
+    wizard and follow the instructions.
+
+Q3: What is "condition code 050"?
+A3: This indicates that the version of the program (the .PHP-files)
+    is not the same as the structure of the database. Usually this
+    means that an update needs to be done in the database, changing
+    the database structure.

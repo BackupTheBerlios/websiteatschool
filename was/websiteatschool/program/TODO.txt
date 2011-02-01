@@ -1,0 +1,200 @@
+/program/TODO.txt
+$Id: TODO.txt,v 1.1 2011/02/01 13:00:05 pfokker Exp $
+
+2008-01-29
+-- convert /program/*.txt to DOS-text
+-- decide on exact license conditions
+
+2008-02-01
+-- add an explanation to the manual about $CFG->datadir within the
+   document root and a 'difficult' name that cannot be guessed.
+
+2008-02-07
+OK should we document $CFG->debug? this is a feature that is handy
+   during development, but it should be 'off' on a production server
+   Answer: this is now documented.
+-- how can we discriminate between a call from the command line and
+   a call via a web interface? Is it a mere check of
+   $_SERVER['REMOTE_ADDR']? (You _never_ have a remote address when
+   working from the command line, do you?). Would be handy in case
+   of cron.php.
+
+2008-02-14
+-- make a separate subtree for testing purposes. I don't think that
+   that test environment should be published for end users (but it
+   should be for developers). Maybe a subdirectory /devel/test/ and
+   a corresponding /devel/test/test.php?
+
+2008-02-19
+-- can it be possible to have a page visible in navigation and not
+   available to serve? I'm inclined to say yes: if a node only has
+   a href, no actual data is available in the database. However,
+   should we treat this as a call nevertheless and count the page
+   view just before we redirect via header()? Mmm....
+
+2008-03-22
+OK Protect password fields with AUTOCOMPLETE="off" (see
+   http://www.owasp.org/index.php/Guide_to_Authentication)
+OK Count the number of failed login-attempts within a certain
+   period of time
+OK On-time password reset should time out in a short time, e.g.
+   15 minutes (ok, make it 30 minutes)
+OK Should there be password requirements (min 1 digit, min 1 capital,
+   minimum length?): YES one of each.
+OK Add delay in user validation (3 seconds per attempt)
+OK Should login-forms have short-lived unique identifiers?
+   (prevents brute force attacks?) Methinks that our blacklist
+   facility (8 minutes after more than 10 failed attempts) is enough.
+
+2008-04-25
+-- Add to cronjobs: cleanup of expired sessions + logging of the fact
+OK Should we add the number of calls + length of session in seconds to
+   the logout message? What then if the session expires without a
+   proper logoff? A: added this for reqular logouts
+-- Add to cron: removal of obsolete login_failures? It should be
+   auto-cleaning but if a user fails once and never returns, the
+   failure will be there forever.
+OK Get rid of the 'trigger_error()' calls now that we have logger(),
+   maybe except errors in the database routines..
+-- Logrotate for log_messages table? How? Send a summary to the
+   webmaster before deletion?
+
+2008-04-27
+-- we should be able to optimise with relative links (sometimes) if
+   the hostname part of $CFG->www and $CFG->progwww are the same.
+   Example: when pointing to the source of an image the src would
+   be {$CFG->progwww}/graphics/foo.png, i.e. including the
+   'http://www.exemplum.websiteatschool.org' part. If $CFG->www
+   also starts with that string, we can leave it out in the src
+   property: src="/program/graphics/foo.png".
+
+   Here is a generic example fromt RFC3986:
+
+         foo://example.com:8042/over/there?name=ferret#nose
+         \_/   \______________/\_________/ \_________/ \__/
+          |           |            |            |        |
+       scheme     authority       path        query   fragment
+
+   If $CFG->www and $CFG->progwww have the same scheme and
+   authority, links could be made relative, e.g.
+   <a href="/over/there/?name=ferret#nose"> and 
+   <img src="/over/there/program/graphics/ferret.jpg"> instead
+   of prefixing with an explicit "foo://example.com:8042/".
+   What if the scheme and authority are NOT the same?
+
+2008-05-01
+-- About the installer: if the installer is not able to write
+   'config.php' to the target directory, it should be possible to
+   'download' a .ZIP-file with this config.php, and perhaps also
+   with index.php, cron.php, admin.php? Unzip that in the appropriate
+   place and you are in business.
+
+2008-08-01
+-- How about storing ETags and be friendly to caches/proxies?
+-- How about using index.php/aaa/nnn/friendly-title-of-page-for-bookmark
+   instead of index.php?area=aaa&node=nnn
+   That too is cache/proxy-friendly...
+
+2008-09-29
+OK How about adding an extra parameter to manual.php in order to
+   'deep link' to the manual? Example: if the user has selected
+   the pagemanager in admin.php, should the help button be calling
+   'manual.php?language=en&job=pagemanager' or something?
+   Done: additional parameter 'topic' is added, at least from page
+   manager. Could be employed from start centre too if necessary.
+
+2008-10-01
+
+-- Should there be an attribute 'is_root' or 'is_guru' in the users
+   table? E.g. if a node is owned by some user, only that user is
+   allowed to remove the read-only bit. Shouldn't there be a way
+   to override that other than by using phpMyAdmin to manipulate
+   the database directly?
+
+2008-10-10
+-- Edit permissions not only depend on the user's permission bits but
+   also on the read-only attribute of a node.
+-- We should isolate the check-permission routines becaust they are
+   used when creating icons and also when executing the corresponding
+   function.
+ 
+2008-10-20
+-- get some decent graphics for button_save and button_cancel and other
+   buttons...
+
+2008-10-28
+OK How about changing all where clauses with "(value = 'NULL')" into
+   "(value IS NULL)" to be more SQL-standard compliant? Done, in
+   databaselib.php and function db_where_clause().
+-- So how about recovering from a crashed browser with an inaccessible
+   session? It is very annoying to be locked out in the cold if the
+   browser crashed and I immediately login again using the same
+   credentials and still not be able to carry on...
+   Should we add the time of the lock, too? That would give the other
+   user an educated guess about the odds that the other session is
+   still active. Mmmmm...
+
+2008-11-12
+-- the output object AdminOutput should have something like a 'funnel
+   mode'. This mode should disable all navigation links and other
+   links that could distract and/or seduce the user to leave the
+   page. Main use: prevent locked records hanging around without
+   the user actively editing that record.
+   
+
+2008-11-20
+-- the Theme should have a property 'date/time last modified' so
+   a module can update it via module_view().
+-- how to create an alert based on edit content (or not)? How
+   can we tell that the content actually changed? Is there a
+   'dirty' bit somewhere? Should we return a status insted of
+   simply true/false?
+
+2008-12-10
+-- How about the visibility of nodes when in preview mode?????
+
+2009-02-25
+-- do we actually _USE_ the field muser_id in the page manager? 
+   we do in the area manager.
+
+2009-02-26
+-- How about adding transactions (rollback, commit)
+   See function that deletes areas.
+   Q: How well is MySQL suited for transactions?
+   A: Mmmmm.... Which version? Which storage engine? 
+
+2009-05-31
+-- Why not use the 'name' field in the dialogdef[] arrays?
+   $dialogdef = array('fullname' => array('name' => 'fullname',
+   'type' => F_STRING, ...)); Much more convenient when saving
+   data.
+-- Doublecheck for htmlspecialchars() when displaying information
+   from the database in a dialog: a username like say
+   '<u>ser</u>name' should be converted to 
+   '&lt;u&gt;ser&lt;/u&gt;name' before being sent to the browser.
+
+2009-06-04
+-- we should re-analyse the repercussions of the option to delete
+   user accounts. If only the user_id is logged, it is difficult
+   to figure out whodunnit if the account has already disappeared,
+   not to mention breaking the constraint of the foreign key.
+   This is also a problem for tables with cuser_id and muser_id...
+
+2009-09-22
+-- We should have a graphics designer restyle all icons etc.
+   I'm no good at that.
+
+2009-12-04
+-- Should we make the permissions 0700 configurable, eg in
+   areamanager?
+
+2010-09-27
+-- There is a potential security issue with relative paths:
+   the check on '/../' is inconclusive if the $path is encoded in UTF-8: the overlong
+   sequence 2F C0 AE 2E 2F eventually yields 2F 2E 2E 2F or '/../'.
+   Reference: RFC3629 section 10. Applies to main_file.php and also
+   filemanager.class.php.
+
+2010-12-08
+-- Should we add a configuratble favicon to themes as a config option
+   (defaulting to /program/graphics/favicon.ico)?

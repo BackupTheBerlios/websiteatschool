@@ -1,0 +1,401 @@
+/** /program/styles/base.css - basic stylesheet for red/white/blue theme
+ *
+ * This file is part of Website@School, a Content Management System especially designed for schools.
+ * Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker <peter@berestijn.nl>
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License version 3 as published by
+ * the Free Software Foundation supplemented with the Additional Terms, as set
+ * forth in the License Agreement for Website@School (see /program/license.html).
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
+ * for more details.
+ *
+ * You should have received a copy of the License Agreement for Website@School
+ * along with this program. If not, see http://websiteatschool.org/license.html
+ *
+ *
+ * The basic layout of a page is determined by a set of
+ * sometimes nested DIV-elements, each with their own id.
+ * A generic page looks a bit like this
+ *
+ * top
+ * page
+ *   header
+ *     logo
+ *     quicktop
+ *     breadcrumbs <-- note: plural!
+ *   navigation
+ *   messages
+ *   menu
+ *   sidebar
+ *   content
+ *   footer
+ *     quickbottom
+ *     address
+ * bottom
+ *
+ * The page is constructed in the page-div. The top and bottom div are
+ * only there to hold stuff that must be rendered before or after the
+ * actual page. Can be used to hold javascript popups/alerts.
+ *
+ * @author Peter Fokker <peter@berestijn.nl>
+ * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
+ * @license http://websiteatschool.org/license.html GNU AGPLv3+Additional Terms
+ * @package wascore
+ * @version $Id: base.css,v 1.1 2011/02/01 13:00:56 pfokker Exp $
+ * @todo there is an issue with the display of the tree: the graphics don't work yet and
+ *       maybe we should have a different distinction in current pages/sections,e.g.
+ *       "currentpage page level0" instead of "current page level0"...
+ */
+
+body {
+  margin: 0px;
+  padding: 0px; 
+  color: #000;
+  background-color: #EEE;
+  background: url(background-100x100.png);
+  background-repeat: repeat;
+  font-family: verdana,arial,helvetica,sans-serif;
+}
+
+/* set border to 1px while debugging */
+div {
+   border: 0px #00F solid;
+}
+
+img {
+  border: 0;
+}
+
+/* the container div holds everything else */
+#page {
+  width: 100%;
+  background-color: #FFF;
+  padding-bottom: 50px;
+  margin-top: 0px;
+}
+
+
+/* the header div holds
+ * - the logo
+ * - the quicklinks at the top
+ * - the site title and subtitle
+ * - the breadcrumb trail
+ */
+#header {
+  top: 0px;
+  width: 100%;
+  background-color: #FFF;
+  height: 120px;
+}
+
+#header h1, 
+#header h2 {
+  text-align: center;
+  margin-top: 0;
+  margin-left: 210px;
+  margin-bottom: 0;
+  margin-right: 210px;
+}
+#header h1 {
+  height: 50px;
+}
+#header h2 {
+  height: 30px;
+}
+
+#logo {
+  float: left;
+  height: 95px;
+  width: 200px;
+  background-color: #FFF;
+  text-align: center;
+  padding-top: 25px;
+}
+
+#quicktop {
+  height: 20px;
+  background-color: #FFF;
+  text-align: right;
+  font-size: 0.95em;
+  padding-left: 210px;
+  padding-right: 210px;
+}
+#quicktop a:link,
+#quicktop a:visited {
+  text-decoration: none;
+  color: #000;
+  background-color: #FFF;
+}
+#quicktop a:active,
+#quicktop a:hover {
+  text-decoration: none;
+  font-weight: bold;
+  color: #FFF;
+  background-color: #00F;
+}
+#quicktop a.current:link,
+#quicktop a.current:visited {
+  text-decoration: underline;
+}
+
+
+
+#sitename {
+  height: 80px;
+  text-align: center;
+  padding-left: 210px;
+  padding-right: 210px;
+}
+#sitetitle {
+  font-size: 3em;
+  font-weight: bold;
+  background-color: #FFF;
+  height: 50px;
+}
+#sitesubtitle {
+  font-size: 1.2em;
+  background-color: #FFF;
+  height: 30px;
+  font-weight: bold;
+}
+
+#breadcrumbs {
+  height: 20px;
+  text-align: left;
+  font-size: 0.8em;
+  background-color: #DDD;
+  padding-left: 210px;
+  padding-right: 210px;
+  padding-top: 2px;
+}
+#breadcrumbs a:link,
+#breadcrumbs a:visited {
+  text-decoration: none;
+  color: #000;
+  background-color: #DDD;
+}
+#breadcrumbs a:active,
+#breadcrumbs a:hover {
+  font-weight: bold;
+  text-decoration: none;
+  color: #FFF;
+  background-color: #00F;
+}
+
+
+/* the main navigation bar is constructed from an UL and LI's */
+#navigation {
+  height: 40px;
+  background-color: #FFF;
+  padding-left: 210px;
+}
+#navigation ul {
+  list-style: none;
+  margin: 0px;
+  padding-left: 0px;
+  padding-top: 2px;
+}
+#navigation li {
+  margin: 0px;
+  font-size: 1.4em;
+  padding: 5px 20px 0px 0px;
+  float: left;
+}
+#navigation a:link,
+#navigation a:visited {
+  font-weight: bold;
+  text-decoration: none;
+  background-color: #FFF;
+  color: #000;
+}
+#navigation a:active,
+#navigation a:hover {
+  font-weight: bold;
+  text-decoration: none;
+  background-color: #00F;
+  color: #FFF;
+}
+#navigation a.current:link,
+#navigation a.current:visited {
+  color: #FFF;
+  background-color: #00F;
+}
+#navigation a.current:active,
+#navigation a.current:hover {
+  background-color: #F00;
+  color: #FFF;
+}
+
+#messages {
+  background-color: #FCC;
+  clear: both;
+}
+
+/* the menu is constructed with nested ULs and LIs 
+ * Difference between 'opened' and 'closed' sections
+ * and 'active' pages is determined via the class
+ * properties. The following classes are recognised
+ * for LIs:
+ * - page
+ * - section
+ * - activepage
+ * - activesection
+ * Furthermore, the current page uses class:
+ * - current
+ */
+#menu {
+  float: left;
+  min-height: 400px;
+  width: 200px;
+  background-color: #FFF;
+  font-size: 1.05em;
+}
+#menu #menutitle {
+  font-size: 1.1em;
+  font-weight: bold;
+  height: 30px;
+  padding-left: 25px;
+  padding-top: 10px;
+}
+#menu ul {
+  border: 0px #FF0 solid;
+  list-style: none;
+  padding-left: 25px;
+  line-height: 150%;
+}
+#menu li {
+  width: 100%;
+  border-top: 0px #707 dashed;
+}
+#menu li.page {
+  list-style-image: url(empty-11x11.png);
+}
+#menu li.section {
+  list-style-image: url(plus-11x11.png);
+}
+#menu li.activepage {
+  list-style-image: url(arrowr-11x11.png);
+}
+#menu li.activesection {
+  list-style-image: url(minus-11x11.png);
+}
+
+#menu a:link,
+#menu a:visited {
+  background-color: #FFF;
+  color: #000;
+  text-decoration: none;
+}
+#menu a:active,
+#menu a:hover {
+  color: #FFF; 
+  background-color: #F00;
+  text-decoration: none;
+}
+#menu a.current:link,
+#menu a.current:visited {
+  color: #FFF; 
+  background-color: #F00;
+}
+#menu a.current:active,
+#menu a.current:hover {
+  color: #FFF;
+  background-color: #00F;
+}
+
+
+#content {
+  min-width: 300px;
+  margin-left: 210px;
+  margin-right: 210px;
+  background-color: #EEE;
+  padding: 20px 20px 10px 30px;
+  font-size: 0.9em;
+  text-align: justify;
+  
+}
+#content h1 {
+  font-size: 2em;
+  font-weight: bold;
+  padding: 5px 0px 10px 0px;
+}
+
+
+#sidebar {
+  float: right;
+  width: 200px;
+  background-color: #FFF;
+  min-height: 300px;
+}
+#sidebar #sidebartitle {
+  font-size: 1.1em;
+  font-weight: bold;
+  text-align: center;
+  height: 30px;
+  padding-top: 10px;
+}
+#sidebar div.item {
+  border: 2px #000 solid;
+  background-color: #EEE;
+  min-height: 30px;
+  width: 168px;
+  margin-left: 10px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  padding: 5px;
+  font-size: 0.9em;
+}
+
+#sidebar div.item select {
+  width: 158px;
+}
+
+
+
+#footer {
+  clear: both;
+  background-color: #EEE;
+  width: 100%;
+  text-align: center;
+  font-size: 0.9em;
+}
+#quickbottom {
+  height: 40px;
+  background-color: #DDD;
+  text-align: center;
+  font-size: 0.95em;
+}
+#quickbottom a:link,
+#quickbottom a:visited {
+  text-decoration: none;
+  color: #000;
+  background-color: #DDD;
+}
+#quickbottom a:active,
+#quickbottom a:hover {
+  text-decoration: none;
+  font-weight: bold;
+  color: #FFF;
+  background-color: #33F;
+}
+
+#quickbottom a:active img,
+#quickbottom a:hover img {
+  background-color: #DDD;
+}
+
+#quickbottom a.current:link,
+#quickbottom a.current:visited {
+  text-decoration: underline;
+}
+
+
+#address {
+  display: none;
+}
+
+/* eof /program/styles/base.css */
