@@ -1,0 +1,11 @@
+World!
+
+/*
+ * @version $Id: world.txt,v 1.1 2011/02/01 09:21:31 pfokker Exp $
+ */
+
+This file contained an Id sandiched between two '$' as follows:
+
+#Id: foobar.php,v 1.2 2010/12/07 19:55:33 peter Exp #
+
+where the '$' was replaced by '#' to prevent expansion for this test.
