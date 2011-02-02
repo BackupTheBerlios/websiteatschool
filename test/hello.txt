@@ -1,3 +1,4 @@
-$Id: hello.txt,v 1.5 2011/02/02 16:08:12 pfokker Exp $
+$Id: hello.txt,v 1.6 2011/02/02 16:12:53 pfokker Exp $
 Hello again!
 We now send messages from CVS to the checkins mailinglist.
+(Or at least: I thought we did). Let's try again...
