@@ -1,5 +1,5 @@
 /program/README.txt
-$Id: README.txt,v 1.1 2011/02/01 13:00:08 pfokker Exp $
+$Id: README.txt,v 1.2 2011/02/03 14:04:02 pfokker Exp $
 
 This is the README for the Website@School Content Management System.
 
@@ -11,4 +11,6 @@ See FAQ.txt for answers to frequently asked questions.
 See CHANGES.txt for significant changes between revisions.
 See TODO.txt for a list of things that still need to be done.
 
-The homepage of the Website@School Project is http://websiteatschool.org.
+The homepage of the Website@School Project is at <http://websiteatschool.eu>.
+The project development site is hosted at BerliOS, see
+<http://developer.berlios.de/projects/websiteatschool>.

@@ -13,12 +13,12 @@
 # for more details.
 #
 # You should have received a copy of the License Agreement for Website@School
-# along with this program. If not, see http://websiteatschool.org/license.html
+# along with this program. If not, see http://websiteatschool.eu/license.html
 
 # langdiff.php -- quick and dirty diff between old and current English language files
 # Peter Fokker -- 2011-01-12
 #
-# $Id: langdiff.php,v 1.1 2011/02/01 13:01:04 pfokker Exp $
+# $Id: langdiff.php,v 1.2 2011/02/03 14:03:59 pfokker Exp $
 #
 # See also langdiff.sh
 #

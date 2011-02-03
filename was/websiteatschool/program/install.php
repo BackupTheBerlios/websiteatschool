@@ -13,7 +13,7 @@
 # for more details.
 #
 # You should have received a copy of the License Agreement for Website@School
-# along with this program. If not, see http://websiteatschool.org/license.html
+# along with this program. If not, see http://websiteatschool.eu/license.html
 
 /** /program/install.php - the main entrypoint for website installation
  *
@@ -25,9 +25,9 @@
  *
  * @author Peter Fokker <peter@berestijn.nl>
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
- * @license http://websiteatschool.org/license.html GNU AGPLv3+Additional Terms
+ * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasinstall
- * @version $Id: install.php,v 1.1 2011/02/01 13:00:04 pfokker Exp $
+ * @version $Id: install.php,v 1.2 2011/02/03 14:04:02 pfokker Exp $
  * @todo how prevent third party-access to install.php after initial install? .htaccess? !exists(../config.php)? 
  * @todo we should make sure that autosession is disabled in php.ini, otherwise was won't work
  * @todo we should make sure that register globals is off
@@ -39,19 +39,19 @@ define('WASENTRY',__FILE__);
 $WAS_SCRIPT_NAME = $GLOBALS['SCRIPT_NAME'];
 global $DB;
 
-define('INSTALL_DIALOG_LANGUAGE',         0);
-define('INSTALL_DIALOG_INSTALLTYPE',      1);
-define('INSTALL_DIALOG_LICENSE',          2);
-define('INSTALL_DIALOG_DATABASE',         3);
-define('INSTALL_DIALOG_CMS',              4);
-define('INSTALL_DIALOG_USER',             5);
-define('INSTALL_DIALOG_COMPATIBILITY',    6);
-define('INSTALL_DIALOG_CONFIRM',          7);
-define('INSTALL_DIALOG_FINISH',           8);
-define('INSTALL_DIALOG_DONE',             9);
-define('INSTALL_DIALOG_DOWNLOAD',        10);
-define('INSTALL_DIALOG_CANCELLED',       11);
-define('PROJECT_SITE','websiteatschool.org');
+define('INSTALL_DIALOG_LANGUAGE',        0);
+define('INSTALL_DIALOG_INSTALLTYPE',     1);
+define('INSTALL_DIALOG_LICENSE',         2);
+define('INSTALL_DIALOG_DATABASE',        3);
+define('INSTALL_DIALOG_CMS',             4);
+define('INSTALL_DIALOG_USER',            5);
+define('INSTALL_DIALOG_COMPATIBILITY',   6);
+define('INSTALL_DIALOG_CONFIRM',         7);
+define('INSTALL_DIALOG_FINISH',          8);
+define('INSTALL_DIALOG_DONE',            9);
+define('INSTALL_DIALOG_DOWNLOAD',       10);
+define('INSTALL_DIALOG_CANCELLED',      11);
+define('PROJECT_SITE','websiteatschool.eu');
 
 session_name('WASINSTALL');
 session_start();
@@ -146,7 +146,7 @@ class InstallWizard {
         } elseif (isset($_POST['button_cancel'])) {
             $dialog = INSTALL_DIALOG_CANCELLED;
         } elseif (($error = $this->fetch_license($this->license)) != 0) {
-            $params = array('{ERROR}' => $error, '{EMAIL}' => 'errors@websiteatschool.org');
+            $params = array('{ERROR}' => $error, '{EMAIL}' => 'errors@websiteatschool.eu');
             $this->messages[] = $this->t('error_fatal',$params);
             $dialog = INSTALL_DIALOG_CANCELLED;
         } elseif (isset($_POST['dialog'])) {
@@ -2763,13 +2763,13 @@ class InstallWizard {
         }
         $license = substr($license_html,$n1,$length);
         $md5sum = md5(str_replace(array("\r","\n","\t"," "),'',strip_tags($license)));
-        if (strtolower($md5sum) != '49d0c7a462f4053087415ea8f90a40cf') {
+        if (strtolower($md5sum) != '93f38293a20ee4baa2527b1c45206221') {
             return 23;
         }
         if (($md5sum = md5_file('graphics/waslogo-567x142.png')) === FALSE) {
             return 29;
         }
-        if (strtolower($md5sum) != 'c353849317767e6268df5f8e66b96c7e') {
+        if (strtolower($md5sum) != '8cc5080b838341dbf274724ee937e755') {
             return 31;
         }
         return 0;

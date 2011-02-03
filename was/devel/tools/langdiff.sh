@@ -13,13 +13,13 @@
 # for more details.
 #
 # You should have received a copy of the License Agreement for Website@School
-# along with this program. If not, see http://websiteatschool.org/license.html
+# along with this program. If not, see http://websiteatschool.eu/license.html
 
 # langdiff.sh -- tool to generate a list of new or modified English translations
 #
 # Peter Fokker -- 2011-01-12
 #
-# $Id: langdiff.sh,v 1.1 2011/02/01 13:01:04 pfokker Exp $
+# $Id: langdiff.sh,v 1.2 2011/02/03 14:03:59 pfokker Exp $
 #
 # This script performs the following actions.
 # - the Website@Schoolversion of date "$1 23:59" is extracted from cvs

@@ -13,7 +13,7 @@
 # for more details.
 #
 # You should have received a copy of the License Agreement for Website@School
-# along with this program. If not, see http://websiteatschool.org/license.html
+# along with this program. If not, see http://websiteatschool.eu/license.html
 
 /** 'version.php' defines internal and external version numbers
  *
@@ -55,9 +55,9 @@
  *
  * @author Peter Fokker <peter@berestijn.nl>
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
- * @license http://websiteatschool.org/license.html GNU AGPLv3+Additional Terms
+ * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: version.php,v 1.2 2011/02/01 14:34:34 pfokker Exp $
+ * @version $Id: version.php,v 1.3 2011/02/03 14:04:02 pfokker Exp $
  */
 
 

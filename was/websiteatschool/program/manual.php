@@ -13,7 +13,7 @@
 # for more details.
 #
 # You should have received a copy of the License Agreement for Website@School
-# along with this program. If not, see http://websiteatschool.org/license.html
+# along with this program. If not, see http://websiteatschool.eu/license.html
 
 /** /program/manual.php - a kickstarter for the documentation
  *
@@ -25,9 +25,9 @@
  *
  * @author Peter Fokker <peter@berestijn.nl>
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
- * @license http://websiteatschool.org/license.html GNU AGPLv3+Additional Terms
+ * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: manual.php,v 1.1 2011/02/01 13:00:01 pfokker Exp $
+ * @version $Id: manual.php,v 1.2 2011/02/03 14:04:02 pfokker Exp $
  * @todo guess what? we need to replace this stub with real documentation
  * @todo How about adding an extra parameter to manual.php in order to 'deep link' into the manual?
  */

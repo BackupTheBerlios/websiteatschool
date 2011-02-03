@@ -13,7 +13,7 @@
 # for more details.
 #
 # You should have received a copy of the License Agreement for Website@School
-# along with this program. If not, see http://websiteatschool.org/license.html
+# along with this program. If not, see http://websiteatschool.eu/license.html
 
 /** /program/modules/htmlpage/htmlpage_search.php - interface to the search-part of the htmlpage module
  *
@@ -28,9 +28,9 @@
  *
  * @author Peter Fokker <peter@berestijn.nl>
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
- * @license http://websiteatschool.org/license.html GNU AGPLv3+Additional Terms
+ * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_htmlpage
- * @version $Id: htmlpage_search.php,v 1.1 2011/02/01 13:01:35 pfokker Exp $
+ * @version $Id: htmlpage_search.php,v 1.2 2011/02/03 14:04:00 pfokker Exp $
  * @todo change this stub into a real search function, with limits on the
  *       number of results, an offset where to start and perhaps even a time limit.
  *       for now this always returns an empty array

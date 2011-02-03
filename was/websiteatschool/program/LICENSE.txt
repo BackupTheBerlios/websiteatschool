@@ -1,11 +1,11 @@
 /program/LICENSE.txt
 
-$Id: LICENSE.txt,v 1.1 2011/02/01 13:00:08 pfokker Exp $
+$Id: LICENSE.txt,v 1.2 2011/02/03 14:04:01 pfokker Exp $
 
 The 'LICENSE AGREEMENT for Website@School' 
 can be found in the file 'license.html' 
 in the program directory or on-line at
-http://websiteatschool.org/license.html
+<http://websiteatschool.eu/license.html>.
 
 The necessary 'Appropriate Legal Notices' 
 can be found in the file 'about.html'

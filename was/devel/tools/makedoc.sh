@@ -13,12 +13,12 @@
 # for more details.
 #
 # You should have received a copy of the License Agreement for Website@School
-# along with this program. If not, see http://websiteatschool.org/license.html
+# along with this program. If not, see http://websiteatschool.eu/license.html
 
 # makedoc.sh -- quick and dirty generator of documentation (without metafiles README/INSTALL/CHANGES)
 # Peter Fokker -- 2008-01-31
 #
-# $Id: makedoc.sh,v 1.1 2011/02/01 13:01:04 pfokker Exp $
+# $Id: makedoc.sh,v 1.2 2011/02/03 14:03:59 pfokker Exp $
 
 # Use an explicit path if phpdoc cannot be found via your $PATH
 PHPDOC="phpdoc"

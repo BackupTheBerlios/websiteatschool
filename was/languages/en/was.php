@@ -13,15 +13,15 @@
 # for more details.
 #
 # You should have received a copy of the License Agreement for Website@School
-# along with this program. If not, see http://websiteatschool.org/license.html
+# along with this program. If not, see http://websiteatschool.eu/license.html
 
 /** /program/languages/en/was.php - generic translated messages 
  *
  * @author Peter Fokker <peter@berestijn.nl>
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
- * @license http://websiteatschool.org/license.html GNU AGPLv3+Additional Terms
+ * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: was.php,v 1.1 2011/02/01 12:59:54 pfokker Exp $
+ * @version $Id: was.php,v 1.2 2011/02/03 14:03:59 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 

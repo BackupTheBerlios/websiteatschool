@@ -13,7 +13,7 @@
 # for more details.
 #
 # You should have received a copy of the License Agreement for Website@School
-# along with this program. If not, see http://websiteatschool.org/license.html
+# along with this program. If not, see http://websiteatschool.eu/license.html
 
 /** /program/modules/htmlpage/htmlpage.class.php - module for plain HTML-pages
  *
@@ -22,9 +22,9 @@
  *
  * @author Peter Fokker <peter@berestijn.nl>
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
- * @license http://websiteatschool.org/license.html GNU AGPLv3+Additional Terms
+ * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_htmlpage
- * @version $Id: htmlpage.class.php,v 1.1 2011/02/01 13:01:35 pfokker Exp $
+ * @version $Id: htmlpage.class.php,v 1.2 2011/02/03 14:04:00 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 

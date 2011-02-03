@@ -13,7 +13,7 @@
 # for more details.
 #
 # You should have received a copy of the License Agreement for Website@School
-# along with this program. If not, see http://websiteatschool.org/license.html
+# along with this program. If not, see http://websiteatschool.eu/license.html
 
 /** /program/main_admin.php - workhorse for site maintenance
  *
@@ -24,9 +24,9 @@
  *
  * @author Peter Fokker <peter@berestijn.nl>
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
- * @license http://websiteatschool.org/license.html GNU AGPLv3+Additional Terms
+ * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: main_admin.php,v 1.1 2011/02/01 13:00:08 pfokker Exp $
+ * @version $Id: main_admin.php,v 1.2 2011/02/03 14:04:02 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -343,7 +343,7 @@ function job_start(&$output) {
 
     // Please send us mail
     $title = t('click_to_send_mail_to_us','admin');
-    $email_address = 'online@websiteatschool.org';
+    $email_address = 'online@websiteatschool.eu';
     $img = html_img($CFG->progwww_short.'/graphics/e-mail2.gif',
                     array('title'=>$title,'alt'=> t('icon_sendmail','admin')));
     $a_tag = html_a('mailto:'.$email_address,NULL,array('title' => $title),$img);
@@ -520,7 +520,7 @@ function get_versioncheck_url() {
     global $CFG;
     static $url = NULL;
     if ($url === NULL) {
-        $url = sprintf('http://websiteatschool.org/version/?release=%s&amp;date=%s&amp;version=%s&amp;check=%s',
+        $url = sprintf('http://websiteatschool.eu/version/?release=%s&amp;date=%s&amp;version=%s&amp;check=%s',
                 rawurlencode(WAS_RELEASE), rawurlencode(WAS_RELEASE_DATE), rawurlencode(WAS_VERSION),
                 (WAS_ORIGINAL) ? '1' : '0');
     }

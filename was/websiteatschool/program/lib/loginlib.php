@@ -13,7 +13,7 @@
 # for more details.
 #
 # You should have received a copy of the License Agreement for Website@School
-# along with this program. If not, see http://websiteatschool.org/license.html
+# along with this program. If not, see http://websiteatschool.eu/license.html
 
 /** /program/lib/loginlib.php -- functions to handle user login/logout
  *
@@ -98,9 +98,9 @@
  *
  * @author Peter Fokker <peter@berestijn.nl>
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
- * @license http://websiteatschool.org/license.html GNU AGPLv3+Additional Terms
+ * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: loginlib.php,v 1.1 2011/02/01 13:00:48 pfokker Exp $
+ * @version $Id: loginlib.php,v 1.2 2011/02/03 14:04:04 pfokker Exp $
  * @todo should we suppress the usernamd in the laissez-passer routine? We _do_ leak the
  *       the username in an insecure email message. This does require making the
  *       laissez-passer code unique in the database (currently only username+code

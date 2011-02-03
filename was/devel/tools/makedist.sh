@@ -13,13 +13,13 @@
 # for more details.
 #
 # You should have received a copy of the License Agreement for Website@School
-# along with this program. If not, see http://websiteatschool.org/license.html
+# along with this program. If not, see http://websiteatschool.eu/license.html
 
 # makedist.sh -- tool to generate Website@School distribution files
 #
 # Peter Fokker -- 2008-01-31
 #
-# $Id: makedist.sh,v 1.1 2011/02/01 13:01:04 pfokker Exp $
+# $Id: makedist.sh,v 1.2 2011/02/03 14:03:59 pfokker Exp $
 #
 # Usage:
 #
