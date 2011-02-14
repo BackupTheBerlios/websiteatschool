@@ -18,12 +18,14 @@
 # langdiff.php -- quick and dirty diff between old and current English language files
 # Peter Fokker -- 2011-01-12
 #
-# $Id: langdiff.php,v 1.2 2011/02/03 14:03:59 pfokker Exp $
+# $Id: langdiff.php,v 1.3 2011/02/14 11:08:36 pfokker Exp $
 #
 # See also langdiff.sh
 #
 # Usage: langdiff.php /path/to/old /path/to/new old_release new_release
 #
+# 2011-02-14/PF
+# We can now do the diff between either a cvs-version or an (official) distribution version.
 
 /** Valid entry points define WASENTRY; prevents direct access to include()'s. */
 define('WASENTRY',__FILE__);
@@ -36,27 +38,54 @@ $Newrelease = $_SERVER['argv'][4];
 # Handcrafted list of translations
 #
 $Files = array(
-    'was' => 'languages/en/was.php',
-    'loginlib'  => 'languages/en/loginlib.php',
-    'admin' =>'languages/en/admin.php',
-    'm_htmlpage' => 'modules/htmlpage/languages/en/htmlpage.php',
-    't_frugal' => 'themes/frugal/languages/en/frugal.php',
-    'i_install' => 'websiteatschool/program/install/languages/en/install.php',
-    'i_demodata' => 'websiteatschool/program/install/languages/en/demodata.php'
+    'was' => array(
+        'cvs'    =>         'languages/en/was.php',
+        'dist'   => 'program/languages/en/was.php'
+        ),
+    'loginlib'   => array(
+        'cvs'    =>         'languages/en/loginlib.php',
+        'dist'   => 'program/languages/en/loginlib.php'
+        ),
+    'admin'      => array(
+        'cvs'    =>         'languages/en/admin.php',
+        'dist'   => 'program/languages/en/admin.php'
+        ),
+    'm_htmlpage' => array(
+        'cvs'    =>         'modules/htmlpage/languages/en/htmlpage.php',
+        'dist'   => 'program/modules/htmlpage/languages/en/htmlpage.php'
+        ),
+    't_frugal'   => array(
+        'cvs'    =>         'themes/frugal/languages/en/frugal.php',
+        'dist'   => 'program/themes/frugal/languages/en/frugal.php'
+        ),
+    'i_install'  => array(
+        'cvs'    => 'websiteatschool/program/install/languages/en/install.php',
+        'dist'   =>                 'program/install/languages/en/install.php'
+        ),
+    'i_demodata' => array(
+        'cvs'    => 'websiteatschool/program/install/languages/en/demodata.php',
+        'dist'   =>                 'program/install/languages/en/demodata.php'
+        )
     );
 
 # Read all language files
 #
 $Old = array();
 $New = array();
-foreach($Files as $key => $filename) {
+foreach($Files as $key => $filenames) {
     $string = array();
-    include $Newpath.'/'.$filename;
+    if (file_exists($Newpath.'/'.$filenames['cvs'])) {
+        include $Newpath.'/'.$filenames['cvs'];
+    } elseif (file_exists($Newpath.'/'.$filenames['dist'])) {
+        include $Newpath.'/'.$filenames['dist'];
+    }
     $New[$key] = $string;
 
     $string = array();
-    if (file_exists($Oldpath.'/'.$filename)) {
-        include $Oldpath.'/'.$filename;
+    if (file_exists($Oldpath.'/'.$filenames['cvs'])) {
+        include $Oldpath.'/'.$filenames['cvs'];
+    } elseif (file_exists($Oldpath.'/'.$filenames['dist'])) {
+        include $Oldpath.'/'.$filenames['dist'];
     }
     $Old[$key] = $string;
 }
