@@ -27,7 +27,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: manual.php,v 1.2 2011/02/03 14:04:02 pfokker Exp $
+ * @version $Id: manual.php,v 1.3 2011/02/18 14:53:15 pfokker Exp $
  * @todo guess what? we need to replace this stub with real documentation
  * @todo How about adding an extra parameter to manual.php in order to 'deep link' into the manual?
  */
@@ -60,7 +60,7 @@ $topics = array('toc'                  => 'index.html',
                 'accountmanager'       => 'accountmanager.html',
                 'areamanager'          => 'areamanager.html',
                 'groupmanager'         => 'groupmanager.html',
-                'configurationmanager' => 'configmanager.html',
+                'configurationmanager' => 'configurationmanager.html',
                 'pagemanager'          => 'pagemanager.html',
                 'filemanager'          => 'filemanager.html',
                 'usermanager'          => 'usermanager.html',

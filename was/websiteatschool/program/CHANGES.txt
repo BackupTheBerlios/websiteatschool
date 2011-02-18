@@ -1,5 +1,8 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.3 2011/02/03 14:04:01 pfokker Exp $
+$Id: CHANGES.txt,v 1.4 2011/02/18 14:53:15 pfokker Exp $
+
+2011-02-18
+- bugfix: typo in /program/manual.php
 
 2011-02-03
 - the new Project Home Page is now at http://websiteatschool.eu;
