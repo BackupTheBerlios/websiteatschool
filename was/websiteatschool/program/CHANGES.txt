@@ -1,5 +1,8 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.4 2011/02/18 14:53:15 pfokker Exp $
+$Id: CHANGES.txt,v 1.5 2011/02/21 15:30:10 pfokker Exp $
+
+2011-02-21
+- updated version of manual.php
 
 2011-02-18
 - bugfix: typo in /program/manual.php
