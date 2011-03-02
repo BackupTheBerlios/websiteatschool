@@ -37,7 +37,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: admin.php,v 1.2 2011/02/03 14:03:59 pfokker Exp $
+ * @version $Id: admin.php,v 1.3 2011/03/02 15:35:01 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1203,14 +1203,17 @@ $string['logview_message'] = 'Message';
 
 $comment['update_header'] = 'Here are the prompts dealing with the automatic update routine(s)';
 $string['update_header'] = 'Update Manager';
-$string['update_intro'] = 'This is the update manager. Below is an overview of the current internal en external versions of the core system and the various subsystems. If there is a discrepancy between the two versions, you can perform the update by following the link \'[Update]\' in the last column.';
-$string['update_subsystem'] = 'Subsystem';
+$string['update_intro'] = 'This is the update manager. Below is an overview of the current internal en external versions of the core system and the various subsystems. If there is a discrepancy between the two versions, you can perform the update by following the link \'[Update]\' or perform the installation of the subsystem by following the link \'[Install]\' in the last column';
 $string['update_version_database'] = 'Internal version';
 $string['update_version_manifest'] = 'External version';
 $string['update_status'] = 'Status';
 $string['update_core'] = 'core';
 $string['update_core_success'] = 'Success updating core system to version {VERSION}';
 $string['update_core_error'] = 'Error updating core system to version {VERSION}';
+$string['update_core_warnning_core_goes_first'] = 'Warning: the core system must be updated first';
+$string['update_subsystem_languages'] = 'Languages';
+$string['update_subsystem_language_success'] = 'Success updating language {LANGUAGE}';
+$string['update_subsystem_language_error'] = 'Error updating language {LANGUAGE}';
 $string['update_subsystem_modules'] = 'Modules';
 $string['update_subsystem_module_success'] = 'Success updating module {MODULE}';
 $string['update_subsystem_module_error'] = 'Error updating module {MODULE}';
@@ -1218,7 +1221,10 @@ $string['update_subsystem_themes'] = 'Themes';
 $string['update_subsystem_theme_success'] = 'Success updating theme {THEME}';
 $string['update_subsystem_theme_error'] = 'Error updating theme {THEME}';
 $string['update_status_ok'] = 'OK';
+$string['update_status_error'] = 'ERROR';
 $string['update_status_update'] = 'Update';
+$string['update_status_install'] = 'Install';
 $string['update_version_database_too_old'] = 'The internal version {VERSION} is too old; you have to re-install and/or upgrade manually.';
+
 
 ?>

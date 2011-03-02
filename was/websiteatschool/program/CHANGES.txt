@@ -1,5 +1,10 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.5 2011/02/21 15:30:10 pfokker Exp $
+$Id: CHANGES.txt,v 1.6 2011/03/02 15:35:02 pfokker Exp $
+
+2011-03-02
+- streamlined the update status overview in updatelib.php
+- added code to update and install additional language packs
+  in updatelib.php.
 
 2011-02-21
 - updated version of manual.php

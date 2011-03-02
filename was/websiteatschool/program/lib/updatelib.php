@@ -54,17 +54,24 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: updatelib.php,v 1.3 2011/02/03 14:04:04 pfokker Exp $
+ * @version $Id: updatelib.php,v 1.4 2011/03/02 15:35:02 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
 
 /* This is the list of recognised update tasks */
 
-define('TASK_UPDATE_OVERVIEW','overview');
-define('TASK_UPDATE_CORE','core');
-define('TASK_UPDATE_MODULE','module');
-define('TASK_UPDATE_THEME','theme');
+define('TASK_UPDATE_OVERVIEW', 'overview'        );
+define('TASK_UPDATE_CORE',     'core'            );
+
+define('TASK_INSTALL_LANGUAGE','install_language');
+define('TASK_UPDATE_LANGUAGE', 'update_language' );
+
+define('TASK_INSTALL_MODULE',  'install_module'  );
+define('TASK_UPDATE_MODULE',   'update_module'   );
+
+define('TASK_INSTALL_THEME',   'install_theme'   );
+define('TASK_UPDATE_THEME',    'update_theme'    );
 
 
 /** main entry point for update wizard (called from /program/main_admin.php)
@@ -88,6 +95,9 @@ define('TASK_UPDATE_THEME','theme');
  * core program are actually performed from this file right here, see
  * {@link update_core_2010120800()} below for an example.
  *
+ * Note that we give a core update high priority: if the core
+ * is not up to date, nothing will work, except updating the core.
+ *
  * @param object &$output collects the html output
  * @return void results are returned as output in $output
  */
@@ -95,39 +105,60 @@ function job_update(&$output) {
     global $CFG,$WAS_SCRIPT_NAME,$USER;
     $output->set_helptopic('update');
     $task = get_parameter_string('task',TASK_UPDATE_OVERVIEW);
-    switch($task) {
-    case TASK_UPDATE_OVERVIEW:
-        show_update_overview($output);
-        break;
 
-    case TASK_UPDATE_CORE:
+    if ($task == TASK_UPDATE_OVERVIEW) {
+        update_show_overview($output);
+    } elseif ($task == TASK_UPDATE_CORE) {
         update_core($output);
-        show_update_overview($output);
-        break;
+        update_show_overview($output);
+    } elseif (intval($CFG->version) != intval(WAS_VERSION)) {
+        $output->add_message(t('update_core_warnning_core_goes_first','admin'));
+        update_show_overview($output);
+    } else {
+        $key = get_parameter_string('key','');
+        switch($task) {
+        case TASK_INSTALL_LANGUAGE:
+            install_language($output,$key);
+            update_show_overview($output);
+            break;
 
-    case TASK_UPDATE_MODULE:
-        $module_id = get_parameter_int('id',0);
-        update_module($output,$module_id);
-        show_update_overview($output);
-        break;
+        case TASK_UPDATE_LANGUAGE:
+            update_language($output,$key);
+            update_show_overview($output);
+            break;
 
-    case TASK_UPDATE_THEME:
-        $theme_id = get_parameter_int('id',0);
-        update_theme($output,$theme_id);
-        show_update_overview($output);
-        break;
+        case TASK_INSTALL_MODULE:
+            install_module($output,$key);
+            update_show_overview($output);
+            break;
 
-    default:
-        if (strlen($task) > 50) {
-            $s = substr($task,0,44).' (...)';
-        } else {
-            $s = $task;
+        case TASK_UPDATE_MODULE:
+            update_module($output,$key);
+            update_show_overview($output);
+            break;
+
+        case TASK_INSTALL_THEME:
+            install_theme($output,$key);
+            update_show_overview($output);
+            break;
+
+        case TASK_UPDATE_THEME:
+            update_theme($output,$key);
+            update_show_overview($output);
+            break;
+
+        default:
+            if (strlen($task) > 50) {
+                $s = substr($task,0,44).' (...)';
+            } else {
+                $s = $task;
+            }
+            $message = t('task_unknown','admin',array('{TASK}' => htmlspecialchars($s)));
+            $output->add_message($message);
+            logger('tools: unknown task: '.htmlspecialchars($s));
+            update_show_overview($output);
+            break;
         }
-        $message = t('task_unknown','admin',array('{TASK}' => htmlspecialchars($s)));
-        $output->add_message($message);
-        logger('tools: unknown task: '.htmlspecialchars($s));
-        show_update_overview($output);
-        break;
     }
 } // job_update()
 
@@ -137,26 +168,16 @@ function job_update(&$output) {
  * @param object &$output collects the html output
  * @return void results are returned as output in $output
  */
-function show_update_overview(&$output) {
+function update_show_overview(&$output) {
     global $CFG;
 
     // 0 -- title and introduction
     $output->add_content('<h2>'.t('update_header','admin').'</h2>');
     $output->add_content(t('update_intro','admin'));
 
-    // 1 -- make a start with 4-col HTML-table with status overview
-    $class = 'header';
-    $output->add_content('<p>');
-    $output->add_content(html_table());
-    $output->add_content('  '.html_table_row(array('class' => $class)));
-    $output->add_content('    '.html_table_head(NULL,t('update_subsystem','admin')));
-    $output->add_content('    '.html_table_head(NULL,t('update_version_database','admin')));
-    $output->add_content('    '.html_table_head(NULL,t('update_version_manifest','admin')));
-    $output->add_content('    '.html_table_head(NULL,t('update_status','admin')));
-    $output->add_content('  '.html_table_row_close());
-
-    // 2 -- core status
-    $class = ($class == 'odd') ? 'even' : 'odd';
+    // 1 -- show core status in an HTML-table
+    update_status_table_open($output);
+    $class = 'odd';
     $attributes = array('class' => $class);
     $output->add_content('  '.html_table_row($attributes));
     $output->add_content('    '.html_table_cell($attributes,t('update_core','admin')));
@@ -165,121 +186,257 @@ function show_update_overview(&$output) {
     if (intval($CFG->version) == intval(WAS_VERSION)) {
         $output->add_content('    '.html_table_cell($attributes,t('update_status_ok','admin')));
     } else {
-        $output->add_content('    '.html_table_cell($attributes,update_status_update(TASK_UPDATE_CORE)));
+        $output->add_content('    '.html_table_cell($attributes,update_status_anchor(TASK_UPDATE_CORE)));
     }
     $output->add_content('  '.html_table_row_close());
+    update_status_table_close($output);
 
-    // 3 -- subsystem status
+    // 2 -- subsystem status
     $subsystems = array(
+        'languages'    => array(
+            'table'    => 'languages',
+            'fields'   => array('language_key','version'),
+            'keyfield' => 'language_key',
+            'path'     => $CFG->progdir.'/languages',
+            'install'  => TASK_INSTALL_LANGUAGE,
+            'update'   => TASK_UPDATE_LANGUAGE
+            ),
         'modules' => array(
-            'table' => 'modules',
-            'fields' => array('module_id','name','version'),
-            'keyfield' => 'module_id',
-            'path' => $CFG->progdir.'/modules',
-            'task' => TASK_UPDATE_MODULE),
+            'table'    => 'modules',
+            'fields'   => array('name','version'),
+            'keyfield' => 'name',
+            'path'     => $CFG->progdir.'/modules',
+            'install'  => TASK_INSTALL_MODULE,
+            'update'   => TASK_UPDATE_MODULE
+            ),
         'themes' => array(
-            'table' => 'themes',
-            'fields' => array('theme_id','name','version'),
-            'keyfield' => 'theme_id',
-            'path' => $CFG->progdir.'/themes',
-            'task' => TASK_UPDATE_THEME)
+            'table'    => 'themes',
+            'fields'   => array('name','version'),
+            'keyfield' => 'name',
+            'path'     => $CFG->progdir.'/themes',
+            'install'  => TASK_INSTALL_THEME,
+            'update'   => TASK_UPDATE_THEME
+            ),
         );
     foreach($subsystems as $subsystem => $data) {
-        //
-        // 3A -- subheader spread over all columns
-        $class = ($class == 'odd') ? 'even' : 'odd';
-        $attributes = array('class' => $class);
-        $output->add_content('  '.html_table_row(array('class' => 'header')));
-        $attributes['colspan'] = '4';
-        $output->add_content('    '.html_table_head($attributes,t('update_subsystem_'.$subsystem,'admin')));
-        $output->add_content('  '.html_table_row_close());
-        //
-        // 3B -- iterate through all installed modules, themes, etc.
+
+        // 2A -- retrieve all manifests (including un-installed subsystems)
+        $manifests = get_manifests($data['path']);
+
+        // 2B -- retrieve all installed subsystems by consulting the database
         $where = '';
         $order = $data['keyfield'];
         $records = db_select_all_records($data['table'],$data['fields'],$where,$order,$data['keyfield']);
         if ($records === FALSE) {
-            logger(sprintf('%s(): error retrieving subsystems \'%s\': %s',__FUNCTION__,$subsystem,db_errormessage()));
-            continue;
+            logger(sprintf('%s(): error retrieving subsystems \'%s\'; continuing nevertheless: %s',
+                            __FUNCTION__,$subsystem,db_errormessage()));
+            $records = array(); 
         }
-        foreach($records as $id => $record) {
-            $name = $record['name'];
-            $version_database = $record['version'];
-            $manifests = array();
-            $item_manifest = sprintf('%s/%s/%s_manifest.php',$data['path'],$name,$name);
-            if (is_file($item_manifest)) {
-                @include($item_manifest);
+
+        // 2C -- open an HTML-table for status overview
+        $title = t('update_subsystem_'.$subsystem,'admin');
+        update_status_table_open($output,$title);
+        $class = 'even';
+
+        // 2D -- step through all available manifests and show diff's (if any)
+        foreach($manifests as $key => $manifest) {
+            $version_manifest = (isset($manifest['version'])) ? $manifest['version'] : NULL;
+            $version_database = (isset($records[$key]['version'])) ? $records[$key]['version'] : NULL;
+            /*
+             * At this point there are several possibilities for version_manifest (M) and version_database (D)
+             * - both M and D are integers AND M == D: subsystem is up to date: show 'OK'
+             * - both M and D are integers AND M > D: subsystem upgrade required: show 'Update' link
+             * - both M and D are integers AND M < D: huh, subsystem downgrade?: show 'ERROR'
+             * - M is an integer and D is NULL: subsystem apparently not yet installed: show 'Install' link
+             * - M is NULL (and D is don't care): not a valid manifest, skip (but log) this one
+             */
+            if (is_null($version_manifest)) {
+                logger(sprintf('%s(): subsystem \'%s/%s\' has no internal version; skipping this manifest',
+                                __FUNCTION__,$subsystem,$key));
+                continue;
+            } elseif (is_null($version_database)) {
+                $version_database = '-';
+                $status = update_status_anchor($data['install'],$key,t('update_status_install','admin'));
+            } elseif (intval($version_manifest) == intval($version_database)) {
+                $status = t('update_status_ok','admin');
+            } elseif (intval($version_manifest) > intval($version_database)) {
+                $status = update_status_anchor($data['update'],$key,t('update_status_update','admin'));
+            } else {
+                $status = t('update_status_error','admin');
+                logger(sprintf('%s(): weird: \'%s/%s\' database version (%d) is greater than manifest version (%d)?',
+                               __FUNCTION__,$subsystem,$key,intval($version_database),intval($version_manifest)));
             }
-            $version_manifest = (isset($manifests[$name]['version'])) ? $manifests[$name]['version'] : 0;
             $class = ($class == 'odd') ? 'even' : 'odd';
             $attributes = array('class' => $class);
             $output->add_content('  '.html_table_row($attributes));
-            $output->add_content('    '.html_table_cell($attributes,htmlspecialchars($name)));
+            $output->add_content('    '.html_table_cell($attributes,htmlspecialchars($key)));
             $output->add_content('    '.html_table_cell($attributes,htmlspecialchars($version_database)));
             $output->add_content('    '.html_table_cell($attributes,htmlspecialchars($version_manifest)));
-            if (intval($version_database) == intval($version_manifest)) {
-                $output->add_content('    '.html_table_cell($attributes,t('update_status_ok','admin')));
-            } else {
-                $output->add_content('    '.html_table_cell($attributes,update_status_update($data['task'],$id)));
-            }
+            $output->add_content('    '.html_table_cell($attributes,$status));
             $output->add_content('  '.html_table_row_close());
         }
+
+        // 2E -- now check for orphans (database records without matching manifest)
+        foreach($records as $key => $record) {
+            if (isset($manifests[$key])) { // already dealt with in the foreach loop over all manifests
+                continue;
+            }
+            // this should NOT happen!
+            $version_database = (isset($record['version'])) ? $record['version'] : 'NULL';
+            $status = t('update_status_error','admin');
+            $class = ($class == 'odd') ? 'even' : 'odd';
+            $attributes = array('class' => $class);
+            $output->add_content('  '.html_table_row($attributes));
+            $output->add_content('    '.html_table_cell($attributes,htmlspecialchars($key)));
+            $output->add_content('    '.html_table_cell($attributes,htmlspecialchars($version_database)));
+            $output->add_content('    '.html_table_cell($attributes,'?'));
+            $output->add_content('    '.html_table_cell($attributes,$status));
+            $output->add_content('  '.html_table_row_close());
+            logger(sprintf('%s(): weird: \'%s/%s\' database version (%s) exists without corresponding manifest?',
+                           __FUNCTION__,$subsystem,$key,strval($version_database)));
+        }
+        update_status_table_close($output);
     }
-    $output->add_content(html_table_close());
-} // show_update_overview()
+} // update_show_overview()
 
 
-/** return an anchor tag with link to the specific update function
+/** install an additional language pack
  *
- * This utility routine returns a ready to user HTML anchor tag.
+ * this routine attempts to insert the information from the
+ * manifest of language $language_key into the database.
+ * The routine displays the result (error or success) in a
+ * message in $output. Details can be found in the logs.
  *
- * @param string $task which update task do we need to do?
- * @param int|null $id which module/theme/etc. (NULL for core)
- * @return array ready to use HTML-code
- */
-function update_status_update($task=NULL,$id=NULL) {
-    global $WAS_SCRIPT_NAME;
-    $parameters = array('job' => JOB_UPDATE);
-    if (!is_null($task)) {
-        $parameters['task'] = $task;
-    }
-    if (!is_null($id)) {
-        $parameters['id'] = strval($id);
-    }
-    return html_a($WAS_SCRIPT_NAME,$parameters,NULL,t('update_status_update','admin'));
-} // update_status_update()
-
-
-/** record the specified version number in the config table AND in $CFG->version
+ * The language_key is validated by reading all existing manifests.
+ * This is quite expensive, but that is not important because we
+ * do not use this routine very often anyway.
  *
- * This utility routine records the new version number in the config table
- * and also adjusts the version number already in core (in $CFG->version).
+ * Note that we assume that the actual translations of the
+ * language pack are already unpacked into the correct directories.
+ * The corresponding manifest should exist in the directory
+ * /program/languages/$language_key.
  *
  * @param object &$output collects the html output
- * @param int $version the new version number to store in config table
- * @return bool TRUE on success, FALSE otherwise
- */ 
-function update_core_version(&$output,$version) {
+ * @param string $lanuage_key primary key for language record in database AND name of the /program/languages subdirectory
+ * @return void results are returned as output in $output
+ */
+function install_language(&$output,$language_key) {
     global $CFG;
-    $table = 'config';
-    $fields = array('value' => intval($version));
-    $where = array('name' => 'version');
-    if (($retval = db_update($table,$fields,$where)) === FALSE) {
-        $output->add_message(t('update_core_error','admin',array('{VERSION}' => strval($version))));
-        logger(sprintf('%s(): core upgrade to version %s failed: %s',__FUNCTION__,strval($version),db_errormessage()));
+    $retval = TRUE; // assume success
+    $language_key = strval($language_key);
+    $progdir_languages = $CFG->progdir.'/languages';
+    $datadir_languages = $CFG->datadir.'/languages';
+    $manifests = get_manifests($progdir_languages);
+    $params = array('{LANGUAGE}' => $language_key);
+    if (!isset($manifests[$language_key])) {
+        logger(sprintf('%s(): manifest for language \'%s\' not found; nothing installed',__FUNCTION__,$language_key));
+        $retval = FALSE;
     } else {
-        $CFG->version = $version;
-        $output->add_message(t('update_core_success','admin',array('{VERSION}' => strval($CFG->version))));
-        logger(sprintf('%s(): core upgraded to version %s',__FUNCTION__,strval($CFG->version)),LOG_DEBUG);
+        $manifest = $manifests[$language_key];
+        if ((!is_dir($datadir_languages.'/'.$language_key)) &&
+            (!@mkdir($datadir_languages.'/'.$language_key,0700))) {
+            logger(sprintf('%s(): could not create directory %s/%s',__FUNCTION__,$datadir_languages,$language_key));
+            $retval = FALSE;
+        }
+        @touch($datadir_languages.'/'.$language_key.'/index.html'); // try to "protect" directory never mind errors
+        $table = 'languages';
+        $fields = array(
+            'language_key'        => $language_key,
+            'language_name'       => (isset($manifest['language_name'])) ?
+                                         strval($manifest['language_name']) : '('.$language_key.')',
+            'parent_language_key' => (isset($manifest['parent_language_key'])) ? 
+                                         strval($manifest['parent_language_key']) : '',
+            'version'             => intval($manifest['version']),
+            'manifest'            => $manifest['manifest'],
+            'is_core'             => ((isset($manifest['is_core'])) && ($manifest['is_core'])) ? TRUE : FALSE,
+            'is_active'           => TRUE,
+            'dialect_in_database' => FALSE,
+            'dialect_in_file'     => FALSE
+            );
+        if (db_insert_into($table,$fields) === FALSE) {
+            logger(sprintf('%s(): cannot install language \'%s\': %s',__FUNCTION__,$language_key,db_errormessage()));
+            $retval = FALSE;
+        }
     }
-    return $retval;
-} // update_core_version()
+    if ($retval) {
+        logger(sprintf('%s(): success installing language \'%s\'',__FUNCTION__,$language_key));
+        $output->add_message(t('update_subsystem_language_success','admin',$params));
+    } else {
+        $output->add_message(t('update_subsystem_language_error','admin',$params));
+    }
+} // install_language()
+
+
+/** update a language in the database
+ *
+ * this routine tries to update the information in the database with the
+ * information in the language manifest of the selected language $language_key.
+ * The event is logged via logger().
+ *
+ * Note that an upgrade of a language is not at all interesting because there
+ * is nothing to do except to update the data in the databse with that from
+ * the manifest. However, we still do it this way in order for the user to
+ * grow accustomed to it so we can complexicate this routine in the future
+ * without the user having to learn new tricks.
+ *
+ * @param object &$output collects the html output
+ * @param string $lanuage_key primary key for language record in database AND name of the /program/languages subdirectory
+ * @return void results are returned as output in $output
+ * @todo MySQL returns 0 if an update did not change anything, so
+ *       maybe we should specifically check for existence of
+ *       the language record before we update it? Hmmmmm....
+ */
+function update_language(&$output,$language_key) {
+    global $CFG;
+    $retval = TRUE; // assume success
+    $language_key = strval($language_key);
+    $progdir_languages = $CFG->progdir.'/languages';
+    $datadir_languages = $CFG->datadir.'/languages';
+    $manifests = get_manifests($progdir_languages);
+    $params = array('{LANGUAGE}' => $language_key);
+    if (!isset($manifests[$language_key])) {
+        logger(sprintf('%s(): manifest for language \'%s\' not found; nothing updated',__FUNCTION__,$language_key));
+        $retval = FALSE;
+    } else {
+        $manifest = $manifests[$language_key];
+        // the directory _should_ already exist, but better safe than sorry
+        if ((!is_dir($datadir_languages.'/'.$language_key)) &&
+            (!@mkdir($datadir_languages.'/'.$language_key,0700))) {
+            logger(sprintf('%s(): could not create directory %s/%s',__FUNCTION__,$datadir_languages,$language_key));
+            $retval = FALSE;
+        }
+        @touch($datadir_languages.'/'.$language_key.'/index.html'); // try to "protect" directory never mind errors
+        $table = 'languages';
+        $fields = array(
+            'language_key'        => $language_key,
+            'language_name'       => (isset($manifest['language_name'])) ?
+                                         strval($manifest['language_name']) : '('.$language_key.')',
+            'parent_language_key' => (isset($manifest['parent_language_key'])) ? 
+                                         strval($manifest['parent_language_key']) : '',
+            'version'             => intval($manifest['version']),
+            'manifest'            => $manifest['manifest'],
+            'is_core'             => ((isset($manifest['is_core'])) && ($manifest['is_core'])) ? TRUE : FALSE,
+            'is_active'           => TRUE
+            );
+        $where = array('language_key' => $language_key);
+        if (db_update($table,$fields,$where) !== 1) { // see @todo above
+            logger(sprintf('%s(): cannot update language \'%s\': %s',__FUNCTION__,$language_key,db_errormessage()));
+            $retval = FALSE;
+        }
+    }
+    if ($retval) {
+        logger(sprintf('%s(): success updating language \'%s\'',__FUNCTION__,$language_key));
+        $output->add_message(t('update_subsystem_language_success','admin',$params));
+    } else {
+        $output->add_message(t('update_subsystem_language_error','admin',$params));
+    }
+} // update_language()
 
 
 /** call the module-specific upgrade routine
  *
  * this routine tries to execute the correct upgrade script/function for
- * module $module_id. If all goes well, a success message is written to $output
+ * module $module_key. If all goes well, a success message is written to $output
  * (and the update is performed), otherwise an error message is written to $output
  * Either way the event is logged via logger().
  *
@@ -287,26 +444,27 @@ function update_core_version(&$output,$version) {
  * However, at some point we do have to have some trust in the file system...
  *
  * @param object &$output collects the html output
- * @param int $module_id primary key for module record in modules table in database
+ * @param string $module_key secondary key for module record in modules table in database
  * @return void results are returned as output in $output
  */
-function update_module(&$output,$module_id) {
+function update_module(&$output,$module_key) {
     global $CFG;
     $messages = array(); // collect messages here (including those from $name_upgrade())
     //
-    // 1 -- translate module_id -> name
-    $module_id = intval($module_id);
+    // 1 -- validate this module (it should already exist)
+    $module_key = strval($module_key);
     $table = 'modules';
-    $keyfield = 'module_id';
-    $fields = array($keyfield,'name');
-    $where = array($keyfield => $module_id);
+    $fields = array('module_id','name');
+    $where = array('name' => $module_key);
     $record = db_select_single_record($table,$fields,$where);
     if ($record === FALSE) {
-        logger(sprintf('%s(): error retrieving data for module \'%d\': %s',__FUNCTION__,$module_id,db_errormessage()));
-        $output->add_message(t('update_subsystem_module_error','admin',array('{MODULE}' => strval($module_id))));
+        logger(sprintf('%s(): error retrieving data for module \'%s\': %s',__FUNCTION__,$module_key,db_errormessage()));
+        $output->add_message(t('update_subsystem_module_error','admin',array('{MODULE}' => strval($module_key))));
         return;
     }
     $name = $record['name'];
+    $module_id = intval($record['module_id']);
+
     //
     // 2A -- try to load $name_manifest
     $manifests = array();
@@ -440,6 +598,156 @@ function update_core(&$output) {
     // ...
 } // update_core()
 
+
+// ==================================================================
+// =========================== UTILITIES ============================
+// ==================================================================
+
+/** return an anchor tag with link to the specific update function
+ *
+ * This utility routine returns a ready to user HTML anchor tag.
+ *
+ * @param string $task which update task do we need to do?
+ * @param string||null $key which module/theme/etc. (NULL for core)
+ * @param string $anchor text to show in link
+ * @return array ready to use HTML-code
+ */
+function update_status_anchor($task=NULL,$key=NULL,$anchor=NULL) {
+    global $WAS_SCRIPT_NAME;
+    $parameters = array('job' => JOB_UPDATE);
+    if (!is_null($task)) {
+        $parameters['task'] = $task;
+    }
+    if (!is_null($key)) {
+        $parameters['key'] = strval($key);
+    }
+    if (is_null($anchor)) {
+        $anchor = t('update_status_update','admin');
+    }
+    return html_a($WAS_SCRIPT_NAME,$parameters,NULL,$anchor);
+} // update_status_anchor()
+
+
+/** record the specified version number in the config table AND in $CFG->version
+ *
+ * This utility routine records the new version number in the config table
+ * and also adjusts the version number already in core (in $CFG->version).
+ *
+ * @param object &$output collects the html output
+ * @param int $version the new version number to store in config table
+ * @return bool TRUE on success, FALSE otherwise
+ */ 
+function update_core_version(&$output,$version) {
+    global $CFG;
+    $table = 'config';
+    $fields = array('value' => intval($version));
+    $where = array('name' => 'version');
+    if (($retval = db_update($table,$fields,$where)) === FALSE) {
+        $output->add_message(t('update_core_error','admin',array('{VERSION}' => strval($version))));
+        logger(sprintf('%s(): core upgrade to version %s failed: %s',__FUNCTION__,strval($version),db_errormessage()));
+    } else {
+        $CFG->version = $version;
+        $output->add_message(t('update_core_success','admin',array('{VERSION}' => strval($CFG->version))));
+        logger(sprintf('%s(): core upgraded to version %s',__FUNCTION__,strval($CFG->version)),LOG_DEBUG);
+    }
+    return $retval;
+} // update_core_version()
+
+
+/** open a status overview HTML-table including column headers
+ *
+ * this routine opens an HTML-table in prepration for a status
+ * overview of a subsystem (languages, modules, themes). The optional
+ * title is used as the header of the first column.
+ *
+ * @param object &$output collects the html output
+ * @param string $title is the header of the first column
+ * @return void results are returned as output in $output
+ */
+function update_status_table_open(&$output,$title='') {
+    $output->add_content('<p>');
+    $output->add_content(html_table(array('width' => '90%')));
+    $attributes = array('class' => 'header');
+    $output->add_content('  '.html_table_row($attributes));
+    $attributes['width'] = '25%';
+    $attributes['align'] = 'left';
+    $output->add_content('    '.html_table_head($attributes,$title));
+    $output->add_content('    '.html_table_head($attributes,t('update_version_database','admin')));
+    $output->add_content('    '.html_table_head($attributes,t('update_version_manifest','admin')));
+    $output->add_content('    '.html_table_head($attributes,t('update_status','admin')));
+    $output->add_content('  '.html_table_row_close());
+} // update_status_table_open()
+
+/** close the status overview HTML-table we opened before
+ *
+ * this is the companion routine for {@link update_status_table_open()};
+ * it closes the open HTML-table
+ *
+ * @param object &$output collects the html output
+ * @return void results are returned as output in $output
+ */
+function update_status_table_close(&$output) {
+    $output->add_content(html_table_close());
+} // update_status_table_close()
+
+
+/** retrieve an array of manifests for modules, themes or languages
+ *
+ * this examines the file system starting in the directory $path,
+ * looking for manifest files. These manifest files are named after
+ * the subdirectory they are in as follows.
+ * Example:
+ * If $path is /program/modules, this routine steps through that directory
+ * and may find subdirectories 'htmlpage', 'guestbook' and 'forum'.
+ * Eventually these manfest files are include()'d:
+ * /program/modules/htmlpage/htmlpage_manifest.php,
+ * /program/modules/guestbook/guestbook_manifest.php and
+ * /program/modules/forum/forum_manifest.php.
+ *
+ * Every manifest file must describe the module (or language or theme)
+ * via the following construct:
+ * <code>
+ * $manifests['htmlpage'] = array('name' => 'htmlpage', ...., 'cron_interval' => 0);
+ * </code>
+ *
+ * After processing all the subdirectories of $path, the resulting array $manifests is
+ * returned. Note that pseudo-directories like '.' and '..' are not considered. Also,
+ * subdirectories 'foo' without the file 'foo_manifest.php' are also ignored.
+ *
+ * Note that the name of the manifest file itself is also stored in the array,
+ * but excluding the subdirectory name.
+ *
+ * Note: a similar routine is used in the installation script {@link install.php}.
+ * 
+ * @param string $path top directory for the search for manifest files
+ * @return array zero or more arrays comprising manifests
+ */
+function get_manifests($path) {
+    $manifests = array();
+    if (is_dir($path)) {
+        if (($dp = opendir($path)) !== FALSE) {
+            while (($item = readdir($dp)) !== FALSE) {
+                $item_path = $path.'/'.$item;
+                $item_manifest = $item_path.'/'.$item.'_manifest.php';
+                if ((substr($item,0,1) != '.') && (is_dir($item_path)) && (is_file($item_manifest))) {
+                    @include($item_manifest);
+                    $manifests[$item]['manifest'] = $item.'_manifest.php';
+                }
+            }
+            closedir($dp);
+        }
+    }
+    return $manifests;
+} // get_manifests()
+
+
+
+
+
+
+// ==================================================================
+// =========================== WORKHORSES ===========================
+// ==================================================================
 
 /** perform actual update to version 2010120800
  *

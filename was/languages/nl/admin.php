@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: admin.php,v 1.2 2011/02/03 14:03:59 pfokker Exp $
+ * @version $Id: admin.php,v 1.3 2011/03/02 15:35:02 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1100,22 +1100,27 @@ $string['logview_priority'] = 'Prioriteit';
 $string['logview_message'] = 'Logbericht';
 
 $string['update_header'] = 'Updatebeheer';
-$string['update_intro'] = 'Dit is updatebeheer. Hieronder staat een overzicht van de huidige interne en externe versienummers van het basissysteem en de diverse subsystemen. Als de interne versie afwijkt van de externe, dan kunt u de interne versie opwaarderen naar de externe door de link \'[Opwaarderen]\' in de laatste kolom te volgen.';
-$string['update_subsystem'] = 'Subsysteem';
+$string['update_intro'] = 'Dit is updatebeheer. Hieronder staat een overzicht van de huidige interne en externe versienummers van het basissysteem en de diverse subsystemen. Als de interne versie afwijkt van de externe, dan kunt u de interne versie opwaarderen naar de externe door de link \'[Opwaarderen]\' in de laatste kolom te volgen of installeren via de link \'[Installeren]\'.';
 $string['update_version_database'] = 'Interne versie';
 $string['update_version_manifest'] = 'Externe versie';
 $string['update_status'] = 'Status';
 $string['update_core'] = 'basis';
 $string['update_core_success'] = 'Basissysteem met succes opgewaardeerd naar versie {VERSION}';
 $string['update_core_error'] = 'Fout bij het opwaarderen van het basissysteem naar versie {VERSION}';
+$string['update_core_warnning_core_goes_first'] = 'Waarschuwing: het basissysteem moet eerst opgewaardeerd worden';
+$string['update_subsystem_languages'] = 'Talen';
+$string['update_subsystem_language_success'] = 'Taal {LANGUAGE} succesvol opgewaardeerd/ge&iuml;nstalleerd';
+$string['update_subsystem_language_error'] = 'Fout bij het opwaarderen/installeren van taal {LANGUAGE}';
 $string['update_subsystem_modules'] = 'Modules';
-$string['update_subsystem_module_success'] = 'Module {MODULE} met succes opgewaardeerd';
-$string['update_subsystem_module_error'] = 'Fout bij het opwaarderen van module {MODULE}';
+$string['update_subsystem_module_success'] = 'Module {MODULE} met succes opgewaardeerd/ge&iuml;nstalleerd';
+$string['update_subsystem_module_error'] = 'Fout bij het opwaarderen/installeren van module {MODULE}';
 $string['update_subsystem_themes'] = 'Thema\'s';
-$string['update_subsystem_theme_success'] = 'Thema {THEME} met succes opgewaardeerd';
-$string['update_subsystem_theme_error'] = 'Fout bij het opwaarderen van thema {THEME}';
+$string['update_subsystem_theme_success'] = 'Thema {THEME} met succes opgewaardeerd/ge&iuml;nstalleerd';
+$string['update_subsystem_theme_error'] = 'Fout bij het opwaarderen/installeren van thema {THEME}';
 $string['update_status_ok'] = 'OK';
+$string['update_status_error'] = 'FOUT';
 $string['update_status_update'] = 'Opwaarderen';
+$string['update_status_install'] = 'Installeren';
 $string['update_version_database_too_old'] = 'De interne versie {VERSION} is te oud; u moet helaas herinstalleren en/of handmatig opwaarderen.';
 
 
