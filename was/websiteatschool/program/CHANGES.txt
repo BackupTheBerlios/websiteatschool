@@ -1,5 +1,11 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.6 2011/03/02 15:35:02 pfokker Exp $
+$Id: CHANGES.txt,v 1.7 2011/03/03 14:30:12 pfokker Exp $
+
+2011-03-03
+- added some more clarification in frugal_install.php
+  about the inner workings of the call-back routines
+- we can now call the theme_updgrade() call-back from
+  the Update Manager (updatelib.php).
 
 2011-03-02
 - streamlined the update status overview in updatelib.php

@@ -54,7 +54,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: updatelib.php,v 1.4 2011/03/02 15:35:02 pfokker Exp $
+ * @version $Id: updatelib.php,v 1.5 2011/03/03 14:30:12 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -520,61 +520,86 @@ function update_module(&$output,$module_key) {
  * @param int $theme_id primary key for theme record in themes table in database
  * @return void results are returned as output in $output
  */
-function update_theme(&$output,$theme_id) {
+function update_theme(&$output,$theme_key) {
     global $CFG;
-    $messages = array(); // collect messages here (including those from $name_upgrade())
-    //
-    // 1 -- translate theme_id -> name
-    $theme_id = intval($theme_id);
+    $theme_key = strval($theme_key);
+    $params = array('{THEME}' => $theme_key);
+    $progdir_themes = $CFG->progdir.'/themes';
+    $manifests = get_manifests($progdir_themes);
+
+    // 1 -- validate input: theme must exist in available manifests
+    if (!isset($manifests[$theme_key])) {
+        logger(sprintf('%s(): manifest for theme \'%s\' not found; nothing updated',__FUNCTION__,$theme_key));
+        $output->add_message(t('update_subsystem_theme_error','admin',$params));
+        return;
+    }
+    $manifest = $manifests[$theme_key];
+
+    // 2 -- get the primary key of the installed theme (required for {$theme}_update() function)
     $table = 'themes';
-    $keyfield = 'theme_id';
-    $fields = array($keyfield,'name');
-    $where = array($keyfield => $theme_id);
+    $fields = array('theme_id','name');
+    $where = array('name' => $theme_key);
     $record = db_select_single_record($table,$fields,$where);
     if ($record === FALSE) {
-        logger(sprintf('%s(): error retrieving data for theme \'%d\': %s',__FUNCTION__,$theme_id,db_errormessage()));
-        $output->add_message(t('update_subsystem_theme_error','admin',array('{THEME}' => strval($theme_id))));
+        logger(sprintf('%s(): error retrieving theme_id for \'%s\': %s',__FUNCTION__,$theme_key,db_errormessage()));
+        $output->add_message(t('update_subsystem_theme_error','admin',$params));
         return;
     }
     $name = $record['name'];
-    //
-    // 2A -- try to load $name_manifest
-    $manifests = array();
-    $item_manifest = sprintf('%s/themes/%s/%s_manifest.php',$CFG->progdir,$name,$name);
-    if (is_file($item_manifest)) {
-        @include($item_manifest);
-    }
-    if ((isset($manifests[$name]['install_script'])) && (!empty($manifests[$name]['install_script']))) {
-        $filename = sprintf('%s/themes/%s/%s',$CFG->progdir,$name,$manifests[$name]['install_script']);
-        //
-        // 2B try to load $name_install
+    $theme_id = intval($record['theme_id']);
+
+    // 3 -- let the theme update code do its thing
+    $retval = FALSE; // assume failure
+    $messages = array(); // collects error messages from call-back routine
+    if ((isset($manifest['install_script'])) && (!empty($manifest['install_script']))) {
+        $filename = sprintf('%s/%s/%s',$progdir_themes,$name,$manifest['install_script']);
         if (file_exists($filename)) {
             @include_once($filename);
-            $item_upgrade = $name.'_upgrade';
-            //
-            // 2C -- finally try to execute $name_upgrade()
-            if (function_exists($item_upgrade)) {
-                if ($item_upgrade($messages,$theme_id)) {
-                    //
-                    // 2D -- All is well, get outta here
-                    logger(sprintf('%s(): success updating theme %s',__FUNCTION__,$name));
-                    $messages[] = t('update_subsystem_theme_success','admin',array('{THEME}' => $name));
-                    $output->add_message($messages);
-                    return;
+            $theme_upgrade = $name.'_upgrade';
+            if (function_exists($theme_upgrade)) {
+                if ($theme_upgrade($messages,$theme_id)) {
+                    logger(sprintf('%s(): %s(): success upgrading theme \'%s\' (new version is %d)',
+                                   __FUNCTION__,$theme_upgrade,$name,$manifest['version']));
+                    $retval = TRUE; // so far so good; remember this success
                 } else {
-                    logger(sprintf('%s(): %s() returned an error',__FUNCTION__,$item_upgrade));
+                    logger(sprintf('%s(): %s() returned an error',__FUNCTION__,$theme_upgrade));
+                }
+                foreach($messages as $message) { // remember messages, either good or bad
+                    logger($message);
                 }
             } else {
-                logger(sprintf('%s(): function %s() does not exist?',__FUNCTION__,$item_upgrade));
+                logger(sprintf('%s(): function %s() does not exist?',__FUNCTION__,$theme_upgrade));
             }
         } else {
             logger(sprintf('%s(): file %s does not exist?',__FUNCTION__,$filename));
         }
     } else {
-        logger(sprintf('%s(): no install script specified in manifest for %s',__FUNCTION__,$name));
+        logger(sprintf('%s(): no install script specified in manifest for theme \'%s\'',__FUNCTION__,$name));
     }
-    $messages[] = t('update_subsystem_theme_error','admin',array('{THEME}' => $name));
-    $output->add_message($messages);
+
+    // 4 -- on success update the relevant record in the database (and make theme active)
+    if ($retval) {
+        $table = 'themes';
+        $fields = array(
+            'version' => intval($manifest['version']),
+            'manifest' => $manifest['manifest'],
+            'is_active' => TRUE,
+            'class' => (isset($manifest['class'])) ? $manifest['class'] : NULL,
+            'class_file' => (isset($manifest['class_file'])) ? $manifest['class_file'] : NULL
+        );
+        $where = array('theme_id' => $theme_id);
+        if (db_update($table,$fields,$where) === FALSE) {
+            logger(sprintf('%s(): cannot update theme data for \'%s\': %s',__FUNCTION__,$theme_key,db_errormessage()));
+            $retval = FALSE;
+        }
+    }
+
+    // 5 -- inform the user about the final outcome
+    if ($retval) {
+        $output->add_message(t('update_subsystem_theme_success','admin',$params));
+    } else {
+        $output->add_message(t('update_subsystem_theme_error','admin',$params));
+    }
 } // update_theme()
 
 
