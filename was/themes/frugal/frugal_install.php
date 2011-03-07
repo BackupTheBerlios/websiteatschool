@@ -42,7 +42,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wastheme_frugal
- * @version $Id: frugal_install.php,v 1.3 2011/03/03 14:30:12 pfokker Exp $
+ * @version $Id: frugal_install.php,v 1.4 2011/03/07 14:14:20 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -212,7 +212,7 @@ function frugal_install(&$messages,$theme_id) {
  *
  * this routine performs an upgrade to the installed theme.
  * Note that this minimalistic 'frugal' theme does not need any
- *  upgrade at all because there never was an earlier version.
+ * upgrade at all because there never was an earlier version.
  *
  * However, if there was to be a newer version of this theme, this
  * routine is THE place to bring the database up to date compared with
@@ -269,7 +269,7 @@ function frugal_uninstall(&$messages,$theme_id) {
  *
  * this routine is a no-op because all frugal demodata is already
  * created in the main demodata-routine in /program/install/demodata.php.
- * This routine is retained here as an example and also because a routing
+ * This routine is retained here as an example and also because a routine
  * by this name should exist (even if it does nothing).
  *
  * Note

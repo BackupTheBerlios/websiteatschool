@@ -54,7 +54,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: updatelib.php,v 1.5 2011/03/03 14:30:12 pfokker Exp $
+ * @version $Id: updatelib.php,v 1.6 2011/03/07 14:14:20 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -182,7 +182,8 @@ function update_show_overview(&$output) {
     $output->add_content('  '.html_table_row($attributes));
     $output->add_content('    '.html_table_cell($attributes,t('update_core','admin')));
     $output->add_content('    '.html_table_cell($attributes,$CFG->version));
-    $output->add_content('    '.html_table_cell($attributes,WAS_VERSION));
+    $core_version_release_date = sprintf('%s (%s) %s',WAS_VERSION,WAS_RELEASE_DATE,WAS_RELEASE);
+    $output->add_content('    '.html_table_cell($attributes,$core_version_release_date));
     if (intval($CFG->version) == intval(WAS_VERSION)) {
         $output->add_content('    '.html_table_cell($attributes,t('update_status_ok','admin')));
     } else {
@@ -268,6 +269,12 @@ function update_show_overview(&$output) {
             }
             $class = ($class == 'odd') ? 'even' : 'odd';
             $attributes = array('class' => $class);
+            if ((isset($manifest['release_date'])) && (!empty($manifest['release_date']))) {
+                $version_manifest .= ' ('.$manifest['release_date'].')';
+            }
+            if ((isset($manifest['release'])) && (!empty($manifest['release']))) {
+                $version_manifest .= ' '.$manifest['release'];
+            }
             $output->add_content('  '.html_table_row($attributes));
             $output->add_content('    '.html_table_cell($attributes,htmlspecialchars($key)));
             $output->add_content('    '.html_table_cell($attributes,htmlspecialchars($version_database)));
@@ -382,9 +389,6 @@ function install_language(&$output,$language_key) {
  * @param object &$output collects the html output
  * @param string $lanuage_key primary key for language record in database AND name of the /program/languages subdirectory
  * @return void results are returned as output in $output
- * @todo MySQL returns 0 if an update did not change anything, so
- *       maybe we should specifically check for existence of
- *       the language record before we update it? Hmmmmm....
  */
 function update_language(&$output,$language_key) {
     global $CFG;
@@ -419,7 +423,7 @@ function update_language(&$output,$language_key) {
             'is_active'           => TRUE
             );
         $where = array('language_key' => $language_key);
-        if (db_update($table,$fields,$where) !== 1) { // see @todo above
+        if (db_update($table,$fields,$where) === FALSE) {
             logger(sprintf('%s(): cannot update language \'%s\': %s',__FUNCTION__,$language_key,db_errormessage()));
             $retval = FALSE;
         }
@@ -433,6 +437,31 @@ function update_language(&$output,$language_key) {
 } // update_language()
 
 
+/** install an additional module
+ *
+ * this routine attempts to insert the information from the
+ * manifest of module $module_key into the database.
+ * The routine displays the result (error or success) in a
+ * message in $output. Details can be found in the logs.
+ *
+ * The module_key is validated by reading all existing module manifests.
+ * This is quite expensive, but that is not important because we
+ * do not use this routine very often anyway.
+ *
+ * Note that we assume that the actual modules are already
+ * unpacked into the correct directories.
+ * The corresponding manifest should exist in the directory
+ * /program/modules/$module_key.
+ *
+ * @param object &$output collects the html output
+ * @param string $module_key primary key for module record in database AND name of the /program/modules subdirectory
+ * @return void results are returned as output in $output
+ */
+function install_module(&$output,$module_key) {
+    return FALSE; // stub
+} // install_module()
+
+
 /** call the module-specific upgrade routine
  *
  * this routine tries to execute the correct upgrade script/function for
@@ -444,66 +473,120 @@ function update_language(&$output,$language_key) {
  * However, at some point we do have to have some trust in the file system...
  *
  * @param object &$output collects the html output
- * @param string $module_key secondary key for module record in modules table in database
+ * @param string $module_key unique secondary key for module record in modules table in database
  * @return void results are returned as output in $output
  */
 function update_module(&$output,$module_key) {
     global $CFG;
-    $messages = array(); // collect messages here (including those from $name_upgrade())
-    //
-    // 1 -- validate this module (it should already exist)
     $module_key = strval($module_key);
+    $params = array('{MODULE}' => $module_key);
+    $progdir_modules = $CFG->progdir.'/modules';
+    $manifests = get_manifests($progdir_modules);
+
+    // 1 -- validate input: module must exist in available manifests
+    if (!isset($manifests[$module_key])) {
+        logger(sprintf('%s(): manifest for module \'%s\' not found; nothing updated',__FUNCTION__,$module_key));
+        $output->add_message(t('update_subsystem_module_error','admin',$params));
+        return;
+    }
+    $manifest = $manifests[$module_key];
+
+    // 2 -- get the primary key of the installed module (required for {$module}_update() function)
     $table = 'modules';
     $fields = array('module_id','name');
     $where = array('name' => $module_key);
     $record = db_select_single_record($table,$fields,$where);
     if ($record === FALSE) {
-        logger(sprintf('%s(): error retrieving data for module \'%s\': %s',__FUNCTION__,$module_key,db_errormessage()));
-        $output->add_message(t('update_subsystem_module_error','admin',array('{MODULE}' => strval($module_key))));
+        logger(sprintf('%s(): error retrieving module_id for \'%s\': %s',__FUNCTION__,$module_key,db_errormessage()));
+        $output->add_message(t('update_subsystem_module_error','admin',$params));
         return;
     }
     $name = $record['name'];
     $module_id = intval($record['module_id']);
 
-    //
-    // 2A -- try to load $name_manifest
-    $manifests = array();
-    $item_manifest = sprintf('%s/modules/%s/%s_manifest.php',$CFG->progdir,$name,$name);
-    if (is_file($item_manifest)) {
-        @include($item_manifest);
-    }
-    if ((isset($manifests[$name]['install_script'])) && (!empty($manifests[$name]['install_script']))) {
-        $filename = sprintf('%s/modules/%s/%s',$CFG->progdir,$name,$manifests[$name]['install_script']);
-        //
-        // 2B try to load $name_install
+    // 3 -- let the module update code do its thing
+    $retval = FALSE; // assume failure
+    $messages = array(); // collects error messages from call-back routine
+    if ((isset($manifest['install_script'])) && (!empty($manifest['install_script']))) {
+        $filename = sprintf('%s/%s/%s',$progdir_modules,$name,$manifest['install_script']);
         if (file_exists($filename)) {
             @include_once($filename);
-            $item_upgrade = $name.'_upgrade';
-            //
-            // 2C -- finally try to execute $name_upgrade()
-            if (function_exists($item_upgrade)) {
-                if ($item_upgrade($messages,$module_id)) {
-                    //
-                    // 2D -- All is well, get outta here
-                    logger(sprintf('%s(): success updating module %s',__FUNCTION__,$name));
-                    $messages[] = t('update_subsystem_module_success','admin',array('{MODULE}' => $name));
-                    $output->add_message($messages);
-                    return;
+            $module_upgrade = $name.'_upgrade';
+            if (function_exists($module_upgrade)) {
+                if ($module_upgrade($messages,$module_id)) {
+                    logger(sprintf('%s(): %s(): success upgrading module \'%s\' (new version is %d)',
+                                   __FUNCTION__,$module_upgrade,$name,$manifest['version']));
+                    $retval = TRUE; // so far so good; remember this success
                 } else {
-                    logger(sprintf('%s(): %s() returned an error',__FUNCTION__,$item_upgrade));
+                    logger(sprintf('%s(): %s() returned an error',__FUNCTION__,$module_upgrade));
+                }
+                foreach($messages as $message) { // remember messages, either good or bad
+                    logger($message);
                 }
             } else {
-                logger(sprintf('%s(): function %s() does not exist?',__FUNCTION__,$item_upgrade));
+                logger(sprintf('%s(): function %s() does not exist?',__FUNCTION__,$module_upgrade));
             }
         } else {
             logger(sprintf('%s(): file %s does not exist?',__FUNCTION__,$filename));
         }
     } else {
-        logger(sprintf('%s(): no install script specified in manifest for %s',__FUNCTION__,$name));
+        logger(sprintf('%s(): no install script specified in manifest for module \'%s\'',__FUNCTION__,$name));
     }
-    $messages[] = t('update_subsystem_module_error','admin',array('{MODULE}' => $name));
-    $output->add_message($messages);
+
+    // 4 -- on success update the relevant record in the database (and make it active)
+    if ($retval) {
+        $table = 'modules';
+        $fields = array(
+            'version'       => intval($manifest['version']),
+            'manifest'      => $manifest['manifest'],
+            'is_active'     => TRUE,
+            'has_acls'      => ((isset($manifest['has_acls'])) && ($manifest['has_acls'])) ? TRUE : FALSE,
+            'view_script'   => (isset($manifest['view_script']))   ? $manifest['view_script']           : NULL,
+            'admin_script'  => (isset($manifest['admin_script']))  ? $manifest['admin_script']          : NULL,
+            'search_script' => (isset($manifest['search_script'])) ? $manifest['search_script']         : NULL,
+            'cron_script'   => (isset($manifest['cron_script']))   ? $manifest['cron_script']           : NULL,
+            'cron_interval' => (isset($manifest['cron_interval'])) ? intval($manifest['cron_interval']) : NULL
+        );
+        $where = array('module_id' => $module_id);
+        if (db_update($table,$fields,$where) === FALSE) {
+            logger(sprintf('%s(): cannot update module data for \'%s\': %s',__FUNCTION__,$module_key,db_errormessage()));
+            $retval = FALSE;
+        }
+    }
+
+    // 5 -- inform the user about the final outcome
+    if ($retval) {
+        $output->add_message(t('update_subsystem_module_success','admin',$params));
+    } else {
+        $output->add_message(t('update_subsystem_module_error','admin',$params));
+    }
 } // update_module()
+
+
+/** install an additional theme
+ *
+ * this routine attempts to insert the information from the
+ * manifest of theme $theme_key into the database.
+ * The routine displays the result (error or success) in a
+ * message in $output. Details can be found in the logs.
+ *
+ * The theme_key is validated by reading all existing module manifests.
+ * This is quite expensive, but that is not important because we
+ * do not use this routine very often anyway.
+ *
+ * Note that we assume that the actual thenes are already
+ * unpacked into the correct directories.
+ * The corresponding manifest should exist in the directory
+ * /program/themes/$theme_key.
+ *
+ * @param object &$output collects the html output
+ * @param string $theme_key primary key for theme record in database AND name of the /program/themes subdirectory
+ * @return void results are returned as output in $output
+ */
+function install_theme(&$output,$theme_key) {
+    $params = array('{THEME}' => $theme_key);
+    $output->add_message(t('update_subsystem_theme_error','admin',$params));
+} // install_theme()
 
 
 /** call the theme-specific upgrade routine
@@ -517,7 +600,7 @@ function update_module(&$output,$module_key) {
  * However, at some point we do have to have some trust in the file system...
  *
  * @param object &$output collects the html output
- * @param int $theme_id primary key for theme record in themes table in database
+ * @param string $theme_key unique secondary key for theme record in themes table in database
  * @return void results are returned as output in $output
  */
 function update_theme(&$output,$theme_key) {
@@ -577,7 +660,7 @@ function update_theme(&$output,$theme_key) {
         logger(sprintf('%s(): no install script specified in manifest for theme \'%s\'',__FUNCTION__,$name));
     }
 
-    // 4 -- on success update the relevant record in the database (and make theme active)
+    // 4 -- on success update the relevant record in the database (and make it active)
     if ($retval) {
         $table = 'themes';
         $fields = array(
@@ -685,20 +768,25 @@ function update_core_version(&$output,$version) {
  * overview of a subsystem (languages, modules, themes). The optional
  * title is used as the header of the first column.
  *
+ * Because we display the release and release_date in the 3rd column,
+ * the columns have different widths: 20% 20% 40% 20%.
+ *
  * @param object &$output collects the html output
  * @param string $title is the header of the first column
  * @return void results are returned as output in $output
  */
 function update_status_table_open(&$output,$title='') {
     $output->add_content('<p>');
-    $output->add_content(html_table(array('width' => '90%')));
+    $output->add_content(html_table(array('width' => '98%')));
     $attributes = array('class' => 'header');
     $output->add_content('  '.html_table_row($attributes));
-    $attributes['width'] = '25%';
     $attributes['align'] = 'left';
+    $attributes['width'] = '20%';
     $output->add_content('    '.html_table_head($attributes,$title));
     $output->add_content('    '.html_table_head($attributes,t('update_version_database','admin')));
+    $attributes['width'] = '40%';
     $output->add_content('    '.html_table_head($attributes,t('update_version_manifest','admin')));
+    $attributes['width'] = '20%';
     $output->add_content('    '.html_table_head($attributes,t('update_status','admin')));
     $output->add_content('  '.html_table_row_close());
 } // update_status_table_open()

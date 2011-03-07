@@ -1,10 +1,18 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.7 2011/03/03 14:30:12 pfokker Exp $
+$Id: CHANGES.txt,v 1.8 2011/03/07 14:14:20 pfokker Exp $
+
+2011-03-07
+- added more clarification in htmlpage_install.php
+  about inner workings
+- corrected a few typos
+- modified a few translations in 'en' and 'nl'
+- added the routine for updating existing modules
+- started on install_theme() and install_module()
 
 2011-03-03
 - added some more clarification in frugal_install.php
   about the inner workings of the call-back routines
-- we can now call the theme_updgrade() call-back from
+- we can now call the theme_upgrade() call-back from
   the Update Manager (updatelib.php).
 
 2011-03-02

@@ -37,7 +37,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: admin.php,v 1.3 2011/03/02 15:35:01 pfokker Exp $
+ * @version $Id: admin.php,v 1.4 2011/03/07 14:14:19 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1212,14 +1212,14 @@ $string['update_core_success'] = 'Success updating core system to version {VERSI
 $string['update_core_error'] = 'Error updating core system to version {VERSION}';
 $string['update_core_warnning_core_goes_first'] = 'Warning: the core system must be updated first';
 $string['update_subsystem_languages'] = 'Languages';
-$string['update_subsystem_language_success'] = 'Success updating language {LANGUAGE}';
-$string['update_subsystem_language_error'] = 'Error updating language {LANGUAGE}';
+$string['update_subsystem_language_success'] = 'Success updating/installing language {LANGUAGE}';
+$string['update_subsystem_language_error'] = 'Error updating/installing language {LANGUAGE}';
 $string['update_subsystem_modules'] = 'Modules';
-$string['update_subsystem_module_success'] = 'Success updating module {MODULE}';
-$string['update_subsystem_module_error'] = 'Error updating module {MODULE}';
+$string['update_subsystem_module_success'] = 'Success updating/installing module {MODULE}';
+$string['update_subsystem_module_error'] = 'Error updating/installing module {MODULE}';
 $string['update_subsystem_themes'] = 'Themes';
-$string['update_subsystem_theme_success'] = 'Success updating theme {THEME}';
-$string['update_subsystem_theme_error'] = 'Error updating theme {THEME}';
+$string['update_subsystem_theme_success'] = 'Success updating/installing theme {THEME}';
+$string['update_subsystem_theme_error'] = 'Error updating/installing theme {THEME}';
 $string['update_status_ok'] = 'OK';
 $string['update_status_error'] = 'ERROR';
 $string['update_status_update'] = 'Update';
