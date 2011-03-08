@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_htmlpage
- * @version $Id: htmlpage_manifest.php,v 1.2 2011/02/03 14:04:00 pfokker Exp $
+ * @version $Id: htmlpage_manifest.php,v 1.3 2011/03/08 17:19:24 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -33,9 +33,9 @@ $manifests['htmlpage'] = array(
     'name' => 'htmlpage',
     'description' => 'This module is able to display/edit a simple HTML-page',
     'author' => 'Peter Fokker',
-    'version' => 2008112500,
-    'release' => '1.0',
-    'release_date' => '2008-11-25',
+    'version' => 2011020100,
+    'release' => '0.90.0',
+    'release_date' => '2011-02-01',
     'is_core' => TRUE,
     'has_acls' => FALSE,
     'tabledefs' => 'install/htmlpage_tabledefs.php',

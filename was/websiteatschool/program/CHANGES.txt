@@ -1,11 +1,20 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.10 2011/03/08 16:48:16 pfokker Exp $
+$Id: CHANGES.txt,v 1.11 2011/03/08 17:19:24 pfokker Exp $
 
 2011-03-08
 - done with install_theme() and install_module():
   we can now install new themes and modules
 - corrected a few typos
 - added the Spanish translation of v0.90.0 to CVS
+- bumped all versions and releases of all existing
+  languages, themes and modules to
+  2011020100 / 0.90.90 /  2011-02-01 in order to
+  make it clear to which core version a particular
+  subsystem belongs. Old (internal) versions:
+  frugal: 2008022000, htmlpage: 2008112500,
+  en: 2010092700, nl: 2010092700. This requires
+  a manual update in the update manager (which is
+  in fact a no-op).
 
 2011-03-07
 - added more clarification in htmlpage_install.php
