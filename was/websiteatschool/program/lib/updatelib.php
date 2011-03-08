@@ -54,7 +54,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: updatelib.php,v 1.6 2011/03/07 14:14:20 pfokker Exp $
+ * @version $Id: updatelib.php,v 1.7 2011/03/08 16:12:32 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -77,7 +77,7 @@ define('TASK_UPDATE_THEME',    'update_theme'    );
 /** main entry point for update wizard (called from /program/main_admin.php)
  *
  * This routine takes care of executing update routines for both the core
- * program and modeles, themes, etc. It is called automagically whenever
+ * program and modules, themes, etc. It is called automagically whenever
  * the core program version in the database is different from the version
  * in the file {@lnk version.php} (see also {@link main_admin()}).
  *
@@ -456,9 +456,103 @@ function update_language(&$output,$language_key) {
  * @param object &$output collects the html output
  * @param string $module_key primary key for module record in database AND name of the /program/modules subdirectory
  * @return void results are returned as output in $output
+ * @uses $CFG
+ * @todo we should refactor and combine install_theme() and install_module()
  */
 function install_module(&$output,$module_key) {
-    return FALSE; // stub
+    global $CFG;
+    $retval = TRUE; // assume success
+    $module_key = strval($module_key);
+    $progdir_modules = $CFG->progdir.'/modules';
+    $manifests = get_manifests($progdir_modules);
+    $params = array('{MODULE}' => $module_key);
+
+    // 0 -- sanity check
+    if (!isset($manifests[$module_key])) {
+        logger(sprintf('%s(): manifest for module \'%s\' not found; nothing installed',__FUNCTION__,$module_key));
+        $retval = FALSE;
+    } else {
+        // 1 -- preliminary creation of a new module record (we need the pkey in the installer)
+        $manifest = $manifests[$module_key];
+        $table = 'modules';
+        $fields = array(
+            'name'          => $module_key,
+            'version'       => 0,
+            'manifest'      => $manifest['manifest'],
+            'is_core'       => ((isset($manifest['is_core'])) && ($manifest['is_core'])) ? TRUE : FALSE,
+            'is_active'     => FALSE,
+            'has_acls'      => ((isset($manifest['has_acls'])) && ($manifest['has_acls'])) ? TRUE : FALSE,
+            'view_script'   => (isset($manifest['view_script'])) ? $manifest['view_script'] : NULL,
+            'admin_script'  => (isset($manifest['admin_script'])) ? $manifest['admin_script'] : NULL,
+            'search_script' => (isset($manifest['search_script'])) ? $manifest['search_script'] : NULL,
+            'cron_script'   => (isset($manifest['cron_script'])) ? $manifest['cron_script'] : NULL,
+            'cron_interval' => (isset($manifest['cron_interval'])) ? intval($manifest['cron_interval']):NULL,
+            'cron_next' => NULL
+            );
+        $key_field = 'module_id';
+        if (($module_id = db_insert_into_and_get_id($table,$fields,$key_field)) === FALSE) {
+            logger(sprintf('%s(): cannot install module \'%s\': %s',__FUNCTION__,$module_key,db_errormessage()));
+            $retval = FALSE;
+        } else {
+            // 2A -- maybe insert tables for module
+            if ((isset($manifest['tabledefs'])) && (!empty($manifest['tabledefs']))) {
+                $filename = sprintf('%s/%s/%s',$progdir_modules,$module_key,$manifest['tabledefs']);
+                if (file_exists($filename)) {
+                    if (!update_create_tables($filename)) {
+                        $retval = FALSE;
+                    }
+                }
+            }
+            // 2B -- call the installation routine
+            $messages = array(); // collects error messages from call-back routine
+            if ((isset($manifest['install_script'])) && (!empty($manifest['install_script']))) {
+                $filename = sprintf('%s/%s/%s',$progdir_modules,$module_key,$manifest['install_script']);
+                if (file_exists($filename)) {
+                    @include_once($filename);
+                    $module_install = $module_key.'_install';
+                    if (function_exists($module_install)) {
+                        if ($module_install($messages,$module_id)) {
+                            logger(sprintf('%s(): %s(): success installing module \'%s\' (version is %d)',
+                                           __FUNCTION__,$module_install,$module_key,$manifest['version']));
+                        } else {
+                            $retval = FALSE;
+                            logger(sprintf('%s(): %s() returned an error',__FUNCTION__,$module_install));
+                        }
+                        foreach($messages as $message) { // remember messages, either good or bad
+                            logger($message);
+                        }
+                    } else {
+                        $retval = FALSE;
+                        logger(sprintf('%s(): function %s() does not exist?',__FUNCTION__,$module_install));
+                    }
+                } else {
+                    $retval = FALSE;
+                    logger(sprintf('%s(): file %s does not exist?',__FUNCTION__,$filename));
+                }
+            } else {
+                $retval = FALSE;
+                logger(sprintf('%s(): no install script in manifest for module \'%s\'',__FUNCTION__,$module_key));
+            }
+            // 2C -- if all went well, we make the module active
+            if ($retval) {
+                $where = array($key_field => $module_id);
+                $fields = array(
+                    'is_active' => TRUE, 
+                    'version'   => intval($manifest['version'])
+                    );
+                if (db_update($table,$fields,$where) === FALSE) {
+                    logger(sprintf('%s(): cannot activate module \'%s\': %s',__FUNCTION__,$module_key,db_errormessage()));
+                    $retval = FALSE;
+                }
+            }
+        }
+    }
+    if ($retval) {
+        logger(sprintf('%s(): success installing module \'%s\'',__FUNCTION__,$module_key));
+        $output->add_message(t('update_subsystem_module_success','admin',$params));
+    } else {
+        $output->add_message(t('update_subsystem_module_error','admin',$params));
+    }
 } // install_module()
 
 
@@ -582,10 +676,98 @@ function update_module(&$output,$module_key) {
  * @param object &$output collects the html output
  * @param string $theme_key primary key for theme record in database AND name of the /program/themes subdirectory
  * @return void results are returned as output in $output
+ * @uses $CFG
+ * @todo we should refactor and combine install_theme() and install_module()
  */
 function install_theme(&$output,$theme_key) {
+    global $CFG;
+    $retval = TRUE; // assume success
+    $theme_key = strval($theme_key);
+    $progdir_themes = $CFG->progdir.'/themes';
+    $manifests = get_manifests($progdir_themes);
     $params = array('{THEME}' => $theme_key);
-    $output->add_message(t('update_subsystem_theme_error','admin',$params));
+
+    // 0 -- sanity check
+    if (!isset($manifests[$theme_key])) {
+        logger(sprintf('%s(): manifest for theme \'%s\' not found; nothing installed',__FUNCTION__,$theme_key));
+        $retval = FALSE;
+    } else {
+        // 1 -- preliminary creation of a new theme record (we need the pkey in the installer)
+        $manifest = $manifests[$theme_key];
+        $table = 'themes';
+        $fields = array(
+            'name'       => $theme_key,
+            'version'    => 0,
+            'manifest'   => $manifest['manifest'],
+            'is_core'    => ((isset($manifest['is_core'])) && ($manifest['is_core'])) ? TRUE : FALSE,
+            'is_active'  => FALSE,
+            'class'      => (isset($manifest['class'])) ? $manifest['class'] : NULL,
+            'class_file' => (isset($manifest['class_file'])) ? $manifest['class_file'] : NULL
+            );
+        $key_field = 'theme_id';
+        if (($theme_id = db_insert_into_and_get_id($table,$fields,$key_field)) === FALSE) {
+            logger(sprintf('%s(): cannot install theme \'%s\': %s',__FUNCTION__,$theme_key,db_errormessage()));
+            $retval = FALSE;
+        } else {
+            // 2A -- maybe insert tables for theme
+            if ((isset($manifest['tabledefs'])) && (!empty($manifest['tabledefs']))) {
+                $filename = sprintf('%s/%s/%s',$progdir_themes,$theme_key,$manifest['tabledefs']);
+                if (file_exists($filename)) {
+                    if (!update_create_tables($filename)) {
+                        $retval = FALSE;
+                    }
+                }
+            }
+            // 2B -- call the installation routine
+            $messages = array(); // collects error messages from call-back routine
+            if ((isset($manifest['install_script'])) && (!empty($manifest['install_script']))) {
+                $filename = sprintf('%s/%s/%s',$progdir_themes,$theme_key,$manifest['install_script']);
+                if (file_exists($filename)) {
+                    @include_once($filename);
+                    $theme_install = $theme_key.'_install';
+                    if (function_exists($theme_install)) {
+                        if ($theme_install($messages,$theme_id)) {
+                            logger(sprintf('%s(): %s(): success installing theme \'%s\' (version is %d)',
+                                           __FUNCTION__,$theme_install,$theme_key,$manifest['version']));
+                        } else {
+                            $retval = FALSE;
+                            logger(sprintf('%s(): %s() returned an error',__FUNCTION__,$theme_install));
+                        }
+                        foreach($messages as $message) { // remember messages, either good or bad
+                            logger($message);
+                        }
+                    } else {
+                        $retval = FALSE;
+                        logger(sprintf('%s(): function %s() does not exist?',__FUNCTION__,$theme_install));
+                    }
+                } else {
+                    $retval = FALSE;
+                    logger(sprintf('%s(): file %s does not exist?',__FUNCTION__,$filename));
+                }
+            } else {
+                $retval = FALSE;
+                logger(sprintf('%s(): no install script in manifest for theme \'%s\'',__FUNCTION__,$theme_key));
+            }
+            // 2C -- if all went well, we make the theme active
+            if ($retval) {
+                $where = array($key_field => $theme_id);
+                $fields = array(
+                    'is_active' => TRUE, 
+                    'version'   => intval($manifest['version'])
+                    );
+                if (db_update($table,$fields,$where) === FALSE) {
+                    logger(sprintf('%s(): cannot activate theme \'%s\': %s',__FUNCTION__,$theme_key,db_errormessage()));
+                    $retval = FALSE;
+                }
+            }
+        }
+    }
+    if ($retval) {
+        logger(sprintf('%s(): success installing theme \'%s\'',__FUNCTION__,$theme_key));
+        $output->add_message(t('update_subsystem_theme_success','admin',$params));
+    } else {
+        $output->add_message(t('update_subsystem_theme_error','admin',$params));
+    }
 } // install_theme()
 
 
@@ -711,6 +893,7 @@ function update_core(&$output) {
 // =========================== UTILITIES ============================
 // ==================================================================
 
+
 /** return an anchor tag with link to the specific update function
  *
  * This utility routine returns a ready to user HTML anchor tag.
@@ -791,6 +974,7 @@ function update_status_table_open(&$output,$title='') {
     $output->add_content('  '.html_table_row_close());
 } // update_status_table_open()
 
+
 /** close the status overview HTML-table we opened before
  *
  * this is the companion routine for {@link update_status_table_open()};
@@ -854,13 +1038,39 @@ function get_manifests($path) {
 } // get_manifests()
 
 
-
+/** create tables in database via include()'ing a file with tabledefs
+ *
+ * @param string $filename contains the table definitions
+ * @return bool TRUE on success, FALSE otherwise + messages written to logger
+ * @uses $DB
+ */
+function update_create_tables($filename) {
+    global $DB;
+    $retval = TRUE; // assume success
+    if (!file_exists($filename)) {
+        logger(sprintf('%s(): cannot include tabledefs: file \'%s\' not found',__FUNCTION__,$filename));
+        $retval = FALSE;
+    } else {
+        $tabledefs = array();
+        include($filename);
+        foreach($tabledefs as $tabledef) {
+            if ($DB->create_table($tabledef) === FALSE) { // oops, but we continue anyway
+                logger(sprintf('%s(): cannot create table \'%s\': %s',__FUNCTION__,$tabledef['name'],db_errormessage()));
+                $retval = FALSE;
+            } else {
+                logger(sprintf('%s(): success creating table \'%s\'',__FUNCTION__,$tabledef['name']),LOG_DEBUG);
+            }
+        }
+    }
+    return $retval;
+} // update_create_tables()
 
 
 
 // ==================================================================
 // =========================== WORKHORSES ===========================
 // ==================================================================
+
 
 /** perform actual update to version 2010120800
  *

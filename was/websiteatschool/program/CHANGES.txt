@@ -1,5 +1,10 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.8 2011/03/07 14:14:20 pfokker Exp $
+$Id: CHANGES.txt,v 1.9 2011/03/08 16:12:31 pfokker Exp $
+
+2011-03-08
+- done with install_theme() and install_module():
+  we can now install new themes and modules
+- corrected a few typos
 
 2011-03-07
 - added more clarification in htmlpage_install.php
