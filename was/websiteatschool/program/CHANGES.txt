@@ -1,5 +1,10 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.11 2011/03/08 17:19:24 pfokker Exp $
+$Id: CHANGES.txt,v 1.12 2011/03/09 08:52:37 pfokker Exp $
+
+2011-03-09
+- bugfix: a newly added language in the translate tool
+  was always labeled 'active' even when the box was
+  unchecked; fixed in translatetool.class.php
 
 2011-03-08
 - done with install_theme() and install_module():

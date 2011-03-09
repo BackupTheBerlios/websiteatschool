@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: translatetool.class.php,v 1.2 2011/02/03 14:04:04 pfokker Exp $
+ * @version $Id: translatetool.class.php,v 1.3 2011/03/09 08:52:37 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -382,7 +382,6 @@ class TranslateTool {
             'manifest'            => '',
             'is_core'             => FALSE,
             'is_active'           => $is_active,
-            'is_active'           => TRUE,
             'dialect_in_database' => FALSE,
             'dialect_in_file'     => FALSE
             );
