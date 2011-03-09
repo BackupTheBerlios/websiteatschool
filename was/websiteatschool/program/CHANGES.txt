@@ -1,5 +1,7 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.13 2011/03/09 09:58:51 pfokker Exp $
+$Id: CHANGES.txt,v 1.14 2011/03/09 12:03:22 pfokker Exp $
+
+### Release 0.90.1 - 2011-03-09 ###
 
 2011-03-09
 - bugfix: a newly added language in the translate tool
@@ -11,6 +13,12 @@ $Id: CHANGES.txt,v 1.13 2011/03/09 09:58:51 pfokker Exp $
 - a new language without a corresponding manifest but
   added/created locally can now exist in the database
   without raising an error in the update status overview  
+- changes in /program/version.php:
+  . Bumped WAS_RELASE from 0.90.0 to 0.90.1
+  . Bumped WAS_RELEASE_DATE from 2011-02-01 to 2011-03-09
+  . WAS_VERSION remains unchanged at 2011020100
+- bumped release/release date in various manifests too
+  (languages, modules, themes).
 
 2011-03-08
 - done with install_theme() and install_module():
@@ -56,6 +64,8 @@ $Id: CHANGES.txt,v 1.13 2011/03/09 09:58:51 pfokker Exp $
 - the new Project Home Page is now at http://websiteatschool.eu;
   many, many sourcefiles modified to include the new location
   (mainly in copyright messages)
+
+### Release 0.90.0 - 2011-02-01 ###
 
 2011-02-01
 Today the complete development of WebsiteAtSchool was transferred
