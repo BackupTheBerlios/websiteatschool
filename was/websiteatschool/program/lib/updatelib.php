@@ -54,7 +54,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: updatelib.php,v 1.7 2011/03/08 16:12:32 pfokker Exp $
+ * @version $Id: updatelib.php,v 1.8 2011/03/09 09:58:51 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -175,15 +175,16 @@ function update_show_overview(&$output) {
     $output->add_content('<h2>'.t('update_header','admin').'</h2>');
     $output->add_content(t('update_intro','admin'));
 
-    // 1 -- show core status in an HTML-table
+    // 1 -- show core status in a 6-column HTML-table
     update_status_table_open($output);
     $class = 'odd';
     $attributes = array('class' => $class);
     $output->add_content('  '.html_table_row($attributes));
     $output->add_content('    '.html_table_cell($attributes,t('update_core','admin')));
     $output->add_content('    '.html_table_cell($attributes,$CFG->version));
-    $core_version_release_date = sprintf('%s (%s) %s',WAS_VERSION,WAS_RELEASE_DATE,WAS_RELEASE);
-    $output->add_content('    '.html_table_cell($attributes,$core_version_release_date));
+    $output->add_content('    '.html_table_cell($attributes,htmlspecialchars(WAS_VERSION)));
+    $output->add_content('    '.html_table_cell($attributes,htmlspecialchars(WAS_RELEASE_DATE)));
+    $output->add_content('    '.html_table_cell($attributes,htmlspecialchars(WAS_RELEASE)));
     if (intval($CFG->version) == intval(WAS_VERSION)) {
         $output->add_content('    '.html_table_cell($attributes,t('update_status_ok','admin')));
     } else {
@@ -196,7 +197,7 @@ function update_show_overview(&$output) {
     $subsystems = array(
         'languages'    => array(
             'table'    => 'languages',
-            'fields'   => array('language_key','version'),
+            'fields'   => array('language_key','version','manifest'),
             'keyfield' => 'language_key',
             'path'     => $CFG->progdir.'/languages',
             'install'  => TASK_INSTALL_LANGUAGE,
@@ -204,7 +205,7 @@ function update_show_overview(&$output) {
             ),
         'modules' => array(
             'table'    => 'modules',
-            'fields'   => array('name','version'),
+            'fields'   => array('name','version','manifest'),
             'keyfield' => 'name',
             'path'     => $CFG->progdir.'/modules',
             'install'  => TASK_INSTALL_MODULE,
@@ -212,7 +213,7 @@ function update_show_overview(&$output) {
             ),
         'themes' => array(
             'table'    => 'themes',
-            'fields'   => array('name','version'),
+            'fields'   => array('name','version','manifest'),
             'keyfield' => 'name',
             'path'     => $CFG->progdir.'/themes',
             'install'  => TASK_INSTALL_THEME,
@@ -234,7 +235,7 @@ function update_show_overview(&$output) {
             $records = array(); 
         }
 
-        // 2C -- open an HTML-table for status overview
+        // 2C -- open a 6-column HTML-table for status overview
         $title = t('update_subsystem_'.$subsystem,'admin');
         update_status_table_open($output,$title);
         $class = 'even';
@@ -269,16 +270,14 @@ function update_show_overview(&$output) {
             }
             $class = ($class == 'odd') ? 'even' : 'odd';
             $attributes = array('class' => $class);
-            if ((isset($manifest['release_date'])) && (!empty($manifest['release_date']))) {
-                $version_manifest .= ' ('.$manifest['release_date'].')';
-            }
-            if ((isset($manifest['release'])) && (!empty($manifest['release']))) {
-                $version_manifest .= ' '.$manifest['release'];
-            }
+            $release_date_manifest = (isset($manifest['release_date'])) ? $manifest['release_date'] : '';
+            $release_manifest = (isset($manifest['release'])) ? $manifest['release'] : '';
             $output->add_content('  '.html_table_row($attributes));
             $output->add_content('    '.html_table_cell($attributes,htmlspecialchars($key)));
             $output->add_content('    '.html_table_cell($attributes,htmlspecialchars($version_database)));
             $output->add_content('    '.html_table_cell($attributes,htmlspecialchars($version_manifest)));
+            $output->add_content('    '.html_table_cell($attributes,htmlspecialchars($release_date_manifest)));
+            $output->add_content('    '.html_table_cell($attributes,htmlspecialchars($release_manifest)));
             $output->add_content('    '.html_table_cell($attributes,$status));
             $output->add_content('  '.html_table_row_close());
         }
@@ -288,19 +287,38 @@ function update_show_overview(&$output) {
             if (isset($manifests[$key])) { // already dealt with in the foreach loop over all manifests
                 continue;
             }
-            // this should NOT happen!
-            $version_database = (isset($record['version'])) ? $record['version'] : 'NULL';
-            $status = t('update_status_error','admin');
+            // Realisticly speaking there are two possibilities here:
+            //  1. a new language was added locally but no 'official' language pack was installed, or
+            //  2. a language was once installed but the manifest is lost in the mist of time (very unlikely)
+            // The former case is perfectly possible, the latter is a real error.
+            // Note, however, that case 1 is very unlikely for modules and themes: the user cannot simply
+            // add a record to the modules or themes table like she can via 'Add a language' in the Translate Tool.
+            //
+            // The trigger for the error (case 2) is: a manifest name is mentioned in the $record but
+            // we haven't seen that one before (in the foreach loop over all manifests).
+            // This error condition yields question marks for the external version and release/release date
+            // and 'ERROR' for status. Case 1 above yields dashes instead, with a status of OK.
+            //
+            $version_database = (isset($record['version'])) ? $record['version'] : '0';
+            if ((isset($record['manifest'])) && (!empty($record['manifest']))) { // Case 2 -- ERROR
+                $version_release_date = '?';
+                $status = t('update_status_error','admin');
+                logger(sprintf('%s(): weird: \'%s/%s\' database version (%s) exists without corresponding manifest?',
+                               __FUNCTION__,$subsystem,$key,strval($version_database)));
+            } else { // Case 1 - locally added language
+                $version_release_date = '-';
+                $status = t('update_status_ok','admin');
+            }
             $class = ($class == 'odd') ? 'even' : 'odd';
             $attributes = array('class' => $class);
             $output->add_content('  '.html_table_row($attributes));
             $output->add_content('    '.html_table_cell($attributes,htmlspecialchars($key)));
             $output->add_content('    '.html_table_cell($attributes,htmlspecialchars($version_database)));
-            $output->add_content('    '.html_table_cell($attributes,'?'));
+            $output->add_content('    '.html_table_cell($attributes,$version_release_date));
+            $output->add_content('    '.html_table_cell($attributes,$version_release_date));
+            $output->add_content('    '.html_table_cell($attributes,$version_release_date));
             $output->add_content('    '.html_table_cell($attributes,$status));
             $output->add_content('  '.html_table_row_close());
-            logger(sprintf('%s(): weird: \'%s/%s\' database version (%s) exists without corresponding manifest?',
-                           __FUNCTION__,$subsystem,$key,strval($version_database)));
         }
         update_status_table_close($output);
     }
@@ -948,11 +966,12 @@ function update_core_version(&$output,$version) {
 /** open a status overview HTML-table including column headers
  *
  * this routine opens an HTML-table in prepration for a status
- * overview of a subsystem (languages, modules, themes). The optional
- * title is used as the header of the first column.
+ * overview of the system or a subsystem (languages, modules, themes).
+ * The optional title is used as the header of the first column.
  *
- * Because we display the release and release_date in the 3rd column,
- * the columns have different widths: 20% 20% 40% 20%.
+ * The width of the first column is 25% and the remaining 5 columns
+ * area 15% each which creates an orderly display of name, internal
+ * version, external version, releasedate, release and status.
  *
  * @param object &$output collects the html output
  * @param string $title is the header of the first column
@@ -964,12 +983,13 @@ function update_status_table_open(&$output,$title='') {
     $attributes = array('class' => 'header');
     $output->add_content('  '.html_table_row($attributes));
     $attributes['align'] = 'left';
-    $attributes['width'] = '20%';
+    $attributes['width'] = '25%';
     $output->add_content('    '.html_table_head($attributes,$title));
+    $attributes['width'] = '15%';
     $output->add_content('    '.html_table_head($attributes,t('update_version_database','admin')));
-    $attributes['width'] = '40%';
     $output->add_content('    '.html_table_head($attributes,t('update_version_manifest','admin')));
-    $attributes['width'] = '20%';
+    $output->add_content('    '.html_table_head($attributes,t('update_release_date_manifest','admin')));
+    $output->add_content('    '.html_table_head($attributes,t('update_release_manifest','admin')));
     $output->add_content('    '.html_table_head($attributes,t('update_status','admin')));
     $output->add_content('  '.html_table_row_close());
 } // update_status_table_open()

@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: admin.php,v 1.3 2011/03/02 15:35:02 pfokker Exp $
+ * @version $Id: admin.php,v 1.4 2011/03/09 09:58:50 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1101,8 +1101,10 @@ $string['logview_message'] = 'Logbericht';
 
 $string['update_header'] = 'Updatebeheer';
 $string['update_intro'] = 'Dit is updatebeheer. Hieronder staat een overzicht van de huidige interne en externe versienummers van het basissysteem en de diverse subsystemen. Als de interne versie afwijkt van de externe, dan kunt u de interne versie opwaarderen naar de externe door de link \'[Opwaarderen]\' in de laatste kolom te volgen of installeren via de link \'[Installeren]\'.';
-$string['update_version_database'] = 'Interne versie';
-$string['update_version_manifest'] = 'Externe versie';
+$string['update_version_database'] = 'Intern';
+$string['update_version_manifest'] = 'Versie';
+$string['update_release_date_manifest'] = 'Datum';
+$string['update_release_manifest'] = 'Uitgave';
 $string['update_status'] = 'Status';
 $string['update_core'] = 'basis';
 $string['update_core_success'] = 'Basissysteem met succes opgewaardeerd naar versie {VERSION}';

@@ -1,10 +1,16 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.12 2011/03/09 08:52:37 pfokker Exp $
+$Id: CHANGES.txt,v 1.13 2011/03/09 09:58:51 pfokker Exp $
 
 2011-03-09
 - bugfix: a newly added language in the translate tool
   was always labeled 'active' even when the box was
   unchecked; fixed in translatetool.class.php
+- re-arranged the status overview table in updatelib.php:
+  we now have additional columns for release date and
+  release.
+- a new language without a corresponding manifest but
+  added/created locally can now exist in the database
+  without raising an error in the update status overview  
 
 2011-03-08
 - done with install_theme() and install_module():
