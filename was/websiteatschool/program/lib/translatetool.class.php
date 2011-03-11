@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: translatetool.class.php,v 1.3 2011/03/09 08:52:37 pfokker Exp $
+ * @version $Id: translatetool.class.php,v 1.4 2011/03/11 15:32:46 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1390,7 +1390,7 @@ EOT;
         $language_name = $this->languages[$language_key]['language_name'];
         $email = new Email;
 
-        $mailto = 'siteatschool@berestijn.net';
+        $mailto = 'translations@websiteatschool.eu';
         $email->set_mailto($mailto,'Website@School Translations');
 
         $subject = sprintf('Website@School Translation: %s (%s) - %s',$language_name,$language_key,$full_domain);
