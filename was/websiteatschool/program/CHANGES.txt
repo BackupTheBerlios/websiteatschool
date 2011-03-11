@@ -1,5 +1,5 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.16 2011/03/11 13:57:24 pfokker Exp $
+$Id: CHANGES.txt,v 1.17 2011/03/11 15:21:14 pfokker Exp $
 
 2011-03-11
 - bugfix: there was a problem with the database dump:
@@ -8,6 +8,8 @@ $Id: CHANGES.txt,v 1.16 2011/03/11 13:57:24 pfokker Exp $
   can accomodate an IP-address of 15 or 39 characters
   because the relevant fields are varchar(255)
 - finetuning the message-id header field in email class
+- updated INSTALL.txt with instructions for upgrading
+  and installing the manual
 
 ### Release 0.90.1 - 2011-03-09 ###
 
