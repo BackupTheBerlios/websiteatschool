@@ -100,11 +100,17 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: loginlib.php,v 1.2 2011/02/03 14:04:04 pfokker Exp $
- * @todo should we suppress the usernamd in the laissez-passer routine? We _do_ leak the
+ * @version $Id: loginlib.php,v 1.3 2011/03/11 13:57:24 pfokker Exp $
+ * @todo should we suppress the username in the laissez-passer routine? We _do_ leak the
  *       the username in an insecure email message. This does require making the
  *       laissez-passer code unique in the database (currently only username+code
  *       has to be unique and that's easy because the username itself is unique).
+ * @todo should we normalize the remote_addr everywhere? We now rely on the remote_addr
+ *       being equal to some stored value (in the database) but with an IPv6 address
+ *       there are several possibilities to have different representations of the
+ *       same address (e.g. '::dead:beef' is equivalent to ::0:dead:beef' or even
+ *       '::DeAd:BeeF' or '0000:0000:0000:0000:0000:0000:DEAD:BEEF'. This problem
+ *       also exists with IPv4: '127.0.0.1' is equivalent to '127.000.000.001'. *sigh*
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 

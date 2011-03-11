@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: email.class.php,v 1.2 2011/02/03 14:04:03 pfokker Exp $
+ * @version $Id: email.class.php,v 1.3 2011/03/11 13:57:24 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -814,7 +814,25 @@ class Email {
      * 3.6.4 in RFC5322 Internet Message Format (October 2008),
      * see {@link http://www.ietf.org/rfc/rfc5322.txt}.
      *
+     * Note that the 'id-left' in the 'msg-id' also contains the remote
+     * IP-address. This could be an IPv4 address in the usual dotted-decimal
+     * form but it could also be an IPv6 address like '::1' (3 characters) or
+     * '[FEDC:BA98:7654:3210:FEDC:BA98:7654:3210]' (41 characters).
+     * The total maximum-length of 'id-left' may add up to
+     * 11 (32-bit signed pid) + 1 (dot) + 41 (full IPv6 w/ brackets) + 1 (hash) +
+     * 11 (32-bit signed remote port) + 1 (dot) + 14 (date/time) + 11 (signed
+     * unique number) = 91 characters. This is longer than the recommended
+     * linelength of 78 characters, but the absolute maximum of 998 characters
+     * will probably NOT be reached. OTOH: we do not actually check for
+     * huge domain names and/or server names. Oh well.
+     *
+     * Note that we massage the IPv6 address by replacing any ':', '[' and ']'
+     * with '!', '{' and '}' respectively because the former are not allowed in
+     * a dot-atom-text. As a matter of fact we translate most 'specials' to
+     * 'atext' (RFC5322 3.2.3). Notable exception: the dot stays.
+     *
      * @return string message-id according to RFC5322 section 3.6.4
+     * @todo how about UTF-8 hostnames? Mmmm...
      */
     function rfc5322_message_id() {
         global $CFG;
@@ -838,7 +856,9 @@ class Email {
         // 2 -- construct msg-id with a hopefully unique id-left
         $msg_id = sprintf('<%d.%s#%d.%s.%d@%s>',
                             intval(getmypid()),
-                            (isset($_SERVER['REMOTE_ADDR'])) ? strtr($_SERVER['REMOTE_ADDR'],':','!') : '127.0.0.1',
+                            (isset($_SERVER['REMOTE_ADDR'])) ? strtr($_SERVER['REMOTE_ADDR'],
+                                                                     ':[]()<>;@,\\',
+                                                                     '!{}{}{}!*-/' ) : '127.0.0.1',
                             (isset($_SERVER['REMOTE_PORT'])) ? intval($_SERVER['REMOTE_PORT']) : 42,
                             strftime('%Y%m%d%H%M%S'),
                             get_unique_number(),

@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: waslib.php,v 1.2 2011/02/03 14:04:04 pfokker Exp $
+ * @version $Id: waslib.php,v 1.3 2011/03/11 13:57:24 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -343,6 +343,9 @@ function t($phrase_key,$full_domain='',$replace='',$location_hint='',$language='
  * If the caller does not provide a user_id, this routine attempts to
  * read the user_id from the global $_SESSION array, i.e. we try to link
  * events to a particular user if possible.
+ *
+ * Note that with a field definition of varchar(255) there is room to store either
+ * an IPv4 address (max 15 bytes) or a full-blown IPv6 address (max 39 bytes).
  *
  * @param string $message the message to write to the log
  * @param int $priority loglevel, see PHP-function syslog() for a list of predefined constants
