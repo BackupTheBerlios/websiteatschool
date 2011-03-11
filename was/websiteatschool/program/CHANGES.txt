@@ -1,5 +1,9 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.14 2011/03/09 12:03:22 pfokker Exp $
+$Id: CHANGES.txt,v 1.15 2011/03/11 13:40:41 pfokker Exp $
+
+2011-03-11
+- bugfix: there was a problem with the database dump:
+  NULL-values were not properly dumped.
 
 ### Release 0.90.1 - 2011-03-09 ###
 

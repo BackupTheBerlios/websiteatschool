@@ -41,7 +41,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: mysql.class.php,v 1.2 2011/02/03 14:04:04 pfokker Exp $
+ * @version $Id: mysql.class.php,v 1.3 2011/03/11 13:40:42 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -750,7 +750,11 @@ class DatabaseMysql {
                 $glue = '';
                 foreach($record as $field => $value) {
                     $data .= $glue;
-                    $data .= ($needs_quotes[$field]) ? "'".addslashes($value)."'" : $value;
+                    if (is_null($value)) {
+                        $data .= 'NULL';
+                    } else {
+                        $data .= ($needs_quotes[$field]) ? "'".addslashes($value)."'" : $value;
+                    }
                     if ($glue == '') { $glue = ','; }
                 }
                 $data .= ");\n";
