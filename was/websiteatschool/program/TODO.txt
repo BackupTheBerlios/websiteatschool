@@ -1,5 +1,5 @@
 /program/TODO.txt
-$Id: TODO.txt,v 1.1 2011/02/01 13:00:05 pfokker Exp $
+$Id: TODO.txt,v 1.2 2011/05/02 20:51:01 pfokker Exp $
 
 2008-01-29
 -- convert /program/*.txt to DOS-text
@@ -198,3 +198,20 @@ OK How about changing all where clauses with "(value = 'NULL')" into
 2010-12-08
 -- Should we add a configuratble favicon to themes as a config option
    (defaulting to /program/graphics/favicon.ico)?
+
+
+2011-05-02
+-- Can we think of a smart way to assign hotkeys to HTML-labels where
+   the hotkey is a multi-byte UTF-8 sequence? And more important: does
+   it make sense to do so or is a hotkey like [Alt-R] always connected
+   to the keyboard-key 'R' in combination with 'Alt'? Does it even
+   work to have something like "~\xC2\xAEegister" where \xC2\xAE is
+   the (R) symbol and the tilde would indicate hotkey [Alt-(R)] or
+   what? And, how does one generate such a character (R)? If you
+   generate it with say [AltGr] + [R] then the hotkey-combination
+   becomes [Alt-AltGr-R]. Mmmmm, sounds counter-intuitive to me.
+-- Is it better to assign quasi-random ASCII-characters to translated
+   labels, something like "~<A>\xC2\xAEegister" which might yield
+   hotkey [Alt-A] for the label that would display as
+   "\xC2\xAEegister" ie without the '~' '<' 'A' and '>'. Mmmm....
+   confusing...

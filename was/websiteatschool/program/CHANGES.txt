@@ -1,6 +1,7 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.19 2011/05/02 16:21:19 pfokker Exp $
+$Id: CHANGES.txt,v 1.20 2011/05/02 20:51:01 pfokker Exp $
 -------------------------------------------------------------------------------
+
 2011-05-02
 - install.php:
   . suppress PHP-errors when realpath, opendir are outside
@@ -11,6 +12,10 @@ $Id: CHANGES.txt,v 1.19 2011/05/02 16:21:19 pfokker Exp $
     Dutch and Spanish translation (partial))
 - filenmanager: added the untranslated path to directory
   overview in task_list_directory()
+- dialoglib.php:
+  . slight change of the meaning of ~ as hotkey-indicator:
+    we now only accept ASCII-characters. UTF-8 characters
+    are silently ignored.
 
 2011-04-29
 - install.php:

@@ -180,7 +180,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: dialoglib.php,v 1.2 2011/02/03 14:04:03 pfokker Exp $
+ * @version $Id: dialoglib.php,v 1.3 2011/05/02 20:51:01 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1343,6 +1343,9 @@ function dialog_get_class(&$item,$class=NULL) {
  * accesskey_tilde_to_underline("Pass~word",'<b>','</b>') yields "Pass<b>w</b>ord"
  * accesskey_tilde_to_underline("~Role",'','') yields "Role"
  *
+ * Note that we only accept ASCII here: if a tilde is followed by a non-ASCII-character
+ * (e.g. the first byte of a multibyte UTF-8 sequence) we silently ignore and still 'eat' the tilde.
+ *
  * @param string $string the string to process
  * @param string $tag_open the tag that starts the emphasis
  * @param string $tag_close the tag that ends the emphasis
@@ -1353,20 +1356,25 @@ function accesskey_tilde_to_underline($string,$tag_open='<u>',$tag_close='</u>')
     while (($pos = strpos($string,'~')) !== FALSE) {
         $target .= substr($string,0,$pos);
         $hotkey = substr($string,$pos+1,1);
-        if (!empty($hotkey)) {
+        if ((!empty($hotkey)) && ((ord($hotkey) & 0x80) == 0x00)) { // MUST be ASCII; skip any multibyte UTF-8 sequence
             $target .= $tag_open.$hotkey.$tag_close;
+            $string = substr($string,$pos+2); // eat both the tilde and the ASCII-character
+        } else {
+            $string = substr($string,$pos+1); // only eat the tilde but leave the first byte of the UTF-8  sequence
         }
-        $string = substr($string,$pos+2);
     }
     return $target.$string;
 } // accesskey_tilde_to_underline()
 
 
-/** return the character that follows the first tilde in a string
+/** return the ASCII-character that follows the first tilde in a string
  *
- * this returns the character that follows the first tilde in the
+ * this returns the ASCII-character that follows the first tilde in the
  * string (if any). This is the character that could be added as
  * an accesskey to some HTML tag, e.g. a label or an input.
+ *
+ * Note that a tilde followed by a UTF-8 sequence of 2 or more bytes
+ * does NOT yield a hotkey at all but an empty string instead.
  *
  * @param string $string the string to process
  * @return string the hotkey character or an empty string
@@ -1375,7 +1383,8 @@ function accesskey_from_string($string) {
     $hotkey = '';
     $pos = strpos($string,'~');
     if ($pos !== FALSE) {
-        $hotkey = substr($string,$pos+1,1);
+        $c = substr($string,$pos+1,1);
+        $hotkey = ((ord($c) & 0x80) == 0x00) ? $c : '';
     }
     return $hotkey;
 } // accesskey_from_string()
