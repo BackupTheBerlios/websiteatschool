@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: pagemanager.class.php,v 1.2 2011/02/03 14:04:04 pfokker Exp $
+ * @version $Id: pagemanager.class.php,v 1.3 2011/05/02 21:03:52 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -910,7 +910,7 @@ class PageManager {
             $_SESSION['preview_area'] = $this->area_id;
             $hash = md5($_SESSION['preview_salt'].$_SESSION['preview_node']);
             session_write_close();
-            redirect_and_exit($CFG->www_short.'/?preview='.$hash);
+            redirect_and_exit($CFG->www_short.'/index.php?preview='.$hash);
             // we never reach this point
         } else {
             $msg = t('access_denied','admin');

@@ -26,7 +26,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: main_admin.php,v 1.2 2011/02/03 14:04:02 pfokker Exp $
+ * @version $Id: main_admin.php,v 1.3 2011/05/02 21:03:52 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -938,7 +938,7 @@ class AdminOutput {
         $s .= $m.html_a($href,NULL,$a_attr,$anchor)."\n";
 
         // 2 -- public area
-        $href = ($this->funnel_mode) ? '#' : $CFG->www_short.'/';
+        $href = ($this->funnel_mode) ? '#' : $CFG->www_short.'/index.php';
         $a_attr['title'] = t('go_view_public_area_no_logout','admin');
         $anchor = t('view_public_area','admin');
         $s .= $m.html_a($href,NULL,$a_attr,$anchor)."\n";

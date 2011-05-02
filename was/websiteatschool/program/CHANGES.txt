@@ -1,5 +1,5 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.20 2011/05/02 20:51:01 pfokker Exp $
+$Id: CHANGES.txt,v 1.21 2011/05/02 21:03:52 pfokker Exp $
 -------------------------------------------------------------------------------
 
 2011-05-02
@@ -16,6 +16,11 @@ $Id: CHANGES.txt,v 1.20 2011/05/02 20:51:01 pfokker Exp $
   . slight change of the meaning of ~ as hotkey-indicator:
     we now only accept ASCII-characters. UTF-8 characters
     are silently ignored.
+- main_admin.php: we now go explicitly to 'index.php'
+  when navigating to the pulic area so a bare CFG->www_short
+  will not take us to say index.html or default.htm.
+- pagemanager.class.php: same for the preview function:
+  explicit link to index.php.   
 
 2011-04-29
 - install.php:
