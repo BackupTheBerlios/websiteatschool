@@ -24,7 +24,7 @@
  * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_es
- * @version $Id: install.php,v 1.1 2011/03/08 16:48:16 pfokker Exp $
+ * @version $Id: install.php,v 1.2 2011/05/02 16:21:19 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = 'Instalar';
@@ -194,4 +194,8 @@ $string['warning_no_manifest'] = 'Aviso: vaciar manifesto o ningun manifesto par
 $string['error_install_demodata'] = 'Error: no se puede instalar datos de demostración';
 $string['error_directory_exists'] = 'Error: {FIELD}: directorio ya  existe : {DIRECTORY}';
 $string['error_nameclash'] = 'Error: {FIELD}: por favor cambiar el nombre {USERNAME}; se utiliza ya como cuenta de usuario de demostración';
+
+// v0.90.2
+$string['warning_mysql_obsolete'] = 'Aviso: MySQL versión {VERSION} es envejecido (it does not support UTF-8. Please upgrade MySQL)'
+
 ?>

@@ -1,5 +1,42 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.18 2011/03/11 15:32:45 pfokker Exp $
+$Id: CHANGES.txt,v 1.19 2011/05/02 16:21:19 pfokker Exp $
+-------------------------------------------------------------------------------
+2011-05-02
+- install.php:
+  . suppress PHP-errors when realpath, opendir are outside
+    the open_basedir tree
+  . more checks on possible UTF-8 issues
+  . added warning for obsolete MySQL-version (< 4.1) in
+    database and compatibility screens (including
+    Dutch and Spanish translation (partial))
+- filenmanager: added the untranslated path to directory
+  overview in task_list_directory()
+
+2011-04-29
+- install.php:
+  . UTF-8 support for password validation routine
+  . UTF-8 aware use of substr()
+- uitf8lib.php:
+  . added function utf8_substr()
+
+2011-04-22
+- install.php: 
+  . more support for UTF-8 in save_database()
+  . additional input checks on absurd lengths
+
+2011-04-18
+- install.php: all input (GET/POST) is now checked for UTF-8 conformance
+
+2011-04-15
+- created utf8lib.php with essential routines for handling UTF-8
+  (based on Unicode 6.0.0, February 2011)
+- install.php:
+  . we now explicitly check user input for valid UTF-8
+  . added 'accept-charset="UTF-8" to all forms (perhaps superfluous)
+  . improved caseINsensitive check for the 'I Agree' prompt
+
+2011-04-13
+- install.php: added http-equiv Content-Type: text/html; charset=UTF-8
 
 2011-03-11
 - bugfix: there was a problem with the database dump:

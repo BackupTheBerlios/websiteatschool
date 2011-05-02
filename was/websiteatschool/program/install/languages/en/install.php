@@ -24,7 +24,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasinstall
- * @version $Id: install.php,v 1.2 2011/02/03 14:04:03 pfokker Exp $
+ * @version $Id: install.php,v 1.3 2011/05/02 16:21:19 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -219,5 +219,8 @@ $string['warning_no_manifest'] = 'Warning: empty manifest or no manifest for {IT
 $string['error_install_demodata'] = 'Error: cannot install demonstration data';
 $string['error_directory_exists'] = 'Error: {FIELD}: directory already exists: {DIRECTORY}';
 $string['error_nameclash'] = 'Error: {FIELD}: please change the name {USERNAME}; it is already used as a demonstration user account';
+
+// v0.90.2
+$string['warning_mysql_obsolete'] = 'Warning: version \'{VERSION}\' of MySQL is obsolete and it does not support UTF-8. Please upgrade MySQL';
 
 ?>

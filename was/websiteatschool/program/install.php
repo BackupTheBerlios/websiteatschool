@@ -27,7 +27,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasinstall
- * @version $Id: install.php,v 1.2 2011/02/03 14:04:02 pfokker Exp $
+ * @version $Id: install.php,v 1.3 2011/05/02 16:21:19 pfokker Exp $
  * @todo how prevent third party-access to install.php after initial install? .htaccess? !exists(../config.php)? 
  * @todo we should make sure that autosession is disabled in php.ini, otherwise was won't work
  * @todo we should make sure that register globals is off
@@ -53,9 +53,12 @@ define('INSTALL_DIALOG_DOWNLOAD',       10);
 define('INSTALL_DIALOG_CANCELLED',      11);
 define('PROJECT_SITE','websiteatschool.eu');
 
+if (get_magic_quotes_runtime() == 1) { set_magic_quotes_runtime(0); } 
+
 session_name('WASINSTALL');
 session_start();
-include_once(dirname(__FILE__).'/version.php'); // which version are we installing anyway?
+include_once(dirname(__FILE__).'/version.php');     // which version are we installing anyway?
+include_once(dirname(__FILE__).'/lib/utf8lib.php'); // use essential UTF-8 routines from main program
 $wizard = new InstallWizard();
 $wizard->run();
 session_write_close();
@@ -150,7 +153,7 @@ class InstallWizard {
             $this->messages[] = $this->t('error_fatal',$params);
             $dialog = INSTALL_DIALOG_CANCELLED;
         } elseif (isset($_POST['dialog'])) {
-            $dialog = intval($_POST['dialog']);
+            $dialog = intval($this->get_utf8_parameter_string($_POST,'dialog'));
             if (isset($_POST['button_previous'])) {
                 if ($_SESSION['INSTALL']['stage'] < INSTALL_DIALOG_FINISH) {
                     $dialog = max(--$dialog, INSTALL_DIALOG_LANGUAGE);
@@ -165,7 +168,6 @@ class InstallWizard {
                 case INSTALL_DIALOG_USER:         $retval = $this->save_user();            break;
                 case INSTALL_DIALOG_COMPATIBILITY:$retval = $this->check_compatibility();  break;
                 case INSTALL_DIALOG_CONFIRM:      $retval = $this->perform_installation(); break;
-                case INSTALL_DIALOG_FINISH:       $retval = $this->finish();               break;
                 default:
                     $this->messages[] = "Internal error: cannot process dialog '$dialog'";
                     $retval = FALSE;
@@ -183,7 +185,7 @@ class InstallWizard {
                 $dialog = INSTALL_DIALOG_DONE;
             } // else don't move
         } elseif (isset($_GET['step'])) {
-            $dialog = intval($_GET['step']);
+            $dialog = intval($this->get_utf8_parameter_string($_GET,'step'));
             $stage = $_SESSION['INSTALL']['stage'];
             if ($stage < INSTALL_DIALOG_FINISH) {
                 $dialog = max(INSTALL_DIALOG_LANGUAGE,min($dialog,$stage));
@@ -196,7 +198,7 @@ class InstallWizard {
             $_SESSION['INSTALL']['stage'] = $dialog;
         }
 
-        if ($dialog ==INSTALL_DIALOG_DOWNLOAD) {
+        if ($dialog == INSTALL_DIALOG_DOWNLOAD) {
             // download is a special case
             header('Content-Type: application/octet-stream');
             header('Content-Disposition: attachment; filename="config.php"');
@@ -247,7 +249,7 @@ class InstallWizard {
         $content = $m."<h2>{$dialog_title}</h2>\n".
                    $m.$this->t('dialog_language_explanation')."\n".
                    $m."<p>\n".
-                   $m."<form action=\"{$WAS_SCRIPT_NAME}\" method=\"POST\">\n".
+                   $m."<form action=\"{$WAS_SCRIPT_NAME}\" method=\"POST\" accept-charset=\"UTF-8\">\n".
                    $m."  <input type=\"hidden\" name=\"dialog\" value=\"".INSTALL_DIALOG_LANGUAGE."\">\n".
                    $this->render_dialog($dialogdef,$m.'  ').
                    $m."  <p>\n".
@@ -274,7 +276,7 @@ class InstallWizard {
             if (!$item['show']) {
                 continue;
             }
-            $value = (isset($_POST[$name])) ? trim($this->magic_unquote($_POST[$name])) : '';
+            $value = trim($this->get_utf8_parameter_string($_POST,$name));
             switch($name) {
             case 'language':
                 if (isset($item['options'][$value])) {
@@ -330,7 +332,7 @@ class InstallWizard {
         $content = $m."<h2>{$dialog_title}</h2>\n".
                    $m.$this->t('dialog_installtype_explanation')."\n".
                    $m."<p>\n".
-                   $m."<form action=\"{$WAS_SCRIPT_NAME}\" method=\"POST\">\n".
+                   $m."<form action=\"{$WAS_SCRIPT_NAME}\" method=\"POST\" accept-charset=\"UTF-8\">\n".
                    $m."  <input type=\"hidden\" name=\"dialog\" value=\"".INSTALL_DIALOG_INSTALLTYPE."\">\n".
                    $this->render_dialog($dialogdef,$m.'  ').
                    $m."  <p>\n".
@@ -360,7 +362,7 @@ class InstallWizard {
             if (!$item['show']) {
                 continue;
             }
-            $value = (isset($_POST[$name])) ? trim($this->magic_unquote($_POST[$name])) : '';
+            $value = trim($this->get_utf8_parameter_string($_POST,$name));
             switch($name) {
             case 'installtype':
                 if (isset($item['options'][$value])) {
@@ -426,7 +428,7 @@ class InstallWizard {
      * just to make sure the user understands what to do.
      *
      * Note that the phrase the user enters is compared to the requested
-     * phrase in a case-INsensitive way (see {@link check_license()}.
+     * phrase in a more or less case-INsensitive way (see {@link check_license()}.
      *
      * @param string $m margin for better readability of generated HTML-code
      * @return void HTML-code sent to browser
@@ -450,7 +452,7 @@ class InstallWizard {
                    $m."<p>\n".
                    $m.$you_must_accept."\n".
                    $m."<p>\n".
-                   $m."<form action=\"{$WAS_SCRIPT_NAME}\" method=\"POST\">\n".
+                   $m."<form action=\"{$WAS_SCRIPT_NAME}\" method=\"POST\" accept-charset=\"UTF-8\">\n".
                    $m."  <input type=\"hidden\" name=\"dialog\" value=\"".INSTALL_DIALOG_LICENSE."\">\n".
                    $m."  <input type=\"text\" name=\"license\" value=\"".
                                 htmlspecialchars($value)."\" size=\"50\" maxlength=\"240\">\n".
@@ -468,16 +470,17 @@ class InstallWizard {
     /** check if the user accepts the licences
      *
      * This is the companion routine for {@link show_dialog_license()}.
-     * It checks whether the user dutyfully type 'I agree'.
+     * It checks whether the user dutyfully typed 'I agree'.
+     * Note that we check caseINsensitive, so 'i agree' is acceptable, as is 'I aGrEe'.
+     * Also note that we accept non-ascii UTF-8, say "J'accept'ee" or "J'ACCEPT'EE" 
+     * which  has an e-acute. Case folding to lowercase accepts all those variants.
      *
      * @return bool TRUE on success, otherwise FALSE + error information in $this->messages array
      */
     function check_license() {
         $iagree = $this->t('dialog_license_i_agree');
-        if (isset($_POST['license'])) {
-            $license = $this->magic_unquote($_POST['license']);
-            $_SESSION['INSTALL']['license_accepted'] = (strcasecmp(trim($iagree),trim($license)) == 0) ? TRUE : FALSE;
-        }
+        $license = trim($this->get_utf8_parameter_string($_POST,'license'));
+        $_SESSION['INSTALL']['license_accepted'] = (utf8_strcasecmp(trim($iagree),$license) == 0) ? TRUE : FALSE;
         $retval = $_SESSION['INSTALL']['license_accepted'];
         if ($retval != TRUE) {
             $a = array('{IAGREE}' => $iagree);
@@ -513,7 +516,7 @@ class InstallWizard {
         $content = $m."<h2>{$dialog_title}</h2>\n".
                    $m.$this->t('dialog_database_explanation')."\n".
                    $m."<p>\n".
-                   $m."<form action=\"{$WAS_SCRIPT_NAME}\" method=\"POST\">\n".
+                   $m."<form action=\"{$WAS_SCRIPT_NAME}\" method=\"POST\" accept-charset=\"UTF-8\">\n".
                    $m."  <input type=\"hidden\" name=\"dialog\" value=\"".INSTALL_DIALOG_DATABASE."\">\n".
                    $this->render_dialog($dialogdef,$m.'  ').
                    $m."  <p>\n".
@@ -548,8 +551,8 @@ class InstallWizard {
      * The following tests are performed:
      *  - fields should not fail basic tests (min/max stringlength etc.)
      *  - the database is not supposed to be in the list of 'forbidden' databases (e.g. 'test' or 'mysql')
-     *  - prefix must only use letters, digits or an underscore
-     *  - prefix must start with a letter
+     *  - prefix must only use ASCII-letters A-Z or a-z, digits 0-9 or an underscore
+     *  - prefix must start with an ASCII-letter
      *
      * If the above conditions are not satisfied we bail out immediately,
      * without testing other information. Otherwise, we also perform these tests:
@@ -573,7 +576,7 @@ class InstallWizard {
             if (!$item['show']) {
                 continue;
             }
-            $value = (isset($_POST[$name])) ? trim($this->magic_unquote($_POST[$name])) : '';
+            $value = trim($this->get_utf8_parameter_string($_POST,$name));
             switch($name) {
             case 'db_server':
             case 'db_username':
@@ -597,7 +600,8 @@ class InstallWizard {
 
         // 2A -- validate the prefix (possible route for sql injection in the next step)
         $prefix = $_SESSION['INSTALL']['db_prefix'];
-        if (($prefix != preg_replace('/[^A-Za-z0-9_]/','',$prefix)) || (ctype_alpha(substr($prefix,0,1)) == FALSE)) {
+        if (preg_match('/^[A-Za-z][A-Za-z0-9_]*$/',$prefix) != 1) { 
+            // Not minimal 1 ASCII-letter followed by 0 or more ASCII-letters/digits/underscores
             $_SESSION['INSTALL']['db_validated'] = FALSE;
             $this->messages[] = $this->t('error_invalid_db_prefix',array('{FIELD}' => $dialogdef['db_prefix']['label']));
             if (!$_SESSION['INSTALL']['install_type_custom']) {
@@ -606,7 +610,7 @@ class InstallWizard {
             }
         }
         // 2B -- forbidden database name?
-        if (in_array(strtolower($_SESSION['INSTALL']['db_name']),$forbidden_names)) {
+        if (in_array(utf8_strtolower($_SESSION['INSTALL']['db_name']),$forbidden_names)) {
             $_SESSION['INSTALL']['db_validated'] = FALSE;
             $params = array(
                 '{FIELD}' => $dialogdef['db_name']['label'],
@@ -630,6 +634,14 @@ class InstallWizard {
                 $_SESSION['INSTALL']['db_validated'] = FALSE;
                 $this->messages[] = $this->t('error_db_cannot_connect');
             } else {
+                switch($this->mysql_utf8_support($db)) {
+                case 0:
+                    $params = array('{VERSION}' => mysql_get_server_info());
+                    $this->messages[] = $this->t('warning_mysql_obsolete',$params); // not fatal but warning nevertheless
+                    break;
+                case 3: mysql_query("SET NAMES 'utf8' COLLATE 'utf8_unicode_ci'"); break;
+                case 4: mysql_query("SET NAMES 'utf8mb4' COLLATE 'utf8mb4_unicode_ci'"); break;
+                }
                 if (mysql_select_db($_SESSION['INSTALL']['db_name'],$db) === FALSE) {
                     $_SESSION['INSTALL']['db_validated'] = FALSE;
                     $this->messages[] = $this->t('error_db_cannot_select_db');
@@ -744,7 +756,7 @@ class InstallWizard {
      *  - cms_dataroot (varchar(240))
      *  - cms_demodata (boolean)
      *  - cms_demodata_password (varchar(255) (but only a sha1() or md5() hash is stored eventually)
-     * 
+     *
      * Some fields are suppressed in the dialog if the user selected 
      * a Standard installation:
      *  - website_replyto_address: copied from website_from_address
@@ -764,7 +776,7 @@ class InstallWizard {
         $content = $m."<h2>{$dialog_title}</h2>\n".
                    $m.$this->t('dialog_cms_explanation')."\n".
                    $m."<p>\n".
-                   $m."<form action=\"{$WAS_SCRIPT_NAME}\" method=\"POST\">\n".
+                   $m."<form action=\"{$WAS_SCRIPT_NAME}\" method=\"POST\" accept-charset=\"UTF-8\">\n".
                    $m."  <input type=\"hidden\" name=\"dialog\" value=\"".INSTALL_DIALOG_CMS."\">\n".
                    $this->render_dialog($dialogdef,$m.'  ').
                    $m."  <p>\n".
@@ -804,7 +816,7 @@ class InstallWizard {
             if (!$item['show']) {
                 continue;
             }
-            $value = (isset($_POST[$name])) ? trim($this->magic_unquote($_POST[$name])) : '';
+            $value = trim($this->get_utf8_parameter_string($_POST,$name));
             switch($name) {
             case 'cms_title':
             case 'cms_website_from_address':
@@ -819,9 +831,7 @@ class InstallWizard {
             case 'cms_progwww':
             case 'cms_dataroot':
                 // eat the trailing slash if any
-                if ((substr($value,-1,1) == '/') ||(substr($value,-1,1) == '\\')) {
-                  $value = substr($value,0,-1);
-                }
+                $value = rtrim($value,"/\\"); // there is no valid multi-byte UTF-8 ending in '/' or '\' so rtrim is OK
                 $_SESSION['INSTALL'][$name] = $value;
                 break;
 
@@ -1075,7 +1085,7 @@ class InstallWizard {
         $content = $m."<h2>{$dialog_title}</h2>\n".
                    $m.$this->t('dialog_user_explanation')."\n".
                    $m."<p>\n".
-                   $m."<form action=\"{$WAS_SCRIPT_NAME}\" method=\"POST\">\n".
+                   $m."<form action=\"{$WAS_SCRIPT_NAME}\" method=\"POST\" accept-charset=\"UTF-8\">\n".
                    $m."  <input type=\"hidden\" name=\"dialog\" value=\"".INSTALL_DIALOG_USER."\">\n".
                    $this->render_dialog($dialogdef,$m.'  ').
                    $m."  <p>\n".
@@ -1113,7 +1123,7 @@ class InstallWizard {
             if (!$item['show']) {
                 continue;
             }
-            $value = (isset($_POST[$name])) ? trim($this->magic_unquote($_POST[$name])) : '';
+            $value = trim($this->get_utf8_parameter_string($_POST,$name));
             switch($name) {
             case 'user_full_name':
             case 'user_username':
@@ -1219,7 +1229,7 @@ class InstallWizard {
         $content = $m."<h2>{$dialog_title}</h2>\n".
                    $m.$this->t('dialog_compatibility_explanation')."\n".
                    $m."<p>\n".
-                   $m."<form action=\"{$WAS_SCRIPT_NAME}\" method=\"POST\">\n".
+                   $m."<form action=\"{$WAS_SCRIPT_NAME}\" method=\"POST\" accept-charset=\"UTF-8\">\n".
                    $m."  <input type=\"hidden\" name=\"dialog\" value=\"".INSTALL_DIALOG_COMPATIBILITY."\">\n";
 
         $class = "even tight";
@@ -1300,8 +1310,21 @@ class InstallWizard {
                 $this->messages[] = $result;
                 $retval = FALSE;
             } else {
-                $value = $this->t('db_type_option_mysql').' '.mysql_get_server_info();
-                $result = $this->t('compatibility_ok');
+                $mysql_server_info = mysql_get_server_info();
+                switch($this->mysql_utf8_support($db)) {
+                case 0:
+                    $params = array('{VERSION}' => $mysql_server_info);
+                    $value = $this->t('db_type_option_mysql').' '.$mysql_server_info."<br>".
+                             $this->t('warning_mysql_obsolete',$params);
+                    $result = $this->t('compatibility_warning');
+                    break;
+                // case 3: value -> compatibility_warning: not full UTF-8 support; break; // maybe implement this later
+                // case 4: value -> compatibility_ok: complete UTF08 support; break;      // maybe implement this later
+                default:
+                    $value = $this->t('db_type_option_mysql').' '.$mysql_server_info;
+                    $result = $this->t('compatibility_ok');
+                    break;
+                }
                 mysql_close($db);
             }
         } else {
@@ -1471,7 +1494,7 @@ class InstallWizard {
         $content .= $m."  <p>\n".
                     $m.$this->t('dialog_confirm_printme')."\n".
                     $m."  <p>\n".
-                    $m."<form action=\"{$WAS_SCRIPT_NAME}\" method=\"POST\">\n".
+                    $m."<form action=\"{$WAS_SCRIPT_NAME}\" method=\"POST\" accept-charset=\"UTF-8\">\n".
                     $m."  <input type=\"hidden\" name=\"dialog\" value=\"".INSTALL_DIALOG_CONFIRM."\">\n".
                     $m."  ".$this->button('previous')."\n";
 
@@ -1628,7 +1651,7 @@ class InstallWizard {
         $table = 'users';
         $key_field = 'user_id';
         $username = $_SESSION['INSTALL']['user_username'];
-        $userdata_directory = strtolower($this->sanitise_filename($username));
+        $userdata_directory = utf8_strtolower($this->sanitise_filename($username));
         $fields = array(
             'username' => $username,
             'salt' => $salt,
@@ -1963,7 +1986,7 @@ class InstallWizard {
                    $m.$this->t('dialog_finish_check_for_updates')."<br>\n".
                    $m.$link.
                    $m."<p>\n".
-                   $m."<form action=\"{$WAS_SCRIPT_NAME}\" method=\"POST\">\n".
+                   $m."<form action=\"{$WAS_SCRIPT_NAME}\" method=\"POST\" accept-charset=\"UTF-8\">\n".
                    $m."  <input type=\"hidden\" name=\"dialog\" value=\"".INSTALL_DIALOG_FINISH."\">\n".
                    $this->render_dialog($dialogdef,$m.'  ').
                    $m."  <p>\n".
@@ -2026,7 +2049,7 @@ class InstallWizard {
         $content = $m."<h2>{$dialog_title}</h2>\n".
                    $m.$this->t('dialog_cancelled_explanation')."\n".
                    $m."<p>\n".
-                   $m."<form action\"{$WAS_SCRIPT_NAME}\" method=\"GET\">\n".
+                   $m."<form action\"{$WAS_SCRIPT_NAME}\" method=\"GET\" accept-charset=\"UTF-8\">\n".
                    $m."  ".$this->button('ok')."\n".
                    $m."</form>\n";
         $menu = '';
@@ -2053,7 +2076,7 @@ class InstallWizard {
      * @return void redirect + HTML-code sent to browser
      */
     function end_session_and_redirect() {
-        $jump = (isset($_POST['jump'])) ? trim($this->magic_unquote($_POST['jump'])) : '';
+        $jump = trim($this->get_utf8_parameter_string($_POST,'jump'));
         switch($jump) {
         case 'admin':  $url = $_SESSION['INSTALL']['cms_www'].'/admin.php';       break;
         case 'index':  $url = $_SESSION['INSTALL']['cms_www'].'/index.php';       break;
@@ -2097,7 +2120,7 @@ class InstallWizard {
         // 1 -- where are we located in the file system
         //
         $cms_progdir = dirname(__FILE__);
-        if (($cms_dir = realpath($cms_progdir.'/..')) === FALSE) {
+        if (($cms_dir = @realpath($cms_progdir.'/..')) === FALSE) {
             $cms_dir = dirname($cms_progdir);
         }
 
@@ -2147,8 +2170,7 @@ class InstallWizard {
         // 4 -- try to guess a place for data outside the document root
         //
         if (isset($_SERVER['DOCUMENT_ROOT'])) {
-            $cms_dataroot = realpath($_SERVER['DOCUMENT_ROOT'].'/..');
-            if ($cms_dataroot === FALSE) {
+            if (($cms_dataroot = @realpath($_SERVER['DOCUMENT_ROOT'].'/..')) === FALSE) {
                 $cms_dataroot = '';
             } else {
                 $cms_dataroot .= ($cms_dataroot == '/') ? 'wasdata' : '/wasdata';
@@ -2270,6 +2292,13 @@ class InstallWizard {
      * between the page header (logo+helpbutton)  and the menu/content area. This
      * is the feedback of the previous action to the user (if any).
      *
+     * Note that we hard-code the content type to be "text/html; charset=UTF-8" in
+     * a http-equiv right at the top of the &lt;head&gt;. This indicates the correct
+     * charset to the browser even if a generated page is stored by the user and 
+     * later retrieved in which case there will be no http-header. (We cannot be
+     * sure that the user's browser correctly identifies the stored document
+     * as UTF-8 if that is not the default).
+     *
      * @param string $dialog_title text to show in the browser's title bar (indicating where we are)
      * @param string $menu ready-to-use HTML-code comprising the menu at the left hand side of the page
      * @param string $content ready-to-user HTML-code holding the actual contents of the page
@@ -2296,11 +2325,12 @@ class InstallWizard {
         $s = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n".
              "<html>\n".
              "<head>\n".
+             "  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n".
+             "  <meta http-equiv=\"Content-Script-Type\" content=\"text/javascript\">\n".
+             "  <meta http-equiv=\"Content-Style-Type\" content=\"text/css\">\n".
              "  <meta name=\"MSSmartTagsPreventParsing\" content=\"TRUE\">\n".
              "  <meta name=\"keywords\" content=\"free content management system, website@school, websiteatschool\">\n".
              "  <meta name=\"description\" content=\"installation wizard for website@school content management system\">\n".
-             "  <meta http-equiv=\"Content-Script-Type\" content=\"text/javascript\">\n".
-             "  <meta http-equiv=\"Content-Style-Type\" content=\"text/css\">\n".
              "  <link rel=\"stylesheet\" type=\"text/css\" href=\"styles/admin_base.css\">\n";
         if ($high_visibility) {
             $s .= "  <link rel=\"stylesheet\" type=\"text/css\" href=\"styles/admin_high_visibility.css\">\n";
@@ -2393,6 +2423,7 @@ class InstallWizard {
               "</html>\n";
         return $s;
     } // get_page()
+
 
     /** construct a link to appropriate legal notices as per AGPLv3 section 5
      *
@@ -2624,7 +2655,7 @@ class InstallWizard {
      * replace by the corresponding value.
      *
      * The translations are read from the files /program/install/languages/LL/install.php,
-     * where LL is a two-letter language code (e.g. en, nl, de, fr). If the desired language is
+     * where LL is a language code (usually two-letter e.g. en, nl, de, fr). If the desired language is
      * not available, English is used instead. If the requested translation is not found, the
      * key of the translation is returned, sandwiched between the language codes. Usually this
      * does not happen (all keys used have a translation), but it can be helpful when creating
@@ -2653,8 +2684,6 @@ class InstallWizard {
         if (empty($language)) {
             $language = (isset($_SESSION['INSTALL']['language_key'])) ? $_SESSION['INSTALL']['language_key'] : 'en';
         }
-        $language = substr($language,0,2); // 
-
         while (!isset($phrases[$language])) {
             $languages_dir = dirname(__FILE__).'/install/languages';
             $language_path = $languages_dir.'/'.$language;
@@ -2710,22 +2739,25 @@ class InstallWizard {
      * Note that because the names of the languages are expressed in the languages themselves, this routine
      * has the side-effect of reading _all_ of the available language files into memory (see {@link t()}).
      *
+     * Also note that the sort order is based on UTF-8 byte sequences, i.e. the order is 7-bit ASCII bytes,
+     * followed by 2-byte, 3-byte and 4-byte UTF-8 sequences. No problem for this list of languages IMHO.
+     *
      * @return array sorted list of available languages, keyed by language code
      */
     function get_list_of_install_languages() {
         $languages = array('en' => 'English'); // At least show English
         $languages_dir = dirname(__FILE__).'/install/languages';
         if (is_dir($languages_dir)) {
-            if (($dp = opendir($languages_dir)) !== FALSE) {
-                while (($language = readdir($dp)) !== FALSE) {
+            if (($dp = @opendir($languages_dir)) !== FALSE) {
+                while (($language = @readdir($dp)) !== FALSE) {
                     $language_path = $languages_dir.'/'.$language;
-                    if ((substr($language,0,1) != '.') &&
+                    if ((substr($language,0,1) != '.') && // '.' is plain ASCII so substr() is OK here
                         (is_dir($language_path)) &&
                         (is_file($language_path.'/install.php'))) {
                         $languages[$language] = sprintf("%s (%s)",$this->t('language_name','',$language),$language);
                     }
                 }
-                closedir($dp);
+                @closedir($dp);
             }
         }
         asort($languages);
@@ -2750,26 +2782,26 @@ class InstallWizard {
         if (($license_html = file_get_contents('license.html')) === FALSE) {
             return 11;
         }
-        if (($n1 = strpos($license_html,"<body>")) === FALSE) {
+        if (($n1 = strpos($license_html,"<body>")) === FALSE) { // '<body>' is ASCII so strpos() is OK
             return 13;
         }
         $n1 += 6; // skip past the body tag
-        if (($n2 = strpos($license_html,"</body>")) === FALSE) {
+        if (($n2 = strpos($license_html,"</body>")) === FALSE) { // '</body>' is ASCII so strpos() is OK
             return 17;
         }
         $length = $n2 - $n1;
         if ($length <= 0) {
             return 19;
         }
-        $license = substr($license_html,$n1,$length);
+        $license = substr($license_html,$n1,$length); // '<body>' and '</body>' were plain ASCII so substr() is OK here
         $md5sum = md5(str_replace(array("\r","\n","\t"," "),'',strip_tags($license)));
-        if (strtolower($md5sum) != '93f38293a20ee4baa2527b1c45206221') {
+        if (utf8_strtolower($md5sum) != '93f38293a20ee4baa2527b1c45206221') {
             return 23;
         }
         if (($md5sum = md5_file('graphics/waslogo-567x142.png')) === FALSE) {
             return 29;
         }
-        if (strtolower($md5sum) != '8cc5080b838341dbf274724ee937e755') {
+        if (utf8_strtolower($md5sum) != '8cc5080b838341dbf274724ee937e755') {
             return 31;
         }
         return 0;
@@ -2793,6 +2825,42 @@ class InstallWizard {
         }
         return $value;
     } // magic_unquote()
+
+
+    /** return a valid (unquoted) UTF-8 string parameter typically from $_POST, or default value if none
+     *
+     * this retrieves a parameter string, typically from $_POST, and checks basic properties.
+     * 1. the string should not contain more than $maximum_length characters
+     * 2. the string should be valid UTF-8
+     *
+     * If it is not a valid UTF-8 string or the string is too long, $error_value
+     * (default: empty string) is returned. If no string by the name $name is
+     * present in $gpc, the default value $default_value is returned. If there WAS
+     * a valid UTF-8 string, it is automagically UNquoted in the process.
+     *
+     * Note that we check the stringlength in two steps. First we check the worst-case UTF-8 string
+     * with 4-byte sequences for a length of 4 * $maximum_length. Then, after establishing that
+     * the string is valid UTF-8 we make a more precise check of the length expressed in chars rather than bytes.
+     *
+     * @param array &$gpc a reference to the array to search (usually $_POST, $_GET or $_COOKIE)
+     * @param string $name the name of the variable to retrieve
+     * @param mixed $default_value the value to return if parameter is not in $gpc
+     * @param mixed $error_value the value to return if parameter is not valid UTF-8
+     * @param mixed $maximum_length
+     * @return mixed the value of the parameter or the default value if not specified
+     */
+    function get_utf8_parameter_string(&$gpc,$name,$default_value='',$error_value='',$maximum_length=255) {
+        $value = $default_value;
+        if (isset($gpc[$name])) {
+            $value = $this->magic_unquote($gpc[$name]);
+            if ((strlen($value) > ($maximum_length << 2)) || // quick test to prevent looooong strings
+                (!utf8_validate($value)) ||                  // check UTF-8 validity 
+                (utf8_strlen($value) > $maximum_length)) {   // extra test to check length more precise
+                $value = $error_value;
+            }
+        }
+        return $value;
+    } // get_utf8_parameter_string()
 
 
     /** quick and dirty dialogdef renderer
@@ -2936,7 +3004,7 @@ class InstallWizard {
      * fields, e.g. a password of sufficient complexity, etc. This routine does not do that.    
      *
      * @param array $item this array holds a field definition from a dialog definition
-     * @param string $value this is the magic_unquote()'d and trim()'ed value the user POSTed
+     * @param string $value this is the magic_unquote()'d and trim()'ed UTF-8 compliant string value the user POSTed
      * @return TRUE if minimal tests passed, otherwise FALSE + messages added to $this->messages
      */
     function validate($item,$value) {
@@ -2946,7 +3014,7 @@ class InstallWizard {
         case 'p':
             $minlength = (isset($item['minlength'])) ? intval($item['minlength']) : 0;
             $maxlength = (isset($item['maxlength'])) ? intval($item['maxlength']) : 255; // arbitrary but: KISS
-            $length = strlen($value);
+            $length = utf8_strlen($value);
             $params = array('{FIELD}' => $item['label'], '{MIN}' => strval($minlength), '{MAX}' => strval($maxlength));
             if ($length < $minlength) {
                 $this->messages[] = $this->t('error_too_short',$params);
@@ -2976,7 +3044,37 @@ class InstallWizard {
     /** validation of password input
      *
      * this routine analyses the password provided against the minimal requirements
-     * of password complexity.
+     * of password complexity. Here 'complexity' means a minimum number of upper case and
+     * lower case characters and a minimum number of digits. The required 'complexity'
+     * of a password is quite ASCII-centric. The idea is to make a user pick
+     * from a pool of at least 62 different characters rather than say 26 lowercase
+     * latin letters a-z. However, with UTF-8 the story is actually different: what is
+     * more "complex": "Aa1" or U+1F150 NEGATIVE CIRCLED LATIN CAPITAL LETTER A encoded
+     * as "\xF0\x9F\x85\x90"? Even though it is only 1 character, the result is byte string
+     * of length 4 rather than the meager 3-byte string that satisfies the minimum requirements...
+     *
+     * Anyway. In order to take into account some additional upper case and lower case
+     * characters without resorting to loading the complete Unicode database, I opt for
+     * the following tricks. If lowercase($str) differs from $str itself, it was
+     * apparently not a lower case character but probably an upper case (or title case)
+     * character; good enough to count it toward the upper case character count. The same
+     * idea is used for the opposite: if upper($str) != $str => $str probably lowercase.
+     *
+     * This algoritm works for A-Z and a-z but also for the 1100+ other Unicode characters
+     * that are case-aware. So, the user isn't held back if she insists on the password
+     * p a \xE1 \xBA \x9E w 0 r d (where \xE1\xBA\x9E equates to U+1E9E LATIN CAPITAL LETTER SHARP S
+     *
+     * Note that by default we still require at least 1 digit 0-9 and do not count any of the
+     * 410 "digits" like these zeros:
+     * U+0660: ARABIC-INDIC DIGIT ZERO
+     * U+06F0: EXTENDED ARABIC-INDIC DIGIT ZERO
+     * U+07C0: NKO DIGIT ZERO
+     * U+0966: DEVANAGARI DIGIT ZERO
+     * ...
+     * U+1D7EC: MATHEMATICAL SANS-SERIF BOLD DIGIT ZERO
+     * U+1D7F6: MATHEMATICAL MONOSPACE DIGIT ZERO
+     *
+     * Perhaps some other time... (Did I mention this is quite ASCII-centric?)
      *
      * @param string $label this string holds the human-readable field name
      * @param string $password this is the magic_unquote()'d and trim()'ed password the user POSTed
@@ -2987,18 +3085,18 @@ class InstallWizard {
      */
     function validate_password($label,$password,$min_lower=1,$min_upper=1,$min_digit=1) {
         $retval = TRUE; // assume success
-        $n = strlen($password);
+        $n = utf8_strlen($password);
         $lower = 0;
         $upper = 0;
         $digit = 0;
 
         for ($i = 0; $i < $n; ++$i) {
-            $c = $password{$i};
-            if (ctype_lower($c)) {
-                ++$lower;
-            } elseif (ctype_upper($c)) {
+            $c = utf8_substr($password,$i,1);
+            if (utf8_strtolower($c) != $c) {
                 ++$upper;
-            } elseif (ctype_digit($c)) {
+            } elseif (utf8_strtoupper($c) != $c) {
+                ++$lower;
+            } elseif (ctype_digit($c)) { // only look at ASCII digits, not the 400+ other 'Nd's in Unicode
                 ++$digit;
             }
         }
@@ -3006,9 +3104,9 @@ class InstallWizard {
             $retval = FALSE;
             $params = array(
                 '{FIELD}' => $label,
-                '{MIN_DIGIT}' => '1',
-                '{MIN_LOWER}' => '1',
-                '{MIN_UPPER}' => '1');
+                '{MIN_DIGIT}' => strval($min_digit),
+                '{MIN_LOWER}' => strval($min_lower),
+                '{MIN_UPPER}' => strval($min_upper));
             $this->messages[] = $this->t('error_bad_password',$params);
         }
         return $retval;
@@ -3034,7 +3132,7 @@ class InstallWizard {
         $retval = TRUE;
         if ($demodata) {
             $demo_accounts = array('acackl','mmonte','hparkh','ffrint','andrew','catherine','herbert','georgina');
-            if (in_array(strtolower($username),$demo_accounts)) {
+            if (in_array(utf8_strtolower($username),$demo_accounts)) {
                 $retval = FALSE;
                 $this->messages[] = $this->t('error_nameclash',array('{FIELD}' => $label, '{USERNAME}' => $username));
             }
@@ -3060,7 +3158,7 @@ class InstallWizard {
 
         // 1 -- where are we?
         $cms_progdir = dirname(__FILE__);
-        if (($cms_dir = realpath($cms_progdir.'/..')) === FALSE) {
+        if (($cms_dir = @realpath($cms_progdir.'/..')) === FALSE) {
             $cms_dir = dirname($cms_progdir);
         }
 
@@ -3099,7 +3197,7 @@ class InstallWizard {
             @fclose($fp);
             @unlink($filename);
             $retval = FALSE;
-        } elseif ($bytes_written != strlen($content)) {
+        } elseif ($bytes_written != strlen($content)) { // check _bytes_:strlen(); not characters and utf8_strlen()
             // $this->messages[] = 'bytes do not add up';
             @fclose($fp);
             @unlink($filename);
@@ -3148,16 +3246,18 @@ class InstallWizard {
     function get_manifests($path) {
         $manifests = array();
         if (is_dir($path)) {
-            if (($dp = opendir($path)) !== FALSE) {
-                while (($item = readdir($dp)) !== FALSE) {
+            if (($dp = @opendir($path)) !== FALSE) {
+                while (($item = @readdir($dp)) !== FALSE) {
                     $item_path = $path.'/'.$item;
                     $item_manifest = $item_path.'/'.$item.'_manifest.php';
-                    if ((substr($item,0,1) != '.') && (is_dir($item_path)) && (is_file($item_manifest))) {
+                    if ((substr($item,0,1) != '.') && // '.' is plain ASCII so substr() is OK here
+                        (is_dir($item_path)) &&
+                        (is_file($item_manifest))) {
                         @include($item_manifest);
                         $manifests[$item]['manifest'] = $item.'_manifest.php';
                     }
                 }
-                closedir($dp);
+                @closedir($dp);
             }
         }
         return $manifests;
@@ -3230,6 +3330,12 @@ class InstallWizard {
      *
      * This routine borrowed from {@link waslib.php}.
      *
+     * Note that this too is an ASCII-centric routine: we only use
+     * plain ASCII letters and digits and nothing of the 64000 other
+     * UNicode characters in the Basic Multilingual Plane. The reason
+     * is simple: 7-bit ASCII characters have the best chance of getting
+     * through communication channels unmangled so there.
+     *
      * @param int length of the string to generate
      * @param int number of candidate-characters to choose from
      * @retun string the generated string of $length characters
@@ -3248,6 +3354,10 @@ class InstallWizard {
     /** sanitise a string to make it acceptable as a filename/directoryname
      *
      * This routine borrowed from {@link waslib.php}.
+     *
+     * Note that this routine too is very ASCII-centric: in the end only
+     * ASCII-characters (52 letters, 10 digits and dash, dot and underscore)
+     * are allowed in the resulting file/directory name.
      *
      * @param string $filename the string to sanitise
      * @return string sanitised filename which is never empty
@@ -3270,7 +3380,7 @@ class InstallWizard {
 
         // 'forbidden' words
         $forbidden = array('','aux','com1','com2','com3','com4','con','lpt1','lpt2','lpt3','lpt4','nul','prn');
-        if (in_array(strtolower($s),$forbidden)) {
+        if (in_array(utf8_strtolower($s),$forbidden)) {
             $s = '_'.$s;
         }
         return $s;
@@ -3288,6 +3398,9 @@ class InstallWizard {
      * Note that we scan the directories with opendir/readdir/closedir rather than
      * rely on file_exists() etc. because we would not find binaries with permissions 0711,
      * which would otherwise be perfectly acceptable to execute with exec().
+     *
+     * Also note that we suppress PHP-error messages that might be visible when we
+     * tread outside the open_basedir.
      *
      * @param string &$clamscan_path path to binary program (output)
      * @param string &$clamscan_version version of the program we found (output)
@@ -3308,25 +3421,25 @@ class InstallWizard {
         // 2A -- try to find clamdscan first
         $clamscans = array();
         foreach ($directories as $directory) {
-            if ($handle = opendir($directory)) {
-                while (($filename = readdir($handle)) !== FALSE) {
-                    if (strtolower($filename) == 'clamscan') {
+            if ($handle = @opendir($directory)) {
+                while (($filename = @readdir($handle)) !== FALSE) {
+                    if (utf8_strtolower($filename) == 'clamscan') {
                         $clamscans[] = $directory.'/'.$filename; // keep for step 2B below
-                    } elseif (strtolower($filename) == 'clamdscan') {
+                    } elseif (utf8_strtolower($filename) == 'clamdscan') {
                         $command = $directory.'/'.$filename;
                         $argument = '-V'; // Request ClamAV version string
                         $lines = array();
                         $retval = -1; // assume failure
-                        $lastline = exec($command.' '.$argument,$lines,$retval);
+                        $lastline = @exec($command.' '.$argument,$lines,$retval);
                         if ($retval == 0) { // success, we're done
                             $clamscan_path = $command;
                             $clamscan_version = $lastline;
-                            closedir($handle);
+                            @closedir($handle);
                             return TRUE;
                         }
                     }
                 }
-            closedir($handle);
+            @closedir($handle);
             }
         }
 
@@ -3335,7 +3448,7 @@ class InstallWizard {
         foreach ($clamscans as $command) {
             $lines = array();
             $retval = -1; // assume failure
-            $lastline = exec($command.' '.$argument,$lines,$retval);
+            $lastline = @exec($command.' '.$argument,$lines,$retval);
             if ($retval == 0) { // success
                 $clamscan_path = $command;
                 $clamscan_version = $lastline;
@@ -3382,6 +3495,69 @@ class InstallWizard {
         $details = $this->t('compatibility_gd_support_details',$params);
         return ((($gif_support_read) && ($gif_support_write)) || ($jpeg_support) || ($png_support)) ? TRUE : FALSE;
     } // gd_supported()
+
+
+    /** determine the level of UTF-8 support based on MySQL-server version
+     *
+     * MySQL support for UTF-8 was non-existent before 4.1.x and limited
+     * until 5.5.3. In this context 'limited' means: only the Basic
+     * Multilingual Plane (U+0000 ... U+FFFF) is supported, i.e. a maximum
+     * of 3-byte sequences per character.
+     *
+     * As of 5.5.3 the full UTF-8 specification according to RFC 3629 is implemented. MySQL now
+     * has 'invented' yet another proprietary name for this character set: 'utf8mb4' (WTF?),
+     * and introduces the alias 'utf8mb3' for the pre 5.5.3 limited support for 'utf8' (WTF??),
+     * hinting that the meaning of 'utf8' may change in future versions to indicate 'utf8mb4' (WTF???).
+     * IM(NS)HO this is yet another reason to go looking for a decent replacement for MySQL. YMMV.
+     *
+     * This routine returns exactly one of the values below (based on the server version).
+     *
+     *  - 0: there is no UTF-8 support available in this server
+     *  - 3: the limited 3-byte sequences are supported
+     *  - 4: full support for 4-byte sequences available, but using the stupid ad-hoc name 'utf8mb4'
+     *
+     * or the value FALSE if version information could not be obtained.
+     *
+     * @param resource $db_link the MySQL connection
+     * @return int|bool support level: either 0 (none), 3 (limited), 4 (full, but with a quirky name) or FALSE on error
+     */
+    function mysql_utf8_support($db_link) {
+        if (($db_version = mysql_get_server_info($db_link)) === FALSE) {
+            return FALSE;
+        }
+        $vrp = explode('.',$db_version);
+        $v = (isset($vrp[0])) ? intval($vrp[0]) : 0;
+        $r = (isset($vrp[1])) ? intval($vrp[1]) : 0;
+        $p = (isset($vrp[2])) ? intval($vrp[2]) : 0;
+        if (($v < 4) || (($v == 4) && ($r < 1))) { // None before 4.1.x
+            return 0;
+        } elseif (($v == 4) || (($v == 5) && ($r < 5)) || (($v == 5) && ($r == 5) && ($p < 3))) { // Limited before 5.5.3
+            return 3;
+        } else { // Full as of 5.5.3
+            return 4;
+        }
+    } // mysql_utf8_support()
+
+
+    /** massage string to contain only 3-byte UTF8-sequences
+     *
+     * this replaces an otherwise perfectly valid 4-byte UTF-8 sequence
+     * in $utf8str with a 3-byte UTF-8 sequence equivalent with the
+     * Unicode replacement character U+FFFD.
+     *
+     * The effect is that it leaves a hint that there used to be some character
+     * instead of silently discarding 4-byte sequences which MySQL does.
+     *
+     * @param string $utf8str valid UTF-8 encoded string
+     * @return string UTF-8 string with all 4-byte sequences replaced
+     */
+    function mysql_utf8mb3($utf8str) {
+        $search = array('/\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}/', // 4-byte excluding overlongs
+                        '/[\\xF1-\\xF3][\\x80-\\xBF]{3}/',      // 4-byte planes 4-15
+                        '/\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2}/');// 4-byte plane 16
+        $replace = "\xEF\xBF\xBD"; // UTF-8 encoded Unicode replacement character U+FFFD
+        return preg_replace($search,$replace,$utf8str);
+    } // mysql_utf8mb3()
 
 } // InstallWizard()
 
