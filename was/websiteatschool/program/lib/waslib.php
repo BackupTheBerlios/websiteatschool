@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: waslib.php,v 1.3 2011/03/11 13:57:24 pfokker Exp $
+ * @version $Id: waslib.php,v 1.4 2011/05/02 16:17:23 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -269,6 +269,12 @@ define('QUASI_RANDOM_DIGITS_UPPER_LOWER',62);
  *
  * If $candidates is smaller than 10, 10 is used, if
  * $candidates is greater than 62 62 is used.
+ *
+ * Note that this is an ASCII-centric routine: we only use
+ * plain ASCII letters and digits and nothing of the 64000 other
+ * UNicode characters in the Basic Multilingual Plane. The reason
+ * is simple: 7-bit ASCII characters have the best chance of getting
+ * through communiocation channels unmangled so there.
  *
  * @param int length of the string to generate
  * @param int number of candidate-characters to choose from
