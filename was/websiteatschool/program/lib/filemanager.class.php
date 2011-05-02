@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: filemanager.class.php,v 1.2 2011/02/03 14:04:04 pfokker Exp $
+ * @version $Id: filemanager.class.php,v 1.3 2011/05/02 16:16:25 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -217,6 +217,7 @@ class FileManager {
         $path = $this->current_directory;
         $title = $this->vname($path);
         $this->output->add_content(sprintf('<h2>%s</h2>',htmlspecialchars($title)));
+        $this->output->add_content(sprintf('<h3>%s</h3>',htmlspecialchars($path)));
         $this->show_breadcrumbs($path);
         $this->show_menu($path);
         $this->show_list($path);
