@@ -24,7 +24,7 @@
  * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_es
- * @version $Id: install.php,v 1.2 2011/05/02 16:21:19 pfokker Exp $
+ * @version $Id: install.php,v 1.3 2011/05/04 16:46:48 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = 'Instalar';
@@ -124,7 +124,7 @@ $string['compatibility_label'] = 'Prueba';
 $string['compatibility_value'] = 'Valor';
 $string['compatibility_result'] = 'Resultado';
 $string['compatibility_ok'] = 'OK';
-$string['compatibility_warning'] = 'Aviso';
+$string['compatibility_warning'] = 'AVISO';
 $string['compatibility_websiteatschool_version_label'] = 'Website@School';
 $string['compatibility_websiteatschool_version_check'] = '(verificar)';
 $string['compatibility_websiteatschool_version_value'] = 'versión {RELEASE} ({VERSION}) {RELEASE_DATE}';
