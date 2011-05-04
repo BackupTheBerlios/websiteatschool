@@ -1,5 +1,5 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.23 2011/05/04 13:53:43 pfokker Exp $
+$Id: CHANGES.txt,v 1.24 2011/05/04 14:22:11 pfokker Exp $
 -------------------------------------------------------------------------------
 
 2011-05-04
@@ -7,6 +7,7 @@ $Id: CHANGES.txt,v 1.23 2011/05/04 13:53:43 pfokker Exp $
   dialog
 - install: added some more comments for translators in Ennglish
   languages files 
+- added French translation (based on 0.90.1)
 
 2011-05-02
 - install.php:
