@@ -100,7 +100,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: loginlib.php,v 1.3 2011/03/11 13:57:24 pfokker Exp $
+ * @version $Id: loginlib.php,v 1.4 2011/05/04 07:32:46 pfokker Exp $
  * @todo should we suppress the username in the laissez-passer routine? We _do_ leak the
  *       the username in an insecure email message. This does require making the
  *       laissez-passer code unique in the database (currently only username+code
@@ -946,7 +946,7 @@ function login_dialog_home_forgot_password($forgot,$m='') {
     $home = t('home_page','loginlib');
     $s = $m."<tr>\n".
          $m."  <td valign=\"bottom\" align=\"left\">\n".
-         $m."    <a href=\"{$CFG->www_short}/\">{$home}</a>\n".
+         $m."    <a href=\"{$CFG->www_short}/index.php\">{$home}</a>\n".
          $m."  </td>\n";
     if (empty($forgot)) {
         $s .=$m."  <td></td>\n";

@@ -1,6 +1,9 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.21 2011/05/02 21:03:52 pfokker Exp $
+$Id: CHANGES.txt,v 1.22 2011/05/04 07:32:46 pfokker Exp $
 -------------------------------------------------------------------------------
+
+2011-05-04
+- loginlib.php: explicitly go to 'index.php' in 'home' link in login dialog
 
 2011-05-02
 - install.php:
