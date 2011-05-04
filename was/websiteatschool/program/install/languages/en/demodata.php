@@ -24,7 +24,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasinstall
- * @version $Id: demodata.php,v 1.2 2011/02/03 14:04:03 pfokker Exp $
+ * @version $Id: demodata.php,v 1.3 2011/05/04 13:53:43 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -122,6 +122,7 @@ Please use the menu to navigate or use the MyPage jump menu.
 <p>{LOREM} {IPSUM}
 <p>{DOLOR} {SIT}
 ';
+$comment['aboutus_content'] = 'Note: the name and address of this example-school are carefully chosen (just like all other example-names used in this program). Perhaps it is best to stick to it and leave it as-is (untranslated), specifically the name \'Amelia Cackle\'.';
 $string['aboutus_content'] = 'Exemplum Primary School<br>
 1, Rock Bottom street<br>
 Gummersbach<br>

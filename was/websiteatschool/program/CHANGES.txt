@@ -1,9 +1,12 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.22 2011/05/04 07:32:46 pfokker Exp $
+$Id: CHANGES.txt,v 1.23 2011/05/04 13:53:43 pfokker Exp $
 -------------------------------------------------------------------------------
 
 2011-05-04
-- loginlib.php: explicitly go to 'index.php' in 'home' link in login dialog
+- loginlib.php: explicitly go to 'index.php' in 'home' link in login
+  dialog
+- install: added some more comments for translators in Ennglish
+  languages files 
 
 2011-05-02
 - install.php:

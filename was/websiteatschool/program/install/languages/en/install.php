@@ -24,7 +24,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasinstall
- * @version $Id: install.php,v 1.3 2011/05/02 16:21:19 pfokker Exp $
+ * @version $Id: install.php,v 1.4 2011/05/04 13:53:43 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -50,7 +50,8 @@ $string['ok_title'] = 'Use [Alt-K] or [Cmnd-K] as a keyboard shortcut for this b
 $string['yes'] = 'Yes';
 $string['no'] = 'No';
 
-$comment['language_name'] = 'LANGUAGE DIALOG<br>The name of the language should be expressed in the language itself, e.g. English, Nederlands, Deutsch, Fran&ccedil;ais, etc.';
+$comment['language_name'] = 'LANGUAGE DIALOG
+The name of the language should be expressed in the language itself, e.g. English, Nederlands, Deutsch, Fran√ßais, etc.';
 $string['language_name'] = 'English';
 $string['dialog_language'] = 'Language';
 $string['dialog_language_title'] = 'Select the installation language';
@@ -124,6 +125,7 @@ $string['dialog_user'] = 'User Account';
 $string['dialog_user_title'] = 'Create the first account';
 $string['dialog_user_explanation'] = 'Please enter the information for the first user account for this new website. Note that this account will have full administrator privileges and all permissions possible so anyone with access to this account can do anything.';
 $string['user_full_name_label'] = 'Full name';
+$comment['user_full_name_help'] = 'Note: do not simply translate the name \'Wilhelmina Bladergroen\': this name was carefully chosen (just like all other example names used throughout this program). If you insist, you could replace her name with that of another pedagogue and education reformer, say CÈlestin Freinet.';
 $string['user_full_name_help'] = 'Please enter your own name or, if you prefer, another (functional) name, e.g. <strong>Wilhelmina Bladergroen</strong> or <strong>Master Web</strong>.';
 $string['user_username_label'] = 'Username';
 $string['user_username_help'] = 'Please enter the login name you want to use for this account. You need to type this name every time you want to login. Examples: <strong>wblade</strong> or <strong>webmaster</strong>.';
