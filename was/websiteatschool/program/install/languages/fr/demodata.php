@@ -24,7 +24,7 @@
  * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_fr
- * @version $Id: demodata.php,v 1.1 2011/05/04 14:22:11 pfokker Exp $
+ * @version $Id: demodata.php,v 1.2 2011/05/05 20:11:19 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = 'Données de démonstration';
@@ -117,7 +117,7 @@ Merci d\'utiliser le menu de navigation ou d\'utiliser le menu \'Aller à\' de M
 {DOLOR} {SIT}';
 $string['aboutus_content'] = 'École primaire Exemple<br/>
 1, Rock Bottom street<br/>
-Gunnersbach<br/>
+Gummersbach<br/>
 Directrice : Amelia Cackle';
 $string['schoolterms1_content'] = '<h2>Périodes scolaires et jours fériés pour {LAST_SCHOOLYEAR}</h2>
 Période 1 : septembre - octobre<br/>
