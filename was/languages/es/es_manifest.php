@@ -24,7 +24,7 @@
  * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam <info@websiteatschool.eu>
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_es
- * @version $Id: es_manifest.php,v 1.1 2011/03/08 16:48:15 pfokker Exp $
+ * @version $Id: es_manifest.php,v 1.2 2011/05/05 07:27:19 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -32,11 +32,11 @@ $manifests['es'] = array(
     'language_key'        => 'es',
     'language_name'       => 'Español',
     'parent_language_key' => 'en',
-    'description'         => 'This is the Spanish translation based on Website@School release 0.90.0',
+    'description'         => 'This is the Spanish translation based on Website@School release 0.90.1',
     'author'              => 'Anouk Coumans, Hanna Tulleken, Margot Molier',
-    'version'             => 2011030800,
-    'release'             => '0.90.0',
-    'release_date'        => '2011-03-08',
+    'version'             => 2011050500,
+    'release'             => '0.90.1',
+    'release_date'        => '2011-05-05',
     'is_core'             => FALSE
    );
 

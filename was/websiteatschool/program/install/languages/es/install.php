@@ -18,13 +18,13 @@
 /** /program/install/languages/es/install.php
  *
  * Language: es (Español)
- * Release:  0.90.0 / 2011030800 (2011-03-08)
+ * Release:  0.90.1 / 2011050500 (2011-05-05)
  *
  * @author Hanna Tulleken <translators@websiteatschool.eu>
  * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_es
- * @version $Id: install.php,v 1.3 2011/05/04 16:46:48 pfokker Exp $
+ * @version $Id: install.php,v 1.4 2011/05/05 07:27:20 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = 'Instalar';
@@ -35,7 +35,7 @@ $string['help_name'] = 'ayuda ';
 $string['help_description'] = 'Ayuda (se abre en una ventana nueva)';
 $string['next'] = 'Siguiente';
 $string['next_accesskey'] = 'S';
-$string['next_title'] = 'Usar  [Alt-S] o [Cmnd-S] como un acceso directo teclado para este botton';
+$string['next_title'] = 'Usar  [Alt-S] o [Cmnd-S] como un acceso directo al teclado para este bottón';
 $string['previous'] = 'Anterior';
 $string['previous_accesskey'] = 'A';
 $string['previous_title'] = 'Usar [Alt-A] o [Cmnd-A] como acceso directo teclado para este botton';
@@ -52,7 +52,7 @@ $string['dialog_language'] = 'Idioma';
 $string['dialog_language_title'] = 'Seleccionar el idioma por la  instalación';
 $string['dialog_language_explanation'] = 'Por favor seleccionar el idioma para usar durante el procedimiento de la instalación';
 $string['language_label'] = 'Idioma';
-$string['language_help'] = 'Español';
+$string['language_help'] = '';
 $string['dialog_installtype'] = 'Tipo de instalación';
 $string['dialog_installtype_title'] = 'Elijir entre una instalación Normal y Personalizar  ';
 $string['dialog_installtype_explanation'] = 'Por favor elijir de la lista aquí abajo el escenario de la instalación ';
@@ -194,8 +194,5 @@ $string['warning_no_manifest'] = 'Aviso: vaciar manifesto o ningun manifesto par
 $string['error_install_demodata'] = 'Error: no se puede instalar datos de demostración';
 $string['error_directory_exists'] = 'Error: {FIELD}: directorio ya  existe : {DIRECTORY}';
 $string['error_nameclash'] = 'Error: {FIELD}: por favor cambiar el nombre {USERNAME}; se utiliza ya como cuenta de usuario de demostración';
-
-// v0.90.2
-$string['warning_mysql_obsolete'] = 'Aviso: MySQL versión {VERSION} es envejecido (it does not support UTF-8. Please upgrade MySQL)'
-
+$string['warning_mysql_obsolete'] = 'Aviso: MySQL versión {VERSION} es envejecido (it does not support UTF-8. Please upgrade MySQL)';
 ?>

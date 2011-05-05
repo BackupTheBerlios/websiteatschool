@@ -18,13 +18,13 @@
 /** /program/themes/frugal/languages/es/frugal.php
  *
  * Language: es (Español)
- * Release:  0.90.0 / 2011030800 (2011-03-08)
+ * Release:  0.90.1 / 2011050500 (2011-05-05)
  *
  * @author Margot Molier <translators@websiteatschool.eu>
  * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_es
- * @version $Id: frugal.php,v 1.1 2011/03/08 16:48:16 pfokker Exp $
+ * @version $Id: frugal.php,v 1.2 2011/05/05 07:27:20 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['title'] = 'Tema frugal';
