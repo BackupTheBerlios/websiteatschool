@@ -24,7 +24,7 @@
  * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_zh
- * @version $Id: install.php,v 1.1 2011/05/05 06:17:24 pfokker Exp $
+ * @version $Id: install.php,v 1.2 2011/05/05 06:28:44 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = '安装';
@@ -194,4 +194,6 @@ $string['warning_no_manifest'] = '警告：空白表单或没有{ITEM}的表单'
 $string['error_install_demodata'] = '错误：无法安装演示数据';
 $string['error_directory_exists'] = '错误：{FIELD}: 目录已经存在：{DIRECTORY}';
 $string['error_nameclash'] = '错误： {FIELD}: 请更改名称 {USERNAME}; 已经被用于演示用户帐户';
+// v0.90.2
+$string['warning_mysql_obsolete'] = 'Warning: version \'{VERSION}\' of MySQL is obsolete and it does not support UTF-8. Please upgrade MySQL';
 ?>
