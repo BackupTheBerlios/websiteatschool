@@ -1,8 +1,10 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.28 2011/05/06 05:14:58 pfokker Exp $
+$Id: CHANGES.txt,v 1.29 2011/05/06 16:07:56 pfokker Exp $
 -------------------------------------------------------------------------------
 2011-05-06
 - install.php: https on a non-standard port yielded the wrong port number
+- utf8lib.php: added a function to map characters with diacriticals to
+  plain ASCII as far as possible
 
 2011-05-05
 - added Chinese translation (based on 0.90.1)
