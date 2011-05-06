@@ -27,7 +27,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasinstall
- * @version $Id: install.php,v 1.4 2011/05/06 05:14:58 pfokker Exp $
+ * @version $Id: install.php,v 1.5 2011/05/06 16:12:54 pfokker Exp $
  * @todo how prevent third party-access to install.php after initial install? .htaccess? !exists(../config.php)? 
  * @todo we should make sure that autosession is disabled in php.ini, otherwise was won't work
  * @todo we should make sure that register globals is off
@@ -1652,6 +1652,8 @@ class InstallWizard {
         $key_field = 'user_id';
         $username = $_SESSION['INSTALL']['user_username'];
         $userdata_directory = utf8_strtolower($this->sanitise_filename($username));
+        // If the username consists of only non-mappable UTF-8 chars, we end up with '_'; make that more readable...
+        if ($userdata_directory == '_') { $userdata_directory = '_webmaster'; }
         $fields = array(
             'username' => $username,
             'salt' => $salt,
@@ -1929,8 +1931,6 @@ class InstallWizard {
         if ($retval) {
             $_SESSION['INSTALL']['config_php_written'] = $this->write_config_php();
         }
-// $this->messages[] = 'STUB: always fail..';
-// return FALSE;
         return $retval;
     } // perform_installation()
 
@@ -3360,14 +3360,19 @@ class InstallWizard {
      *
      * Note that this routine too is very ASCII-centric: in the end only
      * ASCII-characters (52 letters, 10 digits and dash, dot and underscore)
-     * are allowed in the resulting file/directory name.
+     * are allowed in the resulting file/directory name. However, by first
+     * mapping UTF-8 to ASCII (getting rid of diacriticals) we can make names
+     * more readable.
      *
      * @param string $filename the string to sanitise
      * @return string sanitised filename which is never empty
      */
     function sanitise_filename($filename)  {
+        // get rid of all diacriticals etc.
+        $s = utf8_strtoascii($filename);
+
         // strip leading space/dot/dash/underscore/backslash/slash
-        $s = preg_replace('/^[ .\-_\\\\\\/]*/','',$filename);
+        $s = preg_replace('/^[ .\-_\\\\\\/]*/','',$s);
 
         // strip trailing space/dot/dash/underscore/backslash/slash
         $s = preg_replace('/[ .\-_\\\\\\/]*$/','',$s);
