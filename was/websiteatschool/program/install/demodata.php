@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasinstall
- * @version $Id: demodata.php,v 1.2 2011/02/03 14:04:03 pfokker Exp $
+ * @version $Id: demodata.php,v 1.3 2011/05/06 16:15:41 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -95,7 +95,6 @@ function demodata(&$messages,&$config) {
     if (!demodata_alerts($messages,$config,$string)) {
         $retval = FALSE;
     }
-
     return $retval;
 } // demodata()
 
@@ -108,7 +107,9 @@ function demodata(&$messages,&$config) {
  * @return bool TRUE on success + data entered into database, FALSE on error
  */
 function demodata_areas(&$messages,&$config,&$tr) {
+    global $wizard; // This is a kludge to get to the sanitise_filename() code. There must be a better way...
     global $DB;
+    static $seq = 0; // circumvent file/directory name clashes by appending a 'unique' sequence number
     $retval = TRUE; // assume success
 
     // 0 -- setup essential information
@@ -131,7 +132,7 @@ function demodata_areas(&$messages,&$config,&$tr) {
             'is_private' => FALSE,
             'is_active'  => TRUE,
             'is_default' => TRUE,
-            'path'       => $tr['public_area_path'],
+            'path'       => utf8_strtolower($wizard->sanitise_filename($tr['public_area_path'])),
             'metadata'   => $metadata,
             'sort_order' => 10,
             'theme_id'   => $theme_id,
@@ -144,7 +145,7 @@ function demodata_areas(&$messages,&$config,&$tr) {
             'is_private' => TRUE,
             'is_active'  => TRUE,
             'is_default' => FALSE,
-            'path'       => $tr['private_area_path'],
+            'path'       => utf8_strtolower($wizard->sanitise_filename($tr['private_area_path'])),
             'sort_order' => 20,
             'theme_id'   => $theme_id,
             'ctime'      => $now,
@@ -156,7 +157,7 @@ function demodata_areas(&$messages,&$config,&$tr) {
             'is_private' => FALSE,
             'is_active'  => FALSE,
             'is_default' => FALSE,
-            'path'       => $tr['extra_area_path'],
+            'path'       => utf8_strtolower($wizard->sanitise_filename($tr['extra_area_path'])),
             'sort_order' => 30,
             'theme_id'   => $theme_id,
             'ctime'      => $now,
@@ -164,23 +165,37 @@ function demodata_areas(&$messages,&$config,&$tr) {
             'mtime'      => $now,
             'muser_id'   => $user_id)
         );
-    foreach ($areas as $area => $fields) {
-        if (($area_id = db_insert_into_and_get_id('areas',$fields,'area_id')) === FALSE) {
-            $messages[] = $tr['error'].db_errormessage();
-            $retval = FALSE;
-        }
-        $area_id = intval($area_id);
-        $areas[$area]['area_id'] = $area_id;
 
-        // create the data directory for this area
+    // 1A -- make sure the area directories so not exist yet; maybe change name
+    $datadir_areas = $config['datadir'].'/areas/';
+    foreach ($areas as $area => $fields) {
         $path = $fields['path'];
-        $fullpath = $config['datadir'].'/areas/'.$path;
+        if ($path == '_') {
+            $path .= strval(++$seq);
+        }
+        $ext = '';
+        while (is_dir($datadir_areas.$path.$ext)) {
+            $ext = strval(++$seq);
+        }
+        $areas[$area]['path'] = $path.$ext;
+    }
+
+    // 1B -- actually make the directories and store the name and other data in table
+    foreach ($areas as $area => $fields) {
+        $fullpath = $datadir_areas.$fields['path'];
         if (@mkdir($fullpath,0700)) {
             @touch($fullpath.'/index.html'); // try to "protect" directory
         } else {
             $messages[] = $tr['error']."mkdir('$fullpath')";
             $retval = FALSE;
         }
+
+        if (($area_id = db_insert_into_and_get_id('areas',$fields,'area_id')) === FALSE) {
+            $messages[] = $tr['error'].db_errormessage();
+            $retval = FALSE;
+        }
+        $area_id = intval($area_id);
+        $areas[$area]['area_id'] = $area_id;
 
         // copy the theme's default setting to this area
         $sql = sprintf('INSERT INTO %s%s(area_id,theme_id,name,type,value,extra,sort_order,description) '.
@@ -244,6 +259,7 @@ function demodata_areas(&$messages,&$config,&$tr) {
 function demodata_users_groups(&$messages,&$config,&$tr) {
     global $wizard; // This is a kludge to get to the sanitise_filename() code. There must be a better way...
     $retval = TRUE; // assume success
+    static $seq = 0; // circumvent file/directory name clashes by appending a 'unique' sequence number
 
     // 1 -- create the 4 groups
     $groups = array(
@@ -251,39 +267,53 @@ function demodata_users_groups(&$messages,&$config,&$tr) {
             'groupname' => $tr['groupname_faculty'],
             'full_name' => $tr['full_name_faculty'],
             'is_active' => TRUE,
-            'path' => strtolower($wizard->sanitise_filename($tr['groupname_faculty']))),
+            'path' => utf8_strtolower($wizard->sanitise_filename($tr['groupname_faculty']))),
         'team' => array(
             'groupname' => $tr['groupname_team'],
             'full_name' => $tr['full_name_team'],
             'is_active' => TRUE,
-            'path' => strtolower($wizard->sanitise_filename($tr['groupname_team']))),
+            'path' => utf8_strtolower($wizard->sanitise_filename($tr['groupname_team']))),
         'seniors' => array(
             'groupname' => $tr['groupname_seniors'],
             'full_name' => $tr['full_name_seniors'],
             'is_active' => TRUE,
-            'path' => strtolower($wizard->sanitise_filename($tr['groupname_seniors']))),
+            'path' => utf8_strtolower($wizard->sanitise_filename($tr['groupname_seniors']))),
         'juniors' => array(
             'groupname' => $tr['groupname_juniors'],
             'full_name' => $tr['full_name_juniors'],
             'is_active' => TRUE,
-            'path' => strtolower($wizard->sanitise_filename($tr['groupname_juniors'])))
+            'path' => utf8_strtolower($wizard->sanitise_filename($tr['groupname_juniors'])))
         );
-    foreach ($groups as $group => $fields) {
-        if (($group_id = db_insert_into_and_get_id('groups',$fields,'group_id')) === FALSE) {
-            $messages[] = $tr['error'].db_errormessage();
-            $retval = FALSE;
-        }
-        $groups[$group]['group_id'] = intval($group_id);
 
-        // create the datadirectory (name is already recorded)
+
+    // 1A -- make sure the group directories so not exist yet; maybe change name
+    $datadir_groups = $config['datadir'].'/groups/';
+    foreach ($groups as $group => $fields) {
         $path = $fields['path'];
-        $fullpath = $config['datadir'].'/groups/'.$path;
+        if ($path == '_') {
+            $path .= strval(++$seq);
+        }
+        $ext = '';
+        while (is_dir($datadir_groups.$path.$ext)) {
+            $ext = strval(++$seq);
+        }
+        $groups[$group]['path'] = $path.$ext;
+    }
+
+    // 1B -- actually make the directories and store the name and other data in table
+    foreach ($groups as $group => $fields) {
+        $fullpath = $datadir_groups.$fields['path']; 
         if (@mkdir($fullpath,0700)) {
             @touch($fullpath.'/index.html');
         } else {
             $messages[] = $tr['error']."mkdir('$fullpath')";
             $retval = FALSE;
         }
+        if (($group_id = db_insert_into_and_get_id('groups',$fields,'group_id')) === FALSE) {
+            $messages[] = $tr['error'].db_errormessage();
+            $retval = FALSE;
+        }
+        $groups[$group]['group_id'] = intval($group_id);
     }
 
     // 2A -- prepare 7 acls for the groups/capacities combinations and 8 acls for users
@@ -423,7 +453,7 @@ function demodata_users_groups(&$messages,&$config,&$tr) {
         $fields['email']         = $email;
         $fields['is_active']     = TRUE;
         $fields['language_key']  = $language_key;
-        $fields['path'] = strtolower($wizard->sanitise_filename($fields['username']));
+        $fields['path'] = utf8_strtolower($wizard->sanitise_filename($fields['username']));
         $fields['editor'] = 'fckeditor';
         if (($user_id = db_insert_into_and_get_id('users',$fields,'user_id')) === FALSE) {
             $messages[] = $tr['error'].db_errormessage();

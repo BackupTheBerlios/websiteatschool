@@ -1,5 +1,5 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.30 2011/05/06 16:12:54 pfokker Exp $
+$Id: CHANGES.txt,v 1.31 2011/05/06 16:15:41 pfokker Exp $
 -------------------------------------------------------------------------------
 2011-05-06
 - install.php: https on a non-standard port yielded the wrong port number
@@ -8,6 +8,7 @@ $Id: CHANGES.txt,v 1.30 2011/05/06 16:12:54 pfokker Exp $
 - install.php: added the utf8_strtoascii() mapping when generating
   data directories; makes it more readable for some languages compared to
   simply deleting all multibyte UTF-8 characters
+- demodata.php: better UFT-8 support and better sanitised directory names
 
 2011-05-05
 - added Chinese translation (based on 0.90.1)
