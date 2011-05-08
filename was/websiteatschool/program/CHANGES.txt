@@ -1,6 +1,13 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.31 2011/05/06 16:15:41 pfokker Exp $
+$Id: CHANGES.txt,v 1.32 2011/05/08 16:13:44 pfokker Exp $
 -------------------------------------------------------------------------------
+2011-05-08
+- mysql.class.php:
+  . cosmetic/documentation changes
+  . added code for full / partial utf8 support (partial <5.5.3, full 5.5.3+)
+  . set charset to utf8 or utf8mb4 on connect()ing to the database
+  . also remember the MySQL-version in the backup (dump())
+
 2011-05-06
 - install.php: https on a non-standard port yielded the wrong port number
 - utf8lib.php: added a function to map characters with diacriticals to
