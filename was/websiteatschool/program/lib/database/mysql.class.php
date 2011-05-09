@@ -41,7 +41,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: mysql.class.php,v 1.4 2011/05/08 16:13:44 pfokker Exp $
+ * @version $Id: mysql.class.php,v 1.5 2011/05/09 19:34:24 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -708,7 +708,7 @@ class DatabaseMysql {
         $tables_to_dump = array();
         $data = sprintf("# Website@School Database Backup %s (%s, v%s)\n",WAS_RELEASE,WAS_RELEASE_DATE,WAS_VERSION).
                 sprintf("# Extracted from `%s` on %s by %s\n",$CFG->db_name,strftime('%Y-%m-%d %T %z'),$USER->username).
-                sprintf("# Database: MySQL %s\n",($this->$db_version === FALSE) ? 'unknown' : $this->db_version).
+                sprintf("# Database: MySQL %s\n",($this->db_version === FALSE) ? 'unknown' : $this->db_version).
                 sprintf("# Website: %s\n",$CFG->www)."\n";
 
         // 1 -- which tables need to be dumped? 
