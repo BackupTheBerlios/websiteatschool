@@ -1,10 +1,16 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.35 2011/05/09 19:39:37 pfokker Exp $
+$Id: CHANGES.txt,v 1.36 2011/05/09 20:00:04 pfokker Exp $
 -------------------------------------------------------------------------------
+
 2011-05-09
 - init.php: we now always include utf8lib.php with essential UTF-8 utilities
 - mysql.class.php: corrected stupid typo in dump().
 - useraccount.class.php: yet another stupid typo (in Useraccount())
+- updatelib.php: database conversion from charset 'whatever' and
+  collation 'whatever_whichever_ci' to 'utf8' and 'utf8_unicode_ci'
+  (or 'utf8mb4' and 'utf8mb4_unicode_ci').
+- version.php: bumped internal version from '2011020100' to '2011051100' in
+  preparation for the upcoming release '0.90.2'. 
 
 2011-05-08
 - mysql.class.php:

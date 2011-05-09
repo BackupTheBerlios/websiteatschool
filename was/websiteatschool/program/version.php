@@ -57,12 +57,12 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: version.php,v 1.4 2011/03/09 12:03:22 pfokker Exp $
+ * @version $Id: version.php,v 1.5 2011/05/09 20:00:04 pfokker Exp $
  */
 
 
 /** The internal version number, like 2008012873 or 2008020100 (31 bits will work until the year 2147) */
-define('WAS_VERSION',2011020100);
+define('WAS_VERSION',2011051100);
 
 
 /** The external version number, like 1.0 or 1.0.0 */

@@ -54,7 +54,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: updatelib.php,v 1.8 2011/03/09 09:58:51 pfokker Exp $
+ * @version $Id: updatelib.php,v 1.9 2011/05/09 20:00:04 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -902,6 +902,7 @@ function update_core(&$output) {
     if (!update_core_2010120800($output)) { return; }
     if (!update_core_2010122100($output)) { return; }
     if (!update_core_2011020100($output)) { return; }
+    if (!update_core_2011051100($output)) { return; }
     // if (!update_core_2011mmdd00($output)) { return; }
     // ...
 } // update_core()
@@ -1144,5 +1145,197 @@ function update_core_2011020100(&$output) {
     // If all is well, we update the version number in the database AND in $CFG->version
     return update_core_version($output,2011020100);
 } // update_core_2011020100()
+
+
+/** perform actual update to version 2011051100
+ *
+ * this is a substantial change in the database: we (finally) standardise on UTF-8
+ * including the database. Up until now we still only have a choice of exactly one
+ * database driver: MySQL. Therefore the upgrade we do here can be more or less
+ * MySQL-specific. (So much for database-independency).
+ *
+ * What needs to be done here?
+ *
+ * The most important task (in fact: the only task) is to change the collation (and
+ * implicitly the default charset) to utf8_unicode_ci (4.1.x <= MySQL < 5.5.2) or
+ * utf8mb4_unicode_ci (MySQL 5.5.3+). See {@link mysql.class.php} for more information
+ * on these UTF-8 & MySQL issues.
+ *
+ * Strategy here is as follows.
+ * <code>
+ * for all 'our' tables (ie. "LIKE '{$prefix}%'" do
+ *    if table default charset is already utf8 (or utf8mb4)
+ *        continue;
+ *    for appropriate columns in this table
+ *        change column type to binary
+ *        change column type back to non-binary with correct charset and collation
+ *    if no trouble sofar
+ *        change default charset/collation of the table too
+ *    else
+ *        return failure
+ * return success
+ * </code>
+ *
+ * This way we _might_ be able to work our way through huge tables: if the PHP
+ * max processing time kicks in, we can rerun the upgrade and start (again) with
+ * the table we had in our hands the previous time. I don't expect this to happen,
+ * but it still the way to do it IMHO.
+ *
+ * Note that I assume that I cannot change the default charset of the DATABASE
+ * for the same reason the Installation Wizard expects the database to be ready
+ * before installation commences. (I cannot be sure that I have the privilege to
+ * execute 'ALTER DATABASE $db_name DEFAULT CHARSET utf8 COLLATE utf8_unicode_ci').
+ *
+ * A useful reference for solving this problem of converting to utf8 can be found
+ * here: http://codex.wordpress.org/Converting_Database_Character_Sets.
+ *
+ * In the case of W@S we do not have to deal with enum-fields because those are not used
+ * at this time. In fact it boils down to changing char, varchar, text and longtext.
+ *
+ * Let goforit...
+ *
+ * @param object &$output collects the html output
+ * @return bool TRUE on success, FALSE otherwise
+ */
+function update_core_2011051100(&$output) {
+    global $CFG,$DB;
+
+    // 0 -- get outta here when already upgraded
+    $version = 2011051100;
+    if ($CFG->version >= $version) {
+        return TRUE;
+    }
+
+    // 1 -- can we do anything at all with upgrading to UTF-8 and all?
+    $utf8_level = (isset($DB->utf8_support)) ? $DB->utf8_support : FALSE;
+
+    if ($utf8_level === FALSE) {
+        $msg = sprintf('%s(): cannot determine UTF-8 support in MySQL: utf8_level is not 0, 3 or 4',__FUNCTION__);
+        logger($msg);
+        $output->add_message(htmlspecialchars($msg));
+        $output->add_message(t('update_core_error','admin',array('{VERSION}' => strval($version))));
+        return FALSE;
+    } elseif ($utf8_level == 0) {
+        $db_version = mysql_get_server_info();
+        logger(sprintf('%s(): MySQL \'%s\' too old for UTF-8 update',__FUNCTION__,$db_version));
+        $params = array('{VERSION}' => $db_version);
+        $output->add_message(t('warning_mysql_obsolete','i_install',$params));
+        return update_core_version($output,$version);
+    }
+
+    // 2A -- prepare to step through all tables and all columns changing collation (and implicit charset)
+    $charset = ($utf8_level == 3) ? 'utf8' : 'utf8mb4';
+    $collation = $charset.'_unicode_ci';
+    $pattern = str_replace(array('_','%'),array('\_','\%'),$DB->escape($DB->prefix)).'%'; // e.g. 'was\_%'
+    $sql = sprintf("SHOW TABLE STATUS LIKE '%s'",$pattern);
+    if (($DBResult = $DB->query($sql)) === FALSE) {
+        $msg = sprintf('%s(): cannot show tables: %d/%s',__FUNCTION__,$DB->errno,$DB->error);
+        logger($msg);
+        $output->add_message(htmlspecialchars($msg));
+        $output->add_message(t('update_core_error','admin',array('{VERSION}' => strval($version))));
+        return FALSE;
+    }
+    $tables = $DBResult->fetch_all_assoc('Name');
+    $DBResult->close();
+    $overtime = max(intval(ini_get('max_execution_time')),30); // request this additional processing time after a table
+
+    // 2B -- visit all tables
+    foreach($tables as $table) {
+        if ((isset($table['Collation'])) && (utf8_strcasecmp($table['Collation'],$collation) == 0)) {
+            logger(sprintf('%s(): table \'%s\' is already \'%s\'',__FUNCTION__,$table['Name'],$collation),LOG_DEBUG);
+            continue; // somehow someone already changed this table; carry on with the next one
+        }
+        // 3A -- prepare to step through all columns of this table
+        $sql = sprintf('SHOW FULL COLUMNS FROM `%s`',$table['Name']);
+        if (($DBResult = $DB->query($sql)) === FALSE) {
+            $msg = sprintf('%s(): cannot show columns from %s: %d/%s',__FUNCTION__,$table['Name'],$DB->errno,$DB->error);
+            logger($msg);
+            $output->add_message(htmlspecialchars($msg));
+            $output->add_message(t('update_core_error','admin',array('{VERSION}' => strval($version))));
+            return FALSE;
+        }
+        $columns = $DBResult->fetch_all_assoc('Field');
+
+        // 3B -- visit all columns in this table
+        foreach($columns as $column) {
+            if (isset($column['Collation'])) {
+                if (is_null($column['Collation'])) {
+                    continue; // nothing to do; no collation to change
+                } elseif (utf8_strcasecmp($column['Collation'],$collation) == 0) {
+                    logger(sprintf('%s(): column \'%s.%s\' is already converted to \'%s\'',
+                                    __FUNCTION__,$table['Name'],$column['Field'],$collation),LOG_DEBUG);
+                    continue; // somehow someone already changed this column; carry on with the next one
+                }
+            } else {
+                continue; // this field has no collation whatsoever. Weird but we'll let it pass.
+            }
+            $sql1 = sprintf('ALTER TABLE `%s` CHANGE `%s` `%s` ',$table['Name'],$column['Field'],$column['Field']);
+            $sql2 = $sql1;
+            $vtype = explode("(",$column['Type']); // split 'varchar(n)' into components
+            switch(strtolower($vtype[0])) {
+            case 'varchar':
+                $len = intval($vtype[1]);
+                $sql1 .= sprintf('VARBINARY(%d)',$len);
+                $sql2 .= sprintf('VARCHAR(%d)',$len);
+                break;
+            case 'char':
+                $len = intval($vtype[1]);
+                $sql1 .= sprintf('BINARY(%d)',$len);
+                $sql2 .= sprintf('CHAR(%d)', $len);
+                break;
+            case 'text':
+                $sql1 .= 'BLOB';
+                $sql2 .= 'TEXT';
+                break;
+            case 'longtext':
+                $sql1 .= 'LONGBLOB';
+                $sql2 .= 'LONGTEXT';
+                break;
+            default:
+                logger(sprintf('%s(): cannot handle \'%s.%s\' type \'%s\'; skipping',
+                                __FUNCTION__,$table['Name'],$column['Field'],$vtype[0]),LOG_DEBUG);
+                continue;
+                break;
+            }
+            $sql2 .= sprintf(' CHARACTER SET %s COLLATE %s',$charset,$collation);
+            $sql2 .= ($column['Null'] == 'YES') ? ' NULL' : ' NOT NULL';
+            $sql2 .= (is_null($column['Default'])) ? '' : sprintf(' DEFAULT \'%s\'',$DB->escape($column['Default']));
+            $sql2 .= (empty($column['Comment'])) ? '' : sprintf(' COMMENT \'%s\'',$DB->escape($column['Comment']));
+
+            // Do back-and-forth in one go so we don't write to 'log_messages' while that table is being converted
+            // We report any errors/do logging after we're back on track again
+            $retval1 = $DB->exec($sql1); $errno1 = $DB->errno; $error1 = $DB->error; // text (latin1) -> binary
+            $retval2 = $DB->exec($sql2); $errno2 = $DB->errno; $error2 = $DB->error; // binary -> text (utf8)
+            if (($retval1 === FALSE) || ($retval2 === FALSE)) { // oops, failure! gotta get out of this place!
+                $msg = sprintf('%s(): cannot change \'%s.%s\': \'%s\': \'%d/%s\', \'%s\': \'%d/%s\'; bailing out',
+                               __FUNCTION__,$table['Name'],$column['Field'],$sql1,$errno1,$error1,$sql2,$errno2,$error2);
+                logger($msg);
+                $output->add_message(htmlspecialchars($msg));
+                $output->add_message(t('update_core_error','admin',array('{VERSION}' => strval($version))));
+                return FALSE;
+            } else {
+                logger(sprintf('%s(): alter column \'%s.%s\': changed collation from \'%s\' to  \'%s\'',
+                               __FUNCTION__,$table['Name'],$column['Field'],$column['Collation'],$collation),LOG_DEBUG);
+            }
+
+        }
+        // Only if all columns went OK, we change the table; this is a quick and dirty sentinel to work
+        // through a long converstion (at worst we do 1 table per round) Eventually the conversion will be complete...
+        $sql = sprintf('ALTER TABLE `%s` DEFAULT CHARSET %s COLLATE %s',$table['Name'],$charset,$collation);
+        if ($DB->exec($sql) === FALSE) {
+            $msg = sprintf('%s(): cannot alter \'%s\' with \'%s\': %d/%s; baling out',
+                           __FUNCTION__,$table['Name'],$sql,$DB->errno,$DB->error);
+            logger($msg);
+            $output->add_message(htmlspecialchars($msg));
+            $output->add_message(t('update_core_error','admin',array('{VERSION}' => strval($version))));
+            return FALSE;
+        } else {
+            logger(sprintf('%s(): alter table \'%s\': changed collation from \'%s\' to  \'%s\'',
+                           __FUNCTION__,$table['Name'],$table['Collation'],$collation),LOG_DEBUG);
+        }
+        @set_time_limit($overtime); // try to get additional processing time after every processed table
+    }
+    return update_core_version($output,$version);
+} // update_core_2011051100()
 
 ?>
