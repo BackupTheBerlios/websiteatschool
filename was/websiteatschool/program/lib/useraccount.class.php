@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: useraccount.class.php,v 1.2 2011/02/03 14:04:04 pfokker Exp $
+ * @version $Id: useraccount.class.php,v 1.3 2011/05/09 19:39:37 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -356,7 +356,7 @@ class Useraccount {
         }
 
         // get all properties for this user in 2D array (sections, entries)
-        $tablename = 'user_properties';
+        $tablename = 'users_properties';
         $fields = array('section','name','type','value');
         $where = array('user_id' => $user_id);
         $order = array('section','name');
