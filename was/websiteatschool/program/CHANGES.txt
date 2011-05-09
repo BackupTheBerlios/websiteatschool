@@ -1,6 +1,9 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.32 2011/05/08 16:13:44 pfokker Exp $
+$Id: CHANGES.txt,v 1.33 2011/05/09 13:29:08 pfokker Exp $
 -------------------------------------------------------------------------------
+2011-05-09
+- init.php: we now always include utf8lib.php with essential UTF-8 utilities
+
 2011-05-08
 - mysql.class.php:
   . cosmetic/documentation changes

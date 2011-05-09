@@ -33,7 +33,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: init.php,v 1.2 2011/02/03 14:04:02 pfokker Exp $
+ * @version $Id: init.php,v 1.3 2011/05/09 13:29:08 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -118,6 +118,9 @@ function initialise() {
 
     /** 'version.php' defines internal and external version numbers */
     require_once($CFG->progdir.'/version.php');
+
+    /** 'utf8lib.php' contains essential routines for manipulating UTF-8 string */
+    require_once($CFG->progdir.'/lib/utf8lib.php');
 
     /** This global object is used to access the database
      *
