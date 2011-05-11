@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: theme.class.php,v 1.3 2011/05/11 09:37:49 pfokker Exp $
+ * @version $Id: theme.class.php,v 1.4 2011/05/11 19:11:01 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -129,7 +129,11 @@ class Theme {
             'Content-Style-Type' => 'text/css')
             );
         $this->title = $this->area_record['title'];
-        $this->add_meta(array('MSSmartTagsPreventParsing' => 'TRUE'));
+        $this->add_meta(array(
+            'MSSmartTagsPreventParsing' => 'TRUE',
+            'generator' => 'Website@School',
+            'description' => 'Website@School Content Management System for schools',
+            'keywords' => 'Website@School, CMS for schools'));
         $this->calc_breadcrumb_trail($node_id); // only set markers in tree, don't collect anchors yet
         $this->domain = 't_'.$this->theme_record['name']; // indicates where to look for translations
 
@@ -525,7 +529,7 @@ class Theme {
     } // get_quicktop()
 
 
-    /** construct a list of quicklinks for top of page (if any)
+    /** construct a list of quicklinks for bottom of page (if any)
      *
      * (see also {@link get_quicktop()}).
      *
