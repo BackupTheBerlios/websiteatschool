@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: theme.class.php,v 1.2 2011/02/03 14:04:04 pfokker Exp $
+ * @version $Id: theme.class.php,v 1.3 2011/05/11 09:37:49 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -123,12 +123,13 @@ class Theme {
         $this->node_record = $this->tree[$node_id]['record'];
         $this->config = $this->get_properties($this->theme_id,$this->area_id);
 
-        $this->title = $this->area_record['title'];
-        $this->add_meta(array('MSSmartTagsPreventParsing' => 'TRUE'));
         $this->add_meta_http_equiv(array(
+            'Content-Type' => $content_type,
             'Content-Script-Type' => 'text/javascript',
             'Content-Style-Type' => 'text/css')
             );
+        $this->title = $this->area_record['title'];
+        $this->add_meta(array('MSSmartTagsPreventParsing' => 'TRUE'));
         $this->calc_breadcrumb_trail($node_id); // only set markers in tree, don't collect anchors yet
         $this->domain = 't_'.$this->theme_record['name']; // indicates where to look for translations
 

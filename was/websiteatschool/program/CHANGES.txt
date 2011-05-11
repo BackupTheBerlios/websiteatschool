@@ -1,9 +1,10 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.37 2011/05/11 07:46:27 pfokker Exp $
+$Id: CHANGES.txt,v 1.38 2011/05/11 09:37:49 pfokker Exp $
 -------------------------------------------------------------------------------
 
 2011-05-11
-- configassistant.class.php: cosmtics in formatting of float parameter
+- configassistant.class.php: cosmetics in formatting of float parameter
+- theme.class.php: always indicate UTF-8 via http-equiv too
 
 2011-05-09
 - init.php: we now always include utf8lib.php with essential UTF-8 utilities
