@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: configassistant.class.php,v 1.2 2011/02/03 14:04:03 pfokker Exp $
+ * @version $Id: configassistant.class.php,v 1.3 2011/05/11 07:46:27 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -416,8 +416,6 @@ class ConfigAssistant {
                     // not implemented yet
                     break;
 
-
-
                 case 'd':
                     $item['type'] = F_DATE;
                     $item['columns'] = 20;
@@ -432,7 +430,12 @@ class ConfigAssistant {
 
                 case 'f':
                     $item['type'] = F_REAL;
-                    $item['value'] = (is_numeric($record['value'])) ? floatval($record['value']) : NULL;
+                    if (is_numeric($record['value'])) {
+                        $decimals = (isset($extra['decimals'])) ? abs(intval($extra['decimals'])) : 2;
+                        $item['value'] = sprintf("%1.".$decimals."f",floatval($record['value']));
+                    } else {
+                        $item['value'] = NULL;
+                    }
                     $item['columns'] = 20;
                     $item['maxlength'] = 20;
                     break;
