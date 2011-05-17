@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: theme.class.php,v 1.4 2011/05/11 19:11:01 pfokker Exp $
+ * @version $Id: theme.class.php,v 1.5 2011/05/17 16:04:23 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -684,16 +684,23 @@ class Theme {
      * to that area. Only the active areas are displayed. Private areas are only displayed
      * when the user actually has access to those areas.
      *
+     * This routine only shows the Submit-button if JavaScript is turned 'off'. If it is 'on',
+     * a tiny snippet auto-submits the form whenever the user selects another area; no need
+     * press any button anymore.
+     *
      * @param string $m add readabiliy to output
-     * @return string properly indented ready-to-use HTML
+     * @return string properly indented ready-to-use HTML or an empty string on error
+     * @uses dialog_get_widget()
      */
     function get_jumpmenu($m='') {
         global $USER,$WAS_SCRIPT_NAME;
-        $jumpmenu = '';
+
+        // 1A -- try to get a list of _all_ areas
         $areas = get_area_records();
         if ($areas === FALSE) {
-            return $jumpmenu;
+            return '';
         }
+        // 1B -- drill-down to list all areas available for this user (there must be at least one: $this->area_id!)
         $options = array();
         foreach($areas as $area_id => $area) {
             if ((db_bool_is(TRUE,$area['is_active'])) &&
@@ -702,32 +709,26 @@ class Theme {
                 $options[$area_id] = $area['title'];
             }
         }
-        $dialogdef = array(
-            'area' => array(
-                'type' => F_LISTBOX,
-                'name' => 'area',
-                'options' => $options,
-                'label' => t('jumpmenu_area',$this->domain),
-                'title' => t('jumpmenu_area_title',$this->domain),
-                'value' => $this->area_id,
-                ),
-            'button_go' => dialog_buttondef(BUTTON_GO)
-            );
-        $jumpmenu = $m.html_form($WAS_SCRIPT_NAME,'get')."\n";
-        foreach($dialogdef as $item) {
-            if (isset($item['label'])) {
-                $jumpmenu .= $m.'  '.$item['label']."<br>\n";
+        // 2 -- KISS form with a whiff of javascript to maybe get rid of the Go-button
+        $title = t('jumpmenu_area_title',$this->domain);
+        $attributes = array('name' => 'area','title' => $title,'onchange' => 'jumpmenu.submit();');
+        $jumpmenu  = $m.html_form($WAS_SCRIPT_NAME,'get',array('name' => 'jumpmenu'))."\n".
+                     $m."  ".t('jumpmenu_area',$this->domain)."\n".
+                     $m."  ".html_tag('select',$attributes)."\n";
+        // 2A -- fill opened form/select with available areas
+        foreach($options as $k => $v) {
+            $attributes = array('title' => $title, 'value' => $k);
+            if ($k == $this->area_id) {
+                $attributes['selected'] = NULL;
             }
-            $widget = dialog_get_widget($item);
-            if (is_array($widget)) {
-                foreach($widget as $line) {
-                    $jumpmenu .= $m.'  '.$line."\n";
-                }
-            } else {
-                $jumpmenu .= $m.'  '.$widget."\n";
-            }
+            $jumpmenu .= $m.'    '.html_tag('option',$attributes,$v)."\n";
         }
-        $jumpmenu .= $m.html_form_close()."\n";
+        // 2B -- add optional button (only when no JavaScript is enabled) and close all open tags.
+        $jumpmenu .= $m."  </select>\n".
+                     $m."  <noscript>\n".
+                     $m."    ".dialog_get_widget(dialog_buttondef(BUTTON_GO))."\n".
+                     $m."  </noscript>\n".
+                     $m.html_form_close()."\n";
         return $jumpmenu;
     } // get_jumpmenu()
 

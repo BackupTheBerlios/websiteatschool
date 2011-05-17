@@ -1,6 +1,12 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.39 2011/05/11 20:45:51 pfokker Exp $
+$Id: CHANGES.txt,v 1.40 2011/05/17 16:04:23 pfokker Exp $
 -------------------------------------------------------------------------------
+
+2011-05-17
+- theme.class.php: the [Go]-button in the area jump-menu now only
+  appears when the user has switched JavaScript 'off', otherwise we
+  autosubmit the form.
+
 
 ### Release 0.90.2 - 2011-05-11 ###
 
