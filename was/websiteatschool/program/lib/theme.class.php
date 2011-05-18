@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: theme.class.php,v 1.5 2011/05/17 16:04:23 pfokker Exp $
+ * @version $Id: theme.class.php,v 1.6 2011/05/18 09:40:52 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1048,6 +1048,7 @@ class Theme {
      * @todo split into two separate routines, one to set the tree, another to construct the list of anchors
      */
     function calc_breadcrumb_trail($node_id) {
+        global $WAS_SCRIPT_NAME;
         $tries = MAXIMUM_ITERATIONS;
         $breadcrumbs = array();
         $next_id = $node_id;
@@ -1066,8 +1067,16 @@ class Theme {
             // too many iterations (endless loop?)
             logger('DEBUG '.__FILE__.'('.__LINE__.'): too many iterations (endless loop?) in node '.$node_id,LOG_DEBUG);
         }
+
+        // Insert the name of the current area as a bread crumb too
+        if ($this->preview_mode) {
+            $anchor = html_a("#",NULL,NULL,$this->area_record['title']);
+        } else {
+            $anchor = html_a($WAS_SCRIPT_NAME,array('area' => $this->area_id),NULL,$this->area_record['title']);
+        }
+        $breadcrumbs = array_merge(array($anchor),$breadcrumbs);
         return $breadcrumbs;
-    }
+    } // calc_breadcrumb_trail()
 
 
     /** construct an anchor from a node record
