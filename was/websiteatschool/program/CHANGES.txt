@@ -1,9 +1,13 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.41 2011/05/18 09:40:51 pfokker Exp $
+$Id: CHANGES.txt,v 1.42 2011/05/18 11:18:35 pfokker Exp $
 -------------------------------------------------------------------------------
 
 2011-05-18
 - theme.class.php: we now add the area name to the breadcrumb trail
+- theme.class.php:
+  . prepare the jump menu in the constructor (saves a trip to the
+    database); adds an additional variable $jumps to the class   
+  . minor cosmetics
 
 2011-05-17
 - theme.class.php: the [Go]-button in the area jump-menu now only

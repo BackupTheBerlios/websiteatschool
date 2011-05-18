@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: theme.class.php,v 1.6 2011/05/18 09:40:52 pfokker Exp $
+ * @version $Id: theme.class.php,v 1.7 2011/05/18 11:18:35 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -96,6 +96,9 @@ class Theme {
     /** @var string $domain the language domain where we get our translations from, usually 't_<themename>' */
     var $domain = '';
 
+    /** @var array $jumps holds an area_id => area_title pair for every area this user can access */
+    var $jumps = array();
+
     /** construct a Theme object
      *
      * this stores the information about this theme from the database.
@@ -103,13 +106,17 @@ class Theme {
      * information will be used lateron when constructing the navigation.
      * The node to display is $node_id.
      *
+     * Also, we prepare a list of areas where the current user is allowed to go.
+     * This is handy when constructing a jumpmenu and doing it here saves a trip
+     * to the database lateron in {@link get_jumpmenu()}.
+     *
      * @param array $theme_record the record straight from the database
      * @param int $area_id the area of interest
      * @param int $node_id the node that will be displayed
      * @return void
      */
     function Theme($theme_record,$area_id,$node_id) {
-        global $CFG;
+        global $CFG,$USER;
         $charset = 'UTF-8';
         $content_type = 'text/html; charset='.$charset;
         $this->add_http_header('Content-Type: '.$content_type);
@@ -117,9 +124,26 @@ class Theme {
         $this->theme_record = $theme_record;
         $this->theme_id = intval($theme_record['theme_id']);
         $this->area_id = intval($area_id);
-        $this->area_record = db_select_single_record('areas','*',array('area_id' => $this->area_id));
+        $this->jumps = array();
+
+        // extract areas information and
+        //  - grab a copy of the full area_record 'for future reference', and
+        //  - make a list of areas accessible for this user (for the area jumpmenu)
+        if (($areas = get_area_records()) !== FALSE) {
+            $this->area_record = $areas[$this->area_id];
+            foreach($areas as $id => $area) {
+                if ((db_bool_is(TRUE,$area['is_active'])) &&
+                    ((db_bool_is(FALSE,$area['is_private'])) || 
+                     ($USER->has_intranet_permissions(ACL_ROLE_INTRANET_ACCESS,$id)))) {
+                    $this->jumps[$id] = $area['title'];
+                }
+            }
+        } else {
+            $this->area_record = array('area_id' => $this->area_id,'title' => '?');
+            logger(sprintf('constructor %s(): cannot get list of areas: %s',__FUNCTION__,db_errormessage()),LOG_DEBUG);
+        }
         $this->node_id = intval($node_id);
-        $this->tree = $this->construct_tree($area_id);
+        $this->tree = $this->construct_tree($this->area_id);
         $this->node_record = $this->tree[$node_id]['record'];
         $this->config = $this->get_properties($this->theme_id,$this->area_id);
 
@@ -688,6 +712,9 @@ class Theme {
      * a tiny snippet auto-submits the form whenever the user selects another area; no need
      * press any button anymore.
      *
+     * We rely on the constructor to provide us with an array of area_id=>area_title pairs
+     * in the $this->jumps array.
+     *
      * @param string $m add readabiliy to output
      * @return string properly indented ready-to-use HTML or an empty string on error
      * @uses dialog_get_widget()
@@ -695,35 +722,21 @@ class Theme {
     function get_jumpmenu($m='') {
         global $USER,$WAS_SCRIPT_NAME;
 
-        // 1A -- try to get a list of _all_ areas
-        $areas = get_area_records();
-        if ($areas === FALSE) {
-            return '';
-        }
-        // 1B -- drill-down to list all areas available for this user (there must be at least one: $this->area_id!)
-        $options = array();
-        foreach($areas as $area_id => $area) {
-            if ((db_bool_is(TRUE,$area['is_active'])) &&
-                ((db_bool_is(FALSE,$area['is_private'])) || 
-                 ($USER->has_intranet_permissions(ACL_ROLE_INTRANET_ACCESS,$area_id)))) {
-                $options[$area_id] = $area['title'];
-            }
-        }
-        // 2 -- KISS form with a whiff of javascript to maybe get rid of the Go-button
+        // 1 -- KISS form with a whiff of javascript to maybe get rid of the Go-button
         $title = t('jumpmenu_area_title',$this->domain);
         $attributes = array('name' => 'area','title' => $title,'onchange' => 'jumpmenu.submit();');
         $jumpmenu  = $m.html_form($WAS_SCRIPT_NAME,'get',array('name' => 'jumpmenu'))."\n".
                      $m."  ".t('jumpmenu_area',$this->domain)."\n".
                      $m."  ".html_tag('select',$attributes)."\n";
-        // 2A -- fill opened form/select with available areas
-        foreach($options as $k => $v) {
+        // 2 -- fill opened form/select with available areas
+        foreach($this->jumps as $k => $v) {
             $attributes = array('title' => $title, 'value' => $k);
             if ($k == $this->area_id) {
                 $attributes['selected'] = NULL;
             }
             $jumpmenu .= $m.'    '.html_tag('option',$attributes,$v)."\n";
         }
-        // 2B -- add optional button (only when no JavaScript is enabled) and close all open tags.
+        // 3 -- add optional button (only when no JavaScript is enabled) and close all open tags.
         $jumpmenu .= $m."  </select>\n".
                      $m."  <noscript>\n".
                      $m."    ".dialog_get_widget(dialog_buttondef(BUTTON_GO))."\n".
