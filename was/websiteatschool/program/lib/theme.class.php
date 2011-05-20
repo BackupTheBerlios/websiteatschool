@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: theme.class.php,v 1.8 2011/05/20 19:15:50 pfokker Exp $
+ * @version $Id: theme.class.php,v 1.9 2011/05/20 19:19:54 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -284,11 +284,11 @@ class Theme {
 
               "    <div id=\"content\">\n".
                      $this->get_content('      ').
-              "    </div>\n";
+              "    </div>\n".
+              "    <div id=\"footer\">\n".
+              "      <div id=\"quickbottom\">\n";
 
-        $t  = "    <div id=\"footer\">\n".
-              "      <div id=\"quickbottom\">\n".
-                       $this->get_quickbottom('        ').
+        $t  = $this->get_quickbottom('        ').
               "      </div>\n".
               "      <div id=\"address\">\n".
                          $this->get_address('        ').
