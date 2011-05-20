@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: theme.class.php,v 1.7 2011/05/18 11:18:35 pfokker Exp $
+ * @version $Id: theme.class.php,v 1.8 2011/05/20 19:15:50 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -88,7 +88,7 @@ class Theme {
     var $preview_mode = FALSE;
 
     /** @var bool $friendly_url if TRUE, links via index.php/nnn/book_mark_friendly_text otherwise index.php?node=nnn */
-    var $friendly_url = TRUE; // STUB
+    var $friendly_url = FALSE;
 
     /** @var array $breadcrumb_addendum holds an array with additional anchors that can be set by the page's module */
     var $breadcrumb_addendum = array();
@@ -98,6 +98,15 @@ class Theme {
 
     /** @var array $jumps holds an area_id => area_title pair for every area this user can access */
     var $jumps = array();
+
+    /** @var string $quicktop_separator contains the delimiter between quicklinks at the top of the page */
+    var $quicktop_separator = '';
+
+    /** @var string $quicktop_separator contains the delimiter between quicklinks at the bottom of the page */
+    var $quickbottom_separator = '';
+
+    /** @var string $breadcrumb_separator contains the delimiter between breadcrumbs in the breadcrumb trail */
+    var $breadcrumb_separator = ' - ';
 
     /** construct a Theme object
      *
@@ -116,7 +125,7 @@ class Theme {
      * @return void
      */
     function Theme($theme_record,$area_id,$node_id) {
-        global $CFG,$USER;
+        global $USER,$CFG;
         $charset = 'UTF-8';
         $content_type = 'text/html; charset='.$charset;
         $this->add_http_header('Content-Type: '.$content_type);
@@ -164,16 +173,11 @@ class Theme {
         if ((isset($this->config['style_usage_static'])) && 
             ($this->config['style_usage_static']) &&
             (isset($this->config['stylesheet']))) {
-            $stylesheet = $this->config['stylesheet'];
-            // if this path is not absolute and does not look like scheme:// (with two slashes),
-            // we must assume that this path is relative to the directory where index.php resides
-            // perhaps a dangerous assumption but... oh well
-            if ((substr($stylesheet,0,1) != "/") && (strpos($stylesheet,"//") === FALSE)) {
-                $stylesheet = $CFG->www_short.'/'.$stylesheet;
-            }
-            $this->add_stylesheet($stylesheet);
+            $this->add_stylesheet($this->config['stylesheet']);
         }
+        $this->friendly_url = ($CFG->friendly_url) ? TRUE : FALSE;
     } // Theme()
+
 
     /** send collected HTTP-headers to user's browser
      *
@@ -190,11 +194,7 @@ class Theme {
             $line = 0;
             if (headers_sent($file,$line)) {
                 // headers were already sent, log this strange event
-                $message = "headers were already sent in file $file($line):\n";
-                foreach($this->http_headers as $hdr) {
-                    $message .= $hdr."\n";
-                }
-                logger($message,LOG_DEBUG);
+                logger("headers were already sent in file $file($line):\n".implode("\n",$this->http_headers));
             } else {
                 foreach($this->http_headers as $hdr) {
                     header($hdr);
@@ -203,17 +203,19 @@ class Theme {
         }
     } // send_headers()
 
+
     /** send collected output to user's browser
      *
      * This first sends any pending HTTP-headers and subsequently
      * outputs the page that is constructed by $this->get_html()
      *
-     * @return void
+     * @return void and output sent to browser
      */
     function send_output() {
         $this->send_headers();
         echo $this->get_html();
     } // send_output()
+
 
     /** construct an output page in HTML
      *
@@ -238,7 +240,7 @@ class Theme {
      * Note that the routine $this->get_div_messages() does in fact
      * generate its own DIV tags. This is done in order to completely
      * get rid of the message DIV, we do not even want to see an empty
-     * DIV if there are no message.
+     * DIV if there are no messages.
      *
      * The same logic applies to the breadcrumb trail.
      *
@@ -248,7 +250,7 @@ class Theme {
         $s  = $this->dtd."\n".
               "<html>\n".
               "<head>\n".
-              $this->get_html_head('  ').
+                $this->get_html_head('  ').
               "</head>\n".
               "<body>\n".
               "  <div id=\"top\">\n".
@@ -269,10 +271,10 @@ class Theme {
                      $this->get_navigation('      ',$this->high_visibility).
               "    </div>\n".
                    $this->get_div_messages('    ').
+
               "    <div id=\"menu\">\n".
                      $this->get_menu('      ').
               "    </div>\n".
-
 
               "    <div id=\"sidebar\">\n".
               "      <div class=\"item\">\n".
@@ -280,14 +282,13 @@ class Theme {
               "      </div>\n".
               "    </div>\n".
 
-
               "    <div id=\"content\">\n".
                      $this->get_content('      ').
-              "    </div>\n".
-              "    <div id=\"footer\">\n".
-              "      <div id=\"quickbottom\">\n";
+              "    </div>\n";
 
-        $t  =          $this->get_quickbottom('        ').
+        $t  = "    <div id=\"footer\">\n".
+              "      <div id=\"quickbottom\">\n".
+                       $this->get_quickbottom('        ').
               "      </div>\n".
               "      <div id=\"address\">\n".
                          $this->get_address('        ').
@@ -309,11 +310,11 @@ class Theme {
     } // get_html()
 
 
-    /** get all lines in the HTML head section in a single properly indented string
+    /** get all lines in the HTML head section in a single, properly indented string
      *
      * @param string $m left margin for increased readability
      * @return string generated HTML-code
-     * @todo also deal with Bazaar Style Style Sheets at node level in this routine
+     * @todo also deal with Bazaar Style Style Sheets at node level in this routine (requires new field 'nodes.style')
      */
     function get_html_head($m='') {
         //
@@ -386,16 +387,12 @@ class Theme {
      * This is a workhorse to convert an array of lines to a
      * properly indented block of text.
      *
+     * @param array $lines contains the lines to convert to a properly indented string
      * @param string $m left margin for increased readability
      * @return string properly indented block of text
      */
-    function get_lines($a,$m='') {
-        $s = '';
-        if (!empty($a)) {
-            foreach($a as $line) {
-                $s .= $m.$line."\n";
-            }
-        }
+    function get_lines($lines,$m='') {
+        $s = (empty($lines)) ? '' : $m.implode("\n".$m,$lines)."\n";
         return $s;
     } // get_lines()
 
@@ -413,12 +410,12 @@ class Theme {
      * is no DIV at all when there are no messages.
      *
      * @param string $m left margin for increased readability
+     * @param string $div_id contains id of the generated div
      * @return string constructed HTML with message(s) or empty string if no messages
      */
-    function get_div_messages($m='') {
+    function get_div_messages($m='',$div_id='messages') {
         $s = '';
         if (!empty($this->messages_inline)) {
-            $s .= $m."<div id=\"messages\">\n";
             if (sizeof($this->messages_inline) > 1) {
                 $ul_start = $m."  <ul>\n";
                 $ul_stop  = $m."  </ul>\n";
@@ -428,12 +425,13 @@ class Theme {
                 $ul_stop  = '';
                 $li       = $m."  ";
             }
-            $s .= $ul_start;
-            foreach ($this->messages_inline as $msg) {
-                $s .= $li.$msg."\n";
+            $s .= $m."<div id=\"$div_id\">\n".
+                  $ul_start;
+            foreach($this->messages_inline as $msg) {
+                $s .= $li.htmlspecialchars($msg)."\n";
             }
-            $s .= $ul_stop;
-            $s .= $m."</div>\n";
+            $s .= $ul_stop.
+                  $m."</div>\n";
         }
         return $s;
     } // get_div_messages()
@@ -442,7 +440,7 @@ class Theme {
     /** construct javascript alerts for messages
      *
      * This constructs a piece of HTML that yields 0 or more
-     * calles to the javascript alert() function, once per message.
+     * calls to the javascript alert() function, once per message.
      * If no messages need to be displayed an empty string is
      * returned.
      *
@@ -467,26 +465,25 @@ class Theme {
 
     /** construct breadcrumb trail
      *
-     * @todo how about adding a title to the items? or do we do that already?
+     * this constructs a breadcrumb trail with clickable links. The crumbs are separated by
+     * this->breadcrumb_separator (default ' - ').
+     *
+     * @param string $m left margin for increased readability
+     * @return string ready to use HTML with 1 or more clickable bread crumbs
      */
     function get_div_breadcrumbs($m='') {
         $s = '';
         $crumbs = 0;
         if ((isset($this->config['show_breadcrumb_trail'])) && ($this->config['show_breadcrumb_trail'])) {
             $breadcrumbs = $this->calc_breadcrumb_trail($this->node_id);
-            $glue = '';
             if (!empty($breadcrumbs)) {
                 foreach($breadcrumbs as $anchor) {
-                    $s .= $m.'  '.$glue.$anchor."\n";
-                    $glue = ' - '; // should delimiter for breadcrumbs be configurable?
-                    ++$crumbs;
+                    $s .= $m.'  '.(($crumbs++ == 0) ? '' : $this->breadcrumb_separator).$anchor."\n";
                 }
             }
             if (!empty($this->breadcrumb_addendum)) {
                 foreach($this->breadcrumb_addendum as $anchor) {
-                    $s .= $m.'  '.$glue.$anchor."\n";
-                    $glue = ' - ';
-                    ++$crumbs;
+                    $s .= $m.'  '.(($crumbs++ == 0) ? '' : $this->breadcrumb_separator).$anchor."\n";
                 }
             }
             if ($crumbs > 0) {
@@ -549,7 +546,7 @@ class Theme {
      * @uses get_quicklinks()
      */
     function get_quicktop($m='') {
-        return $this->get_quicklinks($m,'quicktop_section_id');
+        return $this->get_quicklinks($m,'quicktop_section_id',$this->quicktop_separator);
     } // get_quicktop()
 
 
@@ -562,15 +559,15 @@ class Theme {
      * @uses get_quicklinks()
      */
     function get_quickbottom($m='') {
-        return $this->get_quicklinks($m,'quickbottom_section_id');
+        return $this->get_quicklinks($m,'quickbottom_section_id',$this->quickbottom_separator);
     } // get_quickbottom()
 
 
     /** workhorse for constructing list of quicklinks
      *
-     * This creates HTML-code for links that can be displayed at the top
+     * This creates HTML-code for links that can be displayed at the top/bottom
      * of the page. These links are the pages (but not subsections) defined
-     * in the quicktop_section_id in $this->config.
+     * in the quicktop_section_id  or quickbottom_section_id in $this->config.
      *
      * Note that this array may or may not exist and also that the section may
      * or may not exist and that the section may or may not contain any visible
@@ -578,14 +575,15 @@ class Theme {
      *
      * Also note that these links are always displayed as text, even if a graphics
      * image is defined in the corresponding node. The contents of the section can
-     * be found in $this->tree.
+     * be found in $this->tree. If there are two or more links, they are separated
+     * with $separator (default '');
      *
      * @param string $m left margin for increased readability
      * @param string $quick_section_id the name of the property that holds the section containing these quicklinks
+     * @parameter string $separator separates individual items in the list
      * @return string constructed list of clickable links or an empty string
-     * @todo should we take Apache's PATH_INFO feature into account to create friendly links?
      */
-    function get_quicklinks($m,$quick_section_id) {
+    function get_quicklinks($m,$quick_section_id,$separator='') {
         global $WAS_SCRIPT_NAME;
         $s = '';
 
@@ -601,26 +599,20 @@ class Theme {
         // simply return that single page.
         if ($this->tree[$node_id]['is_page']) {
             if ($this->tree[$node_id]['is_visible']) {
-                if ($this->tree[$node_id]['is_breadcrumb']) {
-                    $attributes = array('class' => 'current');
-                } else {
-                    $attributes = NULL;
-                }
+                $attributes = ($this->tree[$node_id]['is_breadcrumb']) ? array('class' => 'current') : NULL;
                 // force a text-only link
                 $s .= $m.$this->node2anchor($this->tree[$node_id]['record'],$attributes,TRUE)."\n";
             }
         } else { // section
+            $item_count = 0;
             $node_id = $this->tree[$node_id]['first_child_id'];
             for ( ; ($node_id != 0); $node_id = $this->tree[$node_id]['next_sibling_id']) {
                 if ($this->tree[$node_id]['is_page']) {
                     if ($this->tree[$node_id]['is_visible']) {
-                        if ($this->tree[$node_id]['is_breadcrumb']) {
-                            $attributes = array('class' => 'current');
-                        } else {
-                            $attributes = NULL;
-                        }
+                        $attributes = ($this->tree[$node_id]['is_breadcrumb']) ? array('class' => 'current') : NULL;
                         // force a text-only link
-                        $s .= $m.$this->node2anchor($this->tree[$node_id]['record'],$attributes,TRUE)."\n";
+                        $s .= $m.(($item_count++ == 0) ? '' : $separator).
+                                 $this->node2anchor($this->tree[$node_id]['record'],$attributes,TRUE)."\n";
                     }
                 }
             }
@@ -628,18 +620,22 @@ class Theme {
         return $s;
     } // get_quicklinks()
 
-
+    /** construct a top level menu (navigation bar) as an unnumbered list (UL) of list items (LI)
+     *
+     * this simply walks through the top level of the menu tree and
+     * creates a link for each node.
+     *
+     * @param string $m left margin for increased readability
+     * @param bool $textonly forces a text-type link even when a navigation image is stipulated in the node record
+     * @return string properly indented ready-to-use HTML
+     */
     function get_navigation($m='',$textonly=FALSE) {
         $item_count = 0;
         $navbar = $m."<ul>\n";
         $next_id = $this->tree[0]['first_child_id'];
         for ( ; ($next_id != 0); $next_id = $this->tree[$next_id]['next_sibling_id']) {
             if ($this->tree[$next_id]['is_visible']) {
-                if ($this->tree[$next_id]['is_breadcrumb']) {
-                    $attributes = array('class' => 'current');
-                } else {
-                    $attributes = NULL;
-                }                
+                $attributes = ($this->tree[$next_id]['is_breadcrumb']) ? array('class' => 'current') : NULL;
                 $navbar .= $m."  <li>".$this->node2anchor($this->tree[$next_id]['record'],$attributes,$textonly)."\n";
                 ++$item_count;
             }
@@ -648,27 +644,53 @@ class Theme {
         return ($item_count > 0) ? $navbar : "\n";
     } // get_navigation()
 
-
-    function get_menu($m='') {
-        // first locate the toplevel section to open (if any)
-        $menu_id = NULL;
-        $node_id = $this->tree[0]['first_child_id'];
-        for ( ; ($node_id != 0); $node_id = $this->tree[$node_id]['next_sibling_id']) {
-            if ($this->tree[$node_id]['is_breadcrumb']) {
-                if (!($this->tree[$node_id]['is_page'])) {
-                    $menu_id = $this->tree[$node_id]['first_child_id'];
+    /** construct the submenu starting at $menu_id OR the first breadcrumb in the top level menu
+     *
+     * this constructs an 'infinitely' nested set of submenus, starting at $menu_id
+     * or at the first breadcrumb in the top level menu (if any).
+     * If there are no suitable nodes, an empty string is returned.
+     *
+     * @param string $m left margin for increased readability
+     * @param int $menu_id indicates where to start the menu (NULL means the first breadcrumb in top level menu)
+     * @return string properly indented ready-to-use HTML
+     * @uses show_tree_walk()
+     */
+    function get_menu($m='',$menu_id=NULL) {
+        if (is_null($menu_id)) { // locate the toplevel section to open (if any)
+            $node_id = $this->tree[0]['first_child_id'];
+            for ( ; ($node_id != 0); $node_id = $this->tree[$node_id]['next_sibling_id']) {
+                if ($this->tree[$node_id]['is_breadcrumb']) {
+                    if (!($this->tree[$node_id]['is_page'])) {
+                        $menu_id = $this->tree[$node_id]['first_child_id'];
+                    }
+                    break;
                 }
-                break;
             }
         }
-        if (is_null($menu_id)) {
-            return ''; // no menu, nothing to show
-        }
-        $s = $this->show_tree_walk($m.'  ',$menu_id);
-        return $s;
+        return (is_null($menu_id)) ? '' : $this->show_tree_walk($m.'  ',$menu_id);
     } // get_menu()
 
 
+    /** workhorse for constructing recursive menu (walk the tree) along the breadcrumb trail
+     *
+     * this constructs nested (sub)menus along the breadcrumb trail. The effect is
+     * that the (sub)menus that lead to the current page ($this->node_id) are 'opened'
+     * whereas the other submenus are 'closed'. The (sub)menus are constructed in the form
+     * of nested UL's with LI's.
+     *
+     * The level of recursion of the list items (LI) is indicated via class='levelNNN'.
+     * The type of item is indicated via class='page' or class='section'.
+     * Finally the item has an addional class='current' when it is part of the breadcrumb trail.
+     *
+     * The actual A-tag of the link only indicates being part of the breadcrumb trail via class='current'.
+     * 
+     * It is up to the style sheet to visualise these items taking all variants into account.
+     * Note that we only process visible pages and sections.
+     *
+     * @param string $m left margin for increased readability
+     * @param int $subtree_id indicates where to start this (sub)menu
+     * @return string properly indented ready-to-use HTML
+     */
     function show_tree_walk($m='',$subtree_id) {
         static $level = 0;
         $class_level = 'level'.strval($level);
@@ -676,18 +698,21 @@ class Theme {
         $node_id = $subtree_id;
         for ( ; ($node_id != 0); $node_id = $this->tree[$node_id]['next_sibling_id']) {
             if ($this->tree[$node_id]['is_visible']) {
-                $is_page = $this->tree[$node_id]['is_page'];
-                $is_breadcrumb = $this->tree[$node_id]['is_breadcrumb'];
-                $class = ($is_breadcrumb) ? 'current ' : '';
-                $class .= ($is_page) ? 'page level'.strval($level) : 'section level'.strval($level);
-                $attributes = ($is_breadcrumb) ? array('class' => 'current') : NULL;
+                // 1 -- show this node
+                $is_page        = $this->tree[$node_id]['is_page'];
+                $is_breadcrumb  = $this->tree[$node_id]['is_breadcrumb'];
+                $class          = ($is_breadcrumb) ? 'current ' : '';
+                $class         .= (($is_page) ? 'page ' : 'section ').$class_level;
+                $attributes     = ($is_breadcrumb) ? array('class' => 'current') : NULL;
                 $s .= $m.'  '.html_tag('li',array('class' => $class)).
-                         $this->node2anchor($this->tree[$node_id]['record'],$attributes)."\n";
-                if ((!$is_page) && ($is_breadcrumb)) { // follow the breadcrumb trail
+                              $this->node2anchor($this->tree[$node_id]['record'],$attributes)."\n";
+
+                // 2 -- maybe descend to follow the breadcrumb trail
+                if ((!$is_page) && ($is_breadcrumb)) { 
                     if (($subsubtree_id = $this->tree[$node_id]['first_child_id']) > 0) {
                         ++$level;
                         if ($level > MAXIMUM_ITERATIONS) {
-                            logger(__FILE__.'('.__LINE__.') too many levels in node '.$node_id,LOG_DEBUG);
+                            logger(__FILE__.'('.__LINE__.') too many levels in node '.$node_id);
                         } else {
                             $s .= $this->show_tree_walk($m.'  ',$subsubtree_id);
                         }
@@ -708,9 +733,11 @@ class Theme {
      * to that area. Only the active areas are displayed. Private areas are only displayed
      * when the user actually has access to those areas.
      *
-     * This routine only shows the Submit-button if JavaScript is turned 'off'. If it is 'on',
+     * This routine always shows the Submit-button even when JavaScript is turned 'off'. If it is 'on',
      * a tiny snippet auto-submits the form whenever the user selects another area; no need
-     * press any button anymore.
+     * press any button anymore. However, pressing the Go button is necessary when Javascript is 'off'.
+     * Rationale: the user will find out soon enough that pressing the button is superfluous, and
+     * as a benefit we keep the same look and feel no matter what the state of Javascript.
      *
      * We rely on the constructor to provide us with an array of area_id=>area_title pairs
      * in the $this->jumps array.
@@ -722,12 +749,13 @@ class Theme {
     function get_jumpmenu($m='') {
         global $USER,$WAS_SCRIPT_NAME;
 
-        // 1 -- KISS form with a whiff of javascript to maybe get rid of the Go-button
+        // 1 -- KISS form with a whiff of javascript (but don't  get rid of the Go-button)
         $title = t('jumpmenu_area_title',$this->domain);
-        $attributes = array('name' => 'area','title' => $title,'onchange' => 'jumpmenu.submit();');
-        $jumpmenu  = $m.html_form($WAS_SCRIPT_NAME,'get',array('name' => 'jumpmenu'))."\n".
+        $attributes = array('name' => 'area','title' => $title,'onchange' => 'this.form.submit();');
+        $jumpmenu  = $m.html_form($WAS_SCRIPT_NAME,'get')."\n".
                      $m."  ".t('jumpmenu_area',$this->domain)."\n".
                      $m."  ".html_tag('select',$attributes)."\n";
+
         // 2 -- fill opened form/select with available areas
         foreach($this->jumps as $k => $v) {
             $attributes = array('title' => $title, 'value' => $k);
@@ -736,11 +764,10 @@ class Theme {
             }
             $jumpmenu .= $m.'    '.html_tag('option',$attributes,$v)."\n";
         }
-        // 3 -- add optional button (only when no JavaScript is enabled) and close all open tags.
+
+        // 3 -- add button and close all open tags.
         $jumpmenu .= $m."  </select>\n".
-                     $m."  <noscript>\n".
-                     $m."    ".dialog_get_widget(dialog_buttondef(BUTTON_GO))."\n".
-                     $m."  </noscript>\n".
+                     $m."  ".dialog_get_widget(dialog_buttondef(BUTTON_GO))."\n".
                      $m.html_form_close()."\n";
         return $jumpmenu;
     } // get_jumpmenu()
@@ -755,17 +782,21 @@ class Theme {
      * or more query from the language/translation subsystem.
      *
      * Note: for the time being the performance report commented out (2010-12-08).
+     * Update: as from 2011-05-20 the performance report only displayed while debug is on,
      *
      * @param string $m left margin for increased readability
      * @return string performance report
      */
     function get_bottomline($m='') {
+        global $CFG;
         $dummy = t('generated_in','admin');
         $a = array('{DATE}'=>strftime("%Y-%m-%d %T"),
                    '{QUERIES}'=>performance_get_queries(),
                    '{SECONDS}'=>sprintf("%01.3f",performance_get_seconds()));
         $s = appropriate_legal_notices($this->high_visibility,$m)."\n";
-//        $s .= $m."| ".t('generated_in','admin',$a)."\n";
+        if ($CFG->debug) {
+            $s .= $m."| ".t('generated_in','admin',$a)."\n";
+        }
         return $s;
     } // get_bottomline()
 
@@ -782,8 +813,6 @@ class Theme {
      *
      * @param string $m left margin for increased readability
      * @return string reconstructed URL as text
-     * @todo should we add additional text to the address, e.g. prefix 'URL: ' or something?
-     *       now it is just a plain old URL without any commments whatsoever.
      */
     function get_address($m='') {
         global $WAS_SCRIPT_NAME,$CFG;
@@ -793,14 +822,14 @@ class Theme {
             $url .= htmlspecialchars($path_info);
         }
         if (!empty($_GET)) {
-            $glue = '?';
+            $item_count = 0;
             foreach($_GET as $k => $v) {
-                $url .= $glue.rawurlencode($k).'='.rawurlencode($v);
-                $glue = '&amp;';
+                $url .= (($item_count++ == 0) ? '?' : '&amp;').rawurlencode($k).'='.rawurlencode($v);
             }    
         }
-        return $m.$url."\n";
+        return $m.'URL:'.$url."\n";
     } // get_address()
+
 
     /** add an HTTP-header
      *
@@ -810,6 +839,7 @@ class Theme {
     function add_http_header($headerline) {
         $this->http_headers[] = $headerline;
     } // add_http_header()
+
 
     /** add a header to the HTML head part of the document
      *
@@ -865,11 +895,16 @@ class Theme {
 
     /** add a link to a stylesheet to the HTML head part of the document
      *
-     * @param string $url url of the stylesheet
-     * @return void
+     * this adds a link to a stylesheet file to the HTML head part of the document.
+     * Note that we qualify the path to prevent problems with incorrect assumptions
+     * about relative URLs, see {@link was_url()}.
+     *
+     * @param string $url absolute or relative url of the stylesheet (see above)
+     * @return void and url added to list of headers
+     * @uses was_url()
      */
     function add_stylesheet($url) {
-        $s = '<link rel="stylesheet" type="text/css" href="'.htmlspecialchars($url).'">';
+        $s = '<link rel="stylesheet" type="text/css" href="'.htmlspecialchars(was_url($url)).'">';
         $this->add_html_header($s);
     } // add_stylesheet()
 
@@ -877,7 +912,7 @@ class Theme {
     /** add a line with meta-information to the HTML head part of the document
      *
      * @param array $meta an array with name-value-pairs that should be added to the HTML head part
-     * @return void
+     * @return void and meta data added to headers
      */
     function add_meta($meta) {
         foreach($meta as $name => $content) {
@@ -897,10 +932,11 @@ class Theme {
         }
     } // add_meta_http_equiv()
 
+
     /** add a line or array of lines to the content part of the document
      *
      * @param string|array $content the line(s) of text to add
-     * @return void
+     * @return void and content added to buffer
      */
     function add_content($content) {
         if (is_array($content)) {
@@ -911,44 +947,21 @@ class Theme {
     } // add_content()
 
 
-
-
-
-
-
-
-
-
-
-
-
+    /** set the preview mode
+     *
+     * this sets the preview mode of the page currently being built.
+     * If it is set to TRUE, all internal URLs (such as those pointing to a node in the
+     * breadcrumb trail or in menu items) will be equal to '#' which makes it more or
+     * less impossible to leave the current page because a bare '#' is considered an unnamed
+     * fragment and so no new page is loaded when the link is clicked; just the thing we need.
+     *
+     * @param bool $is_preview_mode TRUE enables preview mode, FALSE disables it
+     * @return void and flag set
+     */
     function set_preview_mode($is_preview_mode) {
         $this->preview_mode = ($is_preview_mode) ? TRUE : FALSE;
-    }
+    } // set_preview_mode()
 
-//    function add_content($msg) { echo '<b>'.__FUNCTION__."</b>($msg)<br>\n"; }
-//    function add_message($msg) { echo '<b>'.__FUNCTION__."</b>($msg)<br>\n"; }
-//    function add_popup_top($msg) { echo '<b>'.__FUNCTION__."</b>($msg)<br>\n"; }
-/******
-    function send_output() {
-        global $WAS_SCRIPT_NAME;
-        echo '<b>'.__FUNCTION__."</b>()<br>\n";
-
-        echo "<hr><p>\n<pre>\n";
-        print_r($this->config);
-        echo "</pre>\n";
-
-        echo "Quick and dirty list of all pages<br>\n";
-        foreach($this->tree as $node_id => $item) { 
-            if ($node_id != 0) {
-                $title = $item['record']['title'];
-                if (empty($title)) { $title = $item['record']['link_text']; }
-                echo "<a href=\"{$WAS_SCRIPT_NAME}?node={$node_id}\">Node $node_id ($title)</a><br>\n";
-            }
-        }
-
-    }
-******/
 
     /** retrieve configuration parameters for this combination of theme and area
      *
@@ -965,8 +978,14 @@ class Theme {
     } // get_properties()
 
 
-
-
+    /** read all nodes from table for this area and construct a tree
+     *
+     * this constructs the tree for this area, and makes sure that only
+     * non-hidden pages and non-empty sections are visible
+     *
+     * @param int $area_id the tree is built from nodes within this area
+     * @return array an array with the node-records linked as a tree
+     */
     function construct_tree($area_id) {
         $tree = build_tree($area_id);
         foreach($tree as $node_id => $item) {
@@ -975,40 +994,23 @@ class Theme {
         }
         $this->calc_tree_visibility($tree[0]['first_child_id'],$tree);
         return $tree;
-    }
-
-
-    function dump_subtree($node_id,&$tree) {
-        static $level = 0;
-        $now = strftime("%Y-%m-%d %T");
-        for ($next_id = $node_id; ($next_id != 0); $next_id = $tree[$next_id]['next_sibling_id']) {
-            $indent = str_repeat('   ',$level);
-            if ($tree[$next_id]['is_breadcrumb']) {
-                $indent .= '>>>';
-            } else {
-                $indent .= ($tree[$next_id]['is_visible']) ? '+' : '-';
-            }
-            echo sprintf("%02d: %-12s node %3d (%s) %s %s %s %s %s\n",
-                $level,
-                $indent,
-                $next_id,
-                ($tree[$next_id]['is_page']) ? 'page' : 'sect',
-                ($tree[$next_id]['is_hidden']) ?                'hidden ' : '   -   ',
-                ($tree[$next_id]['record']['expiry'] < $now) ?  'expired' : '   -   ',
-                ($now < $tree[$next_id]['record']['embargo']) ? 'embargo' : '   -   ',
-                ($tree[$next_id]['is_visible']) ?               'visible' : '   -   ',
-                ($tree[$next_id]['is_breadcrumb']) ?            ' bread ' : '   -   ');
-            if (!$tree[$next_id]['is_page']) {
-                ++$level;
-                $this->dump_subtree($tree[$next_id]['first_child_id'],$tree);
-                --$level;
-            }
-        }
-    }
+    } // construct_tree()
 
 
     /** calculate the visibility of the nodes in the tree
      *
+     * this flags visible nodes as visible. Here 'visible' means that
+     *  - the node is not hidden, not expired and not under embargo
+     *  - the section has at least 1 visible node (page or section)
+     * As a side effect, any subtree starting at a hidden/expired/embargo'ed
+     * section is completely set to invisible so we don't risk the change to
+     * accidently show a page from an invisible section.
+     * This routine walks through the tree recursively.
+     *
+     * @param int $node_id the starting point for the tree walking
+     * @param array &$tree pointer to the current tree
+     * @param bool $force_invisibility 
+     * @return bool TRUE when there is at least 1 visible node, FALSE otherwise
      * @todo how about making all nodes under embargo visible when previewing a page
      *       or at least the path from the node to display?
      */
@@ -1098,7 +1100,7 @@ class Theme {
      * construct an HTML anchor tag. At least the following keys are created
      * in the resulting array: 'href', 'title' and 'anchor'. The latter is either
      * the text or a referenct to an image that is supposed to go between the
-     * opening tag and closing tag. Furtermore an optional key is created: target.
+     * opening A-tag and closing A-tag. Furtermore an optional key is created: target.
      * The contents of the input array $attributes is merged into the result.
      *
      * If the parameter $textonly is TRUE the key 'anchor' is always text.
@@ -1107,6 +1109,14 @@ class Theme {
      * Note that the link text is always non-empty. If the node record has an
      * empty link_text, the word 'node' followed by the node_id is returned.
      * (Otherwise it will be hard to make an actual clickable link).
+     *
+     * Note that we attempt to create 'friendly' URLs, ie. URLs that look very
+     * much like a plain path, e.g.
+     * http://www.exemplum.eu/index.php/3/Information_about_the_school rather than
+     * http://www.exemplum.eu/index.php?node=3
+     * When bookmarking a page, the part 'Information_about_the_school' makes it
+     * easier to recognise the bookmark than when it is just some number.
+     * Choice for friendly URLs is made in the global (site) configuration.
      *
      * @param array $node_record the node record to convert
      * @param array $attributes optional attributes to add to the HTML A-tag
@@ -1148,7 +1158,7 @@ class Theme {
             $img_attr = array('width' => intval($node_record['link_image_width']),
                               'height' => intval($node_record['link_image_height']),
                               'alt' => $link_text);
-            $anchor = html_img($node_record['link_image'],$img_attr);
+            $anchor = html_img(was_url($node_record['link_image']),$img_attr);
         }
         return html_a($href,$params,$attributes,$anchor);
     } // node2anchor()
@@ -1160,22 +1170,72 @@ class Theme {
      * The spaces are translated to an underscore. Length of result is limited to
      * an arbitrary length of 50 characters.
      *
+     * Note that the $title is UTF-8 and may contain non-ASCII characters.
+     * Ths routine deals with that situation by first converting the UTF-8
+     * string to ASCII as much as possible (e.g. convert 'e-aigu' to plain 'e')
+     * and subsequently converting all remaining non-letter/digits to an underscore
+     *
      * @param string $title input text
      * @return string string with only alphanumerics and underscores, mas 50 chars
      */
     function friendly_bookmark($title) {
-        $s = '';
-        $n = min(50,strlen($title));
-        for ($i = 0; $i < $n; ++$i) {
-            $c = substr($title,$i,1);
+        $src = utf8_strtoascii($title);
+        $tgt = '';
+        $tgt_len = 0;
+        $subst = FALSE;
+        $n = utf8_strlen($src);
+        for ($i = 0; (($i < $n) && ($tgt_len < 50)); ++$i) {
+            $c = utf8_substr($src,$i,1);
             if (ctype_alnum($c)) {
-                $s .= $c;
-            } elseif (ctype_space($c)) {
-                $s .= "_";
+                $tgt .= $c;
+                $tgt_len++;
+                $subst = FALSE;
+            } else {
+                if (!$subst) {
+                    $tgt .= "_";
+                    $tgt_len++;
+                    $subst = TRUE;
+                }
             }
         }
-        return $s;
+        return $tgt;
     } // friendly_bookmark()
+
+    /** a helper-routine during development/debugging (currently unused)
+     *
+     * @param int $node_id start of the subtree
+     * @param array &$tree) pointer to a tree that was built earlier
+     * @return void but a dump of the tree in readable form sent to stdout
+     */
+    function dump_subtree($node_id,&$tree) {
+        static $level = 0;
+        $now = strftime("%Y-%m-%d %T");
+        for ($next_id = $node_id; ($next_id != 0); $next_id = $tree[$next_id]['next_sibling_id']) {
+            $indent = str_repeat('   ',$level);
+            if ($tree[$next_id]['is_breadcrumb']) {
+                $indent .= '>>>';
+            } else {
+                $indent .= ($tree[$next_id]['is_visible']) ? '+' : '-';
+            }
+            echo sprintf("%02d: %-12s node %3d (%s) %s %s %s %s %s\n",
+                $level,
+                $indent,
+                $next_id,
+                ($tree[$next_id]['is_page']) ?                     'page' : 'sect',
+                ($tree[$next_id]['is_hidden']) ?                'hidden ' : '   -   ',
+                ($tree[$next_id]['record']['expiry'] < $now) ?  'expired' : '   -   ',
+                ($now < $tree[$next_id]['record']['embargo']) ? 'embargo' : '   -   ',
+                ($tree[$next_id]['is_visible']) ?               'visible' : '   -   ',
+                ($tree[$next_id]['is_breadcrumb']) ?            ' bread ' : '   -   ');
+            if (!$tree[$next_id]['is_page']) {
+                ++$level;
+                $this->dump_subtree($tree[$next_id]['first_child_id'],$tree);
+                --$level;
+            }
+        }
+    } // dump_subtree()
+
+
 
 } // class Theme
 

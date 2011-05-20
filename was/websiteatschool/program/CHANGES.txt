@@ -1,10 +1,24 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.43 2011/05/20 18:29:42 pfokker Exp $
+$Id: CHANGES.txt,v 1.44 2011/05/20 19:15:50 pfokker Exp $
 -------------------------------------------------------------------------------
 
 2011-05-20
-- theme.class.php:
 - waslib.php: added a routine was_url() to qualify relative URLs
+- theme.class.php:
+  . the [Go] button is now always visible (reverses
+    earlier decision to embed it in noscript-tag)
+  . autosubmit now works with this.form.submit() instead of
+    by naming the form
+  . added class variables for separators in quicktop, quickbottom,
+    breadcrumb trail (easier to change)
+  . we can now indicate which menu to show via additional paramter
+    menu_id in get_menu()
+  . code cleanup / increased readablity
+  . bugfix: we now actually obey the global 'friendly_url'
+    configuration parameter
+  . modified friendly_bookmark() to deal with UTF-8 and diacriticals
+    in a slightly less ASCII-centric way
+
 
 2011-05-18
 - theme.class.php: we now add the area name to the breadcrumb trail
