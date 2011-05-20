@@ -1,6 +1,10 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.42 2011/05/18 11:18:35 pfokker Exp $
+$Id: CHANGES.txt,v 1.43 2011/05/20 18:29:42 pfokker Exp $
 -------------------------------------------------------------------------------
+
+2011-05-20
+- theme.class.php:
+- waslib.php: added a routine was_url() to qualify relative URLs
 
 2011-05-18
 - theme.class.php: we now add the area name to the breadcrumb trail

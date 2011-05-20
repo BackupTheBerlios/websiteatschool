@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: waslib.php,v 1.4 2011/05/02 16:17:23 pfokker Exp $
+ * @version $Id: waslib.php,v 1.5 2011/05/20 18:29:42 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1539,5 +1539,48 @@ function appropriate_legal_notices($high_visibility,$m='      ') {
     }
     return sprintf('%s%s<a href="%s" target="_blank">%s</a>',$m,$prefix,$CFG->progwww_short.'/about.html',$anchor);
 } // appropriate_legal_notices()
+
+
+/** massage a possibly relative URL to make it more qualified
+ *
+ * Here we perform same heuristics: if $url looks like it is relative,
+ * we prepend the correct path (from $CFG) to it.
+ *
+ * Here a URL is considered relative when it does NOT start with a slash and it does
+ * NOT start with a scheme followed by '://'. Additionaly, we make a distinction
+ * between a relative URL starting with 'program/' (which indicates a static file
+ * somewhere in the program directory) and other relative URLs (which are assumed
+ * to start in the CMS Root Directory (the directory where index.php, admin.php & friends live).
+ *
+ * Note: according to RFC3986 a scheme must start with a letter and can contain only
+ * letters, digits, '+', '-' or '.'. Note: all string operations here are ASCII; no UTF-8 issues.
+ *
+ * If $fully_qualified is TRUE we always make a relative URL fully qualified.
+ *
+ * Example 1:
+ * 'program/styles/base.css' becomes 
+ * '/program/styles/base.css' OR
+ * 'http://exemplum.eu/program/styles/base.css'
+ *
+ * Example 2:
+ * 'file.php/areas/exemplum/logo.jpg' becomes
+ * '/file.php/areas/exemplum/logo.jpg' OR
+ * 'http://exemplum.eu/file.php/areas/exemplum/logo.jpg'
+ *
+ * @param string $url the (possibly) relative URL to massage
+ * @param bool $fully_qualified if TRUE forces the URL to contain a scheme, authority etc., else use shortened form
+ * @return string the qualified URL
+ */
+function was_url($url,$fully_qualified=FALSE) {
+    global $CFG;
+    if (preg_match('/^[A-Za-z][A-Za-z0-9\-+.]*:\/\//',$url) != 1) { // relative; does not start with 'scheme://'
+            if (substr($url,0,8) == 'program/') {
+                $url = (($fully_qualified) ? $CFG->progwww : $CFG->progwww_short).substr($url,7);
+            } else {
+                $url = (($fully_qualified) ? $CFG->www : $CFG->www_short).'/'.$url;
+            }
+        }
+    return $url;
+} // was_url()
 
 ?>
