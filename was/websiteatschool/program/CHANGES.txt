@@ -1,6 +1,9 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.44 2011/05/20 19:15:50 pfokker Exp $
+$Id: CHANGES.txt,v 1.45 2011/05/26 10:36:32 pfokker Exp $
 -------------------------------------------------------------------------------
+2011-05-26
+- theme.class.php: various cosmetics regarding the separators between
+  quicklinks at the top/bottom of the page
 
 2011-05-20
 - waslib.php: added a routine was_url() to qualify relative URLs

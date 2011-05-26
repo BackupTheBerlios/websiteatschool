@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: theme.class.php,v 1.9 2011/05/20 19:19:54 pfokker Exp $
+ * @version $Id: theme.class.php,v 1.10 2011/05/26 10:36:32 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -106,7 +106,7 @@ class Theme {
     var $quickbottom_separator = '';
 
     /** @var string $breadcrumb_separator contains the delimiter between breadcrumbs in the breadcrumb trail */
-    var $breadcrumb_separator = ' - ';
+    var $breadcrumb_separator = '-';
 
     /** construct a Theme object
      *
@@ -466,7 +466,8 @@ class Theme {
     /** construct breadcrumb trail
      *
      * this constructs a breadcrumb trail with clickable links. The crumbs are separated by
-     * this->breadcrumb_separator (default ' - ').
+     * this->breadcrumb_separator (default '-'). Note that if there is actually a non-empty
+     * separator, we append a space for readability.
      *
      * @param string $m left margin for increased readability
      * @return string ready to use HTML with 1 or more clickable bread crumbs
@@ -474,16 +475,17 @@ class Theme {
     function get_div_breadcrumbs($m='') {
         $s = '';
         $crumbs = 0;
+        $separator = (empty($this->breadcrumb_separator)) ? '' : $this->breadcrumb_separator.' ';
         if ((isset($this->config['show_breadcrumb_trail'])) && ($this->config['show_breadcrumb_trail'])) {
             $breadcrumbs = $this->calc_breadcrumb_trail($this->node_id);
             if (!empty($breadcrumbs)) {
                 foreach($breadcrumbs as $anchor) {
-                    $s .= $m.'  '.(($crumbs++ == 0) ? '' : $this->breadcrumb_separator).$anchor."\n";
+                    $s .= $m.'  '.(($crumbs++ == 0) ? '' : $separator).$anchor."\n";
                 }
             }
             if (!empty($this->breadcrumb_addendum)) {
                 foreach($this->breadcrumb_addendum as $anchor) {
-                    $s .= $m.'  '.(($crumbs++ == 0) ? '' : $this->breadcrumb_separator).$anchor."\n";
+                    $s .= $m.'  '.(($crumbs++ == 0) ? '' : $separator).$anchor."\n";
                 }
             }
             if ($crumbs > 0) {
@@ -517,22 +519,10 @@ class Theme {
         if (isset($this->config['logo_height'])) {
             $attributes['height'] = $this->config['logo_height'];
         }
-        $src = $this->config['logo_image'];
-        // if this path is not absolute and does not look like scheme:// (with two slashes),
-        // we must assume that this path is relative to the directory where index.php resides
-        // perhaps a dangerous assumption but... oh well
-        if ((substr($src,0,1) != "/") && (strpos($src,"//") === FALSE)) {
-            $src = $CFG->www_short.'/'.$src;
-        }
+        $src = was_url($this->config['logo_image']); // apply some heuristics to perhaps qualify the src path
         $attributes['alt'] = t('alt_logo',$this->domain);
-        
-        if ($this->preview_mode) {
-            $href = "#";
-            $params = NULL;
-        } else {
-            $href = $WAS_SCRIPT_NAME;
-            $params = array('area' => $this->area_id);
-        }
+        $href =   ($this->preview_mode) ? "#"  : $WAS_SCRIPT_NAME;
+        $params = ($this->preview_mode) ? NULL : array('area' => $this->area_id);
         return $m.html_a($href,$params,NULL,html_img($src,$attributes));
     } // get_logo()
 
@@ -579,20 +569,23 @@ class Theme {
      * with $separator (default '');
      *
      * @param string $m left margin for increased readability
-     * @param string $quick_section_id the name of the property that holds the section containing these quicklinks
+     * @param string $quick_section_parameter the name of the property that holds the section containing these quicklinks
      * @parameter string $separator separates individual items in the list
      * @return string constructed list of clickable links or an empty string
      */
-    function get_quicklinks($m,$quick_section_id,$separator='') {
+    function get_quicklinks($m,$quick_section_parameter,$separator='') {
         global $WAS_SCRIPT_NAME;
         $s = '';
 
-        if (!isset($this->config[$quick_section_id])) {
+        if (!isset($this->config[$quick_section_parameter])) {
             return $s;
         }
-        $node_id = $this->config[$quick_section_id];
+        $node_id = $this->config[$quick_section_parameter];
         if ((!is_int($node_id)) || ($node_id <= 0) || (!isset($this->tree[$node_id]))){
             return $s;
+        }
+        if (!empty($separator)) {
+            $separator .= ' '; // for readability
         }
         // At this point we know that node $node_id actually exists in the tree.
         // It _should_ be a section and not a page. However, if it is a page, we'll
@@ -795,7 +788,8 @@ class Theme {
                    '{SECONDS}'=>sprintf("%01.3f",performance_get_seconds()));
         $s = appropriate_legal_notices($this->high_visibility,$m)."\n";
         if ($CFG->debug) {
-            $s .= $m."| ".t('generated_in','admin',$a)."\n";
+            $separator = (empty($this->quickbottom_separator)) ? '' : $this->quickbottom_separator.' '; // readability
+            $s .= $m.$separator.t('generated_in','admin',$a)."\n";
         }
         return $s;
     } // get_bottomline()
