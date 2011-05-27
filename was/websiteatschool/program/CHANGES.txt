@@ -1,5 +1,5 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.46 2011/05/27 21:51:16 pfokker Exp $
+$Id: CHANGES.txt,v 1.47 2011/05/27 22:02:19 pfokker Exp $
 -------------------------------------------------------------------------------
 
 2011-05-27
@@ -9,6 +9,7 @@ $Id: CHANGES.txt,v 1.46 2011/05/27 21:51:16 pfokker Exp $
 - waslib.php: moved routine calc_tree_visibility() from
   theme.class.php because it is even useful outside the theme
 - renamed calc_tree_visibility() to tree_visibility() and changed calls
+- added initial version of the sitemap module
 
 2011-05-26
 - theme.class.php: various cosmetics regarding the separators between
