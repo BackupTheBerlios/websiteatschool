@@ -35,7 +35,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: main_index.php,v 1.2 2011/02/03 14:04:02 pfokker Exp $
+ * @version $Id: main_index.php,v 1.3 2011/05/27 21:51:16 pfokker Exp $
  * @todo add the performance results in a HTML-comment if not CFG->debug, in sight otherwise
  */
 if (!defined('WASENTRY')) { die('no entry'); }
@@ -128,7 +128,7 @@ function main_index() {
                     logger("Fatal error 070: cannot preview node '$node_id' in area '$area_id'");
                     error_exit('070');
                 } else {
-                    $tree = build_tree($area_id);
+                    $tree = tree_build($area_id);
                     $in_preview_mode = TRUE;
                 }
             }
@@ -166,7 +166,7 @@ function main_index() {
         // then we've got a valid $area_id and corresponding $area record.
         // now we need to figure out which $node_id to use
 
-        $tree = build_tree($area_id);
+        $tree = tree_build($area_id);
         if (($node_id = calculate_node_id($tree,$area_id,$requested_node)) === FALSE) {
             logger(sprintf("Fatal error 080: no valid node within area '%d' (request: area='%s', node='%s')",
                            $area_id,$req_area_str,$req_node_str));
@@ -274,7 +274,7 @@ function calculate_area($requested_area,$requested_node) {
  * area $area_id. This means that the user is allowed to see the nodes
  * in this area that are not under embargo (and not expired).
  * We do have a complete overview of all nodes in this area in the array $tree.
- * (See {@link build_tree()} for more information about the tree structure)
+ * (See {@link tree_build()} for more information about the tree structure)
  *
  * The parameter $requested_node is either an integer, indicating the user
  * explicitly specified a node number in the page request, or null, indicating

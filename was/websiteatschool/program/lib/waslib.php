@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: waslib.php,v 1.5 2011/05/20 18:29:42 pfokker Exp $
+ * @version $Id: waslib.php,v 1.6 2011/05/27 21:51:17 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -922,7 +922,7 @@ function cron_send_queued_alerts($max_messages=10) {
  *       we really should have a separate 'database repair tool' for this purpose.
  *       someday we'll fix this....
  */
-function build_tree($area_id, $force = FALSE) {
+function tree_build($area_id, $force = FALSE) {
     global $DB;
     static $tree = NULL;
     static $cached_area_id = 0;
@@ -986,7 +986,7 @@ function build_tree($area_id, $force = FALSE) {
             $fields = array('parent_id' => $node_id, 'sort_order' => $sort_order);
             $where = array('node_id' => $node_id);
             $sql = db_update_sql('nodes',$fields,$where);
-            logger("build_tree(): moved orphan '$node_id' (original parent '$parent_id') to top with '$sql'",LOG_DEBUG);
+            logger("tree_build(): moved orphan '$node_id' (original parent '$parent_id') to top with '$sql'",LOG_DEBUG);
             $DB->exec($sql);
         } elseif ($parent_id == $tree[$prev_node_id]['parent_id']) {
             $tree[$prev_node_id]['next_sibling_id'] = $node_id;
@@ -1004,7 +1004,63 @@ function build_tree($area_id, $force = FALSE) {
     // 5 -- done!
     $cached_area_id = $area_id;
     return $tree;
-} // build_tree()
+} // tree_build()
+
+
+/** calculate the visibility of the nodes in the tree
+ *
+ * this flags visible nodes as visible. Here 'visible' means that
+ *
+ *  - the node is not hidden, not expired and not under embargo
+ *  - the section has at least 1 visible node (page or section)
+ *
+ * As a side effect, any subtree starting at a hidden/expired/embargo'ed
+ * section is completely set to invisible so we don't risk the chance to
+ * accidently show a page from an invisible section.
+ * This routine walks through the tree recursively.
+ *
+ * @param int $subtree_id the starting point for the tree walking
+ * @param array &$tree pointer to the current tree
+ * @param bool $force_invisibility 
+ * @return bool TRUE when there is at least 1 visible node, FALSE otherwise
+ * @todo how about making all nodes under embargo visible when previewing a page
+ *       or at least the path from the node to display?
+ */
+function tree_visibility($subtree_id,&$tree,$force_invisibility=FALSE) {
+    $now = strftime("%Y-%m-%d %T");
+    $visible_nodes = 0;
+    for ($node_id = $subtree_id; ($node_id != 0); $node_id = $tree[$node_id]['next_sibling_id']) {
+        if ($tree[$node_id]['is_page']) {
+            if (($tree[$node_id]['record']['expiry'] < $now) ||
+                ($now < $tree[$node_id]['record']['embargo']) ||
+                ($force_invisibility) ||
+                ($tree[$node_id]['is_hidden'])) {
+                $tree[$node_id]['is_visible'] = FALSE;
+            } else {
+                $tree[$node_id]['is_visible'] = TRUE;
+                ++$visible_nodes;
+            }
+        } else { //section
+            if (($tree[$node_id]['record']['expiry'] < $now) || 
+                ($now < $tree[$node_id]['record']['embargo']) ||
+                ($force_invisibility)) {
+                $tree[$node_id]['is_visible'] = FALSE;
+                tree_visibility($tree[$node_id]['first_child_id'],$tree,TRUE);
+            } elseif ($tree[$node_id]['is_hidden']) {
+                $tree[$node_id]['is_visible'] = FALSE;
+                tree_visibility($tree[$node_id]['first_child_id'],$tree);
+            } else {
+                if (tree_visibility($tree[$node_id]['first_child_id'],$tree)) {
+                    $tree[$node_id]['is_visible'] = TRUE;
+                    ++$visible_nodes;
+                } else {
+                    $tree[$node_id]['is_visible'] = FALSE;
+                }
+            }
+        }
+    }
+    return ($visible_nodes > 0) ? TRUE : FALSE;
+} // tree_visibility()
 
 
 /** determine if any of the ancestors or $node_id itself is under embargo

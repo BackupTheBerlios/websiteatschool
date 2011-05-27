@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: aclmanager.class.php,v 1.2 2011/02/03 14:04:03 pfokker Exp $
+ * @version $Id: aclmanager.class.php,v 1.3 2011/05/27 21:51:16 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1336,7 +1336,7 @@ class AclManager {
                 //
                 if (($area['show']) && ($area['nodes'] > 0)) {
                     $index = $area['first'] + 1;
-                    $tree = $this->build_tree($area_id);
+                    $tree = $this->tree_build($area_id);
                     $permissions_nodes = $this->get_permissions_nodes_in_area($area_id,$acl_id,$related_acls);
                     foreach($tree as $node_id => $node) {
                         $tree[$node_id]['permissions'] = (isset($permissions_nodes[$node_id])) ?
@@ -1674,7 +1674,7 @@ class AclManager {
     /** build a tree of all nodes in an area
      *
      * this routine constructs a tree-structure of all nodes in area $area_id in much
-     * the same way as {@link build_tree()} does. However, in this routine we keep the
+     * the same way as {@link tree_build()} does. However, in this routine we keep the
      * cargo limited to a minimum: the fields we retrieve from the nodes table and
      * store in the tree are:
      *  - node_id
@@ -1692,7 +1692,7 @@ class AclManager {
      * @return array ready to use tree structure w/ permissions
      */
 
-    function build_tree($area_id) {
+    function tree_build($area_id) {
 
         // 1 -- Start with 'special' node 0 is root of the tree
         $tree = array(0 => array(
@@ -1759,7 +1759,7 @@ class AclManager {
 
         // 5 -- done!
         return $tree;
-    } // build_tree()
+    } // tree_build()
 
 
     /** add the specified node to dialogdef, optionally all subtrees, and subsequently all siblings

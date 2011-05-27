@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: theme.class.php,v 1.10 2011/05/26 10:36:32 pfokker Exp $
+ * @version $Id: theme.class.php,v 1.11 2011/05/27 21:51:17 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -51,7 +51,7 @@ class Theme {
     /** @var a convenient copy of the node record copied from the area tree */
     var $node_record = NULL;
 
-    /** @var array $tree all nodes in area $area_id, keyed by $node_id (see {@link build_tree()}). */
+    /** @var array $tree all nodes in area $area_id, keyed by $node_id (see {@link tree_build()}). */
     var $tree = FALSE;
 
     /** @var array $config all properties from themes_areas_properties for this combination of theme and area */
@@ -981,68 +981,14 @@ class Theme {
      * @return array an array with the node-records linked as a tree
      */
     function construct_tree($area_id) {
-        $tree = build_tree($area_id);
+        $tree = tree_build($area_id);
         foreach($tree as $node_id => $item) {
             $tree[$node_id]['is_visible'] = FALSE;
             $tree[$node_id]['is_breadcrumb'] = FALSE;
         }
-        $this->calc_tree_visibility($tree[0]['first_child_id'],$tree);
+        tree_visibility($tree[0]['first_child_id'],$tree);
         return $tree;
     } // construct_tree()
-
-
-    /** calculate the visibility of the nodes in the tree
-     *
-     * this flags visible nodes as visible. Here 'visible' means that
-     *  - the node is not hidden, not expired and not under embargo
-     *  - the section has at least 1 visible node (page or section)
-     * As a side effect, any subtree starting at a hidden/expired/embargo'ed
-     * section is completely set to invisible so we don't risk the change to
-     * accidently show a page from an invisible section.
-     * This routine walks through the tree recursively.
-     *
-     * @param int $node_id the starting point for the tree walking
-     * @param array &$tree pointer to the current tree
-     * @param bool $force_invisibility 
-     * @return bool TRUE when there is at least 1 visible node, FALSE otherwise
-     * @todo how about making all nodes under embargo visible when previewing a page
-     *       or at least the path from the node to display?
-     */
-    function calc_tree_visibility($node_id,&$tree,$force_invisibility=FALSE) {
-        $now = strftime("%Y-%m-%d %T");
-        $visible_nodes = 0;
-        for ($next_id = $node_id; ($next_id != 0); $next_id = $tree[$next_id]['next_sibling_id']) {
-            if ($tree[$next_id]['is_page']) {
-                if (($tree[$next_id]['record']['expiry'] < $now) ||
-                    ($now < $tree[$next_id]['record']['embargo']) ||
-                    ($force_invisibility) ||
-                    ($tree[$next_id]['is_hidden'])) {
-                    $tree[$next_id]['is_visible'] = FALSE;
-                } else {
-                    $tree[$next_id]['is_visible'] = TRUE;
-                    ++$visible_nodes;
-                }
-            } else { //section
-                if (($tree[$next_id]['record']['expiry'] < $now) || 
-                    ($now < $tree[$next_id]['record']['embargo']) ||
-                    ($force_invisibility)) {
-                    $tree[$next_id]['is_visible'] = FALSE;
-                    $this->calc_tree_visibility($tree[$next_id]['first_child_id'],$tree,TRUE);
-                } elseif ($tree[$next_id]['is_hidden']) {
-                    $tree[$next_id]['is_visible'] = FALSE;
-                    $this->calc_tree_visibility($tree[$next_id]['first_child_id'],$tree);
-                } else {
-                    if ($this->calc_tree_visibility($tree[$next_id]['first_child_id'],$tree)) {
-                        $tree[$next_id]['is_visible'] = TRUE;
-                        ++$visible_nodes;
-                    } else {
-                        $tree[$next_id]['is_visible'] = FALSE;
-                    }
-                }
-            }
-        }
-        return ($visible_nodes > 0) ? TRUE : FALSE;
-    } // calc_tree_visiblity()
 
 
     /** set breadcrumbs in tree AND construct list of clickable anchors

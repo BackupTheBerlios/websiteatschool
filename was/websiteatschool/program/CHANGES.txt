@@ -1,6 +1,15 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.45 2011/05/26 10:36:32 pfokker Exp $
+$Id: CHANGES.txt,v 1.46 2011/05/27 21:51:16 pfokker Exp $
 -------------------------------------------------------------------------------
+
+2011-05-27
+- waslib.php: renamed function build_tree() to tree_build and
+  changed the function calls everywhere else (theme.class.php,
+  pagemanager.class.php, aclmanager.class.php, main_index.php)
+- waslib.php: moved routine calc_tree_visibility() from
+  theme.class.php because it is even useful outside the theme
+- renamed calc_tree_visibility() to tree_visibility() and changed calls
+
 2011-05-26
 - theme.class.php: various cosmetics regarding the separators between
   quicklinks at the top/bottom of the page

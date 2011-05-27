@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: pagemanager.class.php,v 1.3 2011/05/02 21:03:52 pfokker Exp $
+ * @version $Id: pagemanager.class.php,v 1.4 2011/05/27 21:51:17 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -2054,7 +2054,7 @@ class PageManager {
         if ($changed_area) {
              // a single node will be moved to the top level of the new area
             $parent_id = 0;
-            $newtree = build_tree($new_area_id);
+            $newtree = tree_build($new_area_id);
             $fields['sort_order'] = $this->calculate_new_sort_order($newtree,$new_area_id,$parent_id);
             unset($newtree);
             $fields['parent_id'] = $node_id; // $parent_id == $node_id means: top level
@@ -2233,7 +2233,7 @@ class PageManager {
         }
 
         // 3A -- calculate new sort order in new area
-        $newtree = build_tree($new_area_id);
+        $newtree = tree_build($new_area_id);
         $sort_order = $this->calculate_new_sort_order($newtree,$new_area_id,0); // 0 means: top level
         unset($newtree);
 
@@ -4005,7 +4005,7 @@ class PageManager {
     function build_cached_tree($area_id,$force=FALSE) {
         if (($this->area_id !== $area_id) || ($force)) {
             $this->area_id = $area_id;
-            $this->tree = build_tree($this->area_id,$force);
+            $this->tree = tree_build($this->area_id,$force);
         }
     } // build_cached_tree()
 
