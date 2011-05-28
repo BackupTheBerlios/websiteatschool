@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: pagemanager.class.php,v 1.4 2011/05/27 21:51:17 pfokker Exp $
+ * @version $Id: pagemanager.class.php,v 1.5 2011/05/28 15:53:56 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -2070,18 +2070,26 @@ class PageManager {
         }
 
         // 4A -- actually update the database for the pending 'simple' changes
+        $errors = 0;
         if ($changed_module) {
-            $this->module_disconnect($this->area_id,$node_id,$this->tree[$node_id]['record']['module_id']);
+            if (!($this->module_disconnect($this->area_id,$node_id,$this->tree[$node_id]['record']['module_id']))) {
+                ++$errors;
+            }
         }
         $where = array('node_id' => $node_id);
         if (db_update('nodes',$fields,$where) === FALSE) {
-            logger(sprintf(__CLASS__.": error saving node '%d'%s: %s",$node_id,
-                                                                      ($embargo) ? ' (embargo)' : '',
-                                                                      db_errormessage()));
-            $message = t('error_saving_node','admin');
-            $this->output->add_message($message);
-        } else {
-            logger(sprintf(__CLASS__.": success saving node '%d'%s",$node_id,($embargo) ? ' (embargo)' : ''));
+            logger(sprintf('%s.%s(): error saving node \'%d\'%s: %s',
+                           __CLASS__,__FUNCTION__,$node_id,($embargo) ? ' (embargo)' : '',db_errormessage()));
+            ++$errors;
+        }
+        if ($changed_module) {
+            if (!($this->module_connect($this->area_id,$node_id,$fields['module_id']))) {
+                ++$errors;
+            }
+        }
+        if ($errors == 0) {
+            logger(sprintf('%s.%s(): success saving node \'%d\'%s',
+                           __CLASS__,__FUNCTION__,$node_id,($embargo) ? ' (embargo)' : ''),LOG_DEBUG);
             $anode = array('{AREA}' => $this->area_id,'{NODE_FULL_NAME}' => $this->node_full_name($node_id));
             $this->output->add_message(t(($is_page) ? 'page_saved' : 'section_saved','admin',$anode));
             if (!$embargo) {
@@ -2096,9 +2104,9 @@ class PageManager {
                 }
                 $this->queue_area_node_alert($areas,$nodes,$message,$USER->full_name);
             }
-        }
-        if ($changed_module) {
-            $this->module_connect($this->area_id,$node_id,$fields['module_id']);
+        } else {
+            $message = t('error_saving_node','admin');
+            $this->output->add_message($message);
         }
 
         // 4B -- update the database for the special case of a mass-move
@@ -4047,9 +4055,11 @@ class PageManager {
             logger(__FUNCTION__."(): weird: function '$module_disconnect' does not exist. Huh?",LOG_DEBUG);
             return FALSE;
         }
-        $retval = $module_disconnect($this->output,$area_id,$node_id,$module);
-        logger(sprintf(__FUNCTION__."(): %s disconnecting module '%s' from node '%d'",
-                       ($retval) ? 'success' : 'failure',$module['name'],$node_id));
+        $retval   = $module_disconnect($this->output,$area_id,$node_id,$module);
+        $result   = ($retval) ? 'success' : 'failure';
+        $priority = ($retval) ? LOG_DEBUG : LOG_INFO;
+        logger(sprintf('%s.%s(): %s disconnecting module \'%s\' from node \'%d\'',__CLASS__,__FUNCTION__,
+                       $result,$module['name'],$node_id),$priority);
         return $retval;
     } // module_disconnect()
 
@@ -4085,9 +4095,11 @@ class PageManager {
             logger(__FUNCTION__."(): weird: function '$module_connect' does not exist. Huh?",LOG_DEBUG);
             return FALSE;
         }
-        $retval = $module_connect($this->output,$area_id,$node_id,$module);
-        logger(sprintf(__FUNCTION__."(): %s connecting module '%s' to node '%d'",
-                       ($retval) ? 'success' : 'failure',$module['name'],$node_id));
+        $retval   = $module_connect($this->output,$area_id,$node_id,$module);
+        $result   = ($retval) ? 'success' : 'failure';
+        $priority = ($retval) ? LOG_DEBUG : LOG_INFO;
+        logger(sprintf('%s.%s(): %s connecting module \'%s\' to node \'%d\'',__CLASS__,__FUNCTION__,
+                       $result,$module['name'],$node_id),$priority);
         return $retval;
     } // module_connect()
 

@@ -1,6 +1,10 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.47 2011/05/27 22:02:19 pfokker Exp $
+$Id: CHANGES.txt,v 1.48 2011/05/28 15:53:56 pfokker Exp $
 -------------------------------------------------------------------------------
+
+2011-05-28
+- pagemanager.class.php: better error handling in connecting and
+  disconnecting modules and nodes
 
 2011-05-27
 - waslib.php: renamed function build_tree() to tree_build and
