@@ -31,7 +31,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_sitemap
- * @version $Id: sitemap_view.php,v 1.1 2011/05/27 22:02:18 pfokker Exp $
+ * @version $Id: sitemap_view.php,v 1.2 2011/05/28 19:20:30 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -58,14 +58,18 @@ function sitemap_view(&$theme,$area_id,$node_id,$module) {
     // 1 -- determine scope of sitemap: 0=small, 1=medium, 2=large
     //
     $table = 'sitemaps';
-    $fields = array('scope');
+    $fields = array('header','introduction','scope');
     $where = array('node_id' => intval($node_id));
     $record = db_select_single_record($table,$fields,$where);
     if ($record === FALSE) {
         logger(sprintf('%s(): error retrieving configuration: %s',__FUNCTION__,db_errormessage()));
         $scope = 0;
+        $header = '';
+        $introduction = '';
     } else {
         $scope = intval($record['scope']);
+        $header = trim($record['header']);
+        $introduction = trim($record['introduction']);
     }
     //
     // 2 -- compute a list of areas to process (could be just 1)
@@ -86,8 +90,7 @@ function sitemap_view(&$theme,$area_id,$node_id,$module) {
             if (($scope == 2) || ($scope == 1) || (($scope == 0) && ($id == $area_id))) {
                 $href   = ($theme->preview_mode) ? "#" : $WAS_SCRIPT_NAME;
                 $params = ($theme->preview_mode) ?  NULL : array('area' => $id);
-                $attributes = ($area_id == $id) ? array('class' => 'current') : NULL;
-                $areas[$id] = html_a($href,$params,$attributes,$area['title']);
+                $areas[$id] = html_a($href,$params,NULL,$area['title']);
             }
         }
     }
@@ -100,20 +103,30 @@ function sitemap_view(&$theme,$area_id,$node_id,$module) {
     }
 
     //
-    // 3 - Actually output a sitemap by walking the tree once for every elegible area
+    // 3 -- maybe output a header and an introduction
+    //
+    if (!empty($header)) {
+        $theme->add_content('<h2>'.$header.'</h2>');
+    }
+    if (!empty($introduction)) {
+        $theme->add_content($introduction);
+    }
+
+    //
+    // 4 - Actually output a sitemap by walking the tree once for every elegible area
     //
     foreach($areas as $id => $area_anchor) {
         if (($scope == 1) && ($area_id != $id)) { // 1=medium only shows area map of $area_id (and an area list lateron)
             continue;
         }
-        // 3A -- output a clickable area title
+        // 4A -- output a clickable area title
         $theme->add_content('<h2>'.$area_anchor.'</h2>');
 
-        // 3B -- fetch the tree for this area...
+        // 4B -- fetch the tree for this area...
         $tree = tree_build($id);
         tree_visibility($tree[0]['first_child_id'],$tree);
 
-        // 3C -- ...and walk the tree
+        // 4C -- ...and walk the tree
         sitemap_tree_walk($theme,$tree[0]['first_child_id'],$tree);
         unset($tree);
     }
@@ -129,6 +142,15 @@ function sitemap_view(&$theme,$area_id,$node_id,$module) {
     return TRUE; // indicate success
 } // sitemap_view()
 
+/** walk the tree and send to output in the form of nested unnumbered lists (uses recursion)
+ *
+ * @param object &$theme collects the output
+ * @param int $subtree_id where to start walking the the tree
+ * @param array &$tree the structure that holds the tree
+ * @param string $m improves readability in output
+ * @return void and output stored in $theme
+ * @uses sitemap_tree_walk()
+ */
 function sitemap_tree_walk(&$theme,$subtree_id,&$tree,$m='') {
     static $level = 0;
     $class_level = 'level'.strval($level);

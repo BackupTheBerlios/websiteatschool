@@ -33,7 +33,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_sitemap
- * @version $Id: sitemap_admin.php,v 1.1 2011/05/27 22:02:18 pfokker Exp $
+ * @version $Id: sitemap_admin.php,v 1.2 2011/05/28 19:20:30 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -52,7 +52,7 @@ if (!defined('WASENTRY')) { die('no entry'); }
 function sitemap_disconnect(&$output,$area_id,$node_id,$module) {
     $where = array('node_id' => intval($node_id));
     $retval = db_delete('sitemaps',$where);
-    return ($retval == 1) ? TRUE : FALSE;
+    return ($retval === FALSE) ? FALSE : TRUE;
 } // sitemap_disconnect()
 
 
@@ -76,13 +76,21 @@ function sitemap_connect(&$output,$area_id,$node_id,$module) {
     $now = strftime('%Y-%m-%d %T');
     $fields = array(
         'node_id' => intval($node_id),
+        'header' => '',
+        'introduction' => '',
         'scope' => 0,
         'ctime' => $now,
         'cuser_id' => $USER->user_id,
         'mtime' => $now,
         'muser_id' => $USER->user_id);
     $retval = db_insert_into('sitemaps',$fields);
-    return ($retval == 1) ? TRUE : FALSE;
+    if ($retval !== 1) {
+        logger(sprintf('%s(): cannot connect sitemap to node \'%d\': %s',__FUNCTION__,$node_id,db_errormessage()));
+        $retval = FALSE;
+    } else {
+        $retval = TRUE;
+    }
+    return $retval;
 } // sitemap_connect()
 
 
@@ -109,19 +117,31 @@ function sitemap_connect(&$output,$area_id,$node_id,$module) {
  * @param array $module the module record straight from the database
  * @param bool $viewonly if TRUE, editing is not allowed (but simply showing the content is allowed)
  * @param bool $edit_again if TRUE start with data from $_POST, else use data from database
- * @param string $href the action property of the HTML-form, the placa where data will be POST'ed
+ * @param string $href the action property of the HTML-form, the place where data will be POST'ed
  * @return bool TRUE on success + output stored via $output, FALSE otherwise
  */
 function sitemap_show_edit(&$output,$area_id,$node_id,$module,$viewonly,$edit_again,$href) {
-    if ($edit_again) {
-        $value = intval(magic_unquote($_POST['scope']));
-    } else {
-        $where = array('node_id' => intval($node_id));
-        $record = db_select_single_record('sitemaps','*',$where);
-        $value = ($record === FALSE) ? 0 : $record['scope'];
-    }
     $dialogdef = sitemap_get_dialogdef($viewonly);
-    $dialoddef['scope']['value'] = $value;
+    if ($edit_again) {
+        // retrieve and validate the POSTed values
+        dialog_validate($dialogdef); // no need to show messages; we did that alread in sitemap_save() bel0w
+    } else {
+        // make a fresh start with data from the database
+        $where = array('node_id' => intval($node_id));
+        if (($record = db_select_single_record('sitemaps','*',$where)) === FALSE) {
+            logger(sprintf('%s(): error retrieving sitemap configuration: %s',__FUNCTION__,db_errormessage()));
+        } else {
+            foreach($dialogdef as $name => $item) {
+                switch($name) {
+                    case 'header':
+                    case 'introduction':
+                    case 'scope':
+                        $dialogdef[$name]['value'] = strval($record[$name]);
+                        break;
+                }
+            }
+        }
+    }
     $output->add_content('<h2>'.t('sitemap_content_header','m_sitemap').'</h2>');
     $output->add_content(t('sitemap_content_explanation','m_sitemap'));
     $output->add_content(dialog_quickform($href,$dialogdef));
@@ -181,9 +201,11 @@ function sitemap_save(&$output,$area_id,$node_id,$module,$viewonly,&$edit_again)
     $now = strftime('%Y-%m-%d %T');
     $table = 'sitemaps';
     $fields = array(
-        'scope'    => $dialogdef['scope']['value'],
-        'mtime'    => $now,
-        'muser_id' => $USER->user_id);
+        'header'       => $dialogdef['header']['value'],
+        'introduction' => $dialogdef['introduction']['value'],
+        'scope'        => $dialogdef['scope']['value'],
+        'mtime'        => $now,
+        'muser_id'     => $USER->user_id);
     $where = array('node_id' => intval($node_id));
     if (db_update($table,$fields,$where) === FALSE) {
         logger(sprintf('%s(): error saving config value: %s',__FUNCTION__,db_errormessage()));
@@ -197,15 +219,36 @@ function sitemap_save(&$output,$area_id,$node_id,$module,$viewonly,&$edit_again)
 
 /** construct a dialog definition for the sitemap 'scope' value
  *
- * @param int $viewonly if TRUE the Save button is not displayed and value cannot be changed by the user
+ * @param int $viewonly if TRUE the Save button is not displayed and config values cannot be changed by the user
  * @return array dialog definition
  */
 function sitemap_get_dialogdef($viewonly) {
     $options = array(
-        '0' => array('option' => t('scope_small_label','m_sitemap'),'title' => t('scope_small_title','m_sitemap')),
+        '0' => array('option' => t('scope_small_label', 'm_sitemap'),'title' => t('scope_small_title', 'm_sitemap')),
         '1' => array('option' => t('scope_medium_label','m_sitemap'),'title' => t('scope_medium_title','m_sitemap')),
-        '2' => array('option' => t('scope_large_label','m_sitemap'),'title' => t('scope_large_title','m_sitemap')));
+        '2' => array('option' => t('scope_large_label', 'm_sitemap'),'title' => t('scope_large_title', 'm_sitemap')));
     $dialogdef = array(
+        'header' => array(
+            'type' => F_ALPHANUMERIC,
+            'name' => 'header',
+            'minlength' => 0,
+            'maxlength' => 240,
+            'columns' => 30,
+            'label' => t('header_label','m_sitemap'),
+            'title' => t('header_title','m_sitemap'),
+            'value' => '',
+            ),
+        'introduction' => array(
+            'type' => F_ALPHANUMERIC,
+            'name' => 'introduction',
+            'minlength' => 0,
+            'maxlength' => 32768, // arbitrary; 32 kB
+            'columns' => 50,
+            'rows' => 10,
+            'label' => t('introduction_label','m_sitemap'),
+            'title' => t('introduction_title','m_sitemap'),
+            'value' => '',
+            ),
         'scope' => array(
             'type' => F_RADIO,
             'name' => 'scope',

@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_sitemap
- * @version $Id: sitemap_tabledefs.php,v 1.1 2011/05/27 22:02:18 pfokker Exp $
+ * @version $Id: sitemap_tabledefs.php,v 1.2 2011/05/28 19:20:31 pfokker Exp $
  */
 $tabledefs['sitemaps'] = array(
     'name' => 'sitemaps',
@@ -32,6 +32,18 @@ $tabledefs['sitemaps'] = array(
             'type' => 'int',
             'notnull' => TRUE,
             'comment' => 'the node this sitemap is connected to'
+            ),
+        array(
+            'name' => 'header',
+            'type' => 'varchar',
+            'length' => 240,
+            'notnull' => TRUE,
+            'comment' => 'the (optional) title to display at the top of the sitemap'
+            ),
+        array(
+            'name' => 'introduction',
+            'type' => 'text',
+            'comment' => 'the (optional) introduction/explanation above the sitemap'
             ),
         array(
             'name' => 'scope',

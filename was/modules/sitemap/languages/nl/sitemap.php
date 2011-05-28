@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_sitemap
- * @version $Id: sitemap.php,v 1.1 2011/05/27 22:02:19 pfokker Exp $
+ * @version $Id: sitemap.php,v 1.2 2011/05/28 19:20:31 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -31,14 +31,24 @@ $string['translatetool_title'] = 'Sitemap';
 $string['translatetool_description'] = 'Dit bestand bevat de vertalingen bij de Sitemap-module';
 
 $string['sitemap_content_header'] = 'Sitemap configuratie';
-$string['sitemap_content_explanation'] = 'Hier kunt u de sitemap configureren. Gebruik \'Gebied\' voor een eenvoudig overzicht van het huidige gebied, \'Beperkt\' voor een overzicht van het huidige gebied en aansluitend een lijst van alle beschikbare gebieden of \'Volledig\' voor een uitgebreid overzicht van alle gebieden';
+$string['sitemap_content_explanation'] = 'Hier kunt u de sitemap configureren. U kunt optionele titel
+en een optionele introductie voor de sitemap opgeven. U kunt
+ook het bereik van de sitemap instellen. Gebruik \'Gebied\' voor
+een eenvoudig overzicht van het huidige gebied, \'Beperkt\' voor
+een overzicht van het huidige gebied en aansluitend een lijst
+van alle beschikbare gebieden of \'Volledig\' voor een uitgebreid
+overzicht van alle gebieden';
 
+$string['header_label'] = '~Titel';
+$string['header_title'] = 'Titel voor de sitemap';
+$string['introduction_label'] = '~Introductie';
+$string['introduction_title'] = 'Introductietekst voor de sitemap';
 $string['scope_label'] = 'Kies het bereik van de sitemap:';
 $string['scope_title'] = 'Kies een van de beschikbare opties';
 $string['scope_small_label'] = '~Gebied';
 $string['scope_small_title'] = 'Eenvoudig overzicht van het huidige gebied';
 $string['scope_medium_label'] = '~Beperkt';
-$string['scope_medium_title'] = 'Overzicht van het huidige gebied en een lijst van andere beschikbare gebieden';
+$string['scope_medium_title'] = 'Overzicht van het huidige gebied gevolgd door een lijst van beschikbare gebieden';
 $string['scope_large_label'] = '~Volledig';
 $string['scope_large_title'] = 'Gedetailleerd overzicht van alle beschikbare gebieden';
 

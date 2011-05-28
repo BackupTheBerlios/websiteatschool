@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_sitemap
- * @version $Id: sitemap.php,v 1.1 2011/05/27 22:02:19 pfokker Exp $
+ * @version $Id: sitemap.php,v 1.2 2011/05/28 19:20:31 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -30,15 +30,37 @@ $string['description'] = 'This module shows a small, medium or large sitemap';
 $string['translatetool_title'] = 'Sitemap';
 $string['translatetool_description'] = 'This file contains translations for the Sitemap-module';
 
-$string['sitemap_content_header'] = 'Sitemap configuration';
-$string['sitemap_content_explanation'] = 'Here you can configure the sitemap. Use \'area\' for a simple area map, \'limited\' for an area map followed by a list of links to other areas and \'full\' for a complete overview of all areas.';
+$comment['sitemap_content_header'] = 'Here is the sitemap configuration dialog:
 
-$string['scope_label'] = 'Select the scope of the sitemap:';
+~Header
+~Introduction
+Select the scope of the sitemap
+[X] ~Area
+[ ] ~Limited
+[ ] ~Full
+[~Save] [~Cancel]
+
+Please make sure your translation has a conparable set of hotkeys (indicated via the tildes \'~\').';
+
+$string['sitemap_content_header'] = 'Sitemap configuration';
+$string['sitemap_content_explanation'] = 'Here you can configure the sitemap. You can add an optional
+header and an optional introduction to the sitemap.
+You can also change the scope of the sitemap.
+Use one of the following options: \'area\' for
+a simple area map, \'limited\' for an area map
+followed by a list of links to available areas,
+or \'full\' for a complete overview of all areas.';
+
+$string['header_label'] = '~Header';
+$string['header_title'] = 'Header for the sitemap';
+$string['introduction_label'] = '~Introduction';
+$string['introduction_title'] = 'Introduction text for the sitemap';
+$string['scope_label'] = 'Select the scope of the sitemap';
 $string['scope_title'] = 'Select one of the options to set the scope of the sitemap';
 $string['scope_small_label'] = '~Area';
 $string['scope_small_title'] = 'Simple area map';
 $string['scope_medium_label'] = '~Limited';
-$string['scope_medium_title'] = 'Area map followed by list of other available areas';
+$string['scope_medium_title'] = 'Area map followed by list of available areas';
 $string['scope_large_label'] = '~Full';
 $string['scope_large_title'] = 'Full overview of all available areas';
 
