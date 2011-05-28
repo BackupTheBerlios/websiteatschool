@@ -1,5 +1,5 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.49 2011/05/28 19:20:31 pfokker Exp $
+$Id: CHANGES.txt,v 1.50 2011/05/28 19:42:12 pfokker Exp $
 -------------------------------------------------------------------------------
 
 2011-05-28
@@ -9,6 +9,8 @@ $Id: CHANGES.txt,v 1.49 2011/05/28 19:20:31 pfokker Exp $
   . added an optional header and introductory text to sitemap
     configuration 
   . various cosmetic changes
+- added a real sitemap to the demodata, including a non-blank
+  header and introduction (in all languages)
 
 2011-05-27
 - waslib.php: renamed function build_tree() to tree_build and

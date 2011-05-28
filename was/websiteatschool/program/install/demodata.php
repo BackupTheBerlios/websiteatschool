@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasinstall
- * @version $Id: demodata.php,v 1.3 2011/05/06 16:15:41 pfokker Exp $
+ * @version $Id: demodata.php,v 1.4 2011/05/28 19:42:12 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -549,6 +549,7 @@ function demodata_users_groups(&$messages,&$config,&$tr) {
  * @param array &$config pertinent information about the site
  * @param array &$tr translations of demodata texts
  * @return bool TRUE on success + data entered into database, FALSE on error
+ * @todo we should streamline the retrieval of mapping modules to module_id, make it less expensive...
  */
 function demodata_sections_pages(&$messages,&$config,&$tr) {
     $retval = TRUE;
@@ -559,6 +560,13 @@ function demodata_sections_pages(&$messages,&$config,&$tr) {
         $htmlpage_id = 1; // lucky guess
     } else {
         $htmlpage_id = intval($record['module_id']);
+    }
+    if (($record = db_select_single_record('modules','module_id',array('name' => 'sitemap'))) === FALSE) {
+        $messages[] = $tr['error'].db_errormessage();
+        $retval = FALSE;
+        $sitemap_id = 2; // lucky guess
+    } else {
+        $sitemap_id = intval($record['module_id']);
     }
 
     $year = intval(strftime('%Y'));
@@ -699,7 +707,7 @@ function demodata_sections_pages(&$messages,&$config,&$tr) {
             'title' => $tr['sitemap_title'],
             'link_text' => $tr['sitemap_link_text'],
             'sort_order' => 20,
-            'module_id' => $htmlpage_id),
+            'module_id' => $sitemap_id),
         'mypage' => array(
             'parent_id' => 'mypage',
             'is_page' => TRUE,
@@ -871,6 +879,21 @@ function demodata_sections_pages(&$messages,&$config,&$tr) {
                     'mtime' => $now,
                     'muser_id' => $user_id);
                 if (db_insert_into('htmlpages',$htmlpage_fields) === FALSE) {
+                    $messages[] = $tr['error'].db_errormessage();
+                    $retval = FALSE;
+                }
+                break;
+            case $sitemap_id:
+                $sitemap_fields = array(
+                    'node_id' => $node_id,
+                    'header' => $tr['sitemap_title'],
+                    'introduction' => strtr($tr[$node.'_content'],$replace),
+                    'scope' => 1,
+                    'ctime' => $now,
+                    'cuser_id' => $user_id,
+                    'mtime' => $now,
+                    'muser_id' => $user_id);
+                if (db_insert_into('sitemaps',$sitemap_fields) === FALSE) {
                     $messages[] = $tr['error'].db_errormessage();
                     $retval = FALSE;
                 }
