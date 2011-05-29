@@ -1,10 +1,11 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.51 2011/05/29 09:50:52 pfokker Exp $
+$Id: CHANGES.txt,v 1.52 2011/05/29 10:19:53 pfokker Exp $
 -------------------------------------------------------------------------------
 
 2011-05-29
 - corrected a stupid typo in demodata.php
 - streamlined the fetching of module_id's in demodata.php
+- theme.class.php: show area in breadcrumbtrail for quicklinks too
 
 2011-05-28
 - pagemanager.class.php: better error handling in connecting and

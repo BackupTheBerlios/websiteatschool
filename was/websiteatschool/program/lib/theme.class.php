@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: theme.class.php,v 1.11 2011/05/27 21:51:17 pfokker Exp $
+ * @version $Id: theme.class.php,v 1.12 2011/05/29 10:19:53 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1009,7 +1009,7 @@ class Theme {
         $next_id = $node_id;
         for ( ; (($next_id != 0) && ($tries-- > 0)); $next_id = $this->tree[$next_id]['parent_id']) {
             if ($this->tree[$next_id]['is_hidden']) {
-                return $breadcrumbs;
+                break;
             } else {
                 $this->tree[$next_id]['is_breadcrumb'] = TRUE;
                 // construct a clickable anchor tag and force to text only
