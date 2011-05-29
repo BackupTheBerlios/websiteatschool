@@ -1,6 +1,10 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.50 2011/05/28 19:42:12 pfokker Exp $
+$Id: CHANGES.txt,v 1.51 2011/05/29 09:50:52 pfokker Exp $
 -------------------------------------------------------------------------------
+
+2011-05-29
+- corrected a stupid typo in demodata.php
+- streamlined the fetching of module_id's in demodata.php
 
 2011-05-28
 - pagemanager.class.php: better error handling in connecting and

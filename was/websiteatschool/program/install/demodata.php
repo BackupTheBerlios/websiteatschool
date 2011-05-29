@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasinstall
- * @version $Id: demodata.php,v 1.4 2011/05/28 19:42:12 pfokker Exp $
+ * @version $Id: demodata.php,v 1.5 2011/05/29 09:50:53 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -549,25 +549,22 @@ function demodata_users_groups(&$messages,&$config,&$tr) {
  * @param array &$config pertinent information about the site
  * @param array &$tr translations of demodata texts
  * @return bool TRUE on success + data entered into database, FALSE on error
- * @todo we should streamline the retrieval of mapping modules to module_id, make it less expensive...
  */
 function demodata_sections_pages(&$messages,&$config,&$tr) {
     $retval = TRUE;
     // 0 -- setup essential information
-    if (($record = db_select_single_record('modules','module_id',array('name' => 'htmlpage'))) === FALSE) {
+    $table = 'modules';
+    $fields = array('module_id','name');
+    $where = '';
+    $order = '';
+    $keyfield = 'name';
+    if (($records = db_select_all_records($table,$fields,$where,$order,$keyfield)) === FALSE) {
+        // if we cannot determine the module_id's there is no point to stay here and 'pollute' the database with nonsense
         $messages[] = $tr['error'].db_errormessage();
-        $retval = FALSE;
-        $htmlpage_id = 1; // lucky guess
-    } else {
-        $htmlpage_id = intval($record['module_id']);
+        return FALSE;
     }
-    if (($record = db_select_single_record('modules','module_id',array('name' => 'sitemap'))) === FALSE) {
-        $messages[] = $tr['error'].db_errormessage();
-        $retval = FALSE;
-        $sitemap_id = 2; // lucky guess
-    } else {
-        $sitemap_id = intval($record['module_id']);
-    }
+    $htmlpage_id = intval($records['htmlpage']['module_id']);
+    $sitemap_id  = intval($records['sitemap']['module_id']);
 
     $year = intval(strftime('%Y'));
     if (intval(strftime('%m')) <= 7) { // make schoolyear end on August 1
@@ -592,7 +589,7 @@ function demodata_sections_pages(&$messages,&$config,&$tr) {
         '{INDEX_URL}' => $config['www'].'/index.php',
         '{ADMIN_URL}' => $config['www'].'/admin.php',
         '{MANUAL_URL}' => $config['progwww'].'/manual.php?language='.$config['language_key'],
-        '{WEBSITEATSCHOOL_URL}' => 'http://siteatschool.org',
+        '{WEBSITEATSCHOOL_URL}' => 'http://websiteatschool.eu',
         '{LOREM}' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         '{IPSUM}' => 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
         '{DOLOR}' => 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
