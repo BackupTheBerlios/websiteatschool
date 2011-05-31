@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: pagemanager.class.php,v 1.5 2011/05/28 15:53:56 pfokker Exp $
+ * @version $Id: pagemanager.class.php,v 1.6 2011/05/31 19:01:49 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -3914,6 +3914,7 @@ class PageManager {
      * @param int $after_id the node AFTER which $node_id should be sorted (0 means: first in the section)
      * @return int the new sort_order value for $node_id + other nodes in the section may have been moved
      * @uses $DB
+     * @todo Clean up this code, it is very hairy
      */
     function calculate_updated_sort_order($node_id,$after_id) {
         global $DB;
@@ -3921,7 +3922,7 @@ class PageManager {
         $parent_id = $this->tree[$node_id]['parent_id'];
 
         // 0 -- sanity check
-        if ($parent_id != $this->tree[$after_id]['parent_id']) {
+        if (($after_id != 0) && ($parent_id != $this->tree[$after_id]['parent_id'])) {
             // weird: these nodes are in different sections. Simply keep existing sort order value
             logger(__FUNCTION__."(): cannot change sort order: '$node_id' and '$after_id' are not siblings",LOG_DEBUG);
             return $old_sort_order;
@@ -3934,9 +3935,9 @@ class PageManager {
                 $new_sort_order = intval($this->tree[$first_child_id]['record']['sort_order']);
             } else { // case b
                 $next_after_id = $this->tree[$after_id]['next_sibling_id'];
-                $new_sort_order = intval($tree[$next_after_id]['record']['sort_order']);
+                $new_sort_order = intval($this->tree[$next_after_id]['record']['sort_order']);
             }
-            $prev_id = $tree[$node_id]['prev_sibling_id'];
+            $prev_id = $this->tree[$node_id]['prev_sibling_id'];
             if ($prev_id != 0) {
                 $delta = $old_sort_order - intval($this->tree[$prev_id]['record']['sort_order']);
             } else { 
@@ -3944,11 +3945,17 @@ class PageManager {
             }
             $sql = sprintf('UPDATE %snodes '.
                            'SET sort_order = sort_order + %d '.
-                           'WHERE (area_id = %d) AND (%d <= sort_order) AND (sort_order <= %d) AND (parent_id = %s)',
+                           'WHERE (area_id = %d) AND (%d <= sort_order) AND (sort_order <= %d)',
                            $DB->prefix,
                            $delta,
-                           $this->area_id, $new_sort_order,$old_sort_order,
-                           ($parent_id == 0) ? 'node_id' : strval($parent_id));
+                           $this->area_id, $new_sort_order,$old_sort_order);
+            if ($parent_id == 0) {
+                $sql .= ' AND (parent_id = node_id)'; // limit to only toplevel nodes
+            } else {
+                // at 1 level from the top the section has parent_id = node_id = $parent_id and all siblings also
+                // have parent_id = $parent_id. We don't want to move the parent itself so we have to exclude it
+                $sql .= sprintf(' AND (parent_id = %d) AND (node_id <> %d)',$parent_id,$parent_id);
+            }
             $DB->exec($sql);
             return $new_sort_order;
         }
@@ -3962,14 +3969,19 @@ class PageManager {
             } else { 
                 $delta = $old_sort_order; // shouldn't happen: $node_id is NOT the last node
             }
-
             $sql = sprintf('UPDATE %snodes '.
                            'SET sort_order = sort_order + %d '.
-                           'WHERE (area_id = %d) AND (%d <= sort_order) AND (sort_order <= %d) AND (parent_id = %s)',
+                           'WHERE (area_id = %d) AND (%d <= sort_order) AND (sort_order <= %d)',
                            $DB->prefix,
                            $delta,
-                           $this->area_id,$old_sort_order,$new_sort_order,
-                           ($parent_id == 0) ? 'node_id' : strval($parent_id));
+                           $this->area_id,$old_sort_order,$new_sort_order);
+            if ($parent_id == 0) {
+                $sql .= ' AND (parent_id = node_id)'; // limit to only toplevel nodes
+            } else {
+                // at 1 level from the top the section has parent_id = node_id = $parent_id and all siblings also
+                // have parent_id = $parent_id. We don't want to move the parent itself so we have to exclude it
+                $sql .= sprintf(' AND (parent_id = %d) AND (node_id <> %d)',$parent_id,$parent_id);
+            }
             $DB->exec($sql);
             return $new_sort_order;
         } 
