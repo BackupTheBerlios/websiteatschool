@@ -1,6 +1,10 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.53 2011/05/31 19:01:49 pfokker Exp $
+$Id: CHANGES.txt,v 1.54 2011/06/03 16:45:45 pfokker Exp $
 -------------------------------------------------------------------------------
+
+2011-06-03
+- installer: make demo data more accessible for additional themes
+  and modules; we now also keep track of nodes, groups and users
 
 2011-05-31
 - pagemanager.class.php: fixed a bug in calculate_updated_sort_order():

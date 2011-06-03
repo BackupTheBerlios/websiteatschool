@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasinstall
- * @version $Id: demodata.php,v 1.5 2011/05/29 09:50:53 pfokker Exp $
+ * @version $Id: demodata.php,v 1.6 2011/06/03 16:45:45 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -195,7 +195,8 @@ function demodata_areas(&$messages,&$config,&$tr) {
             $retval = FALSE;
         }
         $area_id = intval($area_id);
-        $areas[$area]['area_id'] = $area_id;
+        // remember the area_id
+        $areas[$area]['area_id'] = intval($area_id);
 
         // copy the theme's default setting to this area
         $sql = sprintf('INSERT INTO %s%s(area_id,theme_id,name,type,value,extra,sort_order,description) '.
@@ -208,9 +209,8 @@ function demodata_areas(&$messages,&$config,&$tr) {
             $messages[] = $tr['error'].db_errormessage();
             $retval = FALSE;
         }
-        // remember the area_id
-        $config[$area.'_area_id'] = intval($area_id);
     }
+    $config['demo_areas'] = $areas;
     return $retval;
 } // demodata_areas()
 
@@ -244,17 +244,22 @@ function demodata_areas(&$messages,&$config,&$tr) {
  *
  * Every user and every group/capacity gets their own acl
  *  - faculty/principal: access to all private areas
- *  - faculty/member: access to intranet in $config['private_area_id']
+ *  - faculty/member: access to intranet in $config['demo_areas']['private']['area_id']
  *  - others get no special privileges
  *
+ * The arrays with groups (including the assigned group_id) and users (with
+ * the assigned user_id) are stored in $config['demo_groups'] and $config['demo_users'],
+ * for the caller's perusal.
  *
  * @param array &$messages used to return (error) messages to caller
- * @param array &$config pertinent information about the site
+ * @param array &$config pertinent information about the site, also receives copy of users/groups data
  * @param array &$tr translations of demodata texts
  * @return bool TRUE on success + data entered into database, FALSE on error
  * @todo get rid of the $wizard kludge!
  * @todo should we append an underscore to the userpaths to make sure we don't clash
  *       with the first user account?
+ * @todo should we also add groups_capacities, acls, users_groups_capacities to $config or
+ *       are users and groups enough?
  */
 function demodata_users_groups(&$messages,&$config,&$tr) {
     global $wizard; // This is a kludge to get to the sanitise_filename() code. There must be a better way...
@@ -348,7 +353,7 @@ function demodata_users_groups(&$messages,&$config,&$tr) {
     // 2B -- add an additional acl for facultymembers for the first private area
     $fields = array(
         'acl_id' => $acls['faculty_member']['acl_id'],
-        'area_id' => $config['private_area_id'],
+        'area_id' => $config['demo_areas']['private']['area_id'],
         'permissions_intranet' => 1);
     if (db_insert_into('acls_areas',$fields) === FALSE) {
         $messages[] = $tr['error'].db_errormessage();
@@ -538,15 +543,22 @@ function demodata_users_groups(&$messages,&$config,&$tr) {
             $retval = FALSE;
         }
     }
+    // 6 -- tell caller about users and groups (including assigned group_id and user_id)
+    $config['demo_users'] = $users;
+    $config['demo_groups'] = $groups;
     return $retval;
 } // demodata_users_groups()
 
 
 /** create a few sections and pages
  *
+ * this constructs a complete public area with some pages and sections
+ * and also the 'frugal' theme is configured for this area.
+ * The information about the nodes (including the assigned node_id) is
+ * copied to $config['demo_nodes'] for the caller's perusal.
  *
  * @param array &$messages used to return (error) messages to caller
- * @param array &$config pertinent information about the site
+ * @param array &$config pertinent information about the site; receives copy of nodes array on return
  * @param array &$tr translations of demodata texts
  * @return bool TRUE on success + data entered into database, FALSE on error
  */
@@ -832,10 +844,10 @@ function demodata_sections_pages(&$messages,&$config,&$tr) {
         );
     $now = strftime('%Y-%m-%d %T');
     $user_id = $config['user_id'];
-    $area_id = $config['public_area_id'];
+    $area_id = $config['demo_areas']['public']['area_id'];
     foreach($nodes as $node => $fields) {
         if ($node == 'intranet') { // the nodes that follow are in another area
-            $area_id = $config['private_area_id'];
+            $area_id = $config['demo_areas']['private']['area_id'];
         }
         $fields['area_id']  = $area_id;
         $fields['ctime']    = $now;
@@ -905,11 +917,17 @@ function demodata_sections_pages(&$messages,&$config,&$tr) {
     $theme_updates = array(
         array(
             'fields' => array('value' => strval($nodes['quicktop']['node_id'])),
-            'where' => array('area_id' => $config['public_area_id'],'name' => 'quicktop_section_id')
+            'where' => array(
+                'area_id' => $config['demo_areas']['public']['area_id'],
+                'name' => 'quicktop_section_id'
+                )
             ),
         array(
             'fields' => array('value' => strval($nodes['quickbottom']['node_id'])),
-            'where' => array('area_id' => $config['public_area_id'],'name' => 'quickbottom_section_id')
+            'where' => array(
+                'area_id' => $config['demo_areas']['public']['area_id'],
+                'name' => 'quickbottom_section_id'
+                )
             )
         );
     foreach($theme_updates as $theme_update) {
@@ -918,6 +936,7 @@ function demodata_sections_pages(&$messages,&$config,&$tr) {
             $retval = FALSE;
         }
     }
+    $config['demo_nodes'] = $nodes;
     return $retval;
 } // demodata_sections_pages()
 
@@ -980,7 +999,7 @@ function demodata_alerts(&$messages,&$config,&$tr) {
             'flag' => TRUE),
         'acackl' => array(
             'alert_id' => $alerts['acackl']['alert_id'],
-            'area_id' => $config['private_area_id'], // alert only on change in the intranet area
+            'area_id' => $config['demo_areas']['private']['area_id'], // alert only on change in the intranet area
             'node_id' => 0,
             'flag' => TRUE)
         );
