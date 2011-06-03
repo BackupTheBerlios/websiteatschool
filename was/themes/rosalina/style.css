@@ -1,0 +1,209 @@
+/* /program/themes/rosalina/style.css - stylesheet for theme 'rosalina' for Website@School
+ *
+ * This file is part of Website@School, a Content Management System especially designed for schools.
+ * Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker <peter@berestijn.nl>
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License version 3 as published by
+ * the Free Software Foundation supplemented with the Additional Terms, as set
+ * forth in the License Agreement for Website@School (see /program/license.html).
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
+ * for more details.
+ *
+ * You should have received a copy of the License Agreement for Website@School
+ * along with this file. If not, see http://websiteatschool.eu/license.html
+ *
+ * $Id: style.css,v 1.1 2011/06/03 19:18:55 pfokker Exp $
+ *
+ * Yellow     FFFF66
+ * Red        FF0000 FF9999 FFCCCC 
+ * Blue       0000FF CCCCFF
+ * White      FFFFFF
+ * Gray       666666
+ * Black      000000
+ */
+body {
+  background-color:	#FFFFFF;
+  margin:		0px;
+  font-size:		10pt;
+  font-family:		Verdana,Geneva,sans-serif;
+}
+img {
+  border:		none;
+}
+a:link, a:visited {
+  color:		#0000FF;
+  text-decoration:	none
+}
+a:hover {
+  color:		#000000;
+  background-color:	#FFCCCC;
+  text-decoration:	none
+}
+a:active {
+  color:		#FF0000;
+  text-decoration:	none
+}
+#page {
+  border:		2px solid #FFFFFF;
+}
+#header {
+  height:		72px;
+}
+#logo {
+  position:		absolute;
+}
+#logo a:hover {
+  background-color:	transparent;
+}
+#quicktop {
+  position:		absolute;
+  right:		2px;
+  top:			4px;
+  height:		2em;
+  text-align:	right;
+}
+#quicktop .quicksearch {
+  width:		140px;
+}
+#quickjump {
+  position:		absolute;
+  right:		2px;
+  top:			2.5em;
+  height:		1.9em;
+  text-align:		right;
+}
+#quickjump select {
+  width:		140px;
+  height:		1.7em;
+}
+#quickjump option {
+  width:		260px;
+}
+#breadcrumbs {
+  height:		1.3em;
+  text-align:		left;
+  font-size:		0.85em;
+  background-color:	#FFFFFF;
+  color:		#000000;
+  margin-left:		5px;
+  margin-right:		5px;
+  padding:		2px 2px 2px 6px;
+}
+#breadcrumbs a:link,
+#breadcrumbs a:visited {
+  text-decoration:	none;
+  color:		#0000FF;
+  background-color:	#FFFFFF;
+}
+#breadcrumbs a:active,
+#breadcrumbs a:hover {
+  text-decoration:	none;
+  color:		#000000;
+  background-color:	#FFCCCC;
+}
+#hvmenu_container {
+  background-color:	#FFCCCC;
+  color: 		#0000FF;
+  border-bottom:	1px solid;
+  border-color:		#FFFFFF;
+  margin-left:          5px;
+  margin-right:         5px;
+}
+#hvmenu {
+  position:		relative;
+  width:		0;
+  background-color:	#FFCCCC;
+  color: 		#FFFFFF;
+  border-bottom:	1px solid;
+  border-color:		#FFFFFF;
+}
+#noscript ul {
+  clear:		both;
+  list-style:		none;
+  padding: 		0px;
+  margin:		2px 0px 0px 0px;
+  background-color:	#CCCCFF;
+}
+#noscript li {
+  float:		left;
+  margin:		2px 10px 0px 0px;
+  background-color:	#FFCCCC;
+}
+#noscript .current {
+  font-weight:		bold;
+  background-color:	#FF9999;
+  color:		#000000;
+}  
+#messages {
+  background-color:	#FFFF66;
+  clear:		both;
+  margin-left:          5px;
+  margin-right:         5px;
+}
+#content {
+  margin:		0.2em;
+  padding:		0.2em 0.6em;
+  color:		black;
+  background-color:	#FFFFFF;
+  border:		0;
+  min-width:		16em;
+  min-height:		37em;
+}
+#content h1 {
+  font-size:		1.5em;
+  margin:		0.5em 0;
+}
+#content h2 {
+  font-size:		1.2em;
+  margin:		0.5em 0;
+}
+#content p {
+  font-size:		1em;
+  margin:		1em 0;
+  line-height:		150%;
+}
+#content a:link,
+#content a:visited {
+  color:                #0000FF;
+}
+#content a:hover,
+#content a:active {
+  background-color:	#FFCCCC;
+}
+#footer {
+  background-color:	#FFFFFF;
+  text-align:		center;
+  margin-bottom:	10px;
+}
+
+#footer a:link,
+#footer a:visited {
+  color:                #0000FF;
+}
+#footer a:hover,
+#footer a:active {
+  background-color:	#CCCCFF;
+}
+
+#quickbottom {
+  background-color:	#FFCCCC;
+  padding-bottom:	7px;
+  padding-top:		5px;
+}
+#quickbottom img {
+  position:		relative;
+  top:			5px;
+  margin-top:		-20px;
+  margin-bottom:	-10px;
+}
+#quickbottom a:hover img {
+  background-color:	#CCCCFF;
+}
+#address {
+  display:		none;
+}
+/* eof style.css */
