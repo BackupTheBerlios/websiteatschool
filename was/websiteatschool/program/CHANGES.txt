@@ -1,10 +1,12 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.57 2011/06/07 10:48:39 pfokker Exp $
+$Id: CHANGES.txt,v 1.58 2011/06/07 18:25:02 pfokker Exp $
 -------------------------------------------------------------------------------
 
 2011-06-07
 - theme.class.php: added html-class 'current' to LI-tag in navigation bar too
 - theme.class.php: extra html-classes 'activepage' and 'activesection' in menu
+- added theme 'schoolyard' (designed by David Prousch, May 2006) to
+  Website@School
 
 2011-06-03
 - installer: make demo data more accessible for additional themes

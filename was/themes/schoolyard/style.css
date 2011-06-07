@@ -1,0 +1,318 @@
+/* /program/themes/schoolyard/style.css - stylesheet for theme 'schoolyard' for Website@School
+ *
+ * Design: David Prousch, <translators@websiteatschool.eu> (May 2006)
+ * Re-implementation for Website@School: Peter Fokker, <peter@berestijn.nl> (June 2011)
+ *
+ * This file is part of Website@School, a Content Management System especially designed for schools.
+ * Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker <peter@berestijn.nl>
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License version 3 as published by
+ * the Free Software Foundation supplemented with the Additional Terms, as set
+ * forth in the License Agreement for Website@School (see /program/license.html).
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
+ * for more details.
+ *
+ * You should have received a copy of the License Agreement for Website@School
+ * along with this file. If not, see http://websiteatschool.eu/license.html
+ *
+ * $Id: style.css,v 1.1 2011/06/07 18:25:01 pfokker Exp $
+ *
+ * Colours:
+ *
+ * Blue(ish)  00008B 0066CC 333366 6699CC C2DFF8 F0F8FF 
+ * Red        DC143C
+ * Yellow     FFFF66
+ * White      FFFFFF
+ * Gray       E4E4E4
+ * Black      000000
+ *
+ * Images:
+ *
+ * tableft2.png
+ * tabright2.png
+ * tableft.png
+ * tabright.png
+ * point.png
+ * pointactive.png
+ * arrow1.png
+ * arrow2.png
+ */
+body {
+  font:			normal 100.01% Verdana,Arial,Helvetica,sans-serif;
+  color:		#000000;
+  background-color:	#F0F8FF;
+  margin:		0;
+}
+img {
+  border:		none;
+}
+a {
+  color:		#333366;
+  background-color:	#FFFFFF;
+  font-size:		12pt;
+  text-decoration:	underline;
+}
+a:hover {
+  color:		#333366;
+  background-color:	#E4E4E4;
+  text-decoration:	none;
+}
+a:active {
+  color:		#DC143C;
+  background-color:	#E4E4E4;
+  text-decoration:	none;
+}
+#page {
+  border-width:		2px 2px 0px 2px;
+  border-color:		#6699CC;
+  border-style:		solid;
+}
+#header {
+  height:		6em;
+  background-color:	#FFFFFF;
+}
+#logo {
+  float:		left;
+  padding:		0.6em;
+  margin:		0;
+  color:		#000000;
+  background-color:	#FFFFFF;
+}
+#header h1 {
+  font-size:		1.4em;
+  margin:		0;
+  padding:		1.3em 0em 1.3em 15em; /* if you have a larger logo change top/bottom to 2em or higher */
+  color:		#000000;
+}
+#quicktop {
+  clear:		both;
+  background-color:	#F0F8FF;
+  font-size:		0.8em;
+  font-weight:		bold;
+  height:		1.4em;
+  text-align:		right;
+  padding:		0.2em 0.6em 0.2em 0.2em;
+}
+#quicktop a {
+  font-size:		1em;
+  color:		#00008B;
+  background-color:	#F0F8FF;
+  text-decoration:	underline;
+  margin:		0;
+  padding:		0.2em;
+}
+#quicktop a:hover {
+  text-decoration:	none;
+}
+#breadcrumbs {
+  float:		left;
+  font-style:		italic;
+  margin:		0;
+}
+#breadcrumbs a {
+  font-size:		1em;
+  color:		#00008B;
+  background-color:	#F0F8FF;
+  text-decoration:	underline;
+  margin:		0;
+}
+#breadcrumbs a:hover {
+  font-size:		1em;
+  color:		#00008B;
+  background-color:	#F0F8FF;
+  text-decoration:	none;
+  margin:		0;
+}
+#messages {
+  background-color:	#FFFF66;
+  color:		#000000;
+  clear:		both;
+  padding:		0.3em;
+}
+#navigation {
+  background-color:	#FFFFFF;
+  height:		1.5em;
+}
+#navigation_belt {
+  background-color:	#6699CC;
+  color:		#00008B;
+  margin:		0;
+  padding:		0.1em;
+  height:		1em;
+}
+#navigation ul {
+  color:		#00008B;
+  padding:		0.2em 0 0 0.6em;
+  list-style:		none;
+  margin:		0;
+}
+#navigation li {
+  float:		left;
+  margin:		0 0.5em;;
+  font-size:		1em;
+  font-weight:		bold;
+  padding-left:		10px;
+  color:		#00008B;
+  background-color:	#E4E4E4;
+  background-image:	url(tableft2.png);
+  background-repeat:	no-repeat;
+  background-position:	left top;
+}
+#navigation li a {
+  background-color:	#E4E4E4;
+  text-decoration:	none;
+  padding-right:	10px;
+  background-image:	url(tabright2.png);
+  background-repeat:	no-repeat;
+  background-position:	right top;
+}
+#navigation li a:hover {
+  color:		#0066CC;
+}
+#navigation li.current {
+  background-color:	#6699CC;
+  color:		#FFFFFF;
+  background-image:	url(tableft.png);
+}
+#navigation li a.current {
+  background-color:	#6699CC;
+  color:		#FFFFFF;
+  background-image:	url(tabright.png);
+}
+#navigation li a.current:hover {
+  background-color:	#6699CC;
+  color:		#E4E4E4;
+}
+#menu {
+  float:		left;
+  color:		#00008B;
+  background-color:	#F0F8FF;
+  width:		11em;
+  padding:		0 0 0.2em 0.2em;
+  margin:		0;
+}
+#menu ul {
+  padding:		0 0 0.2em 0.1em;
+}
+#menu li {
+  list-style:		none;
+  margin-left:		0.2em;
+  padding:		0.5em 0 0 0.8em;
+}
+#menu li.page {
+  background-image:	url(point.png);
+  background-repeat:	no-repeat;
+  background-position:	0.1em 1em;
+}
+#menu li.section {
+  background-image:	url(arrow1.png);
+  background-repeat:	no-repeat;
+  background-position:	0.05em 0.8em;
+}
+#menu li.activepage {
+  background-image:	url(pointactive.png);
+  background-repeat:	no-repeat;
+  background-position:	0em 0.8em;
+}
+#menu li.activesection {
+  background-image:	url(arrow2.png);
+  background-repeat:	no-repeat;
+  background-position:	0em 0.8em;
+}
+#menu li a {
+  display:		block;
+  padding:		0em 0em 0em 0.2em;
+  text-decoration:	none;
+  color:		#00008B;
+  background-color:	#F0F8FF;
+}
+#menu li a.current {
+  background-color:	#C2DFF8;
+}
+#menu li a:hover {
+  background-color:	#C2DFF8;
+}
+#menu form {
+  background-color:	#C2DFF8;
+  margin-top:		2em;
+  margin-left:		0.2em;
+  padding-left:		0.1em;
+  padding-bottom:	0.3em;
+}
+#menu select {
+  width:		9em;
+}
+#menu option {
+  width:		25em;
+}
+#content {
+  padding:		0.2em 0.5em 0.5em;
+  margin-left:		12em;
+  margin-top:		0em;
+  background-color:	#FFFFFF;
+  min-width:		16em;
+  min-height:		25em;
+}
+#content_title {
+  display:		none; /* undone in print.css */
+}
+#content h1 {
+  font-size:		1.5em;
+  margin:		0.5em 0;
+}
+#content h2 {
+  font-size:		1.2em;
+  margin:		0.5em 0;
+}
+#content p {
+  font-size:		1em;
+  margin:		1em 0;
+  line-height:		150%;
+}
+#lastupdate {
+  font-size:		0.8em;
+  padding:		0.1em 0.5em 0.5em;
+  margin-left:		15em;
+  margin-top:		0em;
+  background-color:	#FFFFFF;
+}
+#footer {
+  clear:		both;
+  background-color:	#6699CC;
+  text-align:		center;
+  color:		#000000;
+  font-size:		0.8em;
+}
+#footer a {
+  color:                #00008B;
+  background-color:	#6699CC;
+  text-decoration:	underline;
+  font-size:		1em;
+}
+#footer a:hover,
+#footer a:active {
+  background-color:	#6699CC;
+  text-decoration:	none;
+}
+#quickbottom {
+  background-color:	#6699CC;
+  padding-bottom:	7px;
+  padding-top:		5px;
+}
+#quickbottom img {
+  position:		relative;
+  top:			5px;
+  margin-top:		-20px;
+  margin-bottom:	-10px;
+}
+#quickbottom a:hover img {
+  background-color:	transparent;
+}
+#address {
+  display:		none;
+}
+/* eof style.css */

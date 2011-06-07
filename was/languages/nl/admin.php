@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: admin.php,v 1.4 2011/03/09 09:58:50 pfokker Exp $
+ * @version $Id: admin.php,v 1.5 2011/06/07 18:25:01 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -418,7 +418,7 @@ $string['success_saving_data'] =  'Wijzigingen zijn opgeslagen in de database';
 
 $string['areamanager_edit_theme_header'] = 'Configureer thema \'{THEME_NAME}\' voor gebied {AREA}';
 $string['areamanager_edit_theme_explanation'] = '
-Hier kunt u het thema {THEME_NAME} voor gebied {AREA} ({AREA_FULL_NAME}) configureren.<br>De eigenschappen die u hier kunt veranderen zijn uitsluitend van toepassing op dit gebied, d.w.z. elk gebied kan zijn eigen unieke eigenschappen hebben voor in combinatie met een bepaald thema.';
+Hier kunt u het thema {THEME_NAME} voor gebied {AREA} ({AREA_FULL_NAME}) configureren.<br>De eigenschappen die u hier kunt veranderen zijn uitsluitend van toepassing op dit gebied, d.w.z. elk gebied kan zijn eigen unieke eigenschappen hebben in combinatie met een bepaald thema.';
 
 
 $string['areamanager_menu_edit'] = 'Basiseigenschappen';

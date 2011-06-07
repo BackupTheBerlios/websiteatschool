@@ -1,0 +1,44 @@
+/* /program/themes/schoolyard/print.css - additional stylesheet for theme 'schoolyard' for Website@School
+ *
+ * Design: David Prousch, <translators@websiteatschool.eu> (May 2006)
+ * Re-implementation for Website@School: Peter Fokker, <peter@berestijn.nl> (June 2011)
+ *
+ * This file is part of Website@School, a Content Management System especially designed for schools.
+ * Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker <peter@berestijn.nl>
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License version 3 as published by
+ * the Free Software Foundation supplemented with the Additional Terms, as set
+ * forth in the License Agreement for Website@School (see /program/license.html).
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
+ * for more details.
+ *
+ * You should have received a copy of the License Agreement for Website@School
+ * along with this file. If not, see http://websiteatschool.eu/license.html
+ *
+ * $Id: print.css,v 1.1 2011/06/07 18:25:01 pfokker Exp $
+ */
+#page {
+  border-width:		2px 2px 2px 2px;
+}
+#header,
+#navigation,
+#navigation_belt,
+#quicktop,
+#menu,
+#quickbottom {
+  display: none;
+}
+#content,
+#lastupdate {
+  margin-left: 0em;
+}
+#address,
+#content_title {
+  display: block;
+}
+
+/* eof /program/themes/schoolyard/print.css */
