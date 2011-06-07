@@ -1,9 +1,10 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.56 2011/06/07 08:03:31 pfokker Exp $
+$Id: CHANGES.txt,v 1.57 2011/06/07 10:48:39 pfokker Exp $
 -------------------------------------------------------------------------------
 
 2011-06-07
 - theme.class.php: added html-class 'current' to LI-tag in navigation bar too
+- theme.class.php: extra html-classes 'activepage' and 'activesection' in menu
 
 2011-06-03
 - installer: make demo data more accessible for additional themes

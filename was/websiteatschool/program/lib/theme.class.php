@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: theme.class.php,v 1.13 2011/06/07 08:03:31 pfokker Exp $
+ * @version $Id: theme.class.php,v 1.14 2011/06/07 10:48:39 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -674,7 +674,9 @@ class Theme {
      *
      * The level of recursion of the list items (LI) is indicated via class='levelNNN'.
      * The type of item is indicated via class='page' or class='section'.
-     * Finally the item has an addional class='current' when it is part of the breadcrumb trail.
+     * Also, the item has an addional class='current' when it is part of the breadcrumb trail.
+     * Finally a current item also has the additional class 'activepage' or 'activesection' which
+     * makes the CSS easier.
      *
      * The actual A-tag of the link only indicates being part of the breadcrumb trail via class='current'.
      * 
@@ -695,9 +697,13 @@ class Theme {
                 // 1 -- show this node
                 $is_page        = $this->tree[$node_id]['is_page'];
                 $is_breadcrumb  = $this->tree[$node_id]['is_breadcrumb'];
-                $class          = ($is_breadcrumb) ? 'current ' : '';
-                $class         .= (($is_page) ? 'page ' : 'section ').$class_level;
-                $attributes     = ($is_breadcrumb) ? array('class' => 'current') : NULL;
+                $class = (($is_page) ? 'page ' : 'section ').$class_level;
+                if ($is_breadcrumb) {
+                    $class  .= (($is_page) ? ' activepage current' : ' activesection current');
+                    $attributes = array('class' => 'current');
+                } else {
+                    $attributes = NULL;
+                }
                 $s .= $m.'  '.html_tag('li',array('class' => $class)).
                               $this->node2anchor($this->tree[$node_id]['record'],$attributes)."\n";
 
