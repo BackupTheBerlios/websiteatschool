@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: theme.class.php,v 1.12 2011/05/29 10:19:53 pfokker Exp $
+ * @version $Id: theme.class.php,v 1.13 2011/06/07 08:03:31 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -629,7 +629,8 @@ class Theme {
         for ( ; ($next_id != 0); $next_id = $this->tree[$next_id]['next_sibling_id']) {
             if ($this->tree[$next_id]['is_visible']) {
                 $attributes = ($this->tree[$next_id]['is_breadcrumb']) ? array('class' => 'current') : NULL;
-                $navbar .= $m."  <li>".$this->node2anchor($this->tree[$next_id]['record'],$attributes,$textonly)."\n";
+                $navbar .= $m.'  '.html_tag('li',$attributes).
+                                   $this->node2anchor($this->tree[$next_id]['record'],$attributes,$textonly)."\n";
                 ++$item_count;
             }
         }
