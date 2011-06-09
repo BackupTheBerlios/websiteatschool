@@ -1,6 +1,9 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.58 2011/06/07 18:25:02 pfokker Exp $
+$Id: CHANGES.txt,v 1.59 2011/06/09 08:25:35 pfokker Exp $
 -------------------------------------------------------------------------------
+
+2011-06-09
+- minor tweaks in schoolyard theme
 
 2011-06-07
 - theme.class.php: added html-class 'current' to LI-tag in navigation bar too

@@ -19,7 +19,7 @@
  * You should have received a copy of the License Agreement for Website@School
  * along with this file. If not, see http://websiteatschool.eu/license.html
  *
- * $Id: style.css,v 1.1 2011/06/07 18:25:01 pfokker Exp $
+ * $Id: style.css,v 1.2 2011/06/09 08:26:08 pfokker Exp $
  *
  * Colours:
  *
@@ -84,20 +84,22 @@ a:active {
 }
 #header h1 {
   font-size:		1.4em;
+  font-weight:		normal;
   margin:		0;
-  padding:		1.3em 0em 1.3em 15em; /* if you have a larger logo change top/bottom to 2em or higher */
+  padding-top:		1.3em;
+  padding-left:		15em;
   color:		#000000;
 }
-#quicktop {
+#information {
   clear:		both;
   background-color:	#F0F8FF;
   font-size:		0.8em;
   font-weight:		bold;
   height:		1.4em;
-  text-align:		right;
+  text-align:		left;
   padding:		0.2em 0.6em 0.2em 0.2em;
 }
-#quicktop a {
+#information a {
   font-size:		1em;
   color:		#00008B;
   background-color:	#F0F8FF;
@@ -105,7 +107,7 @@ a:active {
   margin:		0;
   padding:		0.2em;
 }
-#quicktop a:hover {
+#information a:hover {
   text-decoration:	none;
 }
 #breadcrumbs {
@@ -127,6 +129,13 @@ a:active {
   text-decoration:	none;
   margin:		0;
 }
+#quicktop {
+  float:		left;
+  margin-left:		1em;
+  padding-left:		1em;
+  border-left:		2px solid #00008B;
+  text-align:		left;
+}
 #messages {
   background-color:	#FFFF66;
   color:		#000000;
@@ -134,6 +143,7 @@ a:active {
   padding:		0.3em;
 }
 #navigation {
+  clear:		both;
   background-color:	#FFFFFF;
   height:		1.5em;
 }
@@ -252,10 +262,10 @@ a:active {
 #content {
   padding:		0.2em 0.5em 0.5em;
   margin-left:		12em;
-  margin-top:		0em;
+  margin-top:		0.2em;
   background-color:	#FFFFFF;
   min-width:		16em;
-  min-height:		25em;
+  min-height:		16em;
 }
 #content_title {
   display:		none; /* undone in print.css */

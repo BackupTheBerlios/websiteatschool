@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wastheme_schoolyard
- * @version $Id: schoolyard.class.php,v 1.1 2011/06/07 18:25:01 pfokker Exp $
+ * @version $Id: schoolyard.class.php,v 1.2 2011/06/09 08:26:08 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -121,9 +121,9 @@ class ThemeSchoolyard extends Theme {
                      $this->get_navigation('      ',$this->high_visibility).
               "    </div>\n".
               "    <div id=\"navigation_belt\"></div>\n".
-              "    <div id=\"quicktop\">\n".
+              "    <div id=\"information\">\n".
                      $this->get_div_breadcrumbs('      ').
-                     $this->get_quicktop('      ').
+                     $this->schoolyard_get_div_quicktop('      ').
               "    </div>\n".
                    $this->get_div_messages('    ').
               "    <div id=\"menu\">\n".
@@ -222,6 +222,21 @@ class ThemeSchoolyard extends Theme {
         return $s;
     } // schoolyard_logout()
 
-}
+
+    /** construct an optional div for quicklinks at the top if any
+     *
+     * @param string $m margin for readability
+     * @return string ready-to-use HTML-code for div or empty string of nothing to show
+     */
+    function schoolyard_get_div_quicktop($m='') {
+        $quicktop = $this->get_quicktop($m.'  ');
+        if (empty($quicktop)) {
+            return '';
+        }
+        return $m."<div id=\"quicktop\">\n".
+                     $quicktop.
+               $m."</div>\n";
+    } // schoolyard_get_div_quicktop()
+} // ThemeSchoolyard
 
 ?>
