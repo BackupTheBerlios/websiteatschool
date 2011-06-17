@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: toolslib.php,v 1.2 2011/02/03 14:04:04 pfokker Exp $
+ * @version $Id: toolslib.php,v 1.3 2011/06/17 18:19:11 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -205,6 +205,7 @@ function task_backuptool(&$output) {
     global $DB,$CFG,$WAS_SCRIPT_NAME;
     $download = get_parameter_string('download',NULL);
     if (is_null($download)){
+        $output->set_helptopic('backuptool');
         $output->add_content("<h2>".t('backuptool_header','admin')."</h2>");
         $params = array('{DATADIRECTORY}' => htmlspecialchars($CFG->datadir));
         $output->add_content(t('backuptool_intro','admin',$params));
@@ -302,6 +303,7 @@ function task_logview(&$output) {
         LOG_DEBUG   => 'LOG_DEBUG');
 
     // 0 -- at least we allow the user to navigate away if something goes wrong
+    $output->set_helptopic('logview');
     show_tools_menu($output,TASK_LOGVIEW);
 
     // 1A -- how many messages are there anyway?

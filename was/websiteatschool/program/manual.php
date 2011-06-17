@@ -31,7 +31,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: manual.php,v 1.4 2011/02/21 15:30:10 pfokker Exp $
+ * @version $Id: manual.php,v 1.5 2011/06/17 18:19:10 pfokker Exp $
  */
 
 /** This global defines the mapping between topics/subtopics and manual files/filefragments
@@ -50,6 +50,7 @@ $TOPICS = array(
     'toc'                  => 'index.html', 
     'accountmanager'       => 'accountmanager.html',
     'areamanager'          => 'configurationmanager.html#h4',
+    'backuptool'           => 'tools.html#h4',
     'configurationmanager' => 'configurationmanager.html',
     'filemanager'          => 'filemanager.html',
     'groupmanager'         => 'accountmanager.html#h4',
@@ -65,6 +66,7 @@ $TOPICS = array(
         'confirm'          => 'install.html#h2.8',
         'finish'           => 'install.html#h2.9'
         ),
+    'logview'              => 'tools.html#h5',
     'pagemanager'          => 'pagemanager.html',
     'translatetool'        => 'tools.html#h3',
     'tools'                => 'tools.html',
