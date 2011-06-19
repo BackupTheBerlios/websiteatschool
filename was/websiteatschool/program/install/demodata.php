@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasinstall
- * @version $Id: demodata.php,v 1.6 2011/06/03 16:45:45 pfokker Exp $
+ * @version $Id: demodata.php,v 1.7 2011/06/19 17:19:46 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -57,14 +57,41 @@ if (!defined('WASENTRY')) { die('no entry'); }
  * This routine is completely self-contained, even the translations are handled
  * manually here.
  *
+ * As an added bonus for other demodata routines (eg. the installers of demo data
+ * for modules and themes) the main demodata strings are added to $config and also
+ * a set of handy search/replace pairs. After calling this routine, the $config array
+ * contains the following.
+ *
+ * <code>
+ * $config['language_key']   => install language code (eg. 'en')
+ * $config['dir']            => path to CMS Root Directory (eg. /home/httpd/htdocs)
+ * $config['www']            => URL of CMS Root Directory (eg. http://exemplum.eu)
+ * $config['progdir']        => path to program directory (eg. /home/httpd/htdocs/program)
+ * $config['progwww']        => URL of program directory (eg. http://exemplum.eu/program)
+ * $config['datadir']        => path to data directory (eg. /home/httpd/wasdata/a1b2c3d4e5f6)
+ * $config['title']          => the name of the site
+ * $config['user_username']  => userid of webmaster (eg. wblader)
+ * $config['user_full_name'] => full name of webmaster (eg. Wilhelmina Bladergroen)
+ * $config['user_email']     => email of webmaster (eg. w.bladergroen@exemplum.eu)
+ * $config['user_id']        => numerical user_id (usually 1)
+ * $config['demo_salt']      => password salt for all demodata accounts
+ * $config['demo_password']  => password for all demodata accounts
+ * $config['demo_areas']     => array with demo area data
+ * $config['demo_groups']    => array with demo group data
+ * $config['demo_users']     => array with demo user data
+ * $config['demo_nodes']     => array with demo node data
+ * $config['demo_string']    => array with demo strings from /program/install/languages/LL/demodata.php
+ * $config['demo_replace']   => array with search/replace pairs to 'jazz up' the demo strings
+ * </code>
+ *
  * @param array &$messages used to return (error) messages to caller
- * @param array &$config pertinent information about the site and also returns the area_id's used for the demo
+ * @param array &$config pertinent information about the site and also returns additional demo data
  * @return bool TRUE on success + data entered into database, FALSE on error
  */
 function demodata(&$messages,&$config) {
     $retval = TRUE; // assume success
 
-    // 0 -- get hold of our translations in $string[]
+    // 0A -- get hold of our translations in $string[]
     $string = array();
     $language_key = $config['language_key'];
     $filename = dirname(__FILE__).'/languages/'.$language_key.'/demodata.php';
@@ -76,6 +103,41 @@ function demodata(&$messages,&$config) {
         $messages[] = 'Internal error: no translations in '.$filename;
         return FALSE;
     }
+    // 0B -- construct a few handy search/replace pairs to 'jazz up' the demodata
+    $year = intval(strftime('%Y'));
+    if (intval(strftime('%m')) <= 7) { // make schoolyear end on August 1
+        $year--;
+    }
+    $last_schoolyear = sprintf("%04d-%04d",$year-1,$year  );   // e.g. 2008-2009
+    $this_schoolyear = sprintf("%04d-%04d",$year,  $year+1);   // 2009-2010
+    $next_schoolyear = sprintf("%04d-%04d",$year+1,$year+2);   // 2010-2011
+    $config['demo_replace'] = array(
+        '{YEAR}'                => strval($year),
+        '{LAST_SCHOOLYEAR}'     => $last_schoolyear,
+        '{THIS_SCHOOLYEAR}'     => $this_schoolyear,
+        '{NEXT_SCHOOLYEAR}'     => $next_schoolyear,
+        '{NOW}'                 => strftime('%Y-%m-%d %T'),
+        '{TODAY}'               => strftime('%Y-%m-%d'),
+        '{YESTERDAY}'           => strftime('%Y-%m-%d',time() - 86400),
+        '{LAST_WEEK}'           => strftime('%Y-%m-%d',time() - 604800),
+        '{MONTHS_AGO_1}'        => strftime('%Y-%m-%d',time()-3000000), // 3,000,000 seconds is about 35 days
+        '{MONTHS_AGO_2}'        => strftime('%Y-%m-%d',time()-6000000),
+        '{MONTHS_AGO_3}'        => strftime('%Y-%m-%d',time()-9000000),
+        '{MONTHS_AGO_4}'        => strftime('%Y-%m-%d',time()-12000000),
+        '{INDEX_URL}'           => $config['www'].'/index.php',
+        '{ADMIN_URL}'           => $config['www'].'/admin.php',
+        '{MANUAL_URL}'          => $config['progwww'].'/manual.php?language='.$config['language_key'],
+        '{WEBSITEATSCHOOL_URL}' => 'http://websiteatschool.eu',
+        '{LOREM}'               => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, '.
+                                   'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        '{IPSUM}'               => 'Ut enim ad minim veniam, quis nostrud exercitation ullamco '.
+                                   'laboris nisi ut aliquip ex ea commodo consequat.',
+        '{DOLOR}'               => 'Duis aute irure dolor in reprehenderit in voluptate velit '.
+                                   'esse cillum dolore eu fugiat nulla pariatur.',
+        '{SIT}'                 => 'Excepteur sint occaecat cupidatat non proident, '.
+                                   'sunt in culpa qui officia deserunt mollit anim id est laborum.'
+        );
+
     // 1 -- prepare 3 demonstration areas
     if (!demodata_areas($messages,$config,$string)) {
         $retval = FALSE;
@@ -95,6 +157,7 @@ function demodata(&$messages,&$config) {
     if (!demodata_alerts($messages,$config,$string)) {
         $retval = FALSE;
     }
+    $config['demo_string'] = $string; // just before we leave: remember main strings for subsequent demodata routines
     return $retval;
 } // demodata()
 
@@ -578,36 +641,8 @@ function demodata_sections_pages(&$messages,&$config,&$tr) {
     $htmlpage_id = intval($records['htmlpage']['module_id']);
     $sitemap_id  = intval($records['sitemap']['module_id']);
 
-    $year = intval(strftime('%Y'));
-    if (intval(strftime('%m')) <= 7) { // make schoolyear end on August 1
-        $year--;
-    }
-    $last_schoolyear = sprintf("%04d-%04d",$year-1,$year  );   // e.g. 2008-2009
-    $this_schoolyear = sprintf("%04d-%04d",$year,  $year+1);   // 2009-2010
-    $next_schoolyear = sprintf("%04d-%04d",$year+1,$year+2);   // 2010-2011
-
-    $replace = array(
-        '{LAST_SCHOOLYEAR}' => $last_schoolyear,
-        '{THIS_SCHOOLYEAR}' => $this_schoolyear,
-        '{NEXT_SCHOOLYEAR}' => $next_schoolyear,
-        '{NOW}' => strftime('%Y-%m-%d %T'),
-        '{TODAY}' => strftime('%Y-%m-%d'),
-        '{YESTERDAY}' => strftime('%Y-%m-%d',time() - 86400),
-        '{LAST_WEEK}' => strftime('%Y-%m-%d',time() - 604800),
-        '{MONTHS_AGO_1}' => strftime('%Y-%m-%d',time()-3000000), // 3,000,000 seconds is about 35 days
-        '{MONTHS_AGO_2}' => strftime('%Y-%m-%d',time()-6000000),
-        '{MONTHS_AGO_3}' => strftime('%Y-%m-%d',time()-9000000),
-        '{MONTHS_AGO_4}' => strftime('%Y-%m-%d',time()-12000000),
-        '{INDEX_URL}' => $config['www'].'/index.php',
-        '{ADMIN_URL}' => $config['www'].'/admin.php',
-        '{MANUAL_URL}' => $config['progwww'].'/manual.php?language='.$config['language_key'],
-        '{WEBSITEATSCHOOL_URL}' => 'http://websiteatschool.eu',
-        '{LOREM}' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-        '{IPSUM}' => 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        '{DOLOR}' => 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-        '{SIT}' => 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-        );
-
+    $replace = $config['demo_replace'];
+    $year = intval($replace['{YEAR}']);
     $nodes = array(
         'welcome' => array(
             'parent_id' => 'welcome',
@@ -633,8 +668,8 @@ function demodata_sections_pages(&$messages,&$config,&$tr) {
         'schoolterms1' => array(
             'parent_id' => 'schoolinfo',
             'is_page' => TRUE,
-            'title' => strtr($tr['schoolterms_title'],array('{SCHOOLYEAR}' => $last_schoolyear)),
-            'link_text' => strtr($tr['schoolterms_link_text'],array('{SCHOOLYEAR}' => $last_schoolyear)),
+            'title' => strtr($tr['schoolterms_title'],array('{SCHOOLYEAR}' => $replace['{LAST_SCHOOLYEAR}'])),
+            'link_text' => strtr($tr['schoolterms_link_text'],array('{SCHOOLYEAR}' => $replace['{LAST_SCHOOLYEAR}'])),
             'embargo' => sprintf('%04d-08-01 00:00:00',$year-1),
             'expiry' => sprintf('%04d-08-01 00:00:00',$year),
             'sort_order' => 20,
@@ -642,8 +677,8 @@ function demodata_sections_pages(&$messages,&$config,&$tr) {
         'schoolterms2' => array(
             'parent_id' => 'schoolinfo',
             'is_page' => TRUE,
-            'title' => strtr($tr['schoolterms_title'],array('{SCHOOLYEAR}' => $this_schoolyear)),
-            'link_text' => strtr($tr['schoolterms_link_text'],array('{SCHOOLYEAR}' => $this_schoolyear)),
+            'title' => strtr($tr['schoolterms_title'],array('{SCHOOLYEAR}' => $replace['{THIS_SCHOOLYEAR}'])),
+            'link_text' => strtr($tr['schoolterms_link_text'],array('{SCHOOLYEAR}' => $replace['{THIS_SCHOOLYEAR}'])),
             'embargo' => sprintf('%04d-08-01 00:00:00',$year),
             'expiry' => sprintf('%04d-08-01 00:00:00',$year+1),
             'sort_order' => 30,
@@ -651,8 +686,8 @@ function demodata_sections_pages(&$messages,&$config,&$tr) {
         'schoolterms3' => array(
             'parent_id' => 'schoolinfo',
             'is_page' => TRUE,
-            'title' => strtr($tr['schoolterms_title'],array('{SCHOOLYEAR}' => $next_schoolyear)),
-            'link_text' => strtr($tr['schoolterms_link_text'],array('{SCHOOLYEAR}' => $next_schoolyear)),
+            'title' => strtr($tr['schoolterms_title'],array('{SCHOOLYEAR}' => $replace['{NEXT_SCHOOLYEAR}'])),
+            'link_text' => strtr($tr['schoolterms_link_text'],array('{SCHOOLYEAR}' => $replace['{NEXT_SCHOOLYEAR}'])),
             'embargo' => sprintf('%04d-08-01 00:00:00',$year+1),
             'expiry' => sprintf('%04d-08-01 00:00:00',$year+2),
             'sort_order' => 40,
@@ -790,8 +825,8 @@ function demodata_sections_pages(&$messages,&$config,&$tr) {
         'minutes' => array(
             'parent_id' => 'meetings',
             'is_page' => FALSE,
-            'title' => strtr($tr['minutes_title'],array('{SCHOOLYEAR}' => $last_schoolyear)),
-            'link_text' => strtr($tr['minutes_link_text'],array('{SCHOOLYEAR}' => $last_schoolyear)),
+            'title' => strtr($tr['minutes_title'],array('{SCHOOLYEAR}' => $replace['{LAST_SCHOOLYEAR}'])),
+            'link_text' => strtr($tr['minutes_link_text'],array('{SCHOOLYEAR}' => $replace['{LAST_SCHOOLYEAR}'])),
             'sort_order' => 20),
         'minutes1' => array(
             'parent_id' => 'minutes',
@@ -824,8 +859,8 @@ function demodata_sections_pages(&$messages,&$config,&$tr) {
         'newminutes' => array(
             'parent_id' => 'meetings',
             'is_page' => FALSE,
-            'title' => strtr($tr['minutes_title'],array('{SCHOOLYEAR}' => $this_schoolyear)),
-            'link_text' => strtr($tr['minutes_link_text'],array('{SCHOOLYEAR}' => $this_schoolyear)),
+            'title' => strtr($tr['minutes_title'],array('{SCHOOLYEAR}' => $replace['{THIS_SCHOOLYEAR}'])),
+            'link_text' => strtr($tr['minutes_link_text'],array('{SCHOOLYEAR}' => $replace['{THIS_SCHOOLYEAR}'])),
             'sort_order' => 20),
         'minutes5' => array(
             'parent_id' => 'newminutes',

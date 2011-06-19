@@ -1,6 +1,9 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.60 2011/06/17 18:19:10 pfokker Exp $
+$Id: CHANGES.txt,v 1.61 2011/06/19 17:19:46 pfokker Exp $
 -------------------------------------------------------------------------------
+
+2011-06-19
+- minor additions to install wizard: better processing of demo data
 
 2011-06-17
 - refined context-sensitive help in tools menu
