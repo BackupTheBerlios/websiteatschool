@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wastheme_schoolyard
- * @version $Id: schoolyard.class.php,v 1.2 2011/06/09 08:26:08 pfokker Exp $
+ * @version $Id: schoolyard.class.php,v 1.3 2011/06/22 13:32:12 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -217,7 +217,7 @@ class ThemeSchoolyard extends Theme {
             $attributes = array('title' => t('logout_username_title',$this->domain,$aparams));
             $s = $m.$separator.html_a($CFG->www_short.'/index.php',$params,$attributes,$anchor)."\n";
         } else {
-            #s = ''; // or perhaps a login prompt?
+            $s = ''; // or perhaps a login prompt?
         }
         return $s;
     } // schoolyard_logout()
