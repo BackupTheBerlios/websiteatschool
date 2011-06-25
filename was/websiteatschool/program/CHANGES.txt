@@ -1,6 +1,11 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.61 2011/06/19 17:19:46 pfokker Exp $
+$Id: CHANGES.txt,v 1.62 2011/06/25 13:34:19 pfokker Exp $
 -------------------------------------------------------------------------------
+
+2011-06-25
+- install.php and init.php: added complex routines to make sure that
+  we use the correct value of the currently executing script. See the
+  (long) comment for install_script_name() in install.php
 
 2011-06-19
 - minor additions to install wizard: better processing of demo data

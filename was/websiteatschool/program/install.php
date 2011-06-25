@@ -27,7 +27,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasinstall
- * @version $Id: install.php,v 1.7 2011/06/19 17:19:46 pfokker Exp $
+ * @version $Id: install.php,v 1.8 2011/06/25 13:34:19 pfokker Exp $
  * @todo how prevent third party-access to install.php after initial install? .htaccess? !exists(../config.php)? 
  * @todo we should make sure that autosession is disabled in php.ini, otherwise was won't work
  * @todo we should make sure that register globals is off
@@ -36,7 +36,7 @@
 
 /** Valid entry points define WASENTRY; prevents direct access to include()'s.  */
 define('WASENTRY',__FILE__);
-$WAS_SCRIPT_NAME = $GLOBALS['SCRIPT_NAME'];
+$WAS_SCRIPT_NAME = install_script_name(WASENTRY);;
 global $DB;
 
 define('INSTALL_DIALOG_LANGUAGE',        0);
@@ -3570,5 +3570,141 @@ class InstallWizard {
     } // mysql_utf8mb3()
 
 } // InstallWizard()
+
+/** determine the name of the executing script (the entry point)
+ *
+ * this routine tries to reach consensus about the name of the script that was the entry point.
+ * This is not as easy as it sounds. Here are some real-world examples in three variations:
+ *  - http://exemplum.eu/was/index.php
+ *  - http://exemplum.eu/was/index.php?area=1&node=23
+ *  - http://exemplum.eu/was/index.php/1/23/Welcome
+ * The object of the excercises in the examples below is to arriva at the value '/was/index.php'
+ * using the elements from the global array $_SERVER. Note that the case for index.php has additional
+ * variations, e.g.
+ *  - http://exemplum.eu/was
+ *  - http://exemplum.eu/was/?area=1&node=23
+ *
+ * Example 1 - a simple Linux-server and http://exemplum.eu/was/index.php
+ * <code>
+ * DOCUMENT_ROOT   => /home/httpd/htdocs
+ * SCRIPT_FILENAME => /home/httpd/htdocs/was/index.php
+ * REQUEST_URI     => /was/index.php
+ * SCRIPT_NAME     => /was/index.php
+ * PHP_SELF        => /was/index.php
+ * PATH_INFO       => (undefined)
+ * </code>
+ *
+ * Example 2 - a simple Linux-server and http://exemplum.eu/was/index.php?area=1&node=23
+ * <code>
+ * DOCUMENT_ROOT   => /home/httpd/htdocs
+ * SCRIPT_FILENAME => /home/httpd/htdocs/was/index.php
+ * REQUEST_URI     => /was/index.php?area=1&node=23
+ * SCRIPT_NAME     => /was/index.php
+ * PHP_SELF        => /was/index.php
+ * PATH_INFO       => (undefined)
+ * </code>
+ *
+ * Example 3 - a simple Linux-server and http://exemplum.eu/was/index.php/1/23/Welcome
+ * <code>
+ * DOCUMENT_ROOT   => /home/httpd/htdocs
+ * SCRIPT_FILENAME => /home/httpd/htdocs/was/index.php
+ * REQUEST_URI     => /was/index.php/1/23/Welcome
+ * SCRIPT_NAME     => /was/index.php
+ * PHP_SELF        => /was/index.php/1/23/Welcome
+ * PATH_INFO       => /1/23/Welcome
+ * </code>
+ *
+ * Example 4 - an ISP running php via CGI and http://exemplum.eu/was/index.php
+ * <code>
+ * DOCUMENT_ROOT   => /usr/local/WWW/E/e/exemplum/htdocs
+ * SCRIPT_FILENAME => /usr/local/WWW/E/e/exemplum/htdocs/cgi-bin/php
+ * REQUEST_URI     => /was/index.php
+ * SCRIPT_NAME     => /cgi-bin/php
+ * PHP_SELF        => /was/index.php
+ * PATH_INFO       => /was/index.php
+ * </code>
+ *
+ * Example 5 - an ISP running php via CGI and http://exemplum.eu/was/index.php?area=1&node=23
+ * <code>
+ * DOCUMENT_ROOT   => /usr/local/WWW/E/e/exemplum/htdocs
+ * SCRIPT_FILENAME => /usr/local/WWW/E/e/exemplum/htdocs/cgi-bin/php
+ * REQUEST_URI     => /was/index.php?area=1&node=23
+ * SCRIPT_NAME     => /cgi-bin/php
+ * PHP_SELF        => /was/index.php
+ * PATH_INFO       => /was/index.php
+ * </code>
+ *
+ * Example 6 - an ISP running php via CGI and http://exemplum.eu/was/index.php/1/23/Welcome
+ * <code>
+ * Server reply: No input file specified.
+ * </code>
+ *
+ * Simply using SCRIPT_NAME as per PHP Documentation won't work (see examples 4 and 5).
+ * Simply using PHP_SELF is also problematic (see example 3) because it equates to user input.
+ * Another problem is the use of symbolic links. The ISP running php via CGI shows this
+ * value for __FILE__ (in index.php):
+ *
+ * __FILE__ => /usr/local/WWW/E/.5c1/e/exemplum/htdocs/was/index.php
+ *
+ * so this simple assertion of the calculated value '/was/index.php' fails:
+ *
+ * $DOCUMENT_ROOT.'/was/index.php' == __FILE__
+ *
+ * because of the '/.5c1' within the __FILE__ path. However, this might be solved by looking
+ * at the realpath() of the left hand side because that resolves the 'hidden' link within
+ * $DOCUMENT_ROOT.
+ *
+ * All in all the parameter REQUEST_URI shows the most consistent information never mind
+ * the appended parameters like node=23, so we start there.
+ *
+ * The strategy is as follows.
+ * 1. If REQUEST_URI begins with SCRIPT_NAME then SCRIPT_NAME is the answer (works for 1/2/3)
+ * 2. If REQUEST_URI begins with PHP_SELF then PHP_SELF is the answer (works for 4/5)
+ *
+ * If these two attempts fail, we try a different approach. We can determine the filename
+ * of the script (via basename($full_wasentry_path)) and try to match that with either
+ * SCRIPT_NAME or PHP_SELF. Specifically we look at the case there the filename is omitted
+ * ie. http://exemplum.eu/was/ instead of http://exemplum.eu/was/index.php. This yields
+ * a REQUEST_URI that fails in tests 1 and 2 above.
+ *
+ * 3. If (basename(__FILE__) == basename(SCRIPT_NAME) then SCRIPT_NAME is the likely answer (works for 1/2/3)
+ * 4. If (basename(__FILE__) == basename(PHP_SELF) then PHP_SELF is the likely answer (works for 4/5)
+ *
+ * Finally, as a double check we assert that the DOCUMENT_ROOT together
+ * with the answer actually yields the __FILE__ path (resolving symlinks along the way).
+ * If it doesn't I'd say there is something going terribly wrong, wrong enought to warrant an
+ * emergency exit.
+ *
+ * In other words: if there is only a slight doubt about the correct answer we simply die();
+ *
+ * Note that an almost identical routine {@link wasentry_script_name()} is used in
+ * the main program via {@link init.php}.
+ *
+ * @param string $full_wasentry_path full path of the entry point, e.g. '/home/httpd/htdocs/was/program/install.php'
+ * @return string path of entry point relative to the document root, e.g. '/was/program/install.php' or we die() on error
+ */
+function install_script_name($full_wasentry_path) {
+    $request_uri   = (isset($_SERVER['REQUEST_URI']))   ? $_SERVER['REQUEST_URI']   : 'request_uri?';
+    $script_name   = (isset($_SERVER['SCRIPT_NAME']))   ? $_SERVER['SCRIPT_NAME']   : 'script_name?';
+    $php_self      = (isset($_SERVER['PHP_SELF']))      ? $_SERVER['PHP_SELF']      : 'php_self?';
+    $document_root = (isset($_SERVER['DOCUMENT_ROOT'])) ? $_SERVER['DOCUMENT_ROOT'] : 'document_root?';
+    if (strncmp($request_uri,$script_name,strlen($script_name)) == 0) {
+        $wasentry_script_name = $script_name;
+    } elseif (strncmp($request_uri,$php_self,strlen($php_self)) == 0) {
+        $wasentry_script_name = $php_self;
+    } else {
+        $wasentry_script_name = basename($full_wasentry_path);
+        if ($wasentry_script_name == basename($script_name)) {
+            $wasentry_script_name = $script_name;
+        } elseif ($wasentry_script_name = basename($php_self)) {
+            $wasentry_script_name = $php_self;
+        }
+    }
+    if ($full_wasentry_path == realpath($document_root.$wasentry_script_name)) {
+        return $wasentry_script_name;
+    } else {
+        die('condition code 017'); // something is definately wrong, bail out
+    }
+} // install_script_name()
 
 ?>

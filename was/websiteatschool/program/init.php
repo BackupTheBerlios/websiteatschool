@@ -33,7 +33,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: init.php,v 1.3 2011/05/09 13:29:08 pfokker Exp $
+ * @version $Id: init.php,v 1.4 2011/06/25 13:34:19 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -62,10 +62,6 @@ function initialise() {
 
     /** the maximum number of iterations in database loops (prevent circular reference) */
     define('MAXIMUM_ITERATIONS',50);
-
-    /** the name of the script (entrypoint) that is currently running */
-    global $WAS_SCRIPT_NAME;
-    $WAS_SCRIPT_NAME = $_SERVER['SCRIPT_NAME'];
 
     /** This global variable holds all configuration parameters
      *
@@ -121,6 +117,10 @@ function initialise() {
 
     /** 'utf8lib.php' contains essential routines for manipulating UTF-8 string */
     require_once($CFG->progdir.'/lib/utf8lib.php');
+
+    /** the name of the script (entrypoint) that is currently running (see {@link wasentry_script_name()}) */
+    global $WAS_SCRIPT_NAME;
+    $WAS_SCRIPT_NAME = wasentry_script_name(WASENTRY);
 
     /** This global object is used to access the database
      *
@@ -256,6 +256,7 @@ function was_version_check($exit_on_error=TRUE) {
  *
  *  - 010: cannot find config.php, is W@S installed at all?
  *  - 015: cannot find program/main_XXXXX.php, is W@S installed at all?
+ *  - 017: cannot calculate wasentry_script_name, are we being tricked?
  *  - 020: configuration error, invalid database type
  *  - 030: cannot connect to database, busy or configuration error?
  *  - 040: error accessing the database, is W@S installed at all?
@@ -325,5 +326,40 @@ function diff_microtime($time_start, $time_stop) {
     $t1 = (double) $msec + (double) $sec;
     return $t1 - $t0;
 } // diff_microtime()
+
+
+/** determine the name of the executing script (the entry point)
+ *
+ * this routine tries to reach consensus about the name of the script that was the entry point.
+ * This is not as easy as it sounds.
+ *
+ * See {@link install_script_name()} for an exhausing discussion of the issues.
+ *
+ * @param string $full_wasentry_path is the full path of the entry point, e.g. '/home/httpd/htdocs/was/index.php'
+ * @return string the path of the entry point relative to the document root, e.g. '/was/index.php' or we die() on error
+ */
+function wasentry_script_name($full_wasentry_path) {
+    $request_uri   = (isset($_SERVER['REQUEST_URI']))   ? $_SERVER['REQUEST_URI']   : 'request_uri?';
+    $script_name   = (isset($_SERVER['SCRIPT_NAME']))   ? $_SERVER['SCRIPT_NAME']   : 'script_name?';
+    $php_self      = (isset($_SERVER['PHP_SELF']))      ? $_SERVER['PHP_SELF']      : 'php_self?';
+    $document_root = (isset($_SERVER['DOCUMENT_ROOT'])) ? $_SERVER['DOCUMENT_ROOT'] : 'document_root?';
+    if (strncmp($request_uri,$script_name,strlen($script_name)) == 0) {
+        $wasentry_script_name = $script_name;
+    } elseif (strncmp($request_uri,$php_self,strlen($php_self)) == 0) {
+        $wasentry_script_name = $php_self;
+    } else {
+        $wasentry_script_name = basename($full_wasentry_path);
+        if ($wasentry_script_name == basename($script_name)) {
+            $wasentry_script_name = $script_name;
+        } elseif ($wasentry_script_name = basename($php_self)) {
+            $wasentry_script_name = $php_self;
+        }
+    }
+    if ($full_wasentry_path == realpath($document_root.$wasentry_script_name)) {
+        return $wasentry_script_name;
+    } else {
+        error_exit('017'); // something is definately wrong, bail out
+    }
+} // wasentry_script_name()
 
 ?>
