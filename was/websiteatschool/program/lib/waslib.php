@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: waslib.php,v 1.6 2011/05/27 21:51:17 pfokker Exp $
+ * @version $Id: waslib.php,v 1.7 2011/06/25 15:53:51 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -168,7 +168,7 @@ function get_properties($tablename='config',$where='') {
  * yields www_short = '' and wwwprog_short = '/program'.
  *
  * www = 'http://www.example.com' and progwww = 'http://common.example.com/program'
- * yields www_short idential to www and progwww identical to progwww_short.
+ * yields www_short idential to www and progwww_short identical to progwww.
  *
  * The purpose is to be able to generate relative links, e.g. an image in 
  * /program/graphics/foo.jpg can be referred to like this
@@ -178,7 +178,7 @@ function get_properties($tablename='config',$where='') {
  * <img src="http://www.example.com/program/graphics/foo.jpg">
  * </code>
  *
- * Note that the comparison in this routine is notvery fancy, it can be
+ * Note that the comparison in this routine is not very fancy, it can be
  * easily fooled to consider scheme+authority to be different. However, since
  * this routine is only used to compare two values from config.php, it's
  * not likely to cause trouble.
@@ -1609,9 +1609,14 @@ function appropriate_legal_notices($high_visibility,$m='      ') {
  * to start in the CMS Root Directory (the directory where index.php, admin.php & friends live).
  *
  * Note: according to RFC3986 a scheme must start with a letter and can contain only
- * letters, digits, '+', '-' or '.'. Note: all string operations here are ASCII; no UTF-8 issues.
+ * letters, digits, '+', '-' or '.'. Note: all string operations here are ASCII; no UTF-8 issues here.
  *
  * If $fully_qualified is TRUE we always make a relative URL fully qualified.
+ *
+ * If $url starts with a slash, we must assume that the caller means some file relative to the
+ * document root, or rather: relative to the top level directory embedded in $CFG->www. If we
+ * have $url starting with a slash AND $full_qualified is TRUE, we extract the scheme and
+ * authority from $CFG->www and prepend that to $url. This is a heuristic approach.
  *
  * Example 1:
  * 'program/styles/base.css' becomes 
@@ -1623,20 +1628,70 @@ function appropriate_legal_notices($high_visibility,$m='      ') {
  * '/file.php/areas/exemplum/logo.jpg' OR
  * 'http://exemplum.eu/file.php/areas/exemplum/logo.jpg'
  *
+ * Example 3:
+ * '/path/to/foo/bar/logo.jpg' becomes
+ * '/path/to/foo/bar/logo.jpg' OR
+ * 'http://exemplum.eu/path/to/foo/bar/logo.jpg'
+ *
  * @param string $url the (possibly) relative URL to massage
  * @param bool $fully_qualified if TRUE forces the URL to contain a scheme, authority etc., else use shortened form
  * @return string the qualified URL
  */
 function was_url($url,$fully_qualified=FALSE) {
     global $CFG;
-    if (preg_match('/^[A-Za-z][A-Za-z0-9\-+.]*:\/\//',$url) != 1) { // relative; does not start with 'scheme://'
-            if (substr($url,0,8) == 'program/') {
-                $url = (($fully_qualified) ? $CFG->progwww : $CFG->progwww_short).substr($url,7);
-            } else {
-                $url = (($fully_qualified) ? $CFG->www : $CFG->www_short).'/'.$url;
+    if (substr($url,0,1) == '/') {
+        if ($fully_qualified) {
+            $www = $CFG->www;
+            if (($i = strpos($www,'://')) !== FALSE) {
+                $url = ((($i = strpos($www,'/',$i+3)) === FALSE) ? $www : substr($www,0,$i)).$url;
             }
         }
+    } elseif (preg_match('/^[A-Za-z][A-Za-z0-9\-+.]*:\/\//',$url) != 1) { // relative; does not start with 'scheme://'
+        if (substr($url,0,8) == 'program/') {
+            $url = (($fully_qualified) ? $CFG->progwww : $CFG->progwww_short).substr($url,7);
+        } else {
+            $url = (($fully_qualified) ? $CFG->www : $CFG->www_short).'/'.$url;
+        }
+    }
     return $url;
 } // was_url()
+
+
+/** construct a url that links to a file via /file.php
+ *
+ * This constructs a URL that links to a file, either
+ * <code>
+ * /file.php/path/to/file.txt
+ * </code>
+ * or
+ * <code>
+ * /file.php?file=/path/to/file.txt
+ * </code>
+ * depending on the global setting for proxy-friendly urls.
+ *
+ * Furthermore, if the flag $fully_qualified is TRUE, we
+ * include scheme and authority in the resulting URL, ie.
+ * <code>
+ * http://exemplum.eu/file.php/path/to/file.txt
+ * </code>
+ *
+ * @parameter string $path the name of the file including path
+ * @param bool $fully_qualified if TRUE forces the URL to contain a scheme, authority etc., else use shortened form
+ * @return string ready to use URL
+ */
+function was_file_url($path,$fully_qualified=FALSE) {
+    global $CFG;
+    $components = explode('/',$path);
+    $path = '';
+    foreach($components as $component) {
+        if (!empty($component)) {
+            $path .= '/'.rawurlencode($component);
+        }
+    }
+    $url = sprintf('%s/file.php%s%s',($fully_qualified) ? $CFG->www : $CFG->www_short,
+                                     ($CFG->friendly_url) ? '' : '?file=',
+                                     $path);
+    return $url;
+} // was_file_url()
 
 ?>
