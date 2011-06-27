@@ -27,7 +27,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasinstall
- * @version $Id: install.php,v 1.8 2011/06/25 13:34:19 pfokker Exp $
+ * @version $Id: install.php,v 1.9 2011/06/27 12:18:18 pfokker Exp $
  * @todo how prevent third party-access to install.php after initial install? .htaccess? !exists(../config.php)? 
  * @todo we should make sure that autosession is disabled in php.ini, otherwise was won't work
  * @todo we should make sure that register globals is off
@@ -139,10 +139,23 @@ class InstallWizard {
      * This routine termines what needs to be done and
      * does it by calling the corresponding workhorse routines.
      *
-     * @return void work done and output stored in $output (or sent directly to user's browser in case of download)
+     * Note the special trick with the test for a friendly URL;
+     * see {@link invisible_test_image()} for the gory details.
+     *
+     * @return void work done and output sent directly to user's browser
+     * @uses invisible_test_image()
      */
     function run() {
-        if ($_SESSION['INSTALL']['WAS_VERSION'] != WAS_VERSION) {
+        if ((isset($_SERVER['PATH_INFO'])) && ($_SERVER['PATH_INFO'] == '/friendly/test/1x1.gif')) {
+            $_SESSION['INSTALL']['friendly_url'] = TRUE;
+            $img = "\107\111\106\070\067\141\001\000\001\000\200\000\000\377\000\000".
+                   "\000\000\107\054\000\000\000\000\001\000\001\000\000\002\002\104\001\000\073";
+            header('Content-Type: image/gif');
+            header(sprintf('Content-Disposition: inline; filename=%s',urlencode('1x1.gif')));
+            header(sprintf('Content-Length: %d',strlen($img)));
+            echo $img;
+            return;
+        } elseif ($_SESSION['INSTALL']['WAS_VERSION'] != WAS_VERSION) {
             // weird? the version number changed while we are installing. Mmmm...
             $this->messages[] = $this->t('error_wrong_version');
             $dialog = INSTALL_DIALOG_CANCELLED;
@@ -763,9 +776,13 @@ class InstallWizard {
      *  - cms_progdir: constructed from cms_dir
      *  - cms_progwww: constructed from cms_www
      *
+     * Note the special trick with the test for a friendly URL;
+     * see {@link invisible_test_image()} for the gory details.
+     *
      * @param string $m margin for better readability of generated HTML-code
      * @return void HTML-code sent to browser
      * @todo can we suppress even more fields here in case of a Standard installation?
+     * @uses invisible_test_image()
      */
     function show_dialog_cms($m='      ') {
         global $WAS_SCRIPT_NAME;
@@ -784,6 +801,8 @@ class InstallWizard {
                    $m."  ".$this->button('next')."\n".
                    $m."  ".$this->button('cancel')."\n".
                    $m."</form>\n";
+
+        $content .= $this->invisible_test_image($m);
 
         $menu = $this->get_menu(INSTALL_DIALOG_CMS,$_SESSION['INSTALL']['stage']);
         echo  $this->get_page($dialog_title,$menu,$content,$help_topic);
@@ -1621,6 +1640,7 @@ class InstallWizard {
             'website_from_address' => $_SESSION['INSTALL']['cms_website_from_address'],
             'website_replyto_address' => $_SESSION['INSTALL']['cms_website_replyto_address'],
             'language_key' => $_SESSION['INSTALL']['language_key'],
+            'friendly_url' => ($_SESSION['INSTALL']['friendly_url']) ? '1' : '0',
             'clamscan_path' => $_SESSION['INSTALL']['clamscan_path'],
             'clamscan_mandatory' => ($_SESSION['INSTALL']['clamscan_mandatory']) ? '1' : '0'
             );
@@ -2224,6 +2244,8 @@ class InstallWizard {
             'cms_demodata_salt' => $this->quasi_random_string(12,62), // pick 12 characters from [0-9][A-Z][a-z]
             'cms_demodata_password' => '',
             'cms_validated' => FALSE,
+
+            'friendly_url' => FALSE,             // maybe set to TRUE if our friendly test image 1x1.gif works out
 
             'user_username' => '',
             'user_full_name' => '',
@@ -3568,6 +3590,48 @@ class InstallWizard {
         $replace = "\xEF\xBF\xBD"; // UTF-8 encoded Unicode replacement character U+FFFD
         return preg_replace($search,$replace,$utf8str);
     } // mysql_utf8mb3()
+
+
+    /** create a link to an invisible image to test the friendly URL feature
+     *
+     * this routine is part of a trick to discover whether the web server
+     * understands a frienly url like /index.php/1/23/Welcome rather than
+     * /index.php?area=1&node=23. This trick works as follows.
+     *
+     * 1. By default we assume that the webserver does NOT understand friendly url's
+     *    by setting the corresponding install parameter to FALSE (see {@link get_default_install_values()}
+     * 2. In the 5th step (after the Database dialog, ie. 'hidden' behind a password) we
+     *    embed an invisible image (see below) in the dialog.
+     * 3. The browser will attempt to retrieve the image and to (not) show it.
+     *    This means that we call $WAS_SCRIPT_NAME with a friendly url appears to point to 1x1.gif.
+     * 4a.IF (and only if) the webserver understands this friendly URL, we arrive in {@link rum()}
+     *    with _SERVER['PATH_INFO'] set to /friendly/test/1x1.gif. This gives us a chance to flip
+     *    the parameter 'friendly_url' in the installation parameters from the default FALSE to TRUE
+     * 4b.If the webserver does NOT understand the friendly url, the image file will never be found,
+     *    and we will never return the 1x1.gif and also never flip the setting from FALSE to TRUE.
+     * 5. Done
+     *
+     * I chose the Website dialog for this trick, because you can only get there after you have
+     * entered a valid username/password for the database. This means that only genuine users
+     * will perform this trick; outsiders never get to that dialog without a valid password.
+     *
+     * Obviously the setting is eventually entered in the configuration table, just like the title and the
+     * website_from_address etc.
+     *
+     * Note: both the Install Wizard itself and the code that generates the test image (in {@link run()})
+     * access the session variables. According to the PHP documentation this works because the file that
+     * holds the session information is locked between the calls to session_start() and session_write_close().
+     * The only visible effect _might_ be that the one call has to wait for the other to finish. Oh well,
+     * it is only a 1x1 gif of 35 bytes. It probably will go unnoticed.
+     *
+     * @param string $m margin for better readability of generated HTML-code
+     * @return string ready-to-use HTML-code for an 'invisible' image
+     */
+    function invisible_test_image($m='') {
+        global $WAS_SCRIPT_NAME;
+        $src = $WAS_SCRIPT_NAME.'/friendly/test/1x1.gif';
+        return sprintf("%s<img src=\"%s\" width=\"1\" height=\"1\" border=\"0\" style=\"display: none;\">\n",$m,$src);
+    } // invisible_test_image()
 
 } // InstallWizard()
 

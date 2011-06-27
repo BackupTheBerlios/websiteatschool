@@ -57,7 +57,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasinstall
- * @version $Id: tabledata.php,v 1.2 2011/02/03 14:04:03 pfokker Exp $
+ * @version $Id: tabledata.php,v 1.3 2011/06/27 12:18:19 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -235,10 +235,10 @@ $tabledata[] = array(
     'fields' => array(
         'name' => 'friendly_url',
         'type' => 'b',
-        'value' => '1',
+        'value' => '0',
         'sort_order' => 160,
         'extra' => '',
-        'description' => 'Link to entrypoints with  proxy-friendly path, not query strings - USER-defined, default 1'
+        'description' => 'use proxy-friendly paths, not query strings - USER-defined, initially set via Install Wizard'
         )
     );
 $tabledata[] = array(
