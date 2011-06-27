@@ -1,10 +1,11 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.64 2011/06/27 12:18:18 pfokker Exp $
+$Id: CHANGES.txt,v 1.65 2011/06/27 15:14:30 pfokker Exp $
 -------------------------------------------------------------------------------
 
 2011-06-27
 - install.php: we now use trick with an invisible img to determine
   whether we can use the friendly URL feature
+- added a few more keywords to the demo data of frugal theme demodata
 
 2011-06-25
 - install.php and init.php: added complex routines to make sure that

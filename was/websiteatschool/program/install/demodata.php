@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasinstall
- * @version $Id: demodata.php,v 1.7 2011/06/19 17:19:46 pfokker Exp $
+ * @version $Id: demodata.php,v 1.8 2011/06/27 15:14:30 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -184,8 +184,13 @@ function demodata_areas(&$messages,&$config,&$tr) {
         $theme_id = intval($record['theme_id']);
     }
     $user_id = $config['user_id'];
-    $metadata = "<meta name=\"keywords\" content=\"free software, exemplum, site@school, siteatschool\">\n".
-                "<meta name=\"description\" content=\"example data for an example school\">\n";
+    $metadata = "<meta name=\"keywords\" content=\"school website, websiteatschool, primary education, ".
+                             "secondary education, freire, freinet, habermas, learing tool, it learning tool, ".
+                             "ict learing tool, ict, bazaar style sheet, bss, screen reader, braille reader, ".
+                             "braille terminal, learning html, learning css, free software, exemplum, site@school, ".
+                             "siteatschool, websiteatschool.eu\">\n".
+                "<meta name=\"description\" content=\"Website@School is a website content management system ".
+                             "(CMS) for schools\">\n";
     $now = strftime('%Y-%m-%d %T');
 
     // 1 -- construct area records
