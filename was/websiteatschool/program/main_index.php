@@ -35,7 +35,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: main_index.php,v 1.3 2011/05/27 21:51:16 pfokker Exp $
+ * @version $Id: main_index.php,v 1.4 2011/06/29 14:56:07 pfokker Exp $
  * @todo add the performance results in a HTML-comment if not CFG->debug, in sight otherwise
  */
 if (!defined('WASENTRY')) { die('no entry'); }
@@ -110,7 +110,7 @@ function main_index() {
     // Check for the special preview-mode
     // This allows a webmaster to preview a page in the correct environment (theme)
     // even when the page is under embargo. Note that the node_id and area_id are
-    // retrieved from the session; the user only has a cryptic preview-code with.
+    // retrieved from the session; the user only has a cryptic preview-code.
     // See pagemanagerlib.php for more information (function task_page_preview()).
 
     $in_preview_mode = FALSE;
@@ -373,7 +373,7 @@ function calculate_default_page(&$tree,$subtree_id) {
  *
  * this loads the file containing the visitor interface for module $module_id
  * in core and subsequently calls the routine responsible for displaying the
- * content (function moduldename_view()). The routine module_view() is supposed
+ * content (function modulename_view()). The routine module_view() is supposed
  * to deposit any output into the $theme via the appropriate methods such
  * as $theme->add_content().
  *
