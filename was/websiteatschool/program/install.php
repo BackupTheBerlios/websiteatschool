@@ -27,7 +27,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasinstall
- * @version $Id: install.php,v 1.9 2011/06/27 12:18:18 pfokker Exp $
+ * @version $Id: install.php,v 1.10 2011/06/29 17:52:48 pfokker Exp $
  * @todo how prevent third party-access to install.php after initial install? .htaccess? !exists(../config.php)? 
  * @todo we should make sure that autosession is disabled in php.ini, otherwise was won't work
  * @todo we should make sure that register globals is off
@@ -2161,15 +2161,9 @@ class InstallWizard {
         $url = $this->guess_url();
 
         // 3B -- guess the paths to those directories as seen from the browser
-        if (isset($_SERVER['SCRIPT_NAME'])) {
-            $script_name = $_SERVER['SCRIPT_NAME'];
-        } elseif (isset($GLOBALS['SCRIPT_NAME'])) {
-            $script_name = $GLOBALS['SCRIPT_NAME'];
-        } else {
-            $script_name = '/program/install.php';
-        }
-        $script_dir = dirname($script_name);
-        $script_parent_dir = dirname($script_dir);
+        $script_name = install_script_name(__FILE__); // eg. /was/program/install.php
+        $script_dir = dirname($script_name);          // eg. /was/program
+        $script_parent_dir = dirname($script_dir);    // eg. /was
 
         // 3C -- we can be fairly sure about the progdir path...
         $cms_progwww = $url['scheme'].'://'.$url['authority'].$script_dir;
