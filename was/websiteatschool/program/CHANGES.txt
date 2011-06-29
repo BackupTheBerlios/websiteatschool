@@ -1,5 +1,5 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.67 2011/06/29 17:52:48 pfokker Exp $
+$Id: CHANGES.txt,v 1.68 2011/06/29 19:29:09 pfokker Exp $
 -------------------------------------------------------------------------------
 
 2011-06-29
@@ -9,6 +9,11 @@ $Id: CHANGES.txt,v 1.67 2011/06/29 17:52:48 pfokker Exp $
   but also (still) the equivalent /was/index.php?node=35&photo=5.
   See get_requested_node() and was_node_url() for more information.
 - install.php: improved educated guesses in get_default_install_values()
+- waslib.php: slight changes to the was_node_url() code so we can use
+  this routine for areas too
+- theme.class.php and rosalina.class.php: changed to use was_node_url()
+  and removed a few superfluous routines (Theme::friendly_bookmark()
+  and ThemeRosalina::rosalina_href()).
 
 2011-06-27
 - install.php: we now use trick with an invisible img to determine

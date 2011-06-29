@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: waslib.php,v 1.8 2011/06/29 14:58:22 pfokker Exp $
+ * @version $Id: waslib.php,v 1.9 2011/06/29 19:29:09 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1775,27 +1775,36 @@ function was_node_url($node=NULL,$parameters=NULL,$bookmark='',$preview=FALSE,$q
         $href = '#';
     } else {
         $href = (($qualified) ? $CFG->www : $CFG->www_short).'/index.php';
-        if (!empty($node)) {
-            $node_id = intval($node['node_id']);
-            if ($CFG->friendly_url) {
+        if ($CFG->friendly_url) {
+            // 1 -- maybe add the (unnamed) node parameter
+            if (!empty($node)) {
+                $node_id = intval($node['node_id']);
+                $title = $node['title'];
                 $href .= '/'.strval($node_id);
-                if (!empty($parameters)) {
-                    foreach($parameters as $k => $v) {
-                        if ((!empty($k)) && (!empty($v))) {
-                            $href .= '/'.rawurlencode(strtr($k,'/?+%','____')).'/'.rawurlencode(strtr($v,'/?+%','____'));
-                        }
+            } else {
+                $title = '';
+            }
+            // 2 -- maybe proceed with other, named parameters
+            if (!empty($parameters)) {
+                foreach($parameters as $k => $v) {
+                    if ((!empty($k)) && (!empty($v))) {
+                        $href .= '/'.rawurlencode(strtr($k,'/?+%','____')).'/'.rawurlencode(strtr($v,'/?+%','____'));
                     }
                 }
-                if (($bookmark_filename = friendly_bookmark((empty($bookmark)) ? $node['title'] : $bookmark)) != '') {
-                    $href .= '/'.rawurlencode(strtr($bookmark_filename,'/?+%','____'));
-                }
-            } else {
+            }
+            // 3 -- maybe finish with the superfluous bookmark-filename
+            if (($bookmark_filename = friendly_bookmark((empty($bookmark)) ? $title : $bookmark)) != '') {
+                $href .= '/'.rawurlencode(strtr($bookmark_filename,'/?+%','____'));
+            }
+        } else {
+            if (!empty($node)) {
+                $node_id = intval($node['node_id']);
                 if (!is_array($parameters)) {
                     $parameters = array();
                 }
                 $parameters = array_merge(array('node' => strval($node_id)),$parameters); // node goes first
-                $href = href($href,$parameters);
             }
+            $href = href($href,$parameters);
         }
     }
     return $href;

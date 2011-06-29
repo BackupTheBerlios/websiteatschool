@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: theme.class.php,v 1.14 2011/06/07 10:48:39 pfokker Exp $
+ * @version $Id: theme.class.php,v 1.15 2011/06/29 19:29:09 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1031,11 +1031,10 @@ class Theme {
         }
 
         // Insert the name of the current area as a bread crumb too
-        if ($this->preview_mode) {
-            $anchor = html_a("#",NULL,NULL,$this->area_record['title']);
-        } else {
-            $anchor = html_a($WAS_SCRIPT_NAME,array('area' => $this->area_id),NULL,$this->area_record['title']);
-        }
+        $title = $this->area_record['title'];
+        $params = array('area' => $this->area_id);
+        $href = was_node_url(NULL,$params,$title,$this->preview_mode);
+        $anchor = html_a($href,NULL,NULL,$title);
         $breadcrumbs = array_merge(array($anchor),$breadcrumbs);
         return $breadcrumbs;
     } // calc_breadcrumb_trail()
@@ -1079,17 +1078,8 @@ class Theme {
         if (empty($link_text)) {
             $link_text = "[ ".strval($node_id)." ]";
         }
-
-        if ($this->preview_mode) {
-            $href = "#";
-            $params = NULL;
-        } elseif ($this->friendly_url) {
-            $href = $WAS_SCRIPT_NAME."/".strval($node_id).'/'.$this->friendly_bookmark($title);
-            $params = NULL;
-        } else {
-            $href = $WAS_SCRIPT_NAME;
-            $params = array('node' => $node_id);
-        }
+        $params = NULL;
+        $href = was_node_url($node_record,$params,$title,$this->preview_mode);
 
         if (!is_array($attributes)) {
             $attributes = array();
@@ -1110,43 +1100,6 @@ class Theme {
         return html_a($href,$params,$attributes,$anchor);
     } // node2anchor()
 
-
-    /** construct an alphanumeric string from a node title (for a readable bookmark)
-     *
-     * this strips everything from $title except alphanumerics and spaces.
-     * The spaces are translated to an underscore. Length of result is limited to
-     * an arbitrary length of 50 characters.
-     *
-     * Note that the $title is UTF-8 and may contain non-ASCII characters.
-     * Ths routine deals with that situation by first converting the UTF-8
-     * string to ASCII as much as possible (e.g. convert 'e-aigu' to plain 'e')
-     * and subsequently converting all remaining non-letter/digits to an underscore
-     *
-     * @param string $title input text
-     * @return string string with only alphanumerics and underscores, mas 50 chars
-     */
-    function friendly_bookmark($title) {
-        $src = utf8_strtoascii($title);
-        $tgt = '';
-        $tgt_len = 0;
-        $subst = FALSE;
-        $n = utf8_strlen($src);
-        for ($i = 0; (($i < $n) && ($tgt_len < 50)); ++$i) {
-            $c = utf8_substr($src,$i,1);
-            if (ctype_alnum($c)) {
-                $tgt .= $c;
-                $tgt_len++;
-                $subst = FALSE;
-            } else {
-                if (!$subst) {
-                    $tgt .= "_";
-                    $tgt_len++;
-                    $subst = TRUE;
-                }
-            }
-        }
-        return $tgt;
-    } // friendly_bookmark()
 
     /** a helper-routine during development/debugging (currently unused)
      *

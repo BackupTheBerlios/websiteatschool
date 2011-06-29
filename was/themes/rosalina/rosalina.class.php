@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wastheme_rosalina
- * @version $Id: rosalina.class.php,v 1.1 2011/06/03 19:18:55 pfokker Exp $
+ * @version $Id: rosalina.class.php,v 1.2 2011/06/29 19:29:08 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -284,9 +284,10 @@ class ThemeRosalina extends Theme {
             $logo = $this->rosalina_hotspot_map($USER->is_logged_in,$mapname,$hotspots,$this->config,$m).
                     $m.html_img($src,$attributes);
         } else {
-            $href   = ($this->preview_mode) ? "#"   : $WAS_SCRIPT_NAME;
-            $params = ($this->preview_mode) ?  NULL : array('area' => $this->area_id);
-            $logo = $m.html_a($href,$params,NULL,html_img($src,$attributes));
+            $title = $this->area_record['title'];
+            $params = array('area' => $this->area_id);
+            $href = was_node_url(NULL,$params,$title,$this->preview);
+            $logo = $m.html_a($href,NULL,NULL,html_img($src,$attributes));
         }
         return $logo;
     } // get_logo()
@@ -517,7 +518,7 @@ class ThemeRosalina extends Theme {
         for ( ; ($node_id != 0); $node_id = $this->tree[$node_id]['next_sibling_id']) {
             if ($this->tree[$node_id]['is_visible']) {
                 ++$i;
-                $href = $this->rosalina_href($node_id);
+                $href = was_node_url($this->tree[$node_id]['record'],NULL,'',$this->preview_mode);
                 if ($width_px <= 0) {
                     $width = utf8_strlen($this->tree[$node_id]['record']['link_text']);
                     $item_width_px = min(max($this->menu_top[0],$width * $this->menu_top[1]),$this->menu_top[2]);
@@ -593,29 +594,6 @@ class ThemeRosalina extends Theme {
     } // rosalina_menucount()
 
 
-    /** construct a preview_mode and friendly url aware href for a node
-     *
-     *
-     * @param int $node_id indicates the node for which to construct the URL
-     * @return string ready to use href attribute
-     */
-    function rosalina_href($node_id) {
-        global $WAS_SCRIPT_NAME;
-        if ($this->preview_mode) {
-           $href = "#";
-        } elseif ($this->friendly_url) {
-            $title = $this->tree[$node_id]['record']['title'];
-            if (empty($title)) {
-                $title = $this->tree[$node_id]['record']['link_text'];
-            }
-            $href = sprintf('%s/%d/%s',$WAS_SCRIPT_NAME,$node_id,$this->friendly_bookmark($title));
-        } else {
-            $href = href($WAS_SCRIPT_NAME,array('node' => strval($node_id)));
-        }
-        return $href;
-    } // rosalina_href()
-
-
     /** construct a simple UL-based jump menu to select another area (when no Javascript is available)
      *
      * this constructs a list of clickable links to navigate to other areas.
@@ -635,9 +613,10 @@ class ThemeRosalina extends Theme {
         $jump_bar = $m."<ul>\n";
         $href = ($this->preview_mode) ? "#" : $WAS_SCRIPT_NAME;
         foreach($this->jumps as $area_id => $area_title) {
-            $params = ($this->preview_mode) ?  NULL : array('area' => $area_id);
+            $params = array('area' => $area_id);
+            $href = was_node_url(NULL,$params,$area_title,$this->preview_mode);
             $attributes = ($this->area_id == $area_id) ? array('class' => 'current') : NULL;
-            $jump_bar .= $m.'  <li>'.html_a($href,$params,$attributes,$area_title)."\n";
+            $jump_bar .= $m.'  <li>'.html_a($href,NULL,$attributes,$area_title)."\n";
         }
         $jump_bar .= $m."</ul>\n";
         return $jump_bar;
