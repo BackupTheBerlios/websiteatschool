@@ -37,7 +37,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: admin.php,v 1.5 2011/03/09 09:58:50 pfokker Exp $
+ * @version $Id: admin.php,v 1.6 2011/06/29 15:01:10 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -77,15 +77,15 @@ $string['description_statistics'] = 'Statistics';
 $string['description_tools'] = 'Tools';
 $string['description_help'] = 'Help (opens in a new window)';
 
-$string['no_access_startcenter'] = 'Access to Website@School Start has beed disabled for your account';
-$string['no_access_pagemanager'] = 'Access to Page Manager has beed disabled for your account';
-$string['no_access_filemanager'] = 'Access to File Manager has beed disabled for your account';
-$string['no_access_modulemanager'] = 'Access to Module Manager has beed disabled for your account';
-$string['no_access_accountmanager'] = 'Access to Account Manager has beed disabled for your account';
-$string['no_access_configurationmanager'] = 'Access to Configuration Manager has beed disabled for your account';
-$string['no_access_statistics'] = 'Access to Statistics has beed disabled for your account';
-$string['no_access_tools'] = 'Access to Tools  has beed disabled for your account';
-$string['no_access_help'] = 'Access to Help has beed disabled for your account';
+$string['no_access_startcenter'] = 'Access to Website@School Start has been disabled for your account';
+$string['no_access_pagemanager'] = 'Access to Page Manager has been disabled for your account';
+$string['no_access_filemanager'] = 'Access to File Manager has been disabled for your account';
+$string['no_access_modulemanager'] = 'Access to Module Manager has been disabled for your account';
+$string['no_access_accountmanager'] = 'Access to Account Manager has been disabled for your account';
+$string['no_access_configurationmanager'] = 'Access to Configuration Manager has been disabled for your account';
+$string['no_access_statistics'] = 'Access to Statistics has been disabled for your account';
+$string['no_access_tools'] = 'Access to Tools  has been disabled for your account';
+$string['no_access_help'] = 'Access to Help has been disabled for your account';
 
 $string['access_denied'] = 'Access denied';
 $string['url'] = 'URL';
