@@ -1,6 +1,13 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.65 2011/06/27 15:14:30 pfokker Exp $
+$Id: CHANGES.txt,v 1.66 2011/06/29 14:58:22 pfokker Exp $
 -------------------------------------------------------------------------------
+
+2011-06-29
+- waslib.php: many important changes in the way node_id and/or
+  area_id and other paramters is conveyed to index.php; we now accept
+  calls like /was/index.php/35/photo/5/Picture_of_our_field_trip.html
+  but also (still) the equivalent /was/index.php?node=35&photo=5.
+  See get_requested_node() and was_node_url() for more information.
 
 2011-06-27
 - install.php: we now use trick with an invisible img to determine

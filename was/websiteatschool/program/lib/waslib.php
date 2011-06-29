@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: waslib.php,v 1.7 2011/06/25 15:53:51 pfokker Exp $
+ * @version $Id: waslib.php,v 1.8 2011/06/29 14:58:22 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -389,71 +389,80 @@ function logger($message,$priority=LOG_INFO,$user_id='') {
 
 /** get the number of the node the user requested or NULL if not specified
  *
- * This routine exists because nodes and areas are so central to the whole idea of WAS.
+ * This routine exists because nodes and (to a lesser extent) areas
+ * are so central to the whole idea of WAS.
  *
- * Purpose is to retrieve any reqested node_id from the parameters submitted
- * by the user. As a rule this works via name-value-pairs, something like this:
- * index.php?area=aaa&node=nnn.
- * However, if the webserver is configured correctly, we can also accept
- * index.php/aaa/nnn/.... or index.php/nnn/....
- * which is more proxy-friendly. Using a generic routine like get_parameter_int()
- * would not be sufficient in that case, so there.
+ * A specific node can be requested in two different ways, for example page 35
+ * with an additional parameter 'photo' with value 7 is called either via
+ * <code>
+ * http://exemplum.eu/was/index.php/was/index.php/35/photo/5/Picture_of_our_field_trip.html
+ * </code>
+ * or
+ * <code>
+ * http://exemplum.eu/was/index.php/was/index.php?node=35&photo=5
+ * </code>
  *
- * Note that the same proxy-friendly 'trick' is used to determine the
- * filename of a file that needs to be served via {@link file.php}
- * (see {@link get_requested_filename()}.
+ * The routine get_parameter_int() with a default value of NULL yields 35 in both cases.
  *
- * Note that we first look at the proxy-friendly variant. If that doesn't work,
- * we resort to the conventional way of index.php?node=nnn. Also note that the
- * order of the path_info is important. If there is just a single numeric path
- * component, we assume that it is the node value; if there are two numerics
- * our assumption is that the first one is the area id and the second one the node id.
+ * A node can also be specified implicitly, e.g. via
+ * <code>
+ * http://exemplum.eu/was/index.php/was/index.php/area/1
+ * </code>
+ * or
+ * <code>
+ * http://exemplum.eu/was/index.php/was/index.php?area=1
+ * </code>
+ * which yields the default node for area 1, or simply
+ * <code>
+ * http://exemplum.eu/was/index.php/was/index.php
+ * </code>
+ * which yields the default node in the default area.
+ *
+ * Important note:
+ * In previous versions of this routine (and {@link get_requested_area()}) we
+ * also accepted constructs like
+ * <code>
+ * http://exemplum.eu/was/index.php/was/index.php/35
+ * http://exemplum.eu/was/index.php/was/index.php/1/35
+ * </code>
+ * but this has a great disadvantage that the idea of an ever growing list of
+ * integers (or more general: positional parameters) is not very handy in the
+ * long run. For instance: how to convey that we want to see photo #5 on page #35?
+ * 'index.php/35/5'? How is that to be interpreted different from page 5 in area 35?
+ * I now think the better approach is to use key/value-pairs in the friendly url path,
+ * and also get rid of the unnamed int indicating 'area'. The latter wasn't really
+ * usefull anyway, because specifying a node IMPLIES an area and it could even
+ * cause trouble if a bookmarked area+node would be moved to another area: the bookmark
+ * would yield an error message rather than the node (in another area) or the default
+ * node in the bookmarked area.
+ * All in all this change makes this routine exetremely simple: it almost another
+ * name for get_parameter_int().
+ * It is still possible to specify both node AND area (allthough there is no need):
+ * <code>
+ * http://exemplum.eu/was/index.php/was/index.php/35/area/1
+ * http://exemplum.eu/was/index.php/was/index.php/node/35/area/1
+ * http://exemplum.eu/was/index.php/was/index.php/area/1/node/35
+ * </code>
  *
  * Note that this routine does not validate the requested node in any way other
- * than making sure that IF it is specified, it is an integer value. For all we
- * know it might even be a negative value.
+ * than making sure that IF it is specified, it is valid UTF-8 and it is an integer value.
+ * For all we know it might even be a negative value.
  *
  * @return int|null integer indicating the node or NULL if none specified
  */
 function get_requested_node() {
-    $area_id = NULL;
-    $node_id = NULL;
-    if (isset($_SERVER['PATH_INFO'])) {
-        $path_info = $_SERVER['PATH_INFO'];
-        if ((($x1 = strtok($path_info,"/")) !== FALSE) && (is_numeric($x1))) {
-            $node_id = intval($x1);
-            if ((($x2 = strtok("/")) !== FALSE) && (is_numeric($x2))) {
-                $area_id = intval($x1);
-                $node_id = intval($x2);
-            }
-        }
-    }
-    return (is_null($node_id)) ? get_parameter_int('node') : $node_id;
+    return get_parameter_int('node',NULL);
 } // get_requested_node()
 
 
 /** get the number of the area the user requested or null if not specified
  *
- * See discussion of {@link get_requested_node()}. We use separate
- * routine because we may want to support index.php/aaa/nnn/.... instead
- * of index.php?area=aaa&node=nnn&...
+ * See discussion of {@link get_requested_node()}.
  *
  * @return int|null integer indicating the area or null if none specified
  */
 function get_requested_area() {
-    $area_id = NULL;
-    $node_id = NULL;
-    if (isset($_SERVER['PATH_INFO'])) {
-        $path_info = $_SERVER['PATH_INFO'];
-        if ((($x1 = strtok($path_info,"/")) !== FALSE) && (is_numeric($x1))) {
-            $node_id = intval($x1);
-            if ((($x2 = strtok("/")) !== FALSE) && (is_numeric($x2))) {
-                $area_id = intval($x1);
-                $node_id = intval($x2);
-            }
-        }
-    }
-    return (is_null($area_id)) ? get_parameter_int('area') : $area_id;
+    return get_parameter_int('area',NULL);
 } // get_requested_area()
 
 
@@ -462,21 +471,24 @@ function get_requested_area() {
  * See discussion of {@link get_requested_node()}. Files are served via
  * /file.php via a comparable mechanism: either
  *
- *     http://localhost/file.php/path/to/filename.ext
+ *     http://exemplum.eu/was/file.php/path/to/filename.ext
  *
  * OR
  *
- *    http://localhost/file.php?file=/path/to/filename.ext
+ *    http://exemplum.eu/was/file.php?file=/path/to/filename.ext
  *
  * This routine extracts the '/path/to/filename.ext' part.
  *
- * @return string|null requested filename or null if none specified
+ * Note that we require valid UTF-8. If the path is not UTF-8, we return NULL.
+ *
+ * @return string|null requested filename or null if none specified or invalid UTF-8
  */
 function get_requested_filename() {
+    global $CFG;
     $filename = NULL;
-    if (isset($_SERVER['PATH_INFO'])) {
+    if (($CFG->friendly_url) && (isset($_SERVER['PATH_INFO'])) && (utf8_validate($_SERVER['PATH_INFO']))) {
         $filename = $_SERVER['PATH_INFO'];
-    } elseif (isset($_GET['file'])) {
+    } elseif ((isset($_GET['file'])) && (utf8_validate($_SERVER['PATH_INFO']))) {
         $filename = magic_unquote($_GET['file']);
     }
     return $filename;
@@ -485,13 +497,21 @@ function get_requested_filename() {
 
 /** return an integer value specified in the page request or default value if none
  *
+ * this routine first checks the friendly url to see of the requested parameter is
+ * specified there. If it is, we will use it unless there is also a parameter in $_GET
+ * that prevails. If the parameter is not specified at all, the $default_value is returned.
+ * It is the responsability of the caller to provide a workable default value.
+ *
+ * Note that invalid UTF-8 is silently discarded.
+ *
  * @param string $name the name of the parameter to retrieve the value of
  * @param mixed $default_value the value to return if parameter was not specified
  * @return mixed the value of the parameter or the default value if not specified
  */
 function get_parameter_int($name,$default_value=NULL) {
-    $value = $default_value;
-    if (isset($_GET[$name])) {
+    $value = get_friendly_parameter($name,NULL); // returns a string or a null if $name not in friendly url
+    $value = (is_null($value)) ? $default_value : intval($value); // make sure the string becomes an int or use default
+    if ((isset($_GET[$name])) && (utf8_validate($_GET[$name]))) {
         $value = intval($_GET[$name]);
     }
     return $value;
@@ -500,14 +520,22 @@ function get_parameter_int($name,$default_value=NULL) {
 
 /** return an (unquoted) string value specified in the page request or default value if none
  *
+ * First check out the friendly url for the named parameter. If it exists, we use that,
+ * otherwise we have the $default_value. After that the valid UTF-8 value may overwrite the
+ * value found in the friendly url (or the default value).
+ *
+ * It is the responsability of the caller to provide a workable default value.
+ *
+ * Note that invalid UTF-8 is silently discarded.
+ *
  * @param string $name the name of the parameter to retrieve the value of
  * @param mixed $default_value the value to return if parameter was not specified
  * @return mixed the value of the parameter or the default value if not specified
  */
 function get_parameter_string($name,$default_value=NULL) {
-    $value = $default_value;
-    if (isset($_GET[$name])) {
-        $value = magic_unquote($_GET[$name]);
+    $value = get_friendly_parameter($name,$default_value); // first check out friendly URL...
+    if ((isset($_GET[$name])) && (utf8_validate($_GET[$name]))) {
+        $value = magic_unquote($_GET[$name]);              // ...but let valid UTF-8 GET[] value prevail (if any)
     }
     return $value;
 } // get_parameter_string()
@@ -1693,5 +1721,208 @@ function was_file_url($path,$fully_qualified=FALSE) {
                                      $path);
     return $url;
 } // was_file_url()
+
+
+/** construct a ready-to-use href which links to the node $node via index.php
+ *
+ * this routine creates a ready-to-use href that links to node $node, taking these
+ * options into account:
+ *  - the href is replaced with a bare '#' if we area in preview mode
+ *  - the href is either fully qualified or abbreviated, depending on $qualified
+ *  - the node_id is conveyed either as a proxy-friendly url or a simple parameter ?node=$node_id
+ *  - if we use friendly url, $node_id always comes first in the path (without the word 'node')
+ *  - if we use friendly url, $bookmark is appended as the last item in the path
+ *  - the additional parameters (if any) are sandwiched between the node_id and the bookmark
+ *
+ * This routine mainly deals with constructing a friendly url taking parameters into account in the
+ * form of path components. The node_id is conveyed as the first parameter and it has no associated
+ * name, ie. the url is shortened from '/was/index.php/node/35' to '/was/index.php/35'.
+ * All other parameters from the array $parameters (if any) are added as pairs:
+ * '/key1/value1/key2/value2/key3/value3' etc. The last parameter added to this path
+ * is based on the $bookmark or, if that is empty the node's title. The purpose of this parameter
+ * is to create a URL that looks like a descriptive filename, which makes it easier for the visitor
+ * to bookmark this page and still have a clue as to what the page is about. Otherwise this
+ * parameter is not used at all; the 'real' navigation information is in the node_id and the
+ * additional parameters.
+
+ * Example:
+ * <code>
+ * was_node_url($tree[35]['record'],array('photo'=>'5'),'Picture of our field trip')
+ * </code>
+ * yields the following URL (when friendly urls are used):
+ * <code>
+ * /was/index.php/35/photo/5/Picture_of_our_field_trip.html
+ * </code>
+ * or (when friendly urls are not used):
+ * <code>
+ * /was/index.php?node=35&photo=5
+ * </code>
+ * The interesting bits are the node_id (35) and the photo_id (5). The string alias filename
+ * 'Picture_of_our_field_trip.html' is merely a suggestion to the browser and is not used by W@S.
+ *
+ * @param array $node record straight from the database (or $tree)
+ * @paran array|null $parameters additional parameters for the url (path components in friendly url mode)
+ * @param string $bookmark the basis for a visual clue to identify the node (in friendly url mode only)
+ * @param bool $preview if TRUE, the href is replaced with a bare '#' to obstruct navigation in preview mode
+ * @param bool $qualified if TRUE use the scheme and authority, otherwise use the short(er) form without scheme/authority
+ * @return string ready-to-use string holding the url
+ * @uses $CFG
+ * @uses friendly_bookmark()
+ */
+function was_node_url($node=NULL,$parameters=NULL,$bookmark='',$preview=FALSE,$qualified=FALSE) {
+    global $CFG;
+    if ($preview) {
+        $href = '#';
+    } else {
+        $href = (($qualified) ? $CFG->www : $CFG->www_short).'/index.php';
+        if (!empty($node)) {
+            $node_id = intval($node['node_id']);
+            if ($CFG->friendly_url) {
+                $href .= '/'.strval($node_id);
+                if (!empty($parameters)) {
+                    foreach($parameters as $k => $v) {
+                        if ((!empty($k)) && (!empty($v))) {
+                            $href .= '/'.rawurlencode(strtr($k,'/?+%','____')).'/'.rawurlencode(strtr($v,'/?+%','____'));
+                        }
+                    }
+                }
+                if (($bookmark_filename = friendly_bookmark((empty($bookmark)) ? $node['title'] : $bookmark)) != '') {
+                    $href .= '/'.rawurlencode(strtr($bookmark_filename,'/?+%','____'));
+                }
+            } else {
+                if (!is_array($parameters)) {
+                    $parameters = array();
+                }
+                $parameters = array_merge(array('node' => strval($node_id)),$parameters); // node goes first
+                $href = href($href,$parameters);
+            }
+        }
+    }
+    return $href;
+} // was_node_url()
+
+
+/** construct an alphanumeric string from a (node) title yielding a readable bookmark filename
+ *
+ * this strips everything from $title except alphanumerics. Runs of other characters
+ * are translated to a single underscore. Length of result is limited to
+ * a length of $maxlen bytes (default 50). This includes the length of the extension $ext.
+ *
+ * Note that the $title is UTF-8 and may contain non-ASCII characters.
+ * Ths routine deals with that situation by first converting the UTF-8
+ * string to ASCII as much as possible (e.g. convert 'e-aigu' to plain 'e')
+ * and subsequently converting all remaining non-letters/digits to a underscores.
+ *
+ * Finally the result is stripped from leading/trailing underscores. If this
+ * yields a non-empty string, the extension $ext (default '.html') is appended.
+ *
+ * Note: this route works best with latin-like text; if $title is completely
+ * written in Chinese (or other UTF-8 characters without a corresponding ASCII
+ * replacement) we end up with a single underscore which is subsequently trim()'ed,
+ * yielding an empty string and no $ext added. I am not sure what to do about that.
+ *
+ * Note: the extension is not checked for non-alphanumerics because this is the
+ * responsability of the caller to provide a decent $ext if the default '.html' is
+ * not used.
+ *
+ * @param string $title input text
+ * @param int $maxlen the maximum length of the result
+ * @param int $ext the filename extension added to a non-empty result
+ * @return string string with only alphanumerics and underscores, max $maxlen chars
+ */
+function friendly_bookmark($title,$maxlen=50,$ext='.html') {
+    $src = utf8_strtoascii($title);
+    $tgt = '';
+    $tgt_len = strlen($ext); // already count the extension length against maxlen
+    $subst = FALSE;
+    $n = utf8_strlen($src);
+    for ($i = 0; (($i < $n) && ($tgt_len < $maxlen)); ++$i) {
+        $c = utf8_substr($src,$i,1);
+        if (ctype_alnum($c)) {
+            $tgt .= $c;
+            $tgt_len++;
+            $subst = FALSE;
+        } else {
+            if (!$subst) {
+                $tgt .= "_";
+                $tgt_len++;
+                $subst = TRUE;
+            }
+        }
+    }
+    if (($tgt = trim($tgt,'_')) != '') {
+        $tgt .= $ext;
+    }    
+    return $tgt;
+} // friendly_bookmark()
+
+
+/** retrieve a named parameter from the friendly URL
+ *
+ * This routine attempts to parse the PATH_INFO server variable
+ * and extract the parameters and values stored in the path components.
+ * (see also {@link was_node_url()}).
+ *
+ * Example: the URL
+ * <code>
+ * /was/index.php/35/photo/5/Picture_of_our_field_trip.html
+ * </code>
+ * is broken down as follows:
+ *  - /35 is the first non-empty parameter and also is completely numeric and hence
+ *    interpreted as a node_id;
+ *  - /photo/5 is considered a key-value-pair with key=photo and value=5;
+ *  - /Picture_of_our_field_trip.html is the last component and is discarded
+ * The static array which caches the results of the parsing will contain this:
+ * $parameters = array('node' => 35, 'photo' => 5);
+ *
+ * Note that all parameters are checked for valid UTF-8.
+ * If either key or value is NOT UTF-8, the pair is silently discarded.
+ * This prevents tricks with overlong sequences and other UTF-8 black magic.
+ *
+ * Once the parsed friendly path is cached the parameter $name is looked up.
+ * If found, the corresponding value is returned. If it is not found, $default_value
+ * is returned.
+ *
+ * The cache is rebuilt if $force is TRUE (should never be necessary)
+ *
+ * Note: the parameter 'node' is a special case: if it is specified it is the first
+ * parameter. This parameter otherwise is unnamed.
+ *
+ * @param string $name the parameter we need to look for
+ * @param mixed $default_value is returned if the parameter was not found
+ * @param bool $force if TRUE forces the parsing to be redone
+ * @return mixed either the $default_value or the value of the named parameter
+ *
+ */
+function get_friendly_parameter($name,$default_value=NULL,$force=FALSE) {
+    global $CFG;
+    static $parameters = NULL;
+    if ((is_null($parameters)) || ($force)) {
+        $parameters = array();
+        if (($CFG->friendly_url) && (isset($_SERVER['PATH_INFO']))) {
+            $raw_params = explode('/',$_SERVER['PATH_INFO']);
+            $n = sizeof($raw_params);
+            $index = 0;
+            while (($index < $n) && (empty($raw_params[$index]))) {
+                ++$index;
+            }
+            if (($index < $n) && (utf8_validate($raw_params[$index])) && (is_numeric($raw_params[$index]))) {
+                $parameters['node'] = intval($raw_params[$index]);
+                ++$index;
+            }
+            while ($index < $n - 1) {
+                $key = (utf8_validate($raw_params[$index])) ? $raw_params[$index] : '';
+                ++$index;
+                $val = (utf8_validate($raw_params[$index])) ? $raw_params[$index] : '';
+                ++$index;
+                if ((!empty($key)) && (!empty($val))) {
+                    $parameters[$key] = $val;
+                }
+            }
+            // at this point there may be one last component ($raw_params[$n-1]); we'll ignore that unused parameter
+        }
+    }
+    return (isset($parameters[$name])) ? $parameters[$name] : $default_value;
+} // get_friendly_parameter()
 
 ?>
