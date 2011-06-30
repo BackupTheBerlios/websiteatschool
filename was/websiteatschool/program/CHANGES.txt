@@ -1,6 +1,11 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.68 2011/06/29 19:29:09 pfokker Exp $
+$Id: CHANGES.txt,v 1.69 2011/06/30 10:09:52 pfokker Exp $
 -------------------------------------------------------------------------------
+
+2011-06-30
+- theme.class.php: removed all references to WAS_SCRIPT_NAME:
+   we now use was_node_url() instead.
+- theme.class.php: better UTF-8 sanity check in get_address()
 
 2011-06-29
 - waslib.php: many important changes in the way node_id and/or

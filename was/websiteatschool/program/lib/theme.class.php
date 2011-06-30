@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: theme.class.php,v 1.15 2011/06/29 19:29:09 pfokker Exp $
+ * @version $Id: theme.class.php,v 1.16 2011/06/30 10:09:52 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -86,9 +86,6 @@ class Theme {
 
     /** @var bool $preview_mode if TRUE, we are previewing a page (from pagemanager) */
     var $preview_mode = FALSE;
-
-    /** @var bool $friendly_url if TRUE, links via index.php/nnn/book_mark_friendly_text otherwise index.php?node=nnn */
-    var $friendly_url = FALSE;
 
     /** @var array $breadcrumb_addendum holds an array with additional anchors that can be set by the page's module */
     var $breadcrumb_addendum = array();
@@ -175,7 +172,6 @@ class Theme {
             (isset($this->config['stylesheet']))) {
             $this->add_stylesheet($this->config['stylesheet']);
         }
-        $this->friendly_url = ($CFG->friendly_url) ? TRUE : FALSE;
     } // Theme()
 
 
@@ -508,11 +504,13 @@ class Theme {
      * @todo should we take path_info into account here too???? how about /area/aaa/node/nnn instead of /aaa/nnn???
      */
     function get_logo($m='') {
-        global $CFG,$WAS_SCRIPT_NAME;
         if (!isset($this->config['logo_image'])) {
             return '';
         }
-        $attributes = array('title' => $this->area_record['title']);
+        $title = $this->area_record['title'];
+        $params = array('area' => $this->area_id);
+        $href = was_node_url(NULL,$params,$title,$this->preview_mode);
+        $attributes = array('title' => $title, 'alt' => t('alt_logo',$this->domain));
         if (isset($this->config['logo_width'])) {
             $attributes['width'] = $this->config['logo_width'];
         }
@@ -520,10 +518,7 @@ class Theme {
             $attributes['height'] = $this->config['logo_height'];
         }
         $src = was_url($this->config['logo_image']); // apply some heuristics to perhaps qualify the src path
-        $attributes['alt'] = t('alt_logo',$this->domain);
-        $href =   ($this->preview_mode) ? "#"  : $WAS_SCRIPT_NAME;
-        $params = ($this->preview_mode) ? NULL : array('area' => $this->area_id);
-        return $m.html_a($href,$params,NULL,html_img($src,$attributes));
+        return $m.html_a($href,NULL,NULL,html_img($src,$attributes))."\n";
     } // get_logo()
 
 
@@ -574,7 +569,6 @@ class Theme {
      * @return string constructed list of clickable links or an empty string
      */
     function get_quicklinks($m,$quick_section_parameter,$separator='') {
-        global $WAS_SCRIPT_NAME;
         $s = '';
 
         if (!isset($this->config[$quick_section_parameter])) {
@@ -737,26 +731,34 @@ class Theme {
      * a tiny snippet auto-submits the form whenever the user selects another area; no need
      * press any button anymore. However, pressing the Go button is necessary when Javascript is 'off'.
      * Rationale: the user will find out soon enough that pressing the button is superfluous, and
-     * as a benefit we keep the same look and feel no matter what the state of Javascript.
+     * as a benefit we keep the same look and feel no matter the state of Javascript.
      *
      * We rely on the constructor to provide us with an array of area_id=>area_title pairs
      * in the $this->jumps array.
+     *
+     * The special preview-mode is implemented by adding the necessary hash in the preview parameter
+     * via a hidden field. This will ultimately lead to ourselves, with the preview code so we can
+     * never leave for another area in preview mode.
      *
      * @param string $m add readabiliy to output
      * @return string properly indented ready-to-use HTML or an empty string on error
      * @uses dialog_get_widget()
      */
     function get_jumpmenu($m='') {
-        global $USER,$WAS_SCRIPT_NAME;
-
         // 1 -- KISS form with a whiff of javascript (but don't  get rid of the Go-button)
         $title = t('jumpmenu_area_title',$this->domain);
         $attributes = array('name' => 'area','title' => $title,'onchange' => 'this.form.submit();');
-        $jumpmenu  = $m.html_form($WAS_SCRIPT_NAME,'get')."\n".
-                     $m."  ".t('jumpmenu_area',$this->domain)."\n".
-                     $m."  ".html_tag('select',$attributes)."\n";
+        $jumpmenu  = $m.html_form(was_node_url(),'get')."\n".
+                     $m.'  '.t('jumpmenu_area',$this->domain)."\n";
 
-        // 2 -- fill opened form/select with available areas
+        // 2 -- maybe add the hidden field that keeps us in preview-mode
+        if ($this->preview_mode) {
+            $hash = md5($_SESSION['preview_salt'].$_SESSION['preview_node']);
+            $jumpmenu .= $m.'  '.html_tag('input',array('type' => 'hidden','name' => 'preview', 'value' => $hash))."\n";
+        }
+
+        // 3 -- add a select box with available areas
+        $jumpmenu .= $m."  ".html_tag('select',$attributes)."\n";
         foreach($this->jumps as $k => $v) {
             $attributes = array('title' => $title, 'value' => $k);
             if ($k == $this->area_id) {
@@ -764,10 +766,11 @@ class Theme {
             }
             $jumpmenu .= $m.'    '.html_tag('option',$attributes,$v)."\n";
         }
+        $jumpmenu .= $m."  </select>\n";
 
-        // 3 -- add button and close all open tags.
-        $jumpmenu .= $m."  </select>\n".
-                     $m."  ".dialog_get_widget(dialog_buttondef(BUTTON_GO))."\n".
+
+        // 4 -- add button and close all open tags.
+        $jumpmenu .= $m."  ".dialog_get_widget(dialog_buttondef(BUTTON_GO))."\n".
                      $m.html_form_close()."\n";
         return $jumpmenu;
     } // get_jumpmenu()
@@ -812,21 +815,27 @@ class Theme {
      * in the stylesheet, making it an item that only appears on
      * a hardcopy (media="print") and not on screen.
      *
+     * If somehow the input is invalid UTF-8, we replace the offending
+     * strings witht the unicode substitution character U+FFFD in UTF-8
+     * encode form (ie. the three character string 0xEF 0xBF 0xBD).
+     *
      * @param string $m left margin for increased readability
      * @return string reconstructed URL as text
      */
     function get_address($m='') {
-        global $WAS_SCRIPT_NAME,$CFG;
+        global $CFG;
         $url = $CFG->www.'/index.php';
-        if (isset($_SERVER['PATH_INFO'])) {
+        if (($CFG->friendly_url) && (isset($_SERVER['PATH_INFO']))) {
             $path_info = $_SERVER['PATH_INFO'];
-            $url .= htmlspecialchars($path_info);
+            $url .= (utf8_validate($path_info)) ? htmlspecialchars($path_info) : "/\xEF\xBF\xBD";
         }
         if (!empty($_GET)) {
             $item_count = 0;
             foreach($_GET as $k => $v) {
-                $url .= (($item_count++ == 0) ? '?' : '&amp;').rawurlencode($k).'='.rawurlencode($v);
-            }    
+                $url .= sprintf('%s%s=%s',($item_count++ == 0) ? '?' : '&amp;',
+                                          (utf8_validate($k)) ? htmlspecialchars($k) : "\xEF\xBF\xBD",
+                                          (utf8_validate($v)) ? htmlspecialchars($v) : "\xEF\xBF\xBD");
+            }
         }
         return $m.'URL:'.$url."\n";
     } // get_address()
@@ -1010,7 +1019,6 @@ class Theme {
      * @todo split into two separate routines, one to set the tree, another to construct the list of anchors
      */
     function calc_breadcrumb_trail($node_id) {
-        global $WAS_SCRIPT_NAME;
         $tries = MAXIMUM_ITERATIONS;
         $breadcrumbs = array();
         $next_id = $node_id;
@@ -1058,9 +1066,9 @@ class Theme {
      *
      * Note that we attempt to create 'friendly' URLs, ie. URLs that look very
      * much like a plain path, e.g.
-     * http://www.exemplum.eu/index.php/3/Information_about_the_school rather than
+     * http://www.exemplum.eu/index.php/3/Information_about_the_school.html rather than
      * http://www.exemplum.eu/index.php?node=3
-     * When bookmarking a page, the part 'Information_about_the_school' makes it
+     * When bookmarking a page, the part 'Information_about_the_school.html' makes it
      * easier to recognise the bookmark than when it is just some number.
      * Choice for friendly URLs is made in the global (site) configuration.
      *
@@ -1068,10 +1076,9 @@ class Theme {
      * @param array $attributes optional attributes to add to the HTML A-tag
      * @param bool $textonly if TRUE, no clickable images will be returned
      * @return string an HTML A-tag that links to the node OR to the external link (if any)
+     * @uses was_node_url()
      */
     function node2anchor($node_record,$attributes=NULL,$textonly=FALSE) {
-        global $WAS_SCRIPT_NAME;
-
         $node_id = intval($node_record['node_id']);
         $title = $node_record['title'];
         $link_text = $node_record['link_text'];
