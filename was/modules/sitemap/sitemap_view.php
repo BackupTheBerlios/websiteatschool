@@ -31,7 +31,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_sitemap
- * @version $Id: sitemap_view.php,v 1.2 2011/05/28 19:20:30 pfokker Exp $
+ * @version $Id: sitemap_view.php,v 1.3 2011/06/30 11:33:35 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -53,7 +53,7 @@ if (!defined('WASENTRY')) { die('no entry'); }
  * @return bool TRUE on success + output via $theme, FALSE otherwise
  */
 function sitemap_view(&$theme,$area_id,$node_id,$module) {
-    global $USER,$WAS_SCRIPT_NAME;
+    global $USER;
     //
     // 1 -- determine scope of sitemap: 0=small, 1=medium, 2=large
     //
@@ -88,9 +88,10 @@ function sitemap_view(&$theme,$area_id,$node_id,$module) {
             ((db_bool_is(FALSE,$area['is_private'])) || 
              ($USER->has_intranet_permissions(ACL_ROLE_INTRANET_ACCESS,$id)))) {
             if (($scope == 2) || ($scope == 1) || (($scope == 0) && ($id == $area_id))) {
-                $href   = ($theme->preview_mode) ? "#" : $WAS_SCRIPT_NAME;
-                $params = ($theme->preview_mode) ?  NULL : array('area' => $id);
-                $areas[$id] = html_a($href,$params,NULL,$area['title']);
+                $title = $area['title'];
+                $params = array('area' => $id);
+                $href = was_node_url(NULL,$params,$title,$theme->preview_mode);
+                $areas[$id] = html_a($href,NULL,NULL,$title);
             }
         }
     }
@@ -142,6 +143,7 @@ function sitemap_view(&$theme,$area_id,$node_id,$module) {
     return TRUE; // indicate success
 } // sitemap_view()
 
+
 /** walk the tree and send to output in the form of nested unnumbered lists (uses recursion)
  *
  * @param object &$theme collects the output
@@ -160,8 +162,14 @@ function sitemap_tree_walk(&$theme,$subtree_id,&$tree,$m='') {
             // 1 -- show this node
             $is_page        = $tree[$node_id]['is_page'];
             $class          = (($is_page) ? 'page ' : 'section ').$class_level;
-            $theme->add_content($m.'  '.html_tag('li',array('class' => $class)).
-                                        $theme->node2anchor($tree[$node_id]['record'],NULL,TRUE));
+
+            $title = $tree[$node_id]['record']['title'];
+            $attributes = array('title' => $title);
+            $href = was_node_url($tree[$node_id]['record'],NULL,$title,$theme->preview_mode);
+            $link_text = $tree[$node_id]['record']['link_text'];
+            $anchor = html_a($href,NULL,$attributes,$link_text);
+
+            $theme->add_content($m.'  '.html_tag('li',array('class' => $class)).$anchor);
             // 2 -- maybe descend to subsection
             if (!$is_page) { 
                 if (($subsubtree_id = $tree[$node_id]['first_child_id']) > 0) {
