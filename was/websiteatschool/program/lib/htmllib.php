@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: htmllib.php,v 1.2 2011/02/03 14:04:04 pfokker Exp $
+ * @version $Id: htmllib.php,v 1.3 2011/06/30 08:54:39 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -182,8 +182,8 @@ function html_attributes($attributes) {
  */
 function html_form($action,$method='post',$attributes='') {
     $method = (0 == strcasecmp($method,'get')) ? 'get' : 'post';
-    return '<form '.html_attributes(array('action' => $action, 'method' => $method)).
-                    html_attributes($attributes).'>';
+    return '<form'.html_attributes(array('action' => $action, 'method' => $method)).
+                   html_attributes($attributes).'>';
 } // html_form()
 
 /** companion of html_form: close the tag
