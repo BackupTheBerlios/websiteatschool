@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: admin.php,v 1.5 2011/06/07 18:25:01 pfokker Exp $
+ * @version $Id: admin.php,v 1.6 2011/07/14 13:17:50 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -72,6 +72,8 @@ $string['no_access_tools'] = 'Toegang tot Gereedschappen is uitgeschakeld voor u
 $string['no_access_help'] = 'Toegang tot Helpfunctie is uitgeschakeld voor uw account';
 
 $string['access_denied'] = 'Geen toegang';
+$string['no_access_admin_php'] = 'Toegang tot Website@School is uitgeschakeld voor uw account. Volg een van onderstaande links om door te gaan:';
+$string['view_login_dialog'] = 'login';
 $string['url'] = 'URL';
 $string['public_area'] = 'Publiekelijk gebied';
 $string['private_area'] = 'Beveiligd gebied';

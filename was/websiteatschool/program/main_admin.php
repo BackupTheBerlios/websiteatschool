@@ -26,7 +26,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: main_admin.php,v 1.3 2011/05/02 21:03:52 pfokker Exp $
+ * @version $Id: main_admin.php,v 1.4 2011/07/14 13:17:51 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -133,9 +133,9 @@ function main_admin() {
 
     // Only admins are allowed, others are redirected to index.php
     if (!$USER->is_admin()) {
-        logger("admin.php: '$USER->username' ($USER->user_id) is no administrator and was redirected to index.php");
+        logger("admin.php: '$USER->username' ($USER->user_id) is no admin and was redirected to index.php or login");
         session_write_close();
-        redirect_and_exit($CFG->www.'/index.php');
+        non_admin_redirect_and_exit();
     }
 
     // We now know that this user is an admin, but
@@ -455,6 +455,47 @@ function admin_show_login_and_exit($message='') {
     was_login(LOGIN_PROCEDURE_SHOWLOGIN,$message);
     exit;
 } // admin_show_login_and_exit()
+
+
+/** tell non-admin-user access denied and exit
+ *
+ * this routine shows a supersimple screen for an intranet user
+ * (ie. someone without admin privileges) who accidently hit admin.php
+ * to go and look elsewhere by presenting a link to index.php or to
+ * admin.php?login=1.
+ *
+ * @return void this function never returns
+ * @uses $CFG
+ */
+function non_admin_redirect_and_exit() {
+    global $CFG,$USER;
+    $access_denied = t('access_denied','admin');
+    $access_denied_explanation = t('no_access_admin_php','admin');
+    $site = html_a($CFG->www_short.'/index.php',NULL,NULL,t('view_public_area','admin'));
+    $login = html_a($CFG->www_short.'/admin.php',array('login' => '1'),NULL,t('view_login_dialog','admin'));
+    $about = appropriate_legal_notices($USER->high_visibility,'');
+    echo <<<EOT
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>{$access_denied}</title>
+  </head>
+  <body>
+    <h1>{$access_denied}</h1>
+    {$access_denied_explanation}
+    <p>
+    <ul>
+    <li>{$site}
+    <li>{$login}
+    </ul>
+    <p>
+    $about
+  </body>
+</html>
+EOT;
+    exit;
+} // non_admin_redirect_and_exit()
+
 
 /** add javascript code that implements a popup to the header part of the page 
  *

@@ -1,6 +1,10 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.70 2011/06/30 11:33:35 pfokker Exp $
+$Id: CHANGES.txt,v 1.71 2011/07/14 13:17:51 pfokker Exp $
 -------------------------------------------------------------------------------
+
+2011-07-14
+- main_admin.php: added a special intermediate screen for those
+  intranet-users that accidently hit admin.php (prevents some confusion)
 
 2011-06-30
 - theme.class.php: removed all references to WAS_SCRIPT_NAME:

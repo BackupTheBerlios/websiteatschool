@@ -37,7 +37,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: admin.php,v 1.6 2011/06/29 15:01:10 pfokker Exp $
+ * @version $Id: admin.php,v 1.7 2011/07/14 13:17:50 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -88,6 +88,10 @@ $string['no_access_tools'] = 'Access to Tools  has been disabled for your accoun
 $string['no_access_help'] = 'Access to Help has been disabled for your account';
 
 $string['access_denied'] = 'Access denied';
+
+$string['no_access_admin_php'] = 'Access to Website@School has been disabled for your account. Follow one of the links below to continue:';
+$string['view_login_dialog'] = 'login';
+
 $string['url'] = 'URL';
 $string['public_area'] = 'Public area';
 $string['private_area'] = 'Protected area';
