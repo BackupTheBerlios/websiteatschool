@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: admin.php,v 1.6 2011/07/14 13:17:50 pfokker Exp $
+ * @version $Id: admin.php,v 1.7 2011/07/14 13:26:34 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -408,7 +408,7 @@ $string['areamanager_add_area_title_label'] = '~Naam';
 $string['areamanager_add_area_title_title'] = 'Geef hier de naam van het nieuwe gebied op';
 
 $string['areamanager_add_area_is_private_label'] = 'Beveiligd gebied';
-$string['areamanager_add_area_is_private_title'] = 'Een beveiligd gebied is niet toegankelijk zonder wachtwoord';
+$string['areamanager_add_area_is_private_title'] = 'Aanvinken om dit gebied als beveiligd gebied aan te merken';
 $string['areamanager_add_area_is_private_check'] = 'Merk dit gebied als ~beveiligd aan (kan later niet meer gewijzigd worden)';
 $string['areamanager_add_area_path_label'] = '~Datamap (kan later niet meer gewijzigd worden)';
 $string['areamanager_add_area_path_title'] = 'Deze map bevat de gegevensbestanden voor dit gebied';
@@ -487,7 +487,7 @@ $string['site_config_language_key_title'] = 'Dit is de standaard-taal voor de we
 $string['site_config_pagination_height_label'] = 'Aantal items per scherm (in lange lijsten)';
 $string['site_config_pagination_height_title'] = 'Hier stelt u de schermgrootte in voor weergave van lange lijsten';
 $string['site_config_pagination_width_label'] = 'Maximum aantal schermen (in lange lijsten)';
-$string['site_config_pagination_width_title'] = 'Dit is het aantal zichtbare links in de navigatievbalk bij paginering';
+$string['site_config_pagination_width_title'] = 'Dit is het aantal zichtbare links in de navigatiebalk bij paginering';
 
 $string['site_config_editor_label'] = 'Standaard tekstverwerker';
 $string['site_config_editor_title'] = 'Dit is de standaard tekstverwerker voor nieuwe gebruikers-accounts';

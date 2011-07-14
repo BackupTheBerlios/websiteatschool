@@ -37,7 +37,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: admin.php,v 1.7 2011/07/14 13:17:50 pfokker Exp $
+ * @version $Id: admin.php,v 1.8 2011/07/14 13:26:34 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -568,7 +568,7 @@ $string['site_config_session_name_title'] = 'The name of the cookie in the user\
 $string['site_config_session_expiry_label'] = 'Session expiry interval (seconds, default 86400)';
 $string['site_config_session_expiry_title'] = 'This is the maximum duration of a session in seconds, 86400s = 24h';
 $string['site_config_login_max_failures_label'] = 'Maximum allowed login attempts (default 10)';
-$string['site_config_login_max_failures_title'] = 'User is blackisted after this number of failed login attempts within failures interval';
+$string['site_config_login_max_failures_title'] = 'User is blacklisted after this number of failed login attempts within failures interval';
 $string['site_config_login_failures_interval_label'] = 'Login failures interval (minutes, default=12)';
 $string['site_config_login_failures_interval_title'] = 'Only login failures within this interval are counted';
 $string['site_config_login_bypass_interval_label'] = 'Valid bypass interval (minutes, default 30)';
