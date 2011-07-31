@@ -26,7 +26,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: main_admin.php,v 1.4 2011/07/14 13:17:51 pfokker Exp $
+ * @version $Id: main_admin.php,v 1.5 2011/07/31 13:13:13 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1116,7 +1116,7 @@ class AdminOutput {
                 'img' => array('src'=>$CFG->progwww_short.'/graphics/accounts.gif','width'=>32,'height'=>32),
                 'img_bw' => array('src'=>$CFG->progwww_short.'/graphics/accounts-bw.gif','width'=>32,'height'=>32),
                 'description' => t('description_accountmanager','admin'),
-                'msg_no_access' => t('no_access_modulemanager','admin'),
+                'msg_no_access' => t('no_access_accountmanager','admin'),
                 'mask' => JOB_PERMISSION_ACCOUNTMANAGER
             ),
             array(
