@@ -1,5 +1,5 @@
 /program/TODO.txt
-$Id: TODO.txt,v 1.2 2011/05/02 20:51:01 pfokker Exp $
+$Id: TODO.txt,v 1.3 2011/09/09 14:29:56 pfokker Exp $
 
 2008-01-29
 -- convert /program/*.txt to DOS-text
@@ -215,3 +215,8 @@ OK How about changing all where clauses with "(value = 'NULL')" into
    hotkey [Alt-A] for the label that would display as
    "\xC2\xAEegister" ie without the '~' '<' 'A' and '>'. Mmmm....
    confusing...
+
+2011-09-09
+-- How about normalising all calls to _SERVER['REMOTE_ADDR'] making
+   sure we can compare 'canonical' IP-addresses (see RFC 5952).
+  

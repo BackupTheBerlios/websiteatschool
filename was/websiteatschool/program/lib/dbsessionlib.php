@@ -54,7 +54,7 @@
  * defined as follows:
  * <pre>
  * session_id       serial
- * session_key      varchar(255)
+ * session_key      varchar(172)
  * session_data     longtext
  * user_id          int unsigned 
  * user_information varchar(255)
@@ -65,11 +65,14 @@
  * unique index(session_key)
  * </pre>
  *
+ * Note: the size of the session_key was reduced from 255 to 172 after version 2011051100
+ * to prevent database problems (see {@link update_core_2011092100()}).
+
  * @author Peter Fokker <peter@berestijn.nl>
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: dbsessionlib.php,v 1.2 2011/02/03 14:04:03 pfokker Exp $
+ * @version $Id: dbsessionlib.php,v 1.3 2011/09/09 14:29:57 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 

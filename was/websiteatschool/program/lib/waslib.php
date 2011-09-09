@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: waslib.php,v 1.9 2011/06/29 19:29:09 pfokker Exp $
+ * @version $Id: waslib.php,v 1.10 2011/09/09 14:29:57 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1372,8 +1372,11 @@ function convert_to_type($type,$value) {
  *       by filtering on letters/digits and embedded dots/dashes/underscores?
  */
 function sanitise_filename($filename)  {
+    // get rid of all diacriticals etc.
+    $s = utf8_strtoascii($filename);
+
     // strip leading space/dot/dash/underscore/backslash/slash
-    $s = preg_replace('/^[ .\-_\\\\\\/]*/','',$filename);
+    $s = preg_replace('/^[ .\-_\\\\\\/]*/','',$s);
 
     // strip trailing space/dot/dash/underscore/backslash/slash
     $s = preg_replace('/[ .\-_\\\\\\/]*$/','',$s);
@@ -1389,7 +1392,7 @@ function sanitise_filename($filename)  {
 
     // 'forbidden' words
     $forbidden = array('','aux','com1','com2','com3','com4','con','lpt1','lpt2','lpt3','lpt4','nul','prn');
-    if (in_array(strtolower($s),$forbidden)) {
+    if (in_array(utf8_strtolower($s),$forbidden)) {
         $s = '_'.$s;
     }
     return $s;

@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: groupmanager.class.php,v 1.2 2011/02/03 14:04:04 pfokker Exp $
+ * @version $Id: groupmanager.class.php,v 1.3 2011/09/09 14:29:57 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1369,7 +1369,7 @@ class GroupManager {
                 'type' => F_ALPHANUMERIC,
                 'name' => 'group_name',
                 'minlength' => 1,
-                'maxlength' => 255,
+                'maxlength' => 60,
                 'columns' => 30,
                 'label' => t('groupmanager_add_group_name_label','admin'),
                 'title' => t('groupmanager_add_group_name_title','admin'),
@@ -1440,7 +1440,7 @@ class GroupManager {
                 'type' => F_ALPHANUMERIC,
                 'name' => 'group_name',
                 'minlength' => 1,
-                'maxlength' => 255,
+                'maxlength' => 60,
                 'columns' => 30,
                 'label' => t('groupmanager_edit_group_name_label','admin'),
                 'title' => t('groupmanager_edit_group_name_title','admin'),
@@ -1495,7 +1495,7 @@ class GroupManager {
                 'type' => F_ALPHANUMERIC,
                 'name' => 'group_path',
                 'minlength' => 1,
-                'maxlength' => 240,
+                'maxlength' => 60,
                 'columns' => 30,
                 'label' => t('groupmanager_edit_group_path_label','admin'),
                 'title' => t('groupmanager_edit_group_path_title','admin'),

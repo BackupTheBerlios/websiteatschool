@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: usermanager.class.php,v 1.2 2011/02/03 14:04:04 pfokker Exp $
+ * @version $Id: usermanager.class.php,v 1.3 2011/09/09 14:29:57 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1874,7 +1874,7 @@ class UserManager {
                 'type' => F_ALPHANUMERIC,
                 'name' => 'username',
                 'minlength' => 1,
-                'maxlength' => 255,
+                'maxlength' => 60,
                 'columns' => 30,
                 'label' => t('usermanager_add_username_label','admin'),
                 'title' => t('usermanager_add_username_title','admin'),
@@ -1968,7 +1968,7 @@ class UserManager {
                 'type' => F_ALPHANUMERIC,
                 'name' => 'username',
                 'minlength' => 1,
-                'maxlength' => 255,
+                'maxlength' => 60,
                 'columns' => 30,
                 'label' => t('usermanager_edit_username_label','admin'),
                 'title' => t('usermanager_edit_username_title','admin'),
@@ -2068,7 +2068,7 @@ class UserManager {
                 'type' => F_ALPHANUMERIC,
                 'name' => 'user_path',
                 'minlength' => 1,
-                'maxlength' => 240,
+                'maxlength' => 60,
                 'columns' => 30,
                 'label' => t('usermanager_edit_user_path_label','admin'),
                 'title' => t('usermanager_edit_user_path_title','admin'),

@@ -1,6 +1,31 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.71 2011/07/14 13:17:51 pfokker Exp $
+$Id: CHANGES.txt,v 1.72 2011/09/09 14:29:56 pfokker Exp $
 -------------------------------------------------------------------------------
+
+2011-09-09
+- Resized several fields in database to stay within MySQL/InnoDB key
+  limits of 767 bytes with charset utf8mb4 [see updatelib.php]:
+  . areas.path: varchar(240) => varchar(60)
+  . config.name: varchar(240) => varchar(80)
+  . groups.groupname: varchar(255) => varchar(60)
+  . groups.path: varchar(240) => varchar(60)
+  . log_messages.remote_addr: varchar(255) => varchar(150)
+  . login_failures.remote_addr: varchar(255) => varchar(150)
+  . modules_properties.name: varchar(240) => varchar(80)
+  . sessions.session_key: varchar(255) => varchar(172)
+  . themes_areas_properties.name: varchar(240) => varchar(80)
+  . themes_properties.name: varchar(240) => varchar(80)
+  . users.path: varchar(240) => varchar(60)
+  . users.username: varchar(255) => varchar(60)
+  . users_properties.name: varchar(240) => varchar(80)
+  . users_properties.section: varchar(240) => varchar(80)
+ This applies to both the update routine and the tabledefs for
+ a new installation.
+- Adapted dialogdefs in areamanager for new shorter path
+- Adapted dialogdefs in groupmanager for new shorter path and name
+- Adapted comments in dbsessionlib for new shorter session_key
+- Adapted dialogdefs in usermanager for new shorter path and name
+- waslib.php: made sanitise_filename() UTF-8 aware
 
 2011-07-14
 - main_admin.php: added a special intermediate screen for those

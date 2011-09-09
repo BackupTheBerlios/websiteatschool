@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: areamanager.class.php,v 1.2 2011/02/03 14:04:03 pfokker Exp $
+ * @version $Id: areamanager.class.php,v 1.3 2011/09/09 14:29:57 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1042,7 +1042,7 @@ class AreaManager {
                 'type' => F_ALPHANUMERIC,
                 'name' => 'area_path',
                 'minlength' => 1,
-                'maxlength' => 240,
+                'maxlength' => 60,
                 'columns' => 50,
                 'label' => t('areamanager_add_area_path_label','admin'),
                 'title' => t('areamanager_add_area_path_title','admin'),
@@ -1113,7 +1113,7 @@ class AreaManager {
                 'type' => F_ALPHANUMERIC,
                 'name' => 'area_path',
                 'minlength' => 0,
-                'maxlength' => 240,
+                'maxlength' => 60,
                 'columns' => 50,
                 'label' => t('areamanager_edit_area_path_label','admin'),
                 'title' => t('areamanager_edit_area_path_title','admin'),

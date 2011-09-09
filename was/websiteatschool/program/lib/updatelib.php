@@ -54,7 +54,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: updatelib.php,v 1.9 2011/05/09 20:00:04 pfokker Exp $
+ * @version $Id: updatelib.php,v 1.10 2011/09/09 14:29:57 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -903,6 +903,7 @@ function update_core(&$output) {
     if (!update_core_2010122100($output)) { return; }
     if (!update_core_2011020100($output)) { return; }
     if (!update_core_2011051100($output)) { return; }
+    if (!update_core_2011092100($output)) { return; }
     // if (!update_core_2011mmdd00($output)) { return; }
     // ...
 } // update_core()
@@ -1337,5 +1338,352 @@ function update_core_2011051100(&$output) {
     }
     return update_core_version($output,$version);
 } // update_core_2011051100()
+
+
+/** perform actual update to version 2011092100
+ *
+ * this is yet another substantial change in the database: after we (finally)
+ * standardised on UTF-8 the last time (see {@link update_core_2011051100()}
+ * a number of problems occurred with new installations.
+ *
+ * This specifically occurs with MySQL (currently the only supported database).
+ * In all their wisdom Oracle decided to change the default database engine from
+ * MyISAM to InnoDB in MySQL version 5.5.5. Bad move to do that somewhere in a
+ * sub-sub-release. Anyway. New installations with the default InnoDB engine
+ * AND with the 4-byte utf8mb4 character set  (available since sub-sub-release 5.5.3) 
+ * now generate serious trouble, because
+ *
+ *  - there is a hard-coded limit of 767 bytes for a key (index) in InnoDB, and
+ *  - every utf8mb4 character counts as four bytes never mind the actual content.
+ *
+ * Note: the limit of 767 bytes stems from a utf8 (or utf8mb3 as it is now called)
+ *  string of max. 255 characters and 1 16-bit string length. 255 * 3 + 2 = 767 bytes.
+ * I wonder why UTF-8 wasn't implemented correctly (ie. with 1 to 4 bytes) to begin with and
+ * the key limit increased to 4 * 255 + 2 = 1022 bytes. The limited UTF-8 support
+ * (only the BMP) now poses substantial problems. Yet another reason to start
+ * looking for an alternative database solution. BTW: the key limit in MyISAM
+ * is 1000 bytes.
+ *
+ * These two conditions (InnoDB and utf8mb4) limit the length of a key (index) to
+ * 767 bytes / 4 bytes-per-char = 191 utf8mb4 characters. As it happens, some
+ * tables in WebsiteAtSchool used keyfields like varchar(240) and even varchar(255).
+ * These key sizes fail in InnoDB/utf8mb4 and the latter even fails with
+ * MyISAM/utf8mb4 because 255 * 4 + 2 = 1022 bytes > 1000 bytes. What a mess...
+ *
+ * So there you have it: all keys MUST be shortened to 191 characters max. in order
+ * to prevent stupid error messages about key too long. The alternative (forcing
+ * another character set such as 'ascii' or 'latin1' for some fields) doesn't cut
+ * it IMHO.
+ *
+ * *sigh*
+ *
+ * We still have a choice of exactly one database driver: MySQL.
+ * Therefore the upgrade we do here can be more or less
+ * MySQL-specific (so much for database-independency), as it has to be,
+ * because the syntax of ALTER TABLE is -- unsuprisingly -- MySQL-specific.
+ *
+ * The good news is that we are still in beta, so a major change in the data
+ * definition is less painful than with hundreds of production servers...
+ *
+ * What needs to be done here?
+ *
+ * For existing tables some fields must be shortened from varchar(255) or
+ * varchar(240) to something like varchar(191) or even less. This MUST be
+ * done for key (index) fields. However, while we are at it some more fields
+ * SHOULD (or COULD) be shortened too. Here is what we do.
+ *
+ * <code>
+ * for all affected table.fields do
+ *    if a record exists with current data length > proposed new length then
+ *        tell the user about it
+ *    endif
+ * next
+ * if there were data length errors then
+ *     tell the user about manually fixing it
+ *     bail out with result FALSE (= not upgraded)
+ * endif
+ * for all affected table.fields do
+ *     change field definition to new length
+ *     if errors
+ *         tell the user about it (but carry on)
+ *     endif
+ * next
+ * return results (TRUE on success, FALSE on 1 or more errors)
+ * </code>
+ *
+ * Below is a discussion of all affected fields and the rationale for
+ * picking the new lengths less than 191 characters.
+ *
+ * <code>
+ * config.name: varchar(240) => varchar(80)
+ * modules_properties.name: varchar(240) => varchar(80)
+ * themes_properties.name: varchar(240) => varchar(80)
+ * themes_areas_properties.name: varchar(240) => varchar(80)
+ * users_properties.name: varchar(240) => varchar(80)
+ * users_properties.section: varchar(240) => varchar(80)
+ * </code>
+ * 
+ * Currently the longest parameter name in use is 27 characters, so I
+ * have to admit that the arbitrary size of 240 is a little bit too much.
+ * I'll reduce these fields to a size of 80, which seems a little more
+ * realistic. As an additional bonus, this allows for a compound key
+ * using 'section' and 'name' in users_properties while staying within
+ * the limit of 767 bytes or 191 characters.
+ *
+ * <code>
+ * areas.path: varchar(240) => varchar(60)
+ * groups.path: varchar(240) => varchar(60)
+ * users.path: varchar(240) => varchar(60)
+ * </code>
+ *
+ * and
+ *
+ * <code>
+ * groups.groupname: varchar(255) => varchar(60)
+ * users.username: varchar(255) => varchar(60)
+ * </code>
+ * 
+ * The length of username or groupname was arbitrary set to 255.
+ * Different systems have different limits, e.g. 8, 14, 15, 16,
+ * 20, 32, 64 or 128. Since W@S is a stand-alone system we are more
+ * or less free to choose whatever we want (as long as it is less
+ * than 191 of course).
+ *
+ * Since a username or groupname is only used to distinguish one user
+ * from another but at the same time giving at least some readability,
+ * a length of 255 is way too long. An arbitrary but hopefully more
+ * realistic choice is 60 characters. 
+ *
+ * The path for a user or group is derived from the corresponding
+ * name so it makes sense to make both fields the same length.
+ *
+ * <code>
+ * log_messages.remote_addr: varchar(255) => varchar(150)
+ * login_failures.remote_addr: varchar(255) => varchar(150)
+ * </code>
+ * 
+ * A remote address of type IPv4 generally looks like this: 'ddd.ddd.ddd.ddd' => length 15
+ * It is not so easy to determine the length of an IPv6 address, because many valid variants exist.
+ * 'xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx' => length 39
+ * '0000:0000:0000:0000:0000:0000:ddd.ddd.ddd.ddd' => length 45
+ * '[0000:0000:0000:0000:0000:0000:ddd.ddd.ddd.ddd'] => length 47 (RFC3989)
+ * 
+ * Adding to the complexity and confusion are link-local addresses with
+ * zone indices: a percent-sign followed by an interface number
+ * (e.g. '%1') or interface name (e.g. '%eth0') appended to the raw
+ * address. This adds 2 or 5 or even more characters to the address.
+ * And then we of course have the reverse DNS-variant like
+ * 'x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.ip6.arpa.' => length 73
+ * or the special Microsoft trick to shoehorn a literal address in a UNC path:
+ * 'xxxx-xxxx-xxxx-xxxx-xxxx-xxxx-xxxx-xxxx.ipv6-literal.net' => length 56 or
+ * 'xxxx-xxxx-xxxx-xxxx-xxxx-xxxx-xxxx-xxxxs1.ipv6-literal.net' => length 58+ (with zone index)
+ * 
+ * Of course there several 'simplifications' such as omitting leading
+ * zeros in the hexquads and replacing the longest sequece of 0-hexquads
+ * with '::' that add to the confusion. RFC5952 adds the definition of a 'canonical
+ * representation' of IPv6 addresses to the party. Mmmm, see http://xkcd.com/927
+ * 
+ * My conclusion is: this whole IPv6-idea suffers from the Second System Syndrome
+ * (see F. Brooks' Mythical Man Month) and unfortunately we have to deal with it.
+ * 
+ * *sigh*
+ * 
+ * I will reduce the length of these fields from 255 to 150 for no other
+ * reason than that it is 10 times the length of a dotted-decimal IPv4
+ * address and sufficient to accomodate a reverse DNS address twice (2 x
+ * 73 = 146).
+ * 
+ * <code>
+ * sessions.session_key: varchar(255) => varchar(172)
+ * </code>
+ * 
+ * This field stores a session key, currently constructed using md5()
+ * which yields a string with 32 (lowercase) hexadecimal characters.  In
+ * the future a different digest could be used to provice a session_key,
+ * e.g. SHA-1 (40 hexdigits) or SHA-512 (128 hexdigits). Another option
+ * would be to use a UUID: 128 bits represented in 32 hexdigits in the
+ * form xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx (string of 36 bytes).
+ * Alternatively, the SHA-512 could be encoded in base64 yielding a
+ * string of 512 / 6 = 86 bytes. In this context, a field of size 255
+ * seems a little over the top, not to mention problematic with 4-byte
+ * UTF-8 characters combined with the infamous MySQL / InnoDB-limit of
+ * 767 bytes for keyfields. I guess I will settle for a field size of
+ * 172 characters which is not too much for InnoDB keys + utf8mb4 and
+ * exactly enough to store a 1024 bit number in base64.
+ *
+ * @param object &$output collects the html output
+ * @return bool TRUE on success, FALSE otherwise
+ */
+function update_core_2011092100(&$output) {
+    global $CFG,$DB;
+
+    // 0 -- get outta here when already upgraded
+    $version = 2011092100;
+    if ($CFG->version >= $version) {
+        return TRUE;
+    }
+
+    // List of column definitions keyed by 'tablename:fieldname' copied from (new) tabledefs
+    $alterdefs = array(
+        'areas:path' => array(
+            'name' => 'path',
+            'type' => 'varchar',
+            'length' => 60,
+            'notnull' => TRUE,
+            'comment' => 'the place to store user uploaded files etc., relative to CFG->datadir/areas'
+            ),
+        'config:name' => array(
+            'name' => 'name', 
+            'type' => 'varchar', 
+            'length' => 80,
+            'notnull' => TRUE,
+            'comment' => 'the name of the global configuration parameter'
+            ),
+        'groups:groupname' => array(
+            'name' => 'groupname',
+            'type' => 'varchar',
+            'length' => 60,
+            'notnull' => TRUE,
+            'comment' => 'the short groupname, must be unique too'
+            ),
+        'groups:path' => array(
+            'name' => 'path',
+            'type' => 'varchar',
+            'length' => 60,
+            'notnull' => TRUE,
+            'comment' => 'the place (subdirectory) to store files for this group, relative to CFG->datadir/groups'
+            ),
+        'log_messages:remote_addr' => array(
+            'name' => 'remote_addr',
+            'type' => 'varchar',
+            'length' => 150,
+            'notnull' => TRUE,
+            'comment' => 'IP-address of the visitor'
+            ),
+        'login_failures:remote_addr' => array(
+            'name' => 'remote_addr',
+            'type' => 'varchar',
+            'length' => 150,
+            'notnull' => TRUE,
+            'comment' => 'IP-address of the visitor that failed the login attempt/is blocked'
+            ),
+        'modules_properties:name' => array(
+            'name' => 'name', 
+            'type' => 'varchar', 
+            'length' => 80, 
+            'notnull' => TRUE,
+            'comment' => 'the name of the configuration parameter'
+            ),
+        'sessions:session_key' =>array(
+            'name' => 'session_key',
+            'type' => 'varchar',
+            'length' => 172,
+            'default' => '',
+            'comment' => 'contains the unique identifier (\'token\') which is stored in the user\'s cookie'
+            ),
+        'themes_areas_properties:name' => array(
+            'name' => 'name', 
+            'type' => 'varchar', 
+            'length' => 80,
+            'notnull' => TRUE,
+            'comment' => 'the name of the configuration parameter'
+            ),
+        'themes_properties:name' => array(
+            'name' => 'name', 
+            'type' => 'varchar', 
+            'length' => 80, 
+            'notnull' => TRUE,
+            'comment' => 'the name of the configuration parameter'
+            ),
+        'users:path' => array(
+            'name' => 'path',
+            'type' => 'varchar',
+            'length' => 60,
+            'notnull' => TRUE,
+            'comment' => 'the place (subdirectory) to store files for this user, relative to CFG->datadir/users'
+            ),
+        'users:username' => array(
+            'name' => 'username',
+            'type' => 'varchar',
+            'length' => 60,
+            'notnull' => TRUE,
+            'comment' => 'the account name, must be unique too'
+            ),
+        'users_properties:name' => array(
+            'name' => 'name', 
+            'type' => 'varchar', 
+            'length' => 80, 
+            'notnull' => TRUE,
+            'comment' => 'the name of the configuration parameter'
+            ),
+        'users_properties:section' => array(
+            'name' => 'section',
+            'type' => 'varchar',
+            'length' => 80,
+            'notnull' => TRUE,
+            'comment' => 'keeps related properties grouped together, e.g. in a separate tab'
+            )
+        );
+
+    //
+    // 1 -- check existing data for strings that are too long
+    //
+    $errors = 0;
+    foreach($alterdefs as $table_field => $fielddef) {
+        list($table,$field) = explode(':',$table_field);
+        $length = $fielddef['length'];
+        $where = sprintf('CHAR_LENGTH(%s) > %d',$field,$length);
+        if (($records = db_select_all_records($table,$field,$where)) === FALSE) {
+            $msg = sprintf('%s(): cannot retrieve data from table \'%s\' field \'%s\': %s',
+                           __FUNCTION__,$table,$field,db_errormessage());
+            logger($msg);
+            $output->add_message(htmlspecialchars($msg));
+            $output->add_message(t('update_core_error','admin',array('{VERSION}' => strval($version))));
+            return FALSE;
+        }
+        if (sizeof($records) <= 0) {
+            continue;
+        }
+        $params = array('{TABLE}' => $table,'{FIELD}' => $field,'{LENGTH}' => $length,'{CONTENT}' => '');
+        foreach($records as $record) {
+            ++$errors;
+            logger(sprintf('%s(): content of table \'%s\' field \'%s\' longer than %d: \'%s\'',
+                           __FUNCTION__,$table,$field,$length,$record[$field]));
+            $params['{CONTENT}'] = $record[$field];
+            $output->add_message(t('update_field_value_too_long','admin',$params));
+        }
+    }
+    if ($errors > 0) {
+        logger(sprintf('%s(): number of errors encoutered: %d; bailing out for manual correction',__FUNCTION__,$errors));
+        $output->add_message(t('update_please_correct_field_value_manually','admin',array('{ERRORS}' => $errors)));
+        $msg = t('update_core_error','admin',array('{VERSION}' => strval($version)));
+        $output->add_message($msg);
+        $output->add_popup_bottom($msg); // attract some more attention
+        return FALSE;
+    }
+
+    //
+    // 2 -- actually change the table definitions
+    //
+    $overtime = max(intval(ini_get('max_execution_time')),30); // additional processing time in seconds
+    foreach($alterdefs as $table_field => $fielddef) {
+        list($table,$field) = explode(':',$table_field);
+        $length = $fielddef['length'];
+        $sql = sprintf('ALTER TABLE `%s%s` CHANGE %s %s',$DB->prefix,$table,$field,$DB->column_definition($fielddef));
+        if ($DB->exec($sql) === FALSE) {
+            $msg = sprintf('%s(): cannot alter \'%s\' with \'%s\': %d/%s; baling out',
+                           __FUNCTION__,$table,$sql,$DB->errno,$DB->error);
+            logger($msg);
+            $output->add_message(htmlspecialchars($msg));
+            $output->add_message(t('update_core_error','admin',array('{VERSION}' => strval($version))));
+            return FALSE;
+        } else {
+            logger(sprintf('%s(): alter table \'%s\' field \'%s\': changed type to varchar(%d)',
+                           __FUNCTION__,$table,$field,$length),LOG_DEBUG);
+        }
+        @set_time_limit($overtime); // try to get additional processing time after every processed table
+    }
+    return update_core_version($output,$version);
+} // update_core_2011092100()
 
 ?>

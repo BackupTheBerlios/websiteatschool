@@ -27,7 +27,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasinstall
- * @version $Id: install.php,v 1.10 2011/06/29 17:52:48 pfokker Exp $
+ * @version $Id: install.php,v 1.11 2011/09/09 14:29:57 pfokker Exp $
  * @todo how prevent third party-access to install.php after initial install? .htaccess? !exists(../config.php)? 
  * @todo we should make sure that autosession is disabled in php.ini, otherwise was won't work
  * @todo we should make sure that register globals is off
@@ -3374,7 +3374,7 @@ class InstallWizard {
 
     /** sanitise a string to make it acceptable as a filename/directoryname
      *
-     * This routine borrowed from {@link waslib.php}.
+     * This routine more or less borrowed from {@link waslib.php}.
      *
      * Note that this routine too is very ASCII-centric: in the end only
      * ASCII-characters (52 letters, 10 digits and dash, dot and underscore)

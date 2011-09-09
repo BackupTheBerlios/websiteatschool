@@ -64,7 +64,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasinstall
- * @version $Id: tabledefs.php,v 1.2 2011/02/03 14:04:03 pfokker Exp $
+ * @version $Id: tabledefs.php,v 1.3 2011/09/09 14:29:57 pfokker Exp $
  * @todo automatically create appropriate sequence name for serial fields??? or add seqdefs too?
  */
 if (!defined('WASENTRY')) { die('no entry'); }
@@ -80,7 +80,7 @@ $tabledefs['config'] = array(
         array(
             'name' => 'name', 
             'type' => 'varchar', 
-            'length' => 240, 
+            'length' => 80,
             'notnull' => TRUE,
             'comment' => 'the name of the global configuration parameter'
             ),
@@ -164,9 +164,9 @@ $tabledefs['areas'] = array(
         array(
             'name' => 'path',
             'type' => 'varchar',
-            'length' => 240,
+            'length' => 60,
             'notnull' => TRUE,
-            'comment' => 'the place to store user uploaded files etc., relative to $CFG->datadir/areas'
+            'comment' => 'the place to store user uploaded files etc., relative to CFG->datadir/areas'
             ),
         array(
             'name' => 'metadata',
@@ -578,7 +578,7 @@ $tabledefs['modules_properties'] = array(
         array(
             'name' => 'name', 
             'type' => 'varchar', 
-            'length' => 240, 
+            'length' => 80, 
             'notnull' => TRUE,
             'comment' => 'the name of the configuration parameter'
             ),
@@ -728,7 +728,7 @@ $tabledefs['themes_properties'] = array(
         array(
             'name' => 'name', 
             'type' => 'varchar', 
-            'length' => 240, 
+            'length' => 80, 
             'notnull' => TRUE,
             'comment' => 'the name of the configuration parameter'
             ),
@@ -812,7 +812,7 @@ $tabledefs['themes_areas_properties'] = array(
         array(
             'name' => 'name', 
             'type' => 'varchar', 
-            'length' => 240, 
+            'length' => 80,
             'notnull' => TRUE,
             'comment' => 'the name of the configuration parameter'
             ),
@@ -899,7 +899,7 @@ $tabledefs['users'] = array(
         array(
             'name' => 'username',
             'type' => 'varchar',
-            'length' => 255,
+            'length' => 60,
             'notnull' => TRUE,
             'comment' => 'the account name, must be unique too'
             ),
@@ -969,7 +969,7 @@ $tabledefs['users'] = array(
         array(
             'name' => 'path',
             'type' => 'varchar',
-            'length' => 240,
+            'length' => 60,
             'notnull' => TRUE,
             'comment' => 'the place (subdirectory) to store files for this user, relative to CFG->datadir/users'
             ),
@@ -1047,14 +1047,14 @@ $tabledefs['users_properties'] = array(
         array(
             'name' => 'section',
             'type' => 'varchar',
-            'length' => 240,
+            'length' => 80,
             'notnull' => TRUE,
             'comment' => 'keeps related properties grouped together, e.g. in a separate tab'
             ),
         array(
             'name' => 'name', 
             'type' => 'varchar', 
-            'length' => 240, 
+            'length' => 80, 
             'notnull' => TRUE,
             'comment' => 'the name of the configuration parameter'
             ),
@@ -1126,7 +1126,7 @@ $tabledefs['login_failures'] = array(
         array(
             'name' => 'remote_addr',
             'type' => 'varchar',
-            'length' => 255,
+            'length' => 150,
             'notnull' => TRUE,
             'comment' => 'IP-address of the visitor that failed the login attempt/is blocked'
             ),
@@ -1182,7 +1182,7 @@ $tabledefs['sessions'] = array(
         array(
             'name' => 'session_key',
             'type' => 'varchar',
-            'length' => 255,
+            'length' => 172,
             'default' => '',
             'comment' => 'contains the unique identifier (\'token\') which is stored in the user\'s cookie'
             ),
@@ -1391,7 +1391,7 @@ $tabledefs['log_messages'] = array(
         array(
             'name' => 'remote_addr',
             'type' => 'varchar',
-            'length' => 255,
+            'length' => 150,
             'notnull' => TRUE,
             'comment' => 'IP-address of the visitor'
             ),
@@ -1867,7 +1867,7 @@ $tabledefs['groups'] = array(
         array(
             'name' => 'groupname',
             'type' => 'varchar',
-            'length' => 255,
+            'length' => 60,
             'notnull' => TRUE,
             'comment' => 'the short groupname, must be unique too'
             ),
@@ -1887,7 +1887,7 @@ $tabledefs['groups'] = array(
         array(
             'name' => 'path',
             'type' => 'varchar',
-            'length' => 240,
+            'length' => 60,
             'notnull' => TRUE,
             'comment' => 'the place (subdirectory) to store files for this group, relative to CFG->datadir/groups'
             )
