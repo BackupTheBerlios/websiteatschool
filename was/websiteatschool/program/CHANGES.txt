@@ -1,5 +1,5 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.73 2011/09/19 10:06:52 pfokker Exp $
+$Id: CHANGES.txt,v 1.74 2011/09/19 13:57:00 pfokker Exp $
 -------------------------------------------------------------------------------
 
 2011-09-19
@@ -13,6 +13,8 @@ $Id: CHANGES.txt,v 1.73 2011/09/19 10:06:52 pfokker Exp $
 - [guestbook_tabledefs.php] Removed the foreign key constraint for m_guestbooks.cuser_id.
 - [guestbook_tabledefs.php] Removed the foreign key constraint for m_guestbooks.muser_id.
 - [mysql_class.php] Improved/streamlined create_table_sql()
+- [install.php] and [demodata.php]: adjusted the order of things so we
+  do not violate FK constraints on initial install
 
 2011-09-16
 - [tabledefs.php] Removed the foreign key constraint for nodes.parent_id.

@@ -27,7 +27,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasinstall
- * @version $Id: install.php,v 1.11 2011/09/09 14:29:57 pfokker Exp $
+ * @version $Id: install.php,v 1.12 2011/09/19 13:57:00 pfokker Exp $
  * @todo how prevent third party-access to install.php after initial install? .htaccess? !exists(../config.php)? 
  * @todo we should make sure that autosession is disabled in php.ini, otherwise was won't work
  * @todo we should make sure that register globals is off
@@ -1568,27 +1568,27 @@ class InstallWizard {
      *  - (2A) create the main tables (from /program/install/tabledefs.php)
      *  - (2B) insert essential data (from /program/install/tabledata.php)
      *  - (2C) store the collected data (website title, etc.),
-     *  - (2D) create the first useraccount, 
      *  - (3) if necessary, create the data directory
      *  - (4) record the currently available languages in the database
+     *  - (5) create the first useraccount, 
      *
      * Once the main part is done, install modules and themes based on the
      * relevant information that is stored in the corresponding manifest-file
      * by performing the following steps for each module and theme:
      *
-     *  - (5A) insert a record in the appropriate table with active = FALSE
-     *  - (5B) create the tables (if any tables are necessary according to the manifest)
-     *  - (5C) install the item by including a file and executing function <item>_install()
-     *  - (5D) flip the active flag in the record from step 5A to indicate success
+     *  - (6A) insert a record in the appropriate table with active = FALSE
+     *  - (6B) create the tables (if any tables are necessary according to the manifest)
+     *  - (6C) install the item by including a file and executing function <item>_install()
+     *  - (6D) flip the active flag in the record from step 5A to indicate success
      *
      * Subsequently the optional demodata is installed.
      *
-     *  - (6A) a foundation is created via the function demodata() from /program/install/demodata.php
-     *  - (6B) all modules + themes can add to the demo data via the appropriate subroutines
+     *  - (7A) a foundation is created via the function demodata() from /program/install/demodata.php
+     *  - (7B) all modules + themes can add to the demo data via the appropriate subroutines
      *
      * If all goes well, this routine ends with an attempt to 
      *
-     *  - (7) save the config.php file at the correct location.
+     *  - (8) save the config.php file at the correct location.
      *    (it is not an error if that does not work; it only
      *    means that the  user has to upload the config.php
      *    file manually.
@@ -1653,47 +1653,6 @@ class InstallWizard {
                 $retval = FALSE;
             }
         }
-        // 2D -- insert the first user account with the first acl
-        $table = 'acls';
-        $key_field = 'acl_id';
-        $fields = array('permissions_jobs' => -1,
-                        'permissions_intranet' => -1,
-                        'permissions_modules' => -1,
-                        'permissions_nodes' => -1);
-        $acl_id = db_insert_into_and_get_id($table,$fields,$key_field);
-        if ($acl_id === FALSE) {
-            // This shouldn't happen in a freshly created database.
-            $params = array('{TABLENAME}' => $DB->prefix.$table,'{ERRNO}' => $DB->errno,'{ERROR}' => $DB->error);
-            $this->messages[] = $this->t('error_insert_into_table',$params);
-            return FALSE;
-        }
-        $salt = $this->quasi_random_string(12,62); // pick 12 characters from [0-9][A-Z][a-z]
-        $table = 'users';
-        $key_field = 'user_id';
-        $username = $_SESSION['INSTALL']['user_username'];
-        $userdata_directory = utf8_strtolower($this->sanitise_filename($username));
-        // If the username consists of only non-mappable UTF-8 chars, we end up with '_'; make that more readable...
-        if ($userdata_directory == '_') { $userdata_directory = '_webmaster'; }
-        $fields = array(
-            'username' => $username,
-            'salt' => $salt,
-            'password_hash' => md5($salt.$_SESSION['INSTALL']['user_password']),
-            'full_name' => $_SESSION['INSTALL']['user_full_name'],
-            'email' => $_SESSION['INSTALL']['user_email'],
-            'is_active' => TRUE,
-            'redirect' => '',
-            'language_key' => $_SESSION['INSTALL']['language_key'],
-            'path' => $userdata_directory, // this boldly assumes we will succeed in step 3D below
-            'acl_id' => intval($acl_id),
-            'high_visibility' => $_SESSION['INSTALL']['high_visibility'],
-            'editor' => 'fckeditor'
-            );
-        $user_id = db_insert_into_and_get_id($table,$fields,$key_field);
-        if ($user_id === FALSE) {
-            $params = array('{TABLENAME}' => $DB->prefix.$table,'{ERRNO}' => $DB->errno,'{ERROR}' => $DB->error);
-            $this->messages[] = $this->t('error_insert_into_table',$params);
-            $retval = FALSE;
-        }
 
         // 3A -- maybe create dataroot
         $dataroot = $_SESSION['INSTALL']['cms_dataroot'];
@@ -1753,12 +1712,11 @@ class InstallWizard {
         $_SESSION['INSTALL']['cms_datadir'] = $datadir; // construct_config_php() needs this
         @touch($datadir.'/index.html'); // "protect" directory
 
-        // 3D -- setup essential subdirectories under our REAL datadirectory including webmaster's userdir
+        // 3D -- setup essential subdirectories under our REAL datadirectory
         $datadir_subdirectories = array($datadir.'/areas',
                                         $datadir.'/users',
                                         $datadir.'/groups',
-                                        $datadir.'/languages',
-                                        $datadir.'/users/'.$userdata_directory);
+                                        $datadir.'/languages');
         foreach ($datadir_subdirectories as $datadir_subdirectory) {
             if ((!is_dir($datadir_subdirectory)) && (!@mkdir($datadir_subdirectory,0700))) {
                 $params = array(
@@ -1809,7 +1767,64 @@ class InstallWizard {
             }
         }
 
-        // 5 -- install modules and themes
+        // 5 --  insert the first user account
+        // 5A -- construct acl with all privileges for this main (root) user
+        $table = 'acls';
+        $key_field = 'acl_id';
+        $fields = array('permissions_jobs' => -1,
+                        'permissions_intranet' => -1,
+                        'permissions_modules' => -1,
+                        'permissions_nodes' => -1);
+        $acl_id = db_insert_into_and_get_id($table,$fields,$key_field);
+        if ($acl_id === FALSE) {
+            // This shouldn't happen in a freshly created database.
+            $params = array('{TABLENAME}' => $DB->prefix.$table,'{ERRNO}' => $DB->errno,'{ERROR}' => $DB->error);
+            $this->messages[] = $this->t('error_insert_into_table',$params);
+            return FALSE;
+        }
+
+        // 5B -- create a personal datadirectory (based on the specified username)
+        $username = $_SESSION['INSTALL']['user_username'];
+        $userdata_directory = utf8_strtolower($this->sanitise_filename($username));
+        // If the username consists of only non-mappable UTF-8 chars, we end up with '_'; make that more readable...
+        if ($userdata_directory == '_') { $userdata_directory = '_webmaster'; }
+        $datadir_subdirectory = $datadir.'/users/'.$userdata_directory;
+        if ((!is_dir($datadir_subdirectory)) && (!@mkdir($datadir_subdirectory,0700))) {
+            $params = array(
+                '{FIELD}' => $this->t('cms_datadir_label'),
+                '{DIRECTORY}' => htmlspecialchars($datadir_subdirectory)
+                );
+            $this->messages[] = $this->t('error_not_create_dir',$params);
+            $retval = FALSE;
+        }
+        @touch($datadir_subdirectory.'/index.html'); // "protect" directory
+
+        // 5C -- actually create the record in the users table
+        $salt = $this->quasi_random_string(12,62); // pick 12 characters from [0-9][A-Z][a-z]
+        $table = 'users';
+        $key_field = 'user_id';
+        $fields = array(
+            'username' => $username,
+            'salt' => $salt,
+            'password_hash' => md5($salt.$_SESSION['INSTALL']['user_password']),
+            'full_name' => $_SESSION['INSTALL']['user_full_name'],
+            'email' => $_SESSION['INSTALL']['user_email'],
+            'is_active' => TRUE,
+            'redirect' => '',
+            'language_key' => $_SESSION['INSTALL']['language_key'], // Foreign Key dictates that language MUST exist
+            'path' => $userdata_directory, // we created this directory in step 5B above
+            'acl_id' => intval($acl_id),
+            'high_visibility' => $_SESSION['INSTALL']['high_visibility'],
+            'editor' => 'fckeditor'
+            );
+        $user_id = db_insert_into_and_get_id($table,$fields,$key_field);
+        if ($user_id === FALSE) {
+            $params = array('{TABLENAME}' => $DB->prefix.$table,'{ERRNO}' => $DB->errno,'{ERROR}' => $DB->error);
+            $this->messages[] = $this->t('error_insert_into_table',$params);
+            $retval = FALSE;
+        }
+
+        // 6 -- install modules and themes
         $subsystems = array(
             'modules'   => $this->get_manifests(dirname(__FILE__).'/modules'),
             'themes'    => $this->get_manifests(dirname(__FILE__).'/themes'),
@@ -1820,7 +1835,7 @@ class InstallWizard {
                     $this->messages[]= $this->t('warning_no_manifest',array('{ITEM}' => $item));
                     continue;
                 }
-                // 5A -- prepare entry in the corresponding table
+                // 6A -- prepare entry in the corresponding table
                 switch($subsystem) {
                 case 'modules':
                     $fields = array(
@@ -1866,7 +1881,7 @@ class InstallWizard {
                     continue;
                 }
                 $is_active = TRUE; // assume we can successfully install the item
-                // 5B -- maybe insert tables for item
+                // 6B -- maybe insert tables for item
                 if ((isset($manifest['tabledefs'])) && (!empty($manifest['tabledefs']))) {
                     $filename = dirname(__FILE__).'/'.$subsystem.'/'.$item.'/'.$manifest['tabledefs'];
                     if (file_exists($filename)) {
@@ -1876,7 +1891,7 @@ class InstallWizard {
                         }
                     }
                 }
-                // 5C -- maybe install this module or theme
+                // 6C -- maybe install this module or theme
                 if ((isset($manifest['install_script'])) && (!empty($manifest['install_script']))) {
                     $filename = dirname(__FILE__).'/'.$subsystem.'/'.$item.'/'.$manifest['install_script'];
                     if (file_exists($filename)) {
@@ -1890,7 +1905,7 @@ class InstallWizard {
                         }
                     }
                 }
-                // 5D -- indicate everything went well
+                // 6D -- indicate everything went well
                 if ($is_active) {
                     $where = array($key_field => $item_id);
                     $fields = array('is_active' => $is_active);
@@ -1907,9 +1922,9 @@ class InstallWizard {
             } // foreach item
         } // foreach subsystem
 
-        // 6 -- Demodata
+        // 7 -- Demodata
         if ($_SESSION['INSTALL']['cms_demodata']) {
-            // 6A -- prepare essential information for demodata installation
+            // 7A -- prepare essential information for demodata installation
             $demodata_config = array(
                 'language_key'    => $_SESSION['INSTALL']['language_key'],
                 'dir'             => $_SESSION['INSTALL']['cms_dir'],
@@ -1935,7 +1950,7 @@ class InstallWizard {
                 $this->messages[] = $this->t('error_install_demodata');
                 $retval = FALSE;
             }
-            // 6B -- insert demodata for all modules and themes
+            // 7B -- insert demodata for all modules and themes
             foreach($subsystems as $subsystem => $manifests) {
                 foreach ($manifests as $item => $manifest) {
                     $item_demodata = $item.'_demodata';
@@ -1949,7 +1964,7 @@ class InstallWizard {
             }
         }
 
-        // 7 -- Finish with attempt to write config.php
+        // 8 -- Finish with attempt to write config.php
         if ($retval) {
             $_SESSION['INSTALL']['config_php_written'] = $this->write_config_php();
         }

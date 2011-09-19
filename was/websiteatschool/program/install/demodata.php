@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasinstall
- * @version $Id: demodata.php,v 1.8 2011/06/27 15:14:30 pfokker Exp $
+ * @version $Id: demodata.php,v 1.9 2011/09/19 13:57:00 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -895,6 +895,7 @@ function demodata_sections_pages(&$messages,&$config,&$tr) {
         $fields['atime']    = $now;
         $fields['owner_id'] = $user_id;
 
+        // Note: this is the reason we don't have a FK (parent_id) referencing nodes(node_id): 0 is an invalid value
         if ($fields['parent_id'] == $node) { // parent points to self, use 0 as a sentinel
             $fields['parent_id'] = 0;
         } else { // plug in the node_id of the parent node (which we already processed)
