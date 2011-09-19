@@ -41,7 +41,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: mysql.class.php,v 1.5 2011/05/09 19:34:24 pfokker Exp $
+ * @version $Id: mysql.class.php,v 1.6 2011/09/19 10:06:52 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -454,12 +454,18 @@ class DatabaseMysql {
      * Note that this routine takes the level of UTF-8-support into account; for level 3
      * we use charset 'utf8' and for level 4 'utf8mb4' (see also {@link connect()}).
      *
+     * The foreign key constraint is now capable of naming the constraints with a unique
+     * (database wide) symbol. (Cures InnoDB-error 1005 (HY000) errno: 121). This symbol
+     * is the prefixed tabledname followed by either the specified key name or a 1-based
+     * integer uniquemaker per table. 
+     *
      * @param array $tabledef a generic table definition (not database-specific)
      * @return string|bool FALSE on failure or otherwise a string with a CREATE TABLE statement
      * @todo document correct link for documentation of generic table definition 'tabledefs.php'
      * @todo find a way to deal with the enum values: where do we keep them? Or do we keep them at all?
      */
     function create_table_sql($tabledef) {
+        $foreign_keys = 0;
         $sql = '';
         $sql .= 'CREATE TABLE '.$this->prefix.$tabledef['name']." (";
         $comma = '';
@@ -475,28 +481,29 @@ class DatabaseMysql {
             $sql .= ",\n    ";
             switch($keydef['type']) {
             case 'primary':
-                $sql .= 'PRIMARY KEY ('.implode(',',$keydef['fields']).')';
+                // PRIMARY KEY (fieldlist)
+                $sql .= sprintf('PRIMARY KEY (%s)',implode(',',$keydef['fields']));
                 break;
             case 'index':
-                if (isset($keydef['unique']) && ($keydef['unique'])) {
-                    $sql .= 'UNIQUE ';
-                }
-                $sql .= 'INDEX';
-                if (isset($keydef['name'])) {
-                    $sql .= ' '.$keydef['name'];
-                }
-                $sql .= ' ('.implode(',',$keydef['fields']).')';
+                // { UNIQUE | INDEX } [<name>] (fieldlist)
+                $sql .= sprintf('%s %s (%s)',
+                                (isset($keydef['unique']) && ($keydef['unique'])) ? 'UNIQUE' : 'INDEX',
+                                (isset($keydef['name'])) ? $keydef['name'] : '',
+                                implode(',',$keydef['fields']));
                 break;
             case 'foreign':
-                $sql .= 'FOREIGN KEY';
+                // CONSTRAINT <constraint> FOREIGN KEY [<name>] (<fielldlist>) REFERENCES reftable (<reffieldlist>)
                 if (isset($keydef['name'])) {
-                    $sql .= ' '.$keydef['name'];
+                    $index_name = $keydef['name'];
+                    $constraint = sprintf('%s%s_%s',$this->prefix,$tabledef['name'],$index_name);
+                } else {
+                    $index_name = '';
+                    $constraint = sprintf('%s%s_fk%d',$this->prefix,$tabledef['name'],++$foreign_keys);
                 }
-                $sql .= ' ('.implode(',',$keydef['fields']).')';
-                $sql .= ' REFERENCES '.$this->prefix.$keydef['reftable'];
-                if (isset($keydef['reffields'])) {
-                    $sql .= ' ('.implode(',',$keydef['reffields']).')';
-                }
+                $sql .= sprintf('CONSTRAINT %s FOREIGN KEY %s (%s) REFERENCES %s%s (%s)',
+                                $constraint,
+                                $index_name,implode(',',$keydef['fields']),
+                                $this->prefix,$keydef['reftable'],implode(',',$keydef['reffields']));
                 break;
             default:
                 trigger_error('internal error: unknown key type \''.$keydef['type'].'\'',E_USER_ERROR);

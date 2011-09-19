@@ -54,7 +54,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: updatelib.php,v 1.10 2011/09/09 14:29:57 pfokker Exp $
+ * @version $Id: updatelib.php,v 1.11 2011/09/19 10:06:52 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1357,7 +1357,7 @@ function update_core_2011051100(&$output) {
  *  - every utf8mb4 character counts as four bytes never mind the actual content.
  *
  * Note: the limit of 767 bytes stems from a utf8 (or utf8mb3 as it is now called)
- *  string of max. 255 characters and 1 16-bit string length. 255 * 3 + 2 = 767 bytes.
+ * string of max. 255 characters and 1 16-bit string length. 255 * 3 + 2 = 767 bytes.
  * I wonder why UTF-8 wasn't implemented correctly (ie. with 1 to 4 bytes) to begin with and
  * the key limit increased to 4 * 255 + 2 = 1022 bytes. The limited UTF-8 support
  * (only the BMP) now poses substantial problems. Yet another reason to start
@@ -1384,6 +1384,20 @@ function update_core_2011051100(&$output) {
  *
  * The good news is that we are still in beta, so a major change in the data
  * definition is less painful than with hundreds of production servers...
+ *
+ * Another issue is the use of foreign keys. We used to have a FK in the
+ * nodes tabledef along the lines of this construct:
+ * FOREIGN KEY parentnode (parent_id) REFERENCES nodes (node_id);
+ * Upto now this could not possibly have worked with InnoDB because
+ * adding a node would at the top level of an area would not satisfy this
+ * constraint. Since MyISAM silently ignores any foreign key definition
+ * it 'simply works' in that case. So, because this FK must be removed from
+ * earlier installations we need to DROP the FOREIGN KEY. However, since
+ * the whole program never installed using InnoDB, there is no need to drop
+ * this foreign key that wasn't even recorded (in a MyISAM database) in the
+ * first place. The same applies to a number of other FK's too: these are
+ * now removed from the various tabledefs but do no need to be DROPped in
+ * this update routine.
  *
  * What needs to be done here?
  *

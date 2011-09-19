@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_sitemap
- * @version $Id: sitemap_tabledefs.php,v 1.2 2011/05/28 19:20:31 pfokker Exp $
+ * @version $Id: sitemap_tabledefs.php,v 1.3 2011/09/19 10:06:52 pfokker Exp $
  */
 $tabledefs['sitemaps'] = array(
     'name' => 'sitemaps',
@@ -84,20 +84,6 @@ $tabledefs['sitemaps'] = array(
             'fields' => array('node_id'),
             'reftable' => 'nodes',
             'reffields' => array('node_id')
-            ),
-        array(
-            'name' => 'cuser',
-            'type' => 'foreign',
-            'fields' => array('cuser_id'),
-            'reftable' => 'users',
-            'reffields' => array('user_id')
-            ),
-        array(
-            'name' => 'muser',
-            'type' => 'foreign',
-            'fields' => array('muser_id'),
-            'reftable' => 'users',
-            'reffields' => array('user_id')
             )
         )
     );

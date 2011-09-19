@@ -64,7 +64,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasinstall
- * @version $Id: tabledefs.php,v 1.3 2011/09/09 14:29:57 pfokker Exp $
+ * @version $Id: tabledefs.php,v 1.4 2011/09/19 10:06:52 pfokker Exp $
  * @todo automatically create appropriate sequence name for serial fields??? or add seqdefs too?
  */
 if (!defined('WASENTRY')) { die('no entry'); }
@@ -73,6 +73,68 @@ if (!isset($tabledefs)) {
     $tabledefs = array();
 }
 
+/* Note:
+ * The order of table definitions is important
+ * because of foreign key constraints.
+ * Currently the order is as follows:
+ *
+ * TABLE config
+ * TABLE languages
+ * TABLE acls
+ * TABLE users
+ *    FK REFERENCES languages
+ *    FK REFERENCES acls
+ * TABLE groups
+ * TABLE sessions
+ *    FK REFERENCES users
+ * TABLE modules
+ * TABLE themes
+ * TABLE areas
+ *    FK REFERENCES themes
+ * TABLE nodes
+ *    FK REFERENCES areas
+ *    FK REFERENCES modules
+ *    FK REFERENCES sessions
+ * TABLE modules_properties
+ *    FK REFERENCES modules
+ * TABLE themes_properties
+ *    FK REFERENCES themes
+ * TABLE themes_areas_properties
+ *    FK REFERENCES themes
+ *    FK REFERENCES areas
+ * TABLE login_failures
+ * TABLE phrases
+ *    FK REFERENCES languages
+ * TABLE log_messages
+ * TABLE alerts
+ * TABLE alerts_areas_nodes
+ *    FK REFERENCES alerts
+ * TABLE acls_areas
+ *    FK REFERENCES acls
+ *    FK REFERENCES areas
+ * TABLE acls_nodes
+ *    FK REFERENCES acls
+ *    FK REFERENCES nodes
+ * TABLE acls_modules
+ *    FK REFERENCES acls
+ *    FK REFERENCES modules
+ * TABLE acls_modules_areas
+ *    FK REFERENCES acls
+ *    FK REFERENCES modules
+ *    FK REFERENCES areas
+ * TABLE acls_modules_nodes
+ *    FK REFERENCES acls
+ *    FK REFERENCES modules
+ *    FK REFERENCES nodes
+ * TABLE users_properties
+ *    FK REFERENCES users
+ * TABLE groups_capacities
+ *    FK REFERENCES acls
+ * TABLE users_groups_capacities
+ *    FK REFERENCES users
+ *    FK REFERENCES groups
+ *    FK REFERENCES groups_capacities
+ */
 $tabledefs['config'] = array(
     'name' => 'config',
     'comment' => 'global configuration parameters, these end up in the global CFG object',
@@ -122,6 +184,564 @@ $tabledefs['config'] = array(
     'keys' => array(
         array(
             'type' => 'primary',
+            'fields' => array('name')
+            )
+        )
+    );
+$tabledefs['languages'] = array(
+    'name' => 'languages',
+    'comment' => 'this table holds all installed languages',
+    'fields' => array(
+        array(
+            'name' => 'language_key',
+            'type' => 'varchar',
+            'length' => 20,
+            'notnull' => TRUE,
+            'comment' => 'this unique code identifies a particular language (see ISO 639-1:2002 and ISO 639-2:1998)'
+            ),
+        array(
+            'name' => 'parent_language_key',
+            'type' => 'varchar',
+            'length' => 20,
+            'notnull' => FALSE,
+            'comment' => 'this code identifies the language that this language is derived from'
+            ),
+        array(
+            'name' => 'language_name',
+            'type' => 'varchar',
+            'length' => 80,
+            'notnull' => TRUE,
+            'comment' => 'the name of the language expressed in the language itself (English, Nederlands, Deutsch, etc.)'
+            ),
+        array(
+            'name' => 'version',
+            'type' => 'int',
+            'notnull' => TRUE,
+            'comment' => 'the (internal) version of this translation, should match the code version in manifest file'
+            ),
+        array(
+            'name' => 'manifest',
+            'type' => 'varchar',
+            'length' => 80,
+            'notnull' => TRUE,
+            'comment' => 'filename of script that describes the translation, usually <language>_manifest.php'
+            ),
+        array(
+            'name' => 'is_core',
+            'type' => 'bool',
+            'notnull' => TRUE,
+            'default' => FALSE,
+            'comment' => 'if TRUE this language cannot be uninstalled, ie. it is a core-translation'
+            ),
+        array(
+            'name' => 'is_active',
+            'type' => 'bool',
+            'notnull' => TRUE,
+            'default' => TRUE,
+            'comment' => 'only active languages can be used on a site'
+            ),
+        array(
+            'name' => 'dialect_in_database',
+            'type' => 'bool',
+            'notnull' => TRUE,
+            'default' => FALSE,
+            'comment' => 'if TRUE, additional translations are searched for in the phrases table in the database'
+            ),
+        array(
+            'name' => 'dialect_in_file',
+            'type' => 'bool',
+            'notnull' => TRUE,
+            'default' => FALSE,
+            'comment' => 'if TRUE, additional translations are searched for in the data directory'
+            )
+        ),
+    'keys' => array(
+        array(
+            'type' => 'primary',
+            'fields' => array('language_key')
+            ),
+        array(
+            'name' => 'language_name',
+            'type' => 'index',
+            'fields' => array('language_name')
+            )
+        )
+    );
+
+$tabledefs['acls'] = array(
+    'name' => 'acls',
+    'comment' => 'access control lists at the highest level',
+    'fields' => array(
+        array(
+            'name' => 'acl_id',
+            'type' => 'serial',
+            'comment' => 'unique identification of an access control list'
+            ),
+        array(
+            'name' => 'permissions_jobs',
+            'type' => 'int',
+            'default' => 0,
+            'notnull' => TRUE,
+            'comment' => 'bitmapped permissions for administator jobs (access to admin.php)'
+            ),
+        array(
+            'name' => 'permissions_intranet',
+            'type' => 'int',
+            'default' => 0,
+            'notnull' => TRUE,
+            'comment' => 'bitmapped permissions for all current and future private areas'
+            ),
+        array(
+            'name' => 'permissions_modules',
+            'type' => 'int',
+            'default' => 0,
+            'notnull' => TRUE,
+            'comment' => 'bitmapped permissions for all current and future modules in all areas'
+            ),
+        array(
+            'name' => 'permissions_nodes',
+            'type' => 'int',
+            'default' => 0,
+            'notnull' => TRUE,
+            'comment' => 'bitmapped permissions for all current and future nodes and areas (pagemanager)'
+            )
+        ),
+    'keys' => array(
+        array(
+            'type' => 'primary',
+            'fields' => array('acl_id')
+            )
+        )
+    );
+
+$tabledefs['users'] = array(
+    'name' => 'users',
+    'comment' => 'user accounts',
+    'fields' => array(
+        array(
+            'name' => 'user_id',
+            'type' => 'serial',
+            'comment' => 'unique identification of the user'
+            ),
+        array(
+            'name' => 'username',
+            'type' => 'varchar',
+            'length' => 60,
+            'notnull' => TRUE,
+            'comment' => 'the account name, must be unique too'
+            ),
+        array(
+            'name' => 'salt',
+            'type' => 'varchar',
+            'length' => 255,
+            'comment' => 'this is used to salt the password hash'
+            ),
+        array(
+            'name' => 'password_hash',
+            'type' => 'varchar',
+            'length' => '255',
+            'comment' => 'a hash of the combination of salt and the password'
+            ),
+        array(
+            'name' => 'bypass_mode',
+            'type' => 'bool',
+            'notnull' => TRUE,
+            'default' => FALSE,
+            'comment' => 'used for forgotten passwords: FALSE=normal, TRUE=bypass'
+            ),
+        array(
+            'name' => 'bypass_hash',
+            'type' => 'varchar',
+            'length' => '255',
+            'comment' => 'random string (laissez_passer) or new password hash (bypass) in bypass mode'
+            ),
+        array(
+            'name' => 'bypass_expiry',
+            'type' => 'datetime',
+            'notnull' => FALSE,
+            'default' => 'NULL',
+            'comment' => 'contains the time the laissez-passer or bypass expires'
+            ),
+        array(
+            'name' => 'full_name',
+            'type' => 'varchar',
+            'length' => 255,
+            'comment' => 'the first name, infix and last name of this user'
+            ),
+        array(
+            'name' => 'email',
+            'type' => 'varchar',
+            'length' => 255,
+            'comment' => 'the (primary) e-mail address of this user, used to handle \'forgotten password\''
+            ),
+        array(
+            'name' => 'is_active',
+            'type' => 'bool',
+            'notnull' => TRUE,
+            'default' => TRUE,
+            'comment' => 'instead of deleting user accounts, they are made inactive',
+            ),
+        array(
+            'name' => 'redirect',
+            'type' => 'varchar',
+            'length' => 255,
+            'comment' => 'this is where the user goes to after logout, could be \'index.php\'',
+            ), 
+        array(
+            'name' => 'language_key',
+            'type' => 'varchar',
+            'length' => 20,
+            'comment' => 'preferred language'
+            ),
+        array(
+            'name' => 'path',
+            'type' => 'varchar',
+            'length' => 60,
+            'notnull' => TRUE,
+            'comment' => 'the place (subdirectory) to store files for this user, relative to CFG->datadir/users'
+            ),
+        array(
+            'name' => 'acl_id',
+            'type' => 'int',
+            'notnull' => TRUE,
+            'comment' => 'link to acls table, provides access control for this user'
+            ),
+        array(
+            'name' => 'high_visibility',
+            'type' => 'bool',
+            'notnull' => TRUE,
+            'default' => FALSE,
+            'comment' => 'in admin.php an additional stylesheet is included if this is TRUE',
+            ),
+        array(
+            'name' => 'editor',
+            'type' => 'varchar',
+            'length' => 20,
+            'comment' => 'preferred editor'
+            )
+       ),
+    'keys' => array(
+        array(
+            'type' => 'primary',
+            'fields' => array('user_id')
+            ),
+        array(
+            'name' => 'username_index',
+            'type' => 'index',
+            'fields' => array('username'),
+            'unique' => TRUE,
+            'comment' => 'enforce unique usernames'
+            ),
+        array(
+            'name' => 'path_index',
+            'type' => 'index',
+            'fields' => array('path'),
+            'unique' => TRUE,
+            'comment' => 'enforce unique datadirectories too'
+            ),
+        array(
+            'name' => 'language',
+            'type' => 'foreign',
+            'fields' => array('language_key'),
+            'reftable' => 'languages',
+            'reffields' => array('language_key')
+            ),
+        array(
+            'name' => 'acl',
+            'type' => 'foreign',
+            'fields' => array('acl_id'),
+            'reftable' => 'acls',
+            'reffields' => array('acl_id')
+            )
+        )
+    );
+$tabledefs['groups'] = array(
+    'name' => 'groups',
+    'comment' => 'groups are the basis for group/capacity-based access control lists',
+    'fields' => array(
+        array(
+            'name' => 'group_id',
+            'type' => 'serial',
+            'comment' => 'unique identification of the group'
+            ),
+        array(
+            'name' => 'groupname',
+            'type' => 'varchar',
+            'length' => 60,
+            'notnull' => TRUE,
+            'comment' => 'the short groupname, must be unique too'
+            ),
+        array(
+            'name' => 'full_name',
+            'type' => 'varchar',
+            'length' => 255,
+            'comment' => 'the full name/description of this group'
+            ),
+        array(
+            'name' => 'is_active',
+            'type' => 'bool',
+            'notnull' => TRUE,
+            'default' => TRUE,
+            'comment' => 'groups can be made inactive in order to quickly revoke group-based permissions for all group members',
+            ),
+        array(
+            'name' => 'path',
+            'type' => 'varchar',
+            'length' => 60,
+            'notnull' => TRUE,
+            'comment' => 'the place (subdirectory) to store files for this group, relative to CFG->datadir/groups'
+            )
+       ),
+    'keys' => array(
+        array(
+            'type' => 'primary',
+            'fields' => array('group_id')
+            ),
+        array(
+            'name' => 'groupname_index',
+            'type' => 'index',
+            'fields' => array('groupname'),
+            'unique' => TRUE,
+            'comment' => 'enforce unique groupnames'
+            ),
+        array(
+            'name' => 'path_index',
+            'type' => 'index',
+            'fields' => array('path'),
+            'unique' => TRUE,
+            'comment' => 'enforce unique datadirectories too'
+            ),
+        )
+    );
+
+$tabledefs['sessions'] = array(
+    'name' => 'sessions',
+    'comment' => 'this table keeps track of sessions with validated users',
+    'fields' => array(
+        array(
+            'name' => 'session_id',
+            'type' => 'serial',
+            'comment' => 'unique identification of a session'
+            ),
+        array(
+            'name' => 'session_key',
+            'type' => 'varchar',
+            'length' => 172,
+            'default' => '',
+            'comment' => 'contains the unique identifier (\'token\') which is stored in the user\'s cookie'
+            ),
+        array(
+            'name' => 'session_data',
+            'type' => 'longtext',
+            'comment' => 'contains the serialised session data'
+            ),
+        array(
+            'name' => 'user_id',
+            'type' => 'int',
+            'comment' => 'identifies with which user this session is associated'
+            ),
+        array(
+            'name' => 'user_information',
+            'type' => 'varchar',
+            'length' => 255,
+            'comment' => 'holds additional information about this session\'s user, .e.g. IP-address or name',
+            ),
+        array(
+            'name' => 'ctime',
+            'type' => 'datetime',
+            'comment' => 'contains the time the session was created'
+            ),
+        array(
+            'name' => 'atime',
+            'type' => 'datetime',
+            'comment' => 'contains the time the session was last accessed (used for time out)'
+            ),
+        ),
+    'keys' => array(
+        array(
+            'type' => 'primary',
+            'fields' => array('session_id')
+            ),
+        array(
+            'name' => 'sessionkey',
+            'type' => 'index',
+            'fields' => array('session_key'),
+            'unique' => TRUE
+            ),
+        array(
+            'name' => 'loggedinuser',
+            'type' => 'foreign',
+            'fields' => array('user_id'),
+            'reftable' => 'users',
+            'reffields' => array('user_id')
+            )        
+        )
+    );
+
+$tabledefs['modules'] = array(
+    'name' => 'modules',
+    'comment' => 'this table holds the installed modules',
+    'fields' => array(
+        array(
+            'name' => 'module_id',
+            'type' => 'serial',
+            'comment' => 'unique identification of installed modules'
+            ),
+        array(
+            'name' => 'name',
+            'type' => 'varchar',
+            'length' => 80,
+            'notnull' => TRUE,
+            'comment' => 'the name of the module, used as a directory name in /program/modules/'
+            ),
+        array(
+            'name' => 'version',
+            'type' => 'int',
+            'notnull' => TRUE,
+            'comment' => 'the (internal) module version, should match the code version in manifest file'
+            ),
+        array(
+            'name' => 'manifest',
+            'type' => 'varchar',
+            'length' => 80,
+            'notnull' => TRUE,
+            'comment' => 'filename of script that describes the theme, usually <name>_manifest.php'
+            ),
+        array(
+            'name' => 'is_core',
+            'type' => 'bool',
+            'notnull' => TRUE,
+            'default' => FALSE,
+            'comment' => 'if TRUE this module cannot be uninstalled, ie. it is a core-module'
+            ),
+        array(
+            'name' => 'is_active',
+            'type' => 'bool',
+            'notnull' => TRUE,
+            'default' => TRUE,
+            'comment' => 'only active modules can be used on a site'
+            ),
+        array(
+            'name' => 'has_acls',
+            'type' => 'bool',
+            'notnull' => TRUE,
+            'default' => FALSE,
+            'comment' => 'TRUE means that this module uses acls to regulate access'
+            ),
+        array(
+            'name' => 'view_script',
+            'type' => 'varchar',
+            'length' => 80,
+            'comment' => 'this script contains code to display the content of the module to the website visitor'
+            ),
+        array(
+            'name' => 'admin_script',
+            'type' => 'varchar',
+            'length' => 80,
+            'comment' => 'this script handles module administration'
+            ),
+        array(
+            'name' => 'search_script',
+            'type' => 'varchar',
+            'length' => 80,
+            'comment' => 'this script handles searching through the content of this module'
+            ),
+        array(
+            'name' => 'cron_script',
+            'type' => 'varchar',
+            'length' => 80,
+            'comment' => 'this script handles recurring tasks in combination with cron_interval and cron_next'
+            ),
+        array(
+            'name' => 'cron_interval',
+            'type' => 'int',
+            'comment' => 'minimum number of minutes between calls to this cronjob'
+            ),
+        array(
+            'name' => 'cron_next',
+            'type' => 'datetime',
+            'comment' => 'when do we need to call the cronjob again'
+            )
+        ),
+    'keys' => array(
+        array(
+            'type' => 'primary',
+            'fields' => array('module_id')
+            ),
+        array(
+            'name' => 'modulename_index',
+            'type' => 'index',
+            'unique' => TRUE,
+            'fields' => array('name')
+            )
+        )
+    );
+
+$tabledefs['themes'] = array(
+    'name' => 'themes',
+    'comment' => 'this table holds the installed themes',
+    'fields' => array(
+        array(
+            'name' => 'theme_id',
+            'type' => 'serial',
+            'comment' => 'unique identification of installed themes'
+            ),
+        array(
+            'name' => 'name',
+            'type' => 'varchar',
+            'length' => 80,
+            'notnull' => TRUE,
+            'comment' => 'the name of the theme, used as a directory name in /program/themes/'
+            ),
+        array(
+            'name' => 'version',
+            'type' => 'int',
+            'notnull' => TRUE,
+            'comment' => 'the (internal) theme version, should match the code version in manifest file'
+            ),
+        array(
+            'name' => 'manifest',
+            'type' => 'varchar',
+            'length' => 80,
+            'notnull' => TRUE,
+            'comment' => 'filename of script that describes the theme, usually <name>_manifest.php'
+            ),
+        array(
+            'name' => 'is_core',
+            'type' => 'bool',
+            'notnull' => TRUE,
+            'default' => FALSE,
+            'comment' => 'if TRUE this theme cannot be uninstalled, ie. it is a core-theme'
+            ),
+        array(
+            'name' => 'is_active',
+            'type' => 'bool',
+            'default' => TRUE,
+            'notnull' => TRUE,
+            'comment' => 'only active themes can be used on a site'
+            ),
+        array(
+            'name' => 'class',
+            'type' => 'varchar',
+            'length' => 80,
+            'comment' => 'the name of the class that needs to be instantiated'
+            ),
+        array(
+            'name' => 'class_file',
+            'type' => 'varchar',
+            'length' => 80,
+            'comment' => 'the name of the file that holds the class definition'
+            )
+        ),
+    'keys' => array(
+        array(
+            'type' => 'primary',
+            'fields' => array('theme_id')
+            ),
+        array(
+            'name' => 'themename_index',
+            'type' => 'index',
+            'unique' => TRUE,
             'fields' => array('name')
             )
         )
@@ -215,32 +835,18 @@ $tabledefs['areas'] = array(
             'fields' => array('area_id')
             ),
         array(
-            'name' => 'theme',
-            'type' => 'foreign',
-            'fields' => array('theme_id'),
-            'reftable' => 'themes',
-            'reffields' => array('theme_id')
-            ),
-        array(
-            'name' => 'cuser',
-            'type' => 'foreign',
-            'fields' => array('cuser_id'),
-            'reftable' => 'users',
-            'reffields' => array('user_id')
-            ),
-        array(
-            'name' => 'muser',
-            'type' => 'foreign',
-            'fields' => array('muser_id'),
-            'reftable' => 'users',
-            'reffields' => array('user_id')
-            ),
-        array(
             'name' => 'path_index',
             'type' => 'index',
             'fields' => array('path'),
             'unique' => TRUE,
             'comment' => 'enforce unique data directories'
+            ),
+        array(
+            'name' => 'theme',
+            'type' => 'foreign',
+            'fields' => array('theme_id'),
+            'reftable' => 'themes',
+            'reffields' => array('theme_id')
             )
         )
     );
@@ -417,18 +1023,17 @@ $tabledefs['nodes'] = array(
             'fields' => array('node_id')
             ),
         array(
+            'name' => 'area_index',
+            'type' => 'index',
+            'fields' => array('area_id'),
+            'comment' => 'hint for quick selections based on area_id'
+            ),
+        array(
             'name' => 'area',
             'type' => 'foreign',
             'fields' => array('area_id'),
             'reftable' => 'areas',
             'reffields' => array('area_id')
-            ),
-        array(
-            'name' => 'parentnode',
-            'type' => 'foreign',
-            'fields' => array('parent_id'),
-            'reftable' => 'nodes',
-            'reffields' => array('node_id')
             ),
         array(
             'name' => 'module',
@@ -438,127 +1043,14 @@ $tabledefs['nodes'] = array(
             'reffields' => array('module_id')
             ),
         array(
-            'name' => 'owner',
-            'type' => 'foreign',
-            'fields' => array('owner_id'),
-            'reftable' => 'users',
-            'reffields' => array('user_id')
-            ),
-        array(
             'name' => 'locked',
             'type' => 'foreign',
             'fields' => array('locked_by_session_id'),
             'reftable' => 'sessions',
             'reffields' => array('session_id')
-            ),
-        array(
-            'name' => 'area_index',
-            'type' => 'index',
-            'fields' => array('area_id'),
-            'comment' => 'hint for quick selections based on area_id'
             )
         )
     );
-
-$tabledefs['modules'] = array(
-    'name' => 'modules',
-    'comment' => 'this table holds the installed modules',
-    'fields' => array(
-        array(
-            'name' => 'module_id',
-            'type' => 'serial',
-            'comment' => 'unique identification of installed modules'
-            ),
-        array(
-            'name' => 'name',
-            'type' => 'varchar',
-            'length' => 80,
-            'notnull' => TRUE,
-            'comment' => 'the name of the module, used as a directory name in /program/modules/'
-            ),
-        array(
-            'name' => 'version',
-            'type' => 'int',
-            'notnull' => TRUE,
-            'comment' => 'the (internal) module version, should match the code version in manifest file'
-            ),
-        array(
-            'name' => 'manifest',
-            'type' => 'varchar',
-            'length' => 80,
-            'notnull' => TRUE,
-            'comment' => 'filename of script that describes the theme, usually <name>_manifest.php'
-            ),
-        array(
-            'name' => 'is_core',
-            'type' => 'bool',
-            'notnull' => TRUE,
-            'default' => FALSE,
-            'comment' => 'if TRUE this module cannot be uninstalled, ie. it is a core-module'
-            ),
-        array(
-            'name' => 'is_active',
-            'type' => 'bool',
-            'notnull' => TRUE,
-            'default' => TRUE,
-            'comment' => 'only active modules can be used on a site'
-            ),
-        array(
-            'name' => 'has_acls',
-            'type' => 'bool',
-            'notnull' => TRUE,
-            'default' => FALSE,
-            'comment' => 'TRUE means that this module uses acls to regulate access'
-            ),
-        array(
-            'name' => 'view_script',
-            'type' => 'varchar',
-            'length' => 80,
-            'comment' => 'this script contains code to display the content of the module to the website visitor'
-            ),
-        array(
-            'name' => 'admin_script',
-            'type' => 'varchar',
-            'length' => 80,
-            'comment' => 'this script handles module administration'
-            ),
-        array(
-            'name' => 'search_script',
-            'type' => 'varchar',
-            'length' => 80,
-            'comment' => 'this script handles searching through the content of this module'
-            ),
-        array(
-            'name' => 'cron_script',
-            'type' => 'varchar',
-            'length' => 80,
-            'comment' => 'this script handles recurring tasks in combination with cron_interval and cron_next'
-            ),
-        array(
-            'name' => 'cron_interval',
-            'type' => 'int',
-            'comment' => 'minimum number of minutes between calls to this cronjob'
-            ),
-        array(
-            'name' => 'cron_next',
-            'type' => 'datetime',
-            'comment' => 'when do we need to call the cronjob again'
-            )
-        ),
-    'keys' => array(
-        array(
-            'type' => 'primary',
-            'fields' => array('module_id')
-            ),
-        array(
-            'name' => 'modulename_index',
-            'type' => 'index',
-            'unique' => TRUE,
-            'fields' => array('name')
-            )
-        )
-    );
-
 
 $tabledefs['modules_properties'] = array(
     'name' => 'modules_properties',
@@ -623,92 +1115,20 @@ $tabledefs['modules_properties'] = array(
             'fields' => array('module_property_id')
             ),
         array(
+            'name' => 'module_index',
+            'type' => 'index',
+            'fields' => array('module_id'),
+            'comment' => 'hint for quick selections based on module_id'
+            ),
+        array(
             'name' => 'module',
             'type' => 'foreign',
             'fields' => array('module_id'),
             'reftable' => 'modules',
             'reffields' => array('module_id')
-            ),
-        array(
-            'name' => 'module_index',
-            'type' => 'index',
-            'fields' => array('module_id'),
-            'comment' => 'hint for quick selections based on module_id'
             )
         )
     );
-
-
-$tabledefs['themes'] = array(
-    'name' => 'themes',
-    'comment' => 'this table holds the installed themes',
-    'fields' => array(
-        array(
-            'name' => 'theme_id',
-            'type' => 'serial',
-            'comment' => 'unique identification of installed themes'
-            ),
-        array(
-            'name' => 'name',
-            'type' => 'varchar',
-            'length' => 80,
-            'notnull' => TRUE,
-            'comment' => 'the name of the theme, used as a directory name in /program/themes/'
-            ),
-        array(
-            'name' => 'version',
-            'type' => 'int',
-            'notnull' => TRUE,
-            'comment' => 'the (internal) theme version, should match the code version in manifest file'
-            ),
-        array(
-            'name' => 'manifest',
-            'type' => 'varchar',
-            'length' => 80,
-            'notnull' => TRUE,
-            'comment' => 'filename of script that describes the theme, usually <name>_manifest.php'
-            ),
-        array(
-            'name' => 'is_core',
-            'type' => 'bool',
-            'notnull' => TRUE,
-            'default' => FALSE,
-            'comment' => 'if TRUE this theme cannot be uninstalled, ie. it is a core-theme'
-            ),
-        array(
-            'name' => 'is_active',
-            'type' => 'bool',
-            'default' => TRUE,
-            'notnull' => TRUE,
-            'comment' => 'only active themes can be used on a site'
-            ),
-        array(
-            'name' => 'class',
-            'type' => 'varchar',
-            'length' => 80,
-            'comment' => 'the name of the class that needs to be instantiated'
-            ),
-        array(
-            'name' => 'class_file',
-            'type' => 'varchar',
-            'length' => 80,
-            'comment' => 'the name of the file that holds the class definition'
-            )
-        ),
-    'keys' => array(
-        array(
-            'type' => 'primary',
-            'fields' => array('theme_id')
-            ),
-        array(
-            'name' => 'themename_index',
-            'type' => 'index',
-            'unique' => TRUE,
-            'fields' => array('name')
-            )
-        )
-    );
-
 
 $tabledefs['themes_properties'] = array(
     'name' => 'themes_properties',
@@ -773,17 +1193,17 @@ $tabledefs['themes_properties'] = array(
             'fields' => array('theme_property_id')
             ),
         array(
+            'name' => 'theme_index',
+            'type' => 'index',
+            'fields' => array('theme_id'),
+            'comment' => 'hint for quick selections based on theme_id'
+            ),
+        array(
             'name' => 'theme',
             'type' => 'foreign',
             'fields' => array('theme_id'),
             'reftable' => 'themes',
             'reffields' => array('theme_id')
-            ),
-        array(
-            'name' => 'theme_index',
-            'type' => 'index',
-            'fields' => array('theme_id'),
-            'comment' => 'hint for quick selections based on theme_id'
             )
         )
     );
@@ -857,20 +1277,6 @@ $tabledefs['themes_areas_properties'] = array(
             'fields' => array('theme_area_property_id')
             ),
         array(
-            'name' => 'theme',
-            'type' => 'foreign',
-            'fields' => array('theme_id'),
-            'reftable' => 'themes',
-            'reffields' => array('theme_id')
-            ),
-        array(
-            'name' => 'area',
-            'type' => 'foreign',
-            'fields' => array('area_id'),
-            'reftable' => 'nodes',
-            'reffields' => array('area_id')
-            ),
-        array(
             'name' => 'theme_index',
             'type' => 'index',
             'fields' => array('theme_id'),
@@ -881,235 +1287,20 @@ $tabledefs['themes_areas_properties'] = array(
             'type' => 'index',
             'fields' => array('area_id'),
             'comment' => 'hint for quick selections based on area_id'
-            )
-        )
-    );
-
-
-
-$tabledefs['users'] = array(
-    'name' => 'users',
-    'comment' => 'user accounts',
-    'fields' => array(
-        array(
-            'name' => 'user_id',
-            'type' => 'serial',
-            'comment' => 'unique identification of the user'
             ),
         array(
-            'name' => 'username',
-            'type' => 'varchar',
-            'length' => 60,
-            'notnull' => TRUE,
-            'comment' => 'the account name, must be unique too'
-            ),
-        array(
-            'name' => 'salt',
-            'type' => 'varchar',
-            'length' => 255,
-            'comment' => 'this is used to salt the password hash'
-            ),
-        array(
-            'name' => 'password_hash',
-            'type' => 'varchar',
-            'length' => '255',
-            'comment' => 'a hash of the combination of salt and the password'
-            ),
-        array(
-            'name' => 'bypass_mode',
-            'type' => 'bool',
-            'notnull' => TRUE,
-            'default' => FALSE,
-            'comment' => 'used for forgotten passwords: FALSE=normal, TRUE=bypass'
-            ),
-        array(
-            'name' => 'bypass_hash',
-            'type' => 'varchar',
-            'length' => '255',
-            'comment' => 'random string (laissez_passer) or new password hash (bypass) in bypass mode'
-            ),
-        array(
-            'name' => 'bypass_expiry',
-            'type' => 'datetime',
-            'notnull' => FALSE,
-            'default' => 'NULL',
-            'comment' => 'contains the time the laissez-passer or bypass expires'
-            ),
-        array(
-            'name' => 'full_name',
-            'type' => 'varchar',
-            'length' => 255,
-            'comment' => 'the first name, infix and last name of this user'
-            ),
-        array(
-            'name' => 'email',
-            'type' => 'varchar',
-            'length' => 255,
-            'comment' => 'the (primary) e-mail address of this user, used to handle \'forgotten password\''
-            ),
-        array(
-            'name' => 'is_active',
-            'type' => 'bool',
-            'notnull' => TRUE,
-            'default' => TRUE,
-            'comment' => 'instead of deleting user accounts, they are made inactive',
-            ),
-        array(
-            'name' => 'redirect',
-            'type' => 'varchar',
-            'length' => 255,
-            'comment' => 'this is where the user goes to after logout, could be \'index.php\'',
-            ), 
-        array(
-            'name' => 'language_key',
-            'type' => 'varchar',
-            'length' => 20,
-            'comment' => 'preferred language'
-            ),
-        array(
-            'name' => 'path',
-            'type' => 'varchar',
-            'length' => 60,
-            'notnull' => TRUE,
-            'comment' => 'the place (subdirectory) to store files for this user, relative to CFG->datadir/users'
-            ),
-        array(
-            'name' => 'acl_id',
-            'type' => 'int',
-            'notnull' => TRUE,
-            'comment' => 'link to acls table, provides access control for this user'
-            ),
-        array(
-            'name' => 'high_visibility',
-            'type' => 'bool',
-            'notnull' => TRUE,
-            'default' => FALSE,
-            'comment' => 'in admin.php an additional stylesheet is included if this is TRUE',
-            ),
-        array(
-            'name' => 'editor',
-            'type' => 'varchar',
-            'length' => 20,
-            'comment' => 'preferred editor'
-            )
-       ),
-    'keys' => array(
-        array(
-            'type' => 'primary',
-            'fields' => array('user_id')
-            ),
-        array(
-            'name' => 'language',
+            'name' => 'theme',
             'type' => 'foreign',
-            'fields' => array('language_key'),
-            'reftable' => 'languages',
-            'reffields' => array('language_key')
+            'fields' => array('theme_id'),
+            'reftable' => 'themes',
+            'reffields' => array('theme_id')
             ),
         array(
-            'name' => 'acl',
+            'name' => 'area',
             'type' => 'foreign',
-            'fields' => array('acl_id'),
-            'reftable' => 'acls',
-            'reffields' => array('acl_id')
-            ),
-        array(
-            'name' => 'username_index',
-            'type' => 'index',
-            'fields' => array('username'),
-            'unique' => TRUE,
-            'comment' => 'enforce unique usernames'
-            ),
-        array(
-            'name' => 'path_index',
-            'type' => 'index',
-            'fields' => array('path'),
-            'unique' => TRUE,
-            'comment' => 'enforce unique datadirectories too'
-            )
-        )
-    );
-
-$tabledefs['users_properties'] = array(
-    'name' => 'users_properties',
-    'comment' => 'provides users properties grouped per section',
-    'fields' => array(
-        array(
-            'name' => 'user_property_id',
-            'type' => 'serial',
-            'comment' => 'unique identification of the user-property combination'
-            ),
-        array(
-            'name' => 'user_id',
-            'type' => 'int',
-            'notnull' => TRUE,
-            'comment' => 'link to users table'
-            ),
-        array(
-            'name' => 'section',
-            'type' => 'varchar',
-            'length' => 80,
-            'notnull' => TRUE,
-            'comment' => 'keeps related properties grouped together, e.g. in a separate tab'
-            ),
-        array(
-            'name' => 'name', 
-            'type' => 'varchar', 
-            'length' => 80, 
-            'notnull' => TRUE,
-            'comment' => 'the name of the configuration parameter'
-            ),
-        array(
-            'name' => 'type',
-            'type' => 'enum',
-            'notnull' => TRUE,
-            'default' => 's',
-            'enum_values' => array('b','c','d','dt','f','i','l','r','s','t'),
-            'length' => 2,
-            'comment' => 'parameter type: b=bool, c=checklist, d=date, dt=date/time, f=float(double), i=int, l=list, r=radio, s=string, t=time'
-            ),
-        array(
-            'name' => 'value', 
-            'type' => 'text', 
-            'notnull' => FALSE,
-            'comment' => 'string representation of parameter value OR a comma-delimited list of values in case of a checklist'
-            ),
-        array(
-            'name' => 'extra',
-            'type' => 'text', 
-            'notnull' => FALSE,
-            'comment' => 'a semicolon-delimited list of name=value pairs with additional dialog/validation information, e.g. maxlength=80 or options=true,false,filenotfound'
-            ),
-        array(
-            'name' => 'sort_order',
-            'type' => 'int',
-            'notnull' => TRUE,
-            'default' => 10,
-            'comment' => 'this determines the order in which parameters are presented when editing the configuration'
-            ),
-        array(
-            'name' => 'description', 
-            'type' => 'text', 
-            'notnull' => FALSE,
-            'comment' => 'an optional short explanation of the purpose of this parameter (in English, for internal use only)'
-            )
-        ),
-    'keys' => array(
-        array(
-            'type' => 'primary',
-            'fields' => array('user_property_id')
-            ),
-        array(
-            'name' => 'user',
-            'type' => 'foreign',
-            'fields' => array('user_id'),
-            'reftable' => 'users',
-            'reffields' => array('user_id')
-            ),
-        array(
-            'name' => 'user_index',
-            'type' => 'index',
-            'fields' => array('user_id'),
-            'comment' => 'hint for quick selections based on user_id'
+            'fields' => array('area_id'),
+            'reftable' => 'areas',
+            'reffields' => array('area_id')
             )
         )
     );
@@ -1170,150 +1361,6 @@ $tabledefs['login_failures'] = array(
         )
     );
 
-$tabledefs['sessions'] = array(
-    'name' => 'sessions',
-    'comment' => 'this table keeps track of sessions with validated users',
-    'fields' => array(
-        array(
-            'name' => 'session_id',
-            'type' => 'serial',
-            'comment' => 'unique identification of a session'
-            ),
-        array(
-            'name' => 'session_key',
-            'type' => 'varchar',
-            'length' => 172,
-            'default' => '',
-            'comment' => 'contains the unique identifier (\'token\') which is stored in the user\'s cookie'
-            ),
-        array(
-            'name' => 'session_data',
-            'type' => 'longtext',
-            'comment' => 'contains the serialised session data'
-            ),
-        array(
-            'name' => 'user_id',
-            'type' => 'int',
-            'comment' => 'identifies with which user this session is associated'
-            ),
-        array(
-            'name' => 'user_information',
-            'type' => 'varchar',
-            'length' => 255,
-            'comment' => 'holds additional information about this session\'s user, .e.g. IP-address or name',
-            ),
-        array(
-            'name' => 'ctime',
-            'type' => 'datetime',
-            'comment' => 'contains the time the session was created'
-            ),
-        array(
-            'name' => 'atime',
-            'type' => 'datetime',
-            'comment' => 'contains the time the session was last accessed (used for time out)'
-            ),
-        ),
-    'keys' => array(
-        array(
-            'type' => 'primary',
-            'fields' => array('session_id')
-            ),
-        array(
-            'name' => 'loggedinuser',
-            'type' => 'foreign',
-            'fields' => array('user_id'),
-            'reftable' => 'users',
-            'reffields' => array('user_id')
-            ),
-        array(
-            'name' => 'sessionkey',
-            'type' => 'index',
-            'fields' => array('session_key'),
-            'unique' => TRUE
-            )        
-        )
-    );
-
-$tabledefs['languages'] = array(
-    'name' => 'languages',
-    'comment' => 'this table holds all installed languages',
-    'fields' => array(
-        array(
-            'name' => 'language_key',
-            'type' => 'varchar',
-            'length' => 20,
-            'notnull' => TRUE,
-            'comment' => 'this unique code identifies a particular language (see ISO 639-1:2002 and ISO 639-2:1998)'
-            ),
-        array(
-            'name' => 'parent_language_key',
-            'type' => 'varchar',
-            'length' => 20,
-            'notnull' => FALSE,
-            'comment' => 'this code identifies the language that this language is derived from'
-            ),
-        array(
-            'name' => 'language_name',
-            'type' => 'varchar',
-            'length' => 80,
-            'notnull' => TRUE,
-            'comment' => 'the name of the language expressed in the language itself (English, Nederlands, Deutsch, etc.)'
-            ),
-        array(
-            'name' => 'version',
-            'type' => 'int',
-            'notnull' => TRUE,
-            'comment' => 'the (internal) version of this translation, should match the code version in manifest file'
-            ),
-        array(
-            'name' => 'manifest',
-            'type' => 'varchar',
-            'length' => 80,
-            'notnull' => TRUE,
-            'comment' => 'filename of script that describes the translation, usually <language>_manifest.php'
-            ),
-        array(
-            'name' => 'is_core',
-            'type' => 'bool',
-            'notnull' => TRUE,
-            'default' => FALSE,
-            'comment' => 'if TRUE this language cannot be uninstalled, ie. it is a core-translation'
-            ),
-        array(
-            'name' => 'is_active',
-            'type' => 'bool',
-            'notnull' => TRUE,
-            'default' => TRUE,
-            'comment' => 'only active languages can be used on a site'
-            ),
-        array(
-            'name' => 'dialect_in_database',
-            'type' => 'bool',
-            'notnull' => TRUE,
-            'default' => FALSE,
-            'comment' => 'if TRUE, additional translations are searched for in the phrases table in the database'
-            ),
-        array(
-            'name' => 'dialect_in_file',
-            'type' => 'bool',
-            'notnull' => TRUE,
-            'default' => FALSE,
-            'comment' => 'if TRUE, additional translations are searched for in the data directory'
-            )
-        ),
-    'keys' => array(
-        array(
-            'type' => 'primary',
-            'fields' => array('language_key')
-            ),
-        array(
-            'name' => 'language_name',
-            'type' => 'index',
-            'fields' => array('language_name')
-            )
-        )
-    );
-
 $tabledefs['phrases'] = array(
     'name' => 'phrases',
     'comment' => 'this table can contain localised (dialect) phrases in addition to static language files',
@@ -1358,19 +1405,18 @@ $tabledefs['phrases'] = array(
             'fields' => array('phrase_id')
             ),
         array(
-            'name' => 'language',
-            'type' => 'foreign',
-            'fields' => array('language_key'),
-            'reftable' => 'languages',
-            'reffields' => array('language_key')
-            ),
-        array(
             'name' => 'language_domain_phrase',
             'type' => 'index',
             'fields' => array('language_key','domain','phrase_key'),
             'unique' => TRUE
             ),
-        
+        array(
+            'name' => 'language',
+            'type' => 'foreign',
+            'fields' => array('language_key'),
+            'reftable' => 'languages',
+            'reffields' => array('language_key')
+            )        
         )
     );
 
@@ -1530,52 +1576,6 @@ $tabledefs['alerts_areas_nodes'] = array(
         )
     );
 
-$tabledefs['acls'] = array(
-    'name' => 'acls',
-    'comment' => 'access control lists at the highest level',
-    'fields' => array(
-        array(
-            'name' => 'acl_id',
-            'type' => 'serial',
-            'comment' => 'unique identification of an access control list'
-            ),
-        array(
-            'name' => 'permissions_jobs',
-            'type' => 'int',
-            'default' => 0,
-            'notnull' => TRUE,
-            'comment' => 'bitmapped permissions for administator jobs (access to admin.php)'
-            ),
-        array(
-            'name' => 'permissions_intranet',
-            'type' => 'int',
-            'default' => 0,
-            'notnull' => TRUE,
-            'comment' => 'bitmapped permissions for all current and future private areas'
-            ),
-        array(
-            'name' => 'permissions_modules',
-            'type' => 'int',
-            'default' => 0,
-            'notnull' => TRUE,
-            'comment' => 'bitmapped permissions for all current and future modules in all areas'
-            ),
-        array(
-            'name' => 'permissions_nodes',
-            'type' => 'int',
-            'default' => 0,
-            'notnull' => TRUE,
-            'comment' => 'bitmapped permissions for all current and future nodes and areas (pagemanager)'
-            )
-        ),
-    'keys' => array(
-        array(
-            'type' => 'primary',
-            'fields' => array('acl_id')
-            )
-        )
-    );
-
 $tabledefs['acls_areas'] = array(
     'name' => 'acls_areas',
     'comment' => 'access control lists at the area level',
@@ -1683,7 +1683,7 @@ $tabledefs['acls_nodes'] = array(
             'name' => 'node',
             'type' => 'foreign',
             'fields' => array('node_id'),
-            'reftable' => 'areas',
+            'reftable' => 'nodes',
             'reffields' => array('node_id')
             )
 
@@ -1730,7 +1730,7 @@ $tabledefs['acls_modules'] = array(
             'name' => 'module',
             'type' => 'foreign',
             'fields' => array('module_id'),
-            'reftable' => 'areas',
+            'reftable' => 'modules',
             'reffields' => array('module_id')
             )
 
@@ -1783,7 +1783,7 @@ $tabledefs['acls_modules_areas'] = array(
             'name' => 'module',
             'type' => 'foreign',
             'fields' => array('module_id'),
-            'reftable' => 'areas',
+            'reftable' => 'modules',
             'reffields' => array('module_id')
             ),
         array(
@@ -1842,7 +1842,7 @@ $tabledefs['acls_modules_nodes'] = array(
             'name' => 'module',
             'type' => 'foreign',
             'fields' => array('module_id'),
-            'reftable' => 'areas',
+            'reftable' => 'modules',
             'reffields' => array('module_id')
             ),
         array(
@@ -1855,62 +1855,88 @@ $tabledefs['acls_modules_nodes'] = array(
         )
     );
 
-$tabledefs['groups'] = array(
-    'name' => 'groups',
-    'comment' => 'groups are the basis for group/capacity-based access control lists',
+$tabledefs['users_properties'] = array(
+    'name' => 'users_properties',
+    'comment' => 'provides users properties grouped per section',
     'fields' => array(
         array(
-            'name' => 'group_id',
+            'name' => 'user_property_id',
             'type' => 'serial',
-            'comment' => 'unique identification of the group'
+            'comment' => 'unique identification of the user-property combination'
             ),
         array(
-            'name' => 'groupname',
-            'type' => 'varchar',
-            'length' => 60,
+            'name' => 'user_id',
+            'type' => 'int',
             'notnull' => TRUE,
-            'comment' => 'the short groupname, must be unique too'
+            'comment' => 'link to users table'
             ),
         array(
-            'name' => 'full_name',
+            'name' => 'section',
             'type' => 'varchar',
-            'length' => 255,
-            'comment' => 'the full name/description of this group'
+            'length' => 80,
+            'notnull' => TRUE,
+            'comment' => 'keeps related properties grouped together, e.g. in a separate tab'
             ),
         array(
-            'name' => 'is_active',
-            'type' => 'bool',
+            'name' => 'name', 
+            'type' => 'varchar', 
+            'length' => 80, 
             'notnull' => TRUE,
-            'default' => TRUE,
-            'comment' => 'groups can be made inactive in order to quickly revoke group-based permissions for all group members',
+            'comment' => 'the name of the configuration parameter'
             ),
         array(
-            'name' => 'path',
-            'type' => 'varchar',
-            'length' => 60,
+            'name' => 'type',
+            'type' => 'enum',
             'notnull' => TRUE,
-            'comment' => 'the place (subdirectory) to store files for this group, relative to CFG->datadir/groups'
+            'default' => 's',
+            'enum_values' => array('b','c','d','dt','f','i','l','r','s','t'),
+            'length' => 2,
+            'comment' => 'parameter type: b=bool, c=checklist, d=date, dt=date/time, f=float(double), i=int, l=list, r=radio, s=string, t=time'
+            ),
+        array(
+            'name' => 'value', 
+            'type' => 'text', 
+            'notnull' => FALSE,
+            'comment' => 'string representation of parameter value OR a comma-delimited list of values in case of a checklist'
+            ),
+        array(
+            'name' => 'extra',
+            'type' => 'text', 
+            'notnull' => FALSE,
+            'comment' => 'a semicolon-delimited list of name=value pairs with additional dialog/validation information, e.g. maxlength=80 or options=true,false,filenotfound'
+            ),
+        array(
+            'name' => 'sort_order',
+            'type' => 'int',
+            'notnull' => TRUE,
+            'default' => 10,
+            'comment' => 'this determines the order in which parameters are presented when editing the configuration'
+            ),
+        array(
+            'name' => 'description', 
+            'type' => 'text', 
+            'notnull' => FALSE,
+            'comment' => 'an optional short explanation of the purpose of this parameter (in English, for internal use only)'
             )
-       ),
+        ),
     'keys' => array(
         array(
             'type' => 'primary',
-            'fields' => array('group_id')
+            'fields' => array('user_property_id')
             ),
         array(
-            'name' => 'groupname_index',
+            'name' => 'user_index',
             'type' => 'index',
-            'fields' => array('groupname'),
-            'unique' => TRUE,
-            'comment' => 'enforce unique groupnames'
+            'fields' => array('user_id'),
+            'comment' => 'hint for quick selections based on user_id'
             ),
         array(
-            'name' => 'path_index',
-            'type' => 'index',
-            'fields' => array('path'),
-            'unique' => TRUE,
-            'comment' => 'enforce unique datadirectories too'
-            ),
+            'name' => 'user',
+            'type' => 'foreign',
+            'fields' => array('user_id'),
+            'reftable' => 'users',
+            'reffields' => array('user_id')
+            )
         )
     );
 
@@ -1960,7 +1986,6 @@ $tabledefs['groups_capacities'] = array(
         )
     );
 
-
 $tabledefs['users_groups_capacities'] = array(
     'name' => 'users_groups_capacities',
     'comment' => 'this table establishes the group memberships of users and the exact capacity (0 means nonmember)',
@@ -1991,6 +2016,12 @@ $tabledefs['users_groups_capacities'] = array(
             'fields' => array('user_id','group_id')
             ),
         array(
+            'name' => 'group_index',
+            'type' => 'index',
+            'fields' => array('group_id'),
+            'comment' => 'hint for quick selections based on group_id'
+            ),
+        array(
             'name' => 'user',
             'type' => 'foreign',
             'fields' => array('user_id'),
@@ -2004,12 +2035,6 @@ $tabledefs['users_groups_capacities'] = array(
             'reftable' => 'groups',
             'reffields' => array('group_id'),
             'comment' => 'group is a reserved word hence the name group_fk'
-            ),
-        array(
-            'name' => 'group_index',
-            'type' => 'index',
-            'fields' => array('group_id'),
-            'comment' => 'hint for quick selections based on group_id'
             ),
         array(
             'name' => 'groupcapacity',

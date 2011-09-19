@@ -1,6 +1,21 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.72 2011/09/09 14:29:56 pfokker Exp $
+$Id: CHANGES.txt,v 1.73 2011/09/19 10:06:52 pfokker Exp $
 -------------------------------------------------------------------------------
+
+2011-09-19
+- [tabledefs.php] Removed the foreign key constraint for nodes.owner_id.
+- [tabledefs.php] Removed the foreign key constraint for areas.cuser_id.
+- [tabledefs.php] Removed the foreign key constraint for areas.muser_id.
+- [htmlpage_tabledefs.php] Removed the foreign key constraint for htmlpages.cuser_id.
+- [htmlpage_tabledefs.php] Removed the foreign key constraint for htmlpages.muser_id.
+- [sitemap_tabledefs.php] Removed the foreign key constraint for sitemaps.cuser_id.
+- [sitemap_tabledefs.php] Removed the foreign key constraint for sitemaps.muser_id.
+- [guestbook_tabledefs.php] Removed the foreign key constraint for m_guestbooks.cuser_id.
+- [guestbook_tabledefs.php] Removed the foreign key constraint for m_guestbooks.muser_id.
+- [mysql_class.php] Improved/streamlined create_table_sql()
+
+2011-09-16
+- [tabledefs.php] Removed the foreign key constraint for nodes.parent_id.
 
 2011-09-09
 - Resized several fields in database to stay within MySQL/InnoDB key
