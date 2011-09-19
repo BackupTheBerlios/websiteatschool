@@ -64,7 +64,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasinstall
- * @version $Id: tabledefs.php,v 1.4 2011/09/19 10:06:52 pfokker Exp $
+ * @version $Id: tabledefs.php,v 1.5 2011/09/19 18:23:00 pfokker Exp $
  * @todo automatically create appropriate sequence name for serial fields??? or add seqdefs too?
  */
 if (!defined('WASENTRY')) { die('no entry'); }
@@ -994,8 +994,9 @@ $tabledefs['nodes'] = array(
         array(
             'name' => 'module_id',
             'type' => 'int',
-            'notnull' => TRUE,
-            'comment' => 'this connects to the module or addon that generates the actual node content'
+            'notnull' => FALSE,
+            'default' => NULL,
+            'comment' => 'this connects to the module generating actual node content; NULL for sections'
             ),
         array(
             'name' => 'auxiliary',

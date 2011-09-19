@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: pagemanager.class.php,v 1.6 2011/05/31 19:01:49 pfokker Exp $
+ * @version $Id: pagemanager.class.php,v 1.7 2011/09/19 18:23:00 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1030,7 +1030,7 @@ class PageManager {
             'is_hidden' => $hidden,
             'embargo' => ($embargo) ? '9999-12-31 23:59:59' : $now,
             'sort_order' => $this->calculate_new_sort_order($this->tree,$this->area_id,$parent_id),
-            'module_id' => ($is_page) ? intval($dialogdef['node_module_id']['value']) : 0,
+            'module_id' => ($is_page) ? intval($dialogdef['node_module_id']['value']) : NULL,
             'owner_id' => $USER->user_id,
             'ctime' => $now,
             'atime' => $now,

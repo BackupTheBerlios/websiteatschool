@@ -1,5 +1,5 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.74 2011/09/19 13:57:00 pfokker Exp $
+$Id: CHANGES.txt,v 1.75 2011/09/19 18:23:00 pfokker Exp $
 -------------------------------------------------------------------------------
 
 2011-09-19
@@ -15,6 +15,8 @@ $Id: CHANGES.txt,v 1.74 2011/09/19 13:57:00 pfokker Exp $
 - [mysql_class.php] Improved/streamlined create_table_sql()
 - [install.php] and [demodata.php]: adjusted the order of things so we
   do not violate FK constraints on initial install
+- Fixed FK constraint in nodes.module_id by allowing NULL values in
+  case of a section; adapted pagemanager too.
 
 2011-09-16
 - [tabledefs.php] Removed the foreign key constraint for nodes.parent_id.
