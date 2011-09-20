@@ -1,5 +1,5 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.77 2011/09/20 11:54:46 pfokker Exp $
+$Id: CHANGES.txt,v 1.78 2011/09/20 12:30:23 pfokker Exp $
 -------------------------------------------------------------------------------
 
 2011-09-20
@@ -9,6 +9,8 @@ $Id: CHANGES.txt,v 1.77 2011/09/20 11:54:46 pfokker Exp $
 - fixed two warning messages (E_STRICT) by explicitly defining objects
   $CFG and $PERFORMANCE to be of type stdClass (/index.php, /admin.php,
   /file.php, /cron.php, /program/init.php).
+- [areamanager.class.php] fixed error in deletion of area (unknown
+  table 'user_areas', see also 2009-12-03)
 
 2011-09-19
 - [tabledefs.php] Removed the foreign key constraint for nodes.owner_id.

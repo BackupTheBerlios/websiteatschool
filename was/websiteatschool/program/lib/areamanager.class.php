@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: areamanager.class.php,v 1.3 2011/09/09 14:29:57 pfokker Exp $
+ * @version $Id: areamanager.class.php,v 1.4 2011/09/20 12:30:24 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -457,8 +457,8 @@ class AreaManager {
             if (isset($_POST['button_delete'])) {
                 $error_count = 0;
                 $where = array('area_id' => $area_id);
-                // clean up a bunch of tables associated with this area
-                $tables = array('themes_areas_properties','users_areas','alerts_areas_nodes','areas');
+                // clean up a bunch of tables associated with this area in the correct order (to satisfy FK constraints)
+                $tables = array('themes_areas_properties','alerts_areas_nodes','acls_areas','acls_modules_areas','areas');
                 // db_start_transaction();
                 foreach($tables as $table) {
                     $retval = db_delete($table,$where);
