@@ -1,6 +1,12 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.75 2011/09/19 18:23:00 pfokker Exp $
+$Id: CHANGES.txt,v 1.76 2011/09/20 10:21:48 pfokker Exp $
 -------------------------------------------------------------------------------
+
+2011-09-20
+- [updatelib.php] Incorporated changes to nodes.modules_id in upgrade routine.
+- version.php: bumped internal version from '2011051100' to '2011092100' in
+  preparation for the upcoming release '0.90.3'. 
+
 
 2011-09-19
 - [tabledefs.php] Removed the foreign key constraint for nodes.owner_id.

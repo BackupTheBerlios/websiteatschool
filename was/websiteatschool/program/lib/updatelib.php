@@ -54,7 +54,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: updatelib.php,v 1.11 2011/09/19 10:06:52 pfokker Exp $
+ * @version $Id: updatelib.php,v 1.12 2011/09/20 10:21:49 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -959,7 +959,7 @@ function update_core_version(&$output,$version) {
     } else {
         $CFG->version = $version;
         $output->add_message(t('update_core_success','admin',array('{VERSION}' => strval($CFG->version))));
-        logger(sprintf('%s(): core upgraded to version %s',__FUNCTION__,strval($CFG->version)),LOG_DEBUG);
+        logger(sprintf('%s(): core upgraded to version %s',__FUNCTION__,strval($CFG->version)));
     }
     return $retval;
 } // update_core_version()
@@ -1324,7 +1324,7 @@ function update_core_2011051100(&$output) {
         // through a long converstion (at worst we do 1 table per round) Eventually the conversion will be complete...
         $sql = sprintf('ALTER TABLE `%s` DEFAULT CHARSET %s COLLATE %s',$table['Name'],$charset,$collation);
         if ($DB->exec($sql) === FALSE) {
-            $msg = sprintf('%s(): cannot alter \'%s\' with \'%s\': %d/%s; baling out',
+            $msg = sprintf('%s(): cannot alter \'%s\' with \'%s\': %d/%s; bailing out',
                            __FUNCTION__,$table['Name'],$sql,$DB->errno,$DB->error);
             logger($msg);
             $output->add_message(htmlspecialchars($msg));
@@ -1636,14 +1636,24 @@ function update_core_2011092100(&$output) {
             'length' => 80,
             'notnull' => TRUE,
             'comment' => 'keeps related properties grouped together, e.g. in a separate tab'
+            ),
+        'nodes:module_id' => array(
+            'name' => 'module_id',
+            'type' => 'int',
+            'notnull' => FALSE,
+            'default' => NULL,
+            'comment' => 'this connects to the module generating actual node content; NULL for sections'
             )
         );
 
     //
-    // 1 -- check existing data for strings that are too long
+    // 1 -- check existing data for strings that are too long (only the varchar fields)
     //
     $errors = 0;
     foreach($alterdefs as $table_field => $fielddef) {
+        if ($fielddef['type'] != 'varchar') {
+            continue;
+        }
         list($table,$field) = explode(':',$table_field);
         $length = $fielddef['length'];
         $where = sprintf('CHAR_LENGTH(%s) > %d',$field,$length);
@@ -1677,26 +1687,49 @@ function update_core_2011092100(&$output) {
     }
 
     //
-    // 2 -- actually change the table definitions
+    // 2 -- actually change the table definitions (both varchar and int)
     //
     $overtime = max(intval(ini_get('max_execution_time')),30); // additional processing time in seconds
     foreach($alterdefs as $table_field => $fielddef) {
         list($table,$field) = explode(':',$table_field);
-        $length = $fielddef['length'];
         $sql = sprintf('ALTER TABLE `%s%s` CHANGE %s %s',$DB->prefix,$table,$field,$DB->column_definition($fielddef));
         if ($DB->exec($sql) === FALSE) {
-            $msg = sprintf('%s(): cannot alter \'%s\' with \'%s\': %d/%s; baling out',
+            $msg = sprintf('%s(): cannot alter \'%s\' with \'%s\': %d/%s; bailing out',
                            __FUNCTION__,$table,$sql,$DB->errno,$DB->error);
             logger($msg);
             $output->add_message(htmlspecialchars($msg));
             $output->add_message(t('update_core_error','admin',array('{VERSION}' => strval($version))));
             return FALSE;
         } else {
-            logger(sprintf('%s(): alter table \'%s\' field \'%s\': changed type to varchar(%d)',
-                           __FUNCTION__,$table,$field,$length),LOG_DEBUG);
+            if ($fielddef['type'] == 'varchar') {
+                $msg = sprintf('changed type to varchar(%d)',$fielddef['length']);
+            } else {
+                $msg = 'changed \'notnull\' and \'default\' properties'; // there is only nodes.modules_id here...
+            }
+            logger(sprintf('%s(): alter table \'%s\' field \'%s\': %s',__FUNCTION__,$table,$field,$msg),LOG_DEBUG);
         }
         @set_time_limit($overtime); // try to get additional processing time after every processed table
     }
+
+    //
+    // 3 -- adjust existing data for nodes.module_id
+    //
+    $table = 'nodes';
+    $fields = array('module_id' => NULL);
+    $where = array('module_id' => 0);
+    if (($retval = db_update($table,$fields,$where)) === FALSE) {
+        $msg = sprintf('%s(): cannot update \'%s\': %d/%s; bailing out',__FUNCTION__,$table,$sql,$DB->errno,$DB->error);
+        logger($msg);
+        $output->add_message(htmlspecialchars($msg));
+        $output->add_message(t('update_core_error','admin',array('{VERSION}' => strval($version))));
+        return FALSE;
+    } else {
+        logger(sprintf('%s(): update field \'nodes.module_id\': %d rows affected',__FUNCTION__,$retval),LOG_DEBUG);
+    }
+
+    //
+    // 4 -- all done: bump version in database
+    //
     return update_core_version($output,$version);
 } // update_core_2011092100()
 
