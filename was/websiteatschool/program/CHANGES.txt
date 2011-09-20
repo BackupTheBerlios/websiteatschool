@@ -1,5 +1,5 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.78 2011/09/20 12:30:23 pfokker Exp $
+$Id: CHANGES.txt,v 1.79 2011/09/20 15:27:14 pfokker Exp $
 -------------------------------------------------------------------------------
 
 2011-09-20
@@ -11,6 +11,9 @@ $Id: CHANGES.txt,v 1.78 2011/09/20 12:30:23 pfokker Exp $
   /file.php, /cron.php, /program/init.php).
 - [areamanager.class.php] fixed error in deletion of area (unknown
   table 'user_areas', see also 2009-12-03)
+- [usermanager.class.php] Streamlined deletion of user account;
+  renamed routine and user records are now deleted in the correct order.
+  
 
 2011-09-19
 - [tabledefs.php] Removed the foreign key constraint for nodes.owner_id.

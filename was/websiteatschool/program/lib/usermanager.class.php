@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: usermanager.class.php,v 1.3 2011/09/09 14:29:57 pfokker Exp $
+ * @version $Id: usermanager.class.php,v 1.4 2011/09/20 15:27:14 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -796,7 +796,7 @@ class UserManager {
         if ((isset($_POST['button_delete'])) &&
             (isset($_POST['dialog'])) && ($_POST['dialog'] == USERMANAGER_DIALOG_DELETE)) {
             $params = $this->get_user_names($user_id); // pick up name before it is gone
-            if (($retval = $this->delete_user_acl($user_id)) === FALSE) {
+            if (($retval = $this->delete_user_records($user_id)) === FALSE) {
                 $this->output->add_message(t('usermanager_delete_user_failure','admin',$params));
             } else {
                 $this->output->add_message(t('usermanager_delete_user_success','admin',$params));
@@ -1345,56 +1345,46 @@ class UserManager {
     } // get_options_available_groups_capacities()
 
 
-
-
-
-
     /** remove all records relating to a single acl_id from various acl-tables
      *
-     * this bluntly removes all records from the various acls* tables for the acl_id of this user
-     * and subsequently other records associated with this user.
+     * this bluntly removes all records from the various user-related  tables for user $user_id.
      * Whenever there's an error deleting records, the routine bails out immediately and returns FALSE.
      * If all goes well, TRUE is returned. Any errors are logged, success is logged to DEBUG-log.
+     *
+     * Note that the order of deletion is important: we must first get rid of the foreign key constraints.
      *
      * @param int $user_id the key to the user account to delete
      * @return bool TRUE on success, FALSE on failure
      */
-    function delete_user_acl($user_id) {
+    function delete_user_records($user_id) {
         $user_id = intval($user_id);
-        //
+
         // 1 -- which ACL to delete?
-        //
-        $acl_id = $this->calc_acl_id($user_id);
-        if ($acl_id === FALSE) {
-            logger("delete_user_acl(): error retrieving acl_id for user '$user_id': ".db_errormessage());
+        if (($acl_id = $this->calc_acl_id($user_id)) === FALSE) {
             return FALSE;
         }
 
-        //
-        // 2 -- get rid of all ACL-data for this user
-        //
-        $tables = array('acls_areas','acls_nodes','acls_modules_areas','acls_modules_nodes','acls_modules','acls');
-        $where = array('acl_id' => intval($acl_id));
-        $message = sprintf("delete_user_acl(acl_id=%d) rows: ",$acl_id);
-        foreach($tables as $table) {
-            if (($rowcount = db_delete($table,$where)) === FALSE) {
-                $message .= sprintf(" '%s': FAILED. I'm outta here (%s)",$table,db_errormessage());
-                logger($message);
-                return FALSE;
-            } else {
-                $message .= sprintf(" '%s':%d",$table,$rowcount);
-            }
-        }
-        logger($message,LOG_DEBUG);
+        // 2 -- make list of tables and where-clauses to process (order is important due to FK constraints)...
+        $where_acl_id = array('acl_id' => intval($acl_id));
+        $where_user_id = array('user_id' => $user_id);
+        $table_wheres = array(
+            'sessions'                => $where_user_id,
+            'users_properties'        => $where_user_id,
+            'users_groups_capacities' => $where_user_id,
+            'acls_areas'              => $where_acl_id,
+            'acls_nodes'              => $where_acl_id,
+            'acls_modules_areas'      => $where_acl_id,
+            'acls_modules_nodes'      => $where_acl_id,
+            'acls_modules'            => $where_acl_id,
+            'users'                   => $where_user_id,
+            'acls'                    => $where_acl_id);
 
-        //
-        // 3 -- get rid of other data associated with this user
-        //
-        $tables = array('users_groups_capacities','users_properties','users');
-        $message = sprintf("delete_user_acl(user_id=%d) rows: ",$user_id);
-        $where = array('user_id' => $user_id);
-        foreach($tables as $table) {
+        // 3 -- ...and step through the list
+        $message = sprintf('%s.%s(): user_id=%d,acl_id=%d:',__CLASS__,__FUNCTION__,$user_id,$acl_id);
+        // start transaction here
+        foreach($table_wheres as $table => $where) {
             if (($rowcount = db_delete($table,$where)) === FALSE) {
+                // rollback transaction here
                 $message .= sprintf(" '%s': FAILED. I'm outta here (%s)",$table,db_errormessage());
                 logger($message);
                 return FALSE;
@@ -1402,9 +1392,11 @@ class UserManager {
                 $message .= sprintf(" '%s':%d",$table,$rowcount);
             }
         }
+        // commit transaction here
         logger($message,LOG_DEBUG);
         return TRUE;
-    } // delete_user_acl()
+    } // delete_user_records()
+
 
     /** show the user menu with current option highlighted
      *
