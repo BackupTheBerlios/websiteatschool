@@ -26,7 +26,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: main_admin.php,v 1.5 2011/07/31 13:13:13 pfokker Exp $
+ * @version $Id: main_admin.php,v 1.6 2011/09/20 11:54:46 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -107,7 +107,6 @@ function main_admin() {
     global $CFG;
     global $LANGUAGE;
     global $USER;
-    global $PERFORMANCE;
 
     /** initialise, setup database, read configuration, etc. */
     require_once($CFG->progdir.'/init.php');

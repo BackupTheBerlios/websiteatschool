@@ -33,7 +33,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: init.php,v 1.4 2011/06/25 13:34:19 pfokker Exp $
+ * @version $Id: init.php,v 1.5 2011/09/20 11:54:46 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -58,6 +58,7 @@ function initialise() {
      * @global object $PERFORMANCE
      */
     global $PERFORMANCE;
+    $PERFORMANCE = new stdClass;
     $PERFORMANCE->time_start = microtime();
 
     /** the maximum number of iterations in database loops (prevent circular reference) */

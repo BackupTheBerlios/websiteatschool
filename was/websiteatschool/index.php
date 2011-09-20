@@ -35,7 +35,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: index.php,v 1.2 2011/02/03 14:04:01 pfokker Exp $
+ * @version $Id: index.php,v 1.3 2011/09/20 11:54:46 pfokker Exp $
  */
 /** Valid entry points define WASENTRY; prevents direct access to include()'s. */
 define('WASENTRY',__FILE__);
@@ -47,6 +47,7 @@ if (file_exists('maintenance.html')) {
 
 if (file_exists(dirname(WASENTRY).'/config.php')) {
     unset($CFG); /* prevent tricks with stray globals */
+    $CFG = new stdClass;
     require_once(dirname(WASENTRY).'/config.php');
 } else {
     die('condition code 010');
