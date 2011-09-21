@@ -27,7 +27,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasinstall
- * @version $Id: install.php,v 1.12 2011/09/19 13:57:00 pfokker Exp $
+ * @version $Id: install.php,v 1.13 2011/09/21 09:19:45 pfokker Exp $
  * @todo how prevent third party-access to install.php after initial install? .htaccess? !exists(../config.php)? 
  * @todo we should make sure that autosession is disabled in php.ini, otherwise was won't work
  * @todo we should make sure that register globals is off
@@ -3514,6 +3514,43 @@ class InstallWizard {
      * provides full support. This routine makes the distinction between fully supported
      * (GIF: Yes), reading but not writing (GIF: Readonly) and not supported (GIF: No).
      * 
+     * There is an issue with the return value of gd_info(). Here are two real world examples:
+     *
+     * PHP 4.3.6 (Linux):
+     * gdinfo = Array (
+     *     [GD Version] => bundled (2.0.22 compatible)
+     *     [FreeType Support] => 1
+     *     [FreeType Linkage] => with freetype
+     *     [T1Lib Support] => 
+     *     [GIF Read Support] => 1
+     *     [GIF Create Support] => 
+     *     [JPG Support] => 1
+     *     [PNG Support] => 1
+     *     [WBMP Support] => 1
+     *     [XBM Support] => 1
+     *     [JIS-mapped Japanese Font Support] => 
+     *     )
+     *
+     * PHP 5.3.5 (XAMPP):
+     * gdinfo = Array (
+     *     [GD Version] => bundled (2.0.34 compatible)
+     *     [FreeType Support] => 1
+     *     [FreeType Linkage] => with freetype
+     *     [T1Lib Support] => 
+     *     [GIF Read Support] => 1
+     *     [GIF Create Support] => 1
+     *     [JPEG Support] => 1
+     *     [PNG Support] => 1
+     *     [WBMP Support] => 1
+     *     [XPM Support] => 
+     *     [XBM Support] => 1
+     *     [JIS-mapped Japanese Font Support] => 
+     *     )
+     *
+     * Note the subtle difference between 'JPG Support' and 'JPEG Support'. Checking for the first one
+     * of those yields a PHP Notice: "Undefined index: JPG Support (...)" in the second installation. *sigh*
+     * We work around it with isset(), on _all_ elements of gdinfo() to be certain.
+     * 
      * @param string &$details returns detailed information about GD version and supported file formats
      * @return bool TRUE if at least one file format is fully supported, FALSE otherwise
      */
@@ -3523,12 +3560,13 @@ class InstallWizard {
             return FALSE;
         }
         $gdinfo = gd_info();
-        $gif_support_read = ($gdinfo['GIF Read Support']) ? TRUE : FALSE;
-        $gif_support_write = ($gdinfo['GIF Create Support']) ? TRUE : FALSE;
-        $jpeg_support = ($gdinfo['JPG Support']) ? TRUE : FALSE;
-        $png_support = ($gdinfo['PNG Support']) ? TRUE : FALSE;
+        $gif_support_read = ((isset($gdinfo['GIF Read Support'])) && ($gdinfo['GIF Read Support'])) ? TRUE : FALSE;
+        $gif_support_write = ((isset($gdinfo['GIF Create Support'])) && ($gdinfo['GIF Create Support'])) ? TRUE : FALSE;
+        $jpeg_support = ((isset($gdinfo['JPG Support'])) && ($gdinfo['JPG Support'])) ? TRUE : FALSE;
+        $jpeg_support = ((isset($gdinfo['JPEG Support'])) && ($gdinfo['JPEG Support'])) ? TRUE : $jpeg_support;
+        $png_support = ((isset($gdinfo['PNG Support'])) && ($gdinfo['PNG Support'])) ? TRUE : FALSE;
 
-        $params = array('{VERSION}' => $gdinfo['GD Version'],
+        $params = array('{VERSION}' => (isset($gdinfo['GD Version'])) ? $gdinfo['GD Version'] : 'unknown',
                         '{GIF}' => ($gif_support_read) ? ($gif_support_write) ? $this->t('yes') : 
                                    $this->t('compatibility_gd_support_gif_readonly') : $this->t('no'),
                         '{JPG}' => ($jpeg_support) ? $this->t('yes') : $this->t('no'),
