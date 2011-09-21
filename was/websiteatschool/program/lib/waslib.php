@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: waslib.php,v 1.10 2011/09/09 14:29:57 pfokker Exp $
+ * @version $Id: waslib.php,v 1.11 2011/09/21 15:54:48 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1936,5 +1936,52 @@ function get_friendly_parameter($name,$default_value=NULL,$force=FALSE) {
     }
     return (isset($parameters[$name])) ? $parameters[$name] : $default_value;
 } // get_friendly_parameter()
+
+
+
+/** determine whether a directory if empty (free from (user)files)
+ *
+ * this scans the directory $CFG->datadir.$path to see if it is empty,
+ * i.e. does not contain any (user)files. Returns TRUE if empty, FALSE otherwise.
+ * The (user) files we look at are those that are not filtered out:
+ * - . and .. (directory housekeeping)
+ * - index.html of 0 bytes ('protects' directory from prying eyes)
+ * - symbolic links
+ * - thumbnails (filenames starting with THUMBNAIL_PREFIX)
+ * This filtering is the same as that in the file manager (see {@link filemanager.class.php}).  
+ *
+ * @param string $path the directory path relative to $CFG->datadir, e.g. '/areas/exemplum' or '/users/acackl'
+ * @return bool TRUE if no (user)files or subdirectories exist in $path, FALSE otherwise
+ */
+function datadir_is_empty($path) {
+    global $CFG;
+    $retval = TRUE; // assume success
+    $full_path = $CFG->datadir.$path;
+    if (($handle = @opendir($full_path)) === FALSE) {
+        logger(sprintf("%s(): cannot open directory '%s'",__FUNCTION__,$path));
+        return FALSE;
+    }
+    while (($entryname = readdir($handle)) !== FALSE) {
+        $full_entryname = $full_path.'/'.$entryname;
+        if (($entryname == '.') || ($entryname == '..') || (is_link($full_entryname))) {
+            continue;
+        } elseif (is_file($full_entryname)) {
+            $filesize = filesize($full_entryname);
+            if ((($entryname == 'index.html') && ($filesize == 0)) ||
+                (substr($entryname,0,strlen(THUMBNAIL_PREFIX)) == THUMBNAIL_PREFIX)) {
+                continue;
+            } else {
+                $retval = FALSE;
+                break;
+            }
+        } elseif (is_dir($full_entryname)) {
+            $retval = FALSE;
+            break;
+        }
+    }
+    @closedir($handle);
+    return $retval;
+} // datadir_is_empty()
+
 
 ?>

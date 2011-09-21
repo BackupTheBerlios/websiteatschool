@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: admin.php,v 1.8 2011/09/09 14:29:56 pfokker Exp $
+ * @version $Id: admin.php,v 1.9 2011/09/21 15:56:18 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -769,6 +769,8 @@ $string['usermanager_delete_user_breadcrumb'] = 'wissen';
 $string['usermanager_delete_user_user'] = '{FULL_NAME} ({USERNAME})';
 $string['usermanager_delete_user_success'] = 'Gebruikersaccount {USERNAME} ({FULL_NAME}) gewist';
 $string['usermanager_delete_user_failure'] = 'Er waren problemen bij het wissen van het account {USERNAME} ({FULL_NAME})';
+$string['usermanager_delete_user_dir_not_empty'] = 'De datamap van {FULL_NAME} ({USERNAME}) is nog niet leeg. Verwijder eerst de bestanden en submappen.';
+$string['usermanager_delete_user_not_self'] = 'U kunt uw eigen gebruikersaccount niet wissen';
 
 
 $string['menu_user_basic'] =  'Basiseigenschapen';

@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: usermanager.class.php,v 1.4 2011/09/20 15:27:14 pfokker Exp $
+ * @version $Id: usermanager.class.php,v 1.5 2011/09/21 15:55:22 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -45,6 +45,9 @@ class UserManager {
     /** @var bool if TRUE the calling routing is allowed to use the menu area (e.g. show account mgr menu) */
     var $show_parent_menu = FALSE;
 
+    /** @var array used to cache user records keyed by user_id */
+    var $users = array();
+
     /** construct a UserManager object
      *
      * This initialises the UserManager and also dispatches the task to do.
@@ -56,64 +59,25 @@ class UserManager {
         global $CFG;
         $this->output = &$output;
         $this->output->set_helptopic('usermanager');
+        $this->users = array();
+
         require_once($CFG->progdir.'/lib/loginlib.php');
 
         $task = get_parameter_string('task',TASK_USERS);
         switch($task) {
-        case TASK_USERS:
-            $this->users_overview();
-            break;
-
-        case TASK_USER_ADD:
-            $this->user_add();
-            break;
-
-        case TASK_USER_SAVE_NEW:
-            $this->user_savenew();
-            break;
-
-        case TASK_USER_DELETE:
-            $this->user_delete();
-            break;
-
-        case TASK_USER_EDIT:
-            $this->user_edit();
-            break;
-
-        case TASK_USER_SAVE:
-            $this->user_save();
-            break;
-
-        case TASK_USER_GROUPS:
-            $this->user_groups();
-            break;
-
-        case TASK_USER_GROUPADD:
-            $this->user_groupadd();
-            break;
-
-        case TASK_USER_GROUPSAVE:
-            $this->user_groupsave();
-            break;
-
-        case TASK_USER_GROUPDELETE:
-            $this->user_groupdelete();
-            break;
-
-        case TASK_USER_INTRANET:
-            $this->user_intranet();
-            break;
-
-        case TASK_USER_ADMIN:
-            $this->user_admin();
-            break;
-
-        case TASK_USER_PAGEMANAGER:
-            $this->user_pagemanager();
-            break;
-
-
-
+        case TASK_USERS:            $this->users_overview();   break;
+        case TASK_USER_ADD:         $this->user_add();         break;
+        case TASK_USER_SAVE_NEW:    $this->user_savenew();     break;
+        case TASK_USER_DELETE:      $this->user_delete();      break;
+        case TASK_USER_EDIT:        $this->user_edit();        break;
+        case TASK_USER_SAVE:        $this->user_save();        break;
+        case TASK_USER_GROUPS:      $this->user_groups();      break;
+        case TASK_USER_GROUPADD:    $this->user_groupadd();    break;
+        case TASK_USER_GROUPSAVE:   $this->user_groupsave();   break;
+        case TASK_USER_GROUPDELETE: $this->user_groupdelete(); break;
+        case TASK_USER_INTRANET:    $this->user_intranet();    break;
+        case TASK_USER_ADMIN:       $this->user_admin();       break;
+        case TASK_USER_PAGEMANAGER: $this->user_pagemanager(); break;
         case TASK_USER_ADVANCED:
         case TASK_USER_TREEVIEW:
         case TASK_USER_MODULE:
@@ -123,14 +87,14 @@ class UserManager {
             break;
 
         default:
-            $s = (strlen($task) <= 50) ? $task : substr($task,0,44).' (...)';
+            $s = (utf8_strlen($task) <= 50) ? $task : utf8_substr($task,0,44).' (...)';
             $message = t('task_unknown','admin',array('{TASK}' => htmlspecialchars($s)));
             $output->add_message($message);
             logger('usermanager: unknown task: '.htmlspecialchars($s));
             $this->users_overview();
             break;
         }
-    }
+    } // UserManager()
 
     function show_parent_menu() {
         return $this->show_parent_menu;
@@ -753,8 +717,8 @@ class UserManager {
 
     /** delete a user after confirmation
      *
-     * this either presents a confirmation dialog to the user OR deletes a user with
-     * associated acls.
+     * after some basic tests this either presents a confirmation dialog to the user OR
+     * deletes a user with associated acls and other records.
      *
      * Note that this routine could have been split into two routines, with the
      * first one displaying the confirmation dialog and the second one 'saving the changes'.
@@ -762,20 +726,24 @@ class UserManager {
      * the name of 'saving'. So, I decided to use the same routine for both displaying
      * the dialog and acting on the dialog.
      *
+     * Note that the (user)files should be removed before the account can be removed,
+     * see {@link datadir_is_empty()}. It is up to the user or the admin to remove those files.
+     *
+     * A special test is performed to prevent users from killing their own account (which would
+     * immediately kick them out of admin.php never to be seen again). 
+     *
      * @return void results are returned as output in $this->output
-     * @todo should we also require the user to delete any files associated with the user before we even consider
-     *       deleting it? Or is is OK to leave the files and still delete the user. Food for thought.
      * @todo since multiple tables are involved, shouldn't we use transaction/rollback/commit?
      *       Q: How well is MySQL suited for transactions? A: Mmmmm.... Which version? Which storage engine?
      */
     function user_delete() {
-        global $WAS_SCRIPT_NAME,$DB;
+        global $WAS_SCRIPT_NAME,$DB,$USER;
         //
         // 0 -- sanity check
         //
         $user_id = get_parameter_int('user',NULL);
         if (is_null($user_id)) {
-            logger("usermanager->user_delete(): unspecified parameter user");
+            logger(sprintf("%s.%s(): unspecified parameter user",__CLASS__,__FUNCTION__));
             $this->output->add_message(t('error_invalid_parameters','admin'));
             $this->users_overview();
             return;
@@ -790,8 +758,33 @@ class UserManager {
             return;
         }
 
+        // 2A -- do not allow the user to commit suicide
+        if (intval($USER->user_id) == intval($user_id)) {
+            logger(sprintf("%s.%s(): user attempts to kill her own user account",__CLASS__,__FUNCTION__));
+            $this->output->add_message(t('usermanager_delete_user_not_self','admin'));
+            $this->users_overview();
+            return;
+        }
+
+
+        // 2B -- are there any files left in this user's private storage $CFG->datadir.'/users/'.$userpath?
+        if (($user = $this->get_user_record($user_id)) === FALSE) {
+            return FALSE;
+        }
+        $path = '/users/'.$user['path'];
+        if (!datadir_is_empty($path)) {
+            // At this point we know there are still files associated with this
+            // user in the data directory. This is a show stopper; it is up to the
+            //  admin requesting this delete to get rid of the files first (eg via File Manager)
+            logger(sprintf("%s.%s(): data directory '%s' not empty",__CLASS__,__FUNCTION__,$path));
+            $params = $this->get_user_names($user_id); // pick up username
+            $this->output->add_message(t('usermanager_delete_user_dir_not_empty','admin',$params));
+            $this->users_overview();
+            return;
+        }
+
         //
-        // 2 -- user has confirmed delete?
+        // 3 -- user has confirmed delete?
         //
         if ((isset($_POST['button_delete'])) &&
             (isset($_POST['dialog'])) && ($_POST['dialog'] == USERMANAGER_DIALOG_DELETE)) {
@@ -1939,8 +1932,7 @@ class UserManager {
 
         $user_id = intval($user_id);
         // 1 -- retrieve data from users-record
-        $user = db_select_single_record('users','*',array('user_id' => $user_id));
-        if ($user === FALSE) {
+        if (($user = $this->get_user_record($user_id)) === FALSE) {
             return FALSE;
         }
         $params = array(
@@ -2081,7 +2073,9 @@ class UserManager {
      * @return array with ready-to-use information
      */
     function get_user_names($user_id) {
-        $record  = db_select_single_record('users',array('username','full_name'),array('user_id' => intval($user_id)));
+        if (($record = $this->get_user_record($user_id)) === FALSE) {
+            return FALSE;
+        }
         return array('{USERNAME}' => $record['username'],'{FULL_NAME}' => $record['full_name']);
     } // get_user_names()
 
@@ -2128,13 +2122,13 @@ class UserManager {
     } // has_job_permission()
 
 
+    /** determine the acl_id for user user_id
+     *
+     * @param int $user_id identifies the user record of interest
+     * @return bool|int acl_id on success, FALSE on error
+     */
     function calc_acl_id($user_id) {
-        $table = 'users';
-        $field = 'acl_id';
-        $where = array('user_id' => intval($user_id));
-        if (($record = db_select_single_record($table,$field,$where)) === FALSE) {
-            logger("usermanager: cannot retrieve 'acl_id' for user '$user_id': ".db_errormessage());
-            $this->output->add_message(t('error_retrieving_data','admin'));
+        if (($record = $this->get_user_record($user_id)) === FALSE) {
             return FALSE;
         }
         return intval($record['acl_id']);
@@ -2151,6 +2145,31 @@ class UserManager {
         return $fname;
     } // get_fname()
 
+
+    /** retrieve a single user's record possibly from the cache
+     *
+     * @param int $user_id identifies the user record
+     * @param bool $forced if TRUE unconditionally fetch the record from the database 
+     * @return bool|array FALSE if there were errors, the user record otherwise
+     */
+    function get_user_record($user_id,$forced=FALSE) {
+        $user_id = intval($user_id);
+        if ((!isset($this->users[$user_id])) || ($forced)) {
+            $table = 'users';
+            $fields = '*';
+            $where = array('user_id' => $user_id);
+            if (($record = db_select_single_record($table,$fields,$where)) === FALSE) {
+                logger(sprintf("%s.%s(): cannot retrieve record for user '%d': %s",
+                               __CLASS__,__FUNCTION__,$user_id,db_errormessage()));
+                $this->output->add_message(t('error_retrieving_data','admin'));
+
+                return FALSE;
+            } else {
+                $this->users[$user_id] = $record;
+            }
+        }
+        return (isset($this->users[$user_id])) ? $this->users[$user_id] : FALSE;
+    } // get_user_record()           
 
     /** manipulate the current state if indicator(s) for 'open' and 'closed' areas
      * 

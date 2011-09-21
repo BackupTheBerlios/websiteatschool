@@ -37,7 +37,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: admin.php,v 1.9 2011/09/09 14:29:56 pfokker Exp $
+ * @version $Id: admin.php,v 1.10 2011/09/21 15:56:18 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -867,6 +867,8 @@ $string['usermanager_delete_user_breadcrumb'] = 'delete';
 $string['usermanager_delete_user_user'] = '{FULL_NAME} ({USERNAME})';
 $string['usermanager_delete_user_success'] = 'Success deleting user {USERNAME} ({FULL_NAME})';
 $string['usermanager_delete_user_failure'] = 'There were errors deleting user {USERNAME} ({FULL_NAME})';
+$string['usermanager_delete_user_dir_not_empty'] = 'The data folder of {FULL_NAME} ({USERNAME}) is not empty yet. Please remove the files and folders first.';
+$string['usermanager_delete_user_not_self'] = 'You cannot delete your own account';
 
 
 $string['menu_user_basic'] =  'Basic';
@@ -1233,6 +1235,7 @@ $string['update_status_install'] = 'Install';
 $string['update_version_database_too_old'] = 'The internal version {VERSION} is too old; you have to re-install and/or upgrade manually.';
 $string['update_field_value_too_long'] = 'Table \'{TABLE}\' field \'{FIELD}\': content is longer than {LENGTH} characters: \'{CONTENT}\'.';
 $string['update_please_correct_field_value_manually'] = 'The number of fields that need to be shortened manually (outside of Website@School) is {ERRORS}';
+
 
 
 ?>
