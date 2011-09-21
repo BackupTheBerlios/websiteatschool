@@ -29,13 +29,22 @@
  * That is: all relevant libraries (such asl{@link waslib.php} are included
  * when necessary from within the function {@link initialise()}.
  *
+ * Note that this file is _the_ place to defined truly global constants because
+ * it is always include()'d.
+
  * @author Peter Fokker <peter@berestijn.nl>
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: init.php,v 1.5 2011/09/20 11:54:46 pfokker Exp $
+ * @version $Id: init.php,v 1.6 2011/09/21 07:18:06 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
+
+/** This global constant is used to specify thumbnail files to be ignored in directory listings */
+define('THUMBNAIL_PREFIX','zz_thumb_');
+
+/** This global constant defines the maximum number of iterations in database loops (prevent circular reference) */
+define('MAXIMUM_ITERATIONS',50);
 
 /** initialise the program, setup database, read configuration, etc.
  * @return void
@@ -60,9 +69,6 @@ function initialise() {
     global $PERFORMANCE;
     $PERFORMANCE = new stdClass;
     $PERFORMANCE->time_start = microtime();
-
-    /** the maximum number of iterations in database loops (prevent circular reference) */
-    define('MAXIMUM_ITERATIONS',50);
 
     /** This global variable holds all configuration parameters
      *

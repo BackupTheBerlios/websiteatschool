@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: filemanager.class.php,v 1.3 2011/05/02 16:16:25 pfokker Exp $
+ * @version $Id: filemanager.class.php,v 1.4 2011/09/21 07:18:06 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -53,9 +53,6 @@ define('SORTBY_SIZE_ASC',2);
 define('SORTBY_SIZE_DESC',-2);
 define('SORTBY_DATE_ASC',3);
 define('SORTBY_DATE_DESC',-3);
-
-/** This constant is used to specify thumbnail files to be ignored in directory listings */
-define('THUMBNAIL_PREFIX','zz_thumb_');
 
 /** File Manager
  *
