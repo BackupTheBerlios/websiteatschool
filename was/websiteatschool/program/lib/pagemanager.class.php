@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: pagemanager.class.php,v 1.7 2011/09/19 18:23:00 pfokker Exp $
+ * @version $Id: pagemanager.class.php,v 1.8 2011/09/21 18:54:20 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1539,7 +1539,7 @@ class PageManager {
                 if ($subtree_id > 0) {
                     if ($level >= MAXIMUM_ITERATIONS) {
                         $this->output->add_content(t('too_many_levels','admin',array('{NODE}' => strval($node_id))));
-                        logger(__FUNCTION__.'(): too many levels in node '.$node_id,LOG_DEBUG);
+                        logger(__FUNCTION__.'(): too many levels in node '.$node_id,WLOG_DEBUG);
                     } else {
                         $this->output->add_content($m.'<ul>');
                         ++$level;
@@ -2089,7 +2089,7 @@ class PageManager {
         }
         if ($errors == 0) {
             logger(sprintf('%s.%s(): success saving node \'%d\'%s',
-                           __CLASS__,__FUNCTION__,$node_id,($embargo) ? ' (embargo)' : ''),LOG_DEBUG);
+                           __CLASS__,__FUNCTION__,$node_id,($embargo) ? ' (embargo)' : ''),WLOG_DEBUG);
             $anode = array('{AREA}' => $this->area_id,'{NODE_FULL_NAME}' => $this->node_full_name($node_id));
             $this->output->add_message(t(($is_page) ? 'page_saved' : 'section_saved','admin',$anode));
             if (!$embargo) {
@@ -2207,7 +2207,7 @@ class PageManager {
         // 1B -- prepare auxiliary field in $node_id itself
         if (db_update('nodes',array('auxiliary' => $new_area_id),array('node_id' => $node_id)) === FALSE) {
             logger(__FUNCTION__."(): cannot write new area_id $new_area_id to auxiliary field in node $node_id: ".
-                                 db_errormessage(),LOG_DEBUG);
+                                 db_errormessage(),WLOG_DEBUG);
             $msg = t('error_moving_subtree','admin',$anode);
             $this->output->add_message($msg);
             return FALSE;
@@ -2233,7 +2233,7 @@ class PageManager {
             $where = array('node_id' => $node_id);
             if (db_update('nodes',$fields,$where) === FALSE) {
                 logger(__FUNCTION__."(): error moving node $node_id to top level in (old) area {$this->area_id}: ".
-                                     db_errormessage(),LOG_DEBUG);
+                                     db_errormessage(),WLOG_DEBUG);
                 $msg = t('error_moving_subtree','admin',$anode);
                 $this->output->add_message($msg);
                 return FALSE;
@@ -2256,7 +2256,7 @@ class PageManager {
         $retval = db_update('nodes',$fields,$where);
         if ($retval === FALSE) {
             logger(__FUNCTION__."(): error moving subtree $node_id to new area $new_area_id: ".
-                                 db_errormessage(),LOG_DEBUG);
+                                 db_errormessage(),WLOG_DEBUG);
             $msg = t('error_moving_subtree','admin',$anode);
             $this->output->add_message($msg);
             return FALSE;
@@ -2266,7 +2266,7 @@ class PageManager {
         $retval = db_update('nodes',array('sort_order' => $sort_order),array('node_id' => $node_id));
         if ($retval === FALSE) {
             logger(__FUNCTION__."(): error adjusting sort order after moving tree $node_id to new area $new_area_id: ".
-                                 db_errormessage(),LOG_DEBUG);
+                                 db_errormessage(),WLOG_DEBUG);
             $msg = t('error_moving_subtree','admin',$anode);
             $this->output->add_message($msg);
             return FALSE;
@@ -3111,7 +3111,7 @@ class PageManager {
                     $subtree_id = $this->tree[$node_id]['first_child_id'];
                     if ($subtree_id > 0) {
                         if ($level >= MAXIMUM_ITERATIONS) { // silently ignore but log it
-                            logger(__FUNCTION__.'(): too many levels in node '.$node_id,LOG_DEBUG);
+                            logger(__FUNCTION__.'(): too many levels in node '.$node_id,WLOG_DEBUG);
                         } else {
                             ++$level;
                             $this->get_options_parents_walk($options,$is_page,$subtree_id,$forbidden_id);
@@ -3374,7 +3374,7 @@ class PageManager {
             logger(__CLASS__.": error queueing alerts: '".db_errormessage()."' with sql = $sql");
         } else {
             logger(__CLASS__.": number of alerts queued: $retval");
-            logger(__FUNCTION__."(): sql = ".$sql,LOG_DEBUG);
+            logger(__FUNCTION__."(): sql = ".$sql,WLOG_DEBUG);
         }
 
         // Even if we did not add a message ourselves, we can 'steal' some time
@@ -3416,17 +3416,17 @@ class PageManager {
             if (!lock_record_node($node_id,$lockinfo)) {
                 $msg = message_from_lockinfo($lockinfo,$node_id,$is_page);
                 $this->output->add_message($msg);
-                logger(__FUNCTION__."(): cannot lock node $node_id in subtree: $msg",LOG_DEBUG);
+                logger(__FUNCTION__."(): cannot lock node $node_id in subtree: $msg",WLOG_DEBUG);
                 return FALSE;
             } elseif (db_update('nodes',array('auxiliary' => $new_area_id),array('node_id' => $node_id)) === FALSE) {
                 logger(__FUNCTION__ ."(): cannot write new area_id $new_area_id to auxiliary field in node $node_id: ".
-                                          db_errormessage(),LOG_DEBUG);
+                                          db_errormessage(),WLOG_DEBUG);
                 return FALSE;
             }
             if ((!$is_page) && ($this->tree[$node_id]['first_child_id'] != 0)) {
                 if ($level >= MAXIMUM_ITERATIONS) {
                     $this->output->add_message(t('too_many_levels','admin',array('{NODE}' => strval($node_id))));
-                    logger(__FUNCTION__.'(): too many levels in node '.$node_id,LOG_DEBUG);
+                    logger(__FUNCTION__.'(): too many levels in node '.$node_id,WLOG_DEBUG);
                     return FALSE;
                 } else {
                     ++$level;
@@ -3521,7 +3521,7 @@ class PageManager {
         $parent_id = $this->tree[$section_id]['parent_id'];
         if ($parent_id != 0) {
             if ($level >= MAXIMUM_ITERATIONS) {
-                logger(__FUNCTION__.'(): too many levels in node '.$section_id,LOG_DEBUG);
+                logger(__FUNCTION__.'(): too many levels in node '.$section_id,WLOG_DEBUG);
                 $retval = FALSE;
             } else {
                 ++$level;
@@ -3585,7 +3585,7 @@ class PageManager {
         $parent_id = $this->tree[$node_id]['parent_id'];
         if (($parent_id != 0) && ($this->permission_add_node($parent_id,$is_page))) {
             if ($level >= MAXIMUM_ITERATIONS) {
-                logger(__FUNCTION__.'(): too many levels in node '.$node_id,LOG_DEBUG);
+                logger(__FUNCTION__.'(): too many levels in node '.$node_id,WLOG_DEBUG);
                 $retval = FALSE;
             } else {
                 ++$level;
@@ -3664,7 +3664,7 @@ class PageManager {
         $retval = FALSE;
         if (($parent_id != 0) && ($this->permission_add_node($parent_id,$is_page))) {
             if ($level >= MAXIMUM_ITERATIONS) {
-                logger(__FUNCTION__.'(): too many levels in node '.$node_id,LOG_DEBUG);
+                logger(__FUNCTION__.'(): too many levels in node '.$node_id,WLOG_DEBUG);
                 $retval = FALSE;
             } else {
                 ++$level;
@@ -3924,7 +3924,7 @@ class PageManager {
         // 0 -- sanity check
         if (($after_id != 0) && ($parent_id != $this->tree[$after_id]['parent_id'])) {
             // weird: these nodes are in different sections. Simply keep existing sort order value
-            logger(__FUNCTION__."(): cannot change sort order: '$node_id' and '$after_id' are not siblings",LOG_DEBUG);
+            logger(__FUNCTION__."(): cannot change sort order: '$node_id' and '$after_id' are not siblings",WLOG_DEBUG);
             return $old_sort_order;
         }
 
@@ -4064,12 +4064,12 @@ class PageManager {
         }
         $module_disconnect = $module['name'].'_disconnect';
         if (!function_exists($module_disconnect)) {
-            logger(__FUNCTION__."(): weird: function '$module_disconnect' does not exist. Huh?",LOG_DEBUG);
+            logger(__FUNCTION__."(): weird: function '$module_disconnect' does not exist. Huh?",WLOG_DEBUG);
             return FALSE;
         }
         $retval   = $module_disconnect($this->output,$area_id,$node_id,$module);
         $result   = ($retval) ? 'success' : 'failure';
-        $priority = ($retval) ? LOG_DEBUG : LOG_INFO;
+        $priority = ($retval) ? WLOG_DEBUG : WLOG_INFO;
         logger(sprintf('%s.%s(): %s disconnecting module \'%s\' from node \'%d\'',__CLASS__,__FUNCTION__,
                        $result,$module['name'],$node_id),$priority);
         return $retval;
@@ -4104,12 +4104,12 @@ class PageManager {
         }
         $module_connect = $module['name'].'_connect';
         if (!function_exists($module_connect)) {
-            logger(__FUNCTION__."(): weird: function '$module_connect' does not exist. Huh?",LOG_DEBUG);
+            logger(__FUNCTION__."(): weird: function '$module_connect' does not exist. Huh?",WLOG_DEBUG);
             return FALSE;
         }
         $retval   = $module_connect($this->output,$area_id,$node_id,$module);
         $result   = ($retval) ? 'success' : 'failure';
-        $priority = ($retval) ? LOG_DEBUG : LOG_INFO;
+        $priority = ($retval) ? WLOG_DEBUG : WLOG_INFO;
         logger(sprintf('%s.%s(): %s connecting module \'%s\' to node \'%d\'',__CLASS__,__FUNCTION__,
                        $result,$module['name'],$node_id),$priority);
         return $retval;
@@ -4157,7 +4157,7 @@ class PageManager {
         $retval = $module_show_edit($this->output,$this->area_id,$node_id,$module,$viewonly,$edit_again,$href);
         logger(sprintf(__FUNCTION__."(): %s showing dialog edit content with module '%s' connected to node '%d'%s",
                        ($retval) ? 'success' : 'failure',$module['name'],$node_id,
-                       ($edit_again) ? ', again' : ''),LOG_DEBUG);
+                       ($edit_again) ? ', again' : ''),WLOG_DEBUG);
         return $retval;
     } // module_show_edit()
 
@@ -4189,7 +4189,7 @@ class PageManager {
         }
         $retval = $module_save($this->output,$this->area_id,$node_id,$module,$viewonly,$edit_again);
         logger(sprintf(__FUNCTION__."(): %s saving content via module '%s' connected to node '%d'",
-                       ($retval) ? 'success' : 'failure',$module['name'],$node_id),LOG_DEBUG);
+                       ($retval) ? 'success' : 'failure',$module['name'],$node_id),WLOG_DEBUG);
         return $retval;
     } // module_save()
 

@@ -64,7 +64,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasinstall
- * @version $Id: tabledefs.php,v 1.5 2011/09/19 18:23:00 pfokker Exp $
+ * @version $Id: tabledefs.php,v 1.6 2011/09/21 18:54:19 pfokker Exp $
  * @todo automatically create appropriate sequence name for serial fields??? or add seqdefs too?
  */
 if (!defined('WASENTRY')) { die('no entry'); }
@@ -1446,7 +1446,7 @@ $tabledefs['log_messages'] = array(
             'name' => 'priority',
             'type' => 'int',
             'notnull' => TRUE,
-            'default' => LOG_INFO,
+            'default' => 6,
             'comment' => 'numeric value of the message priority (e.g. LOG_INFO = 6), see man syslog'
             ),
         array(

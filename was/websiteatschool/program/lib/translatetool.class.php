@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: translatetool.class.php,v 1.4 2011/03/11 15:32:46 pfokker Exp $
+ * @version $Id: translatetool.class.php,v 1.5 2011/09/21 18:54:20 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -645,7 +645,7 @@ class TranslateTool {
                                __CLASS__,__FUNCTION__,$language_key,$full_domain,$diff_count));
             } else {
                 logger(sprintf('%s.%s(): success writing translation file for %s - %s: %d items',
-                               __CLASS__,__FUNCTION__,$language_key,$full_domain,$diff_count),LOG_DEBUG);
+                               __CLASS__,__FUNCTION__,$language_key,$full_domain,$diff_count),WLOG_DEBUG);
                 if (db_bool_is(FALSE,$this->languages[$language_key]['dialect_in_file'])) {
                     $table = 'languages';
                     $fields = array('dialect_in_file' => TRUE);
@@ -653,7 +653,7 @@ class TranslateTool {
                     $retval = db_update($table,$fields,$where);
                     if ($retval) {
                         logger(sprintf('%s.%s(): updated language %s: dialect_in_file is now enabled',
-                               __CLASS__,__FUNCTION__,$language_key),LOG_DEBUG);
+                               __CLASS__,__FUNCTION__,$language_key),WLOG_DEBUG);
                     } else {
                         logger(sprintf('%s.%s(): update of language %s failed: %s',
                                __CLASS__,__FUNCTION__,$language_key,db_errormessage()));
@@ -669,7 +669,7 @@ class TranslateTool {
                 if ($this->submit_diff_to_project($language_key,$full_domain,$diff)) {
                     $this->output->add_message(t('translatetool_translation_submit_success','admin',$params));
                     logger(sprintf('%s.%s(): success submitting translations for %s - %s: %d items',
-                                   __CLASS__,__FUNCTION__,$language_key,$full_domain,$diff_count),LOG_DEBUG);
+                                   __CLASS__,__FUNCTION__,$language_key,$full_domain,$diff_count),WLOG_DEBUG);
                 } else {
                     logger(sprintf('%s.%s(): could not submit translations for %s - %s (%d items)',
                                    __CLASS__,__FUNCTION__,$language_key,$full_domain,$diff_count));
@@ -1285,7 +1285,7 @@ class TranslateTool {
             logger(sprintf('%s.%s(): chmod(%s) to 0600 failed but trying to continue nevertheless',
                             __CLASS__,__FUNCTION__,$filepath));
         }
-        logger(sprintf('%s.%s(): %d bytes written to \'%s\'',__CLASS__,__FUNCTION__,$bytes_written,$filepath),LOG_DEBUG);
+        logger(sprintf('%s.%s(): %d bytes written to \'%s\'',__CLASS__,__FUNCTION__,$bytes_written,$filepath),WLOG_DEBUG);
         return TRUE;
     } // put_strings_userfile()
 
@@ -1415,7 +1415,7 @@ EOT;
         $email->add_attachment($attachment,$attachment_name);
 
         if ($retval = $email->send()) { // success, mail was accepted for delivery
-            logger(sprintf('%s.%s(): success sending \'%s\' to <%s>',__CLASS__,__FUNCTION__,$subject,$mailto),LOG_DEBUG);
+            logger(sprintf('%s.%s(): success sending \'%s\' to <%s>',__CLASS__,__FUNCTION__,$subject,$mailto),WLOG_DEBUG);
         } else {
             logger(sprintf('%s.%s(): failure sending \'%s\' to <%s>',__CLASS__,__FUNCTION__,$subject,$mailto));
         }

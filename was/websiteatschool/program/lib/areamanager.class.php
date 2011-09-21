@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: areamanager.class.php,v 1.4 2011/09/20 12:30:24 pfokker Exp $
+ * @version $Id: areamanager.class.php,v 1.5 2011/09/21 18:54:20 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -468,7 +468,7 @@ class AreaManager {
                         // db_rollback_transaction();
                         // break;
                     } else {
-                        logger("areamanager: delete area '$area_id': records deleted from '$table': $retval ",LOG_DEBUG);
+                        logger("areamanager: delete area '$area_id': records deleted from '$table': $retval ",WLOG_DEBUG);
                     }
                 }
                 $params = array('{AREA}' => $area_id,'{AREA_FULL_NAME}' => $areas[$area_id]['title']);
@@ -736,7 +736,7 @@ class AreaManager {
 
         // 3 -- we need to know which dialog we're dealing with
         if (!isset($_POST['dialog'])) {
-            logger("areamanager: weird: 'dialog' not set in area_save() (area='$area_id')",LOG_DEBUG);
+            logger("areamanager: weird: 'dialog' not set in area_save() (area='$area_id')",WLOG_DEBUG);
             $this->area_overview();
             return;
         }
@@ -837,20 +837,20 @@ class AreaManager {
                 // If the user changed the theme AND if there is no theme config yet, make sure there is one
                 if ($this->reset_theme_defaults($area_id,$theme_id)) {
                     logger("areamanager: success saving area AND theme properties in area '$area_id', theme '$theme_id'",
-                           LOG_DEBUG);
+                           WLOG_DEBUG);
                     $this->output->add_message(t('areamanager_save_area_success','admin',$params));
                 } else {
                     logger("areamanager: theme '$theme_id' data save failed for area '$area_id': ".db_errormessage());
                     $this->output->add_message(t('areamanager_save_area_failure','admin',$params));
                 }
             } else {
-                logger("areamanager: success saving changed properties in area '$area_id'",LOG_DEBUG);
+                logger("areamanager: success saving changed properties in area '$area_id'",WLOG_DEBUG);
                 $this->output->add_message(t('areamanager_save_area_success','admin',$params));
             }
             $areas = get_area_records(TRUE); // TRUE means force reread of area records
             $this->area_overview();
         } else {
-            logger("areamanager: weird: invalid dialog '$dialog' in area_save (area=$area_id)",LOG_DEBUG);
+            logger("areamanager: weird: invalid dialog '$dialog' in area_save (area=$area_id)",WLOG_DEBUG);
             $this->area_overview();
         }
     } // area_save()
@@ -1561,7 +1561,7 @@ class AreaManager {
             return FALSE;
         }
         logger("areamanager: properties of theme '$theme_id' in area '$area_id' ".
-               "from table '$table': records deleted from '$table': $retval ",LOG_DEBUG);
+               "from table '$table': records deleted from '$table': $retval ",WLOG_DEBUG);
 
         //
         // 2 -- insert new values by copying from the theme defaults table
@@ -1579,7 +1579,7 @@ class AreaManager {
             return FALSE;
         }
         logger("areamanager: default properties of theme '$theme_id' set for area '$area_id'; ".
-               "records added to '$table': $retval ",LOG_DEBUG);
+               "records added to '$table': $retval ",WLOG_DEBUG);
             // db_commit_transaction()
          return TRUE;
     } // reset_theme_defaults()

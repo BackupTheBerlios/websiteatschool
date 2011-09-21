@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: filelib.php,v 1.2 2011/02/03 14:04:04 pfokker Exp $
+ * @version $Id: filelib.php,v 1.3 2011/09/21 18:54:20 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -293,7 +293,7 @@ function get_mimetype($path,$name='') {
     // 0 -- quick check for file of type 'image/*' (suppress annoying warning message from getimagesize())
     if ((($imagesize = @getimagesize($path)) !== FALSE) && (is_array($imagesize)) && (isset($imagesize['mime']))) {
         $mimetype = $imagesize['mime'];
-        // logger(sprintf('%d: %s(): path=%s name=%s mime=%s',0,__FUNCTION__,$path,$name,$mimetype),LOG_DEBUG);
+        // logger(sprintf('%d: %s(): path=%s name=%s mime=%s',0,__FUNCTION__,$path,$name,$mimetype),WLOG_DEBUG);
         return $mimetype;
     }
 
@@ -307,7 +307,7 @@ function get_mimetype($path,$name='') {
             $mimetype = finfo_file($finfo,$path);
             $finfo_close($finfo);
             if ($mimetype !== FALSE) {
-                // logger(sprintf('%d: %s(): path=%s name=%s mime=%s',1,__FUNCTION__,$path,$name,$mimetype),LOG_DEBUG);
+                // logger(sprintf('%d: %s(): path=%s name=%s mime=%s',1,__FUNCTION__,$path,$name,$mimetype),WLOG_DEBUG);
                 return $mimetype;
             }
         }
@@ -316,7 +316,7 @@ function get_mimetype($path,$name='') {
     // 2 -- now try the deprecated mime_content_type method
     if (function_exists('mime_content_type')) {
         $mimetype = mime_content_type($path);
-        // logger(sprintf('%d: %s(): path=%s name=%s mime=%s',2,__FUNCTION__,$path,$name,$mimetype),LOG_DEBUG);
+        // logger(sprintf('%d: %s(): path=%s name=%s mime=%s',2,__FUNCTION__,$path,$name,$mimetype),WLOG_DEBUG);
         return $mimetype;
     }
 
@@ -328,7 +328,7 @@ function get_mimetype($path,$name='') {
     if ($retval == 0) {
         // now assert that the result looks like a mimetype and not an error message
         if (get_mediatype($mimetype) !== FALSE) {
-            // logger(sprintf('%d: %s(): path=%s name=%s mime=%s',3,__FUNCTION__,$path,$name,$mimetype),LOG_DEBUG);
+            // logger(sprintf('%d: %s(): path=%s name=%s mime=%s',3,__FUNCTION__,$path,$name,$mimetype),WLOG_DEBUG);
             return $mimetype;
         }
     }
@@ -337,7 +337,7 @@ function get_mimetype($path,$name='') {
     $ext = strtolower(pathinfo((empty($name)) ? $path : $name,PATHINFO_EXTENSION));
     $mimetypes = get_mimetypes_array();
     $mimetype = (isset($mimetypes[$ext])) ? $mimetypes[$ext] : 'application/octet-stream';
-    // logger(sprintf('%d: %s(): path=%s name=%s mime=%s',4,__FUNCTION__,$path,$name,$mimetype),LOG_DEBUG);
+    // logger(sprintf('%d: %s(): path=%s name=%s mime=%s',4,__FUNCTION__,$path,$name,$mimetype),WLOG_DEBUG);
     return $mimetype;
 } // get_mimetype()
 

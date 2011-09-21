@@ -35,7 +35,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: main_index.php,v 1.4 2011/06/29 14:56:07 pfokker Exp $
+ * @version $Id: main_index.php,v 1.5 2011/09/21 18:54:19 pfokker Exp $
  * @todo add the performance results in a HTML-comment if not CFG->debug, in sight otherwise
  */
 if (!defined('WASENTRY')) { die('no entry'); }
@@ -252,7 +252,7 @@ function calculate_area($requested_area,$requested_node) {
         }
     }
     if (($DBResult = $DB->query($sql,1)) === FALSE) {
-        logger("DEBUG [$sql]: error {$DB->errno}/'{$DB->error}'",LOG_DEBUG);
+        logger("DEBUG [$sql]: error {$DB->errno}/'{$DB->error}'",WLOG_DEBUG);
         return FALSE;
     } elseif ($DBResult->num_rows != 1) {
         $DBResult->close();
@@ -298,7 +298,7 @@ function calculate_node_id(&$tree,$area_id,$requested_node) {
 
     $node_id = intval($requested_node);
     if (!isset($tree[$node_id])) {
-        logger("calculate_node_id(): weird: node '$node_id' not set in tree for area '$area_id'",LOG_DEBUG);
+        logger("calculate_node_id(): weird: node '$node_id' not set in tree for area '$area_id'",WLOG_DEBUG);
         return FALSE;
     }
 

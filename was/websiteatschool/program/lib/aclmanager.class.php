@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: aclmanager.class.php,v 1.3 2011/05/27 21:51:16 pfokker Exp $
+ * @version $Id: aclmanager.class.php,v 1.4 2011/09/21 18:54:20 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -655,7 +655,7 @@ class AclManager {
      */
     function save_data_permissions() {
         if (is_null($this->dialogdef)) {
-            logger("save_data_permissions(): huh? dialogdef not set? cannot cope with that",LOG_DEBUG);
+            logger("save_data_permissions(): huh? dialogdef not set? cannot cope with that",WLOG_DEBUG);
             return FALSE;
         }
         if (!dialog_validate($this->dialogdef)) {
@@ -910,7 +910,7 @@ class AclManager {
                        "ORDER BY a.sort_order",
                        $DB->prefix,$DB->prefix,$DB->prefix,$this->acl_id);
         if (($DBResult = $DB->query($sql)) === FALSE) {
-            logger('calc_areas_total(): cannot count nodes in areas: '.db_errormessage(),LOG_DEBUG);
+            logger('calc_areas_total(): cannot count nodes in areas: '.db_errormessage(),WLOG_DEBUG);
             return FALSE;
         }
         $records = $DBResult->fetch_all_assoc('area_id'); // $records is keyed by 'area_id'
@@ -1844,7 +1844,7 @@ class AclManager {
             if ($subtree_id > 0) {
                 ++$level;
                 if ($level > MAXIMUM_ITERATIONS) {
-                    logger('aclmanager: too many levels in node '.$node_id,LOG_DEBUG);
+                    logger('aclmanager: too many levels in node '.$node_id,WLOG_DEBUG);
                 } else {
                     $this->show_tree_walk($dialogdef,$tree,$permissions_nodes,$index,$subtree_id,$first,$last,$acl_id,$related_acls);
                 }

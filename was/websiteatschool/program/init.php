@@ -36,7 +36,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: init.php,v 1.6 2011/09/21 07:18:06 pfokker Exp $
+ * @version $Id: init.php,v 1.7 2011/09/21 18:54:19 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -45,6 +45,31 @@ define('THUMBNAIL_PREFIX','zz_thumb_');
 
 /** This global constant defines the maximum number of iterations in database loops (prevent circular reference) */
 define('MAXIMUM_ITERATIONS',50);
+
+/** This global constant replaces a similar built-in constant LOG_EMERG which is erroneously defined as 1 in win32.h */
+define('WLOG_EMERG',   0);
+
+/** This global constant replaces a similar built-in constant LOG_ALERT which is defined as 1 in win32.h */
+define('WLOG_ALERT',   1);
+
+/** This global constant replaces a similar built-in constant LOG_CRIT which is erroneously defined as 1 in win32.h */
+define('WLOG_CRIT',    2);
+
+/** This global constant replaces a similar built-in constant LOG_ERR which is erroneously defined as 4 in win32.h */
+define('WLOG_ERR',     3);
+
+/** This global constant replaces a similar built-in constant LOG_WARNING which is erroneously defined as 5 in win32.h */
+define('WLOG_WARNING', 4);
+
+/** This global constant replaces a similar built-in constant LOG_NOTICE which is erroneously defined as 6 in win32.h */
+define('WLOG_NOTICE',  5);
+
+/** This global constant replaces a similar built-in constant LOG_INFO which is defined as 6 in win32.h */
+define('WLOG_INFO',    6);
+
+/** This global constant replaces a similar built-in constant LOG_DEBUG which is erroneously defined as 6 in win32.h */
+define('WLOG_DEBUG',   7);
+
 
 /** initialise the program, setup database, read configuration, etc.
  * @return void

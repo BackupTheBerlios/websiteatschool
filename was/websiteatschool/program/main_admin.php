@@ -26,7 +26,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: main_admin.php,v 1.6 2011/09/20 11:54:46 pfokker Exp $
+ * @version $Id: main_admin.php,v 1.7 2011/09/21 18:54:19 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -689,7 +689,7 @@ class AdminOutput {
                 foreach($this->http_headers as $hdr) {
                     $message .= $hdr."\n";
                 }
-                logger($message,LOG_DEBUG);
+                logger($message,WLOG_DEBUG);
             } else {
                 foreach($this->http_headers as $hdr) {
                     header($hdr);

@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: useraccount.class.php,v 1.3 2011/05/09 19:39:37 pfokker Exp $
+ * @version $Id: useraccount.class.php,v 1.4 2011/09/21 18:54:20 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -326,7 +326,7 @@ class Useraccount {
         $fields = array('username','full_name','email','language_key','path','acl_id','high_visibility','editor');
         $record = db_select_single_record('users',$fields,array('user_id' => $user_id, 'is_active' => TRUE));
         if ($record === FALSE) {
-            logger('useraccount: cannot find record for user_id \''.$user_id.'\'',LOG_INFO,$user_id);
+            logger('useraccount: cannot find record for user_id \''.$user_id.'\'',WLOG_INFO,$user_id);
             return FALSE;
         }
         $this->username = $record['username'];
@@ -346,7 +346,7 @@ class Useraccount {
         $where = $this->where_acl_id();
         $records = db_select_all_records('acls',$fields,$where);
         if ($records === FALSE) {
-            logger('useraccount: cannot find acls records for user_id \''.$user_id.'\'',LOG_INFO,$user_id);
+            logger('useraccount: cannot find acls records for user_id \''.$user_id.'\'',WLOG_INFO,$user_id);
         } else {
             foreach($records as $record) {
                 foreach($fields as $field) {

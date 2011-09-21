@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: filemanager.class.php,v 1.5 2011/09/21 16:03:10 pfokker Exp $
+ * @version $Id: filemanager.class.php,v 1.6 2011/09/21 18:54:20 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -572,7 +572,7 @@ class FileManager {
             if (@move_uploaded_file($_FILES[$name]['tmp_name'],$CFG->datadir.$target_path)) {
                 ++$files_saved;
                 logger(sprintf('%s.%s(): success uploading %s to %s',
-                        __CLASS__,__FUNCTION__,$_FILES[$name]['name'],$target_path),LOG_DEBUG);
+                        __CLASS__,__FUNCTION__,$_FILES[$name]['name'],$target_path),WLOG_DEBUG);
                 $this->output->add_message(t('filemanager_add_files_success','admin',$params));
                 // 4Gb - ...and on success try to create a thumbnail too
                 $this->make_thumbnail($path,$target_name);
@@ -585,7 +585,7 @@ class FileManager {
         }
         // 5 -- all done, report results and show directory listing
         $params = array('{SAVECOUNT}' => strval($files_saved), '{SKIPCOUNT}' => strval($files_skipped));
-        logger(sprintf('%s.%s(): added: %d, skipped: %d',__CLASS__,__FUNCTION__,$files_saved,$files_skipped),LOG_DEBUG);
+        logger(sprintf('%s.%s(): added: %d, skipped: %d',__CLASS__,__FUNCTION__,$files_saved,$files_skipped),WLOG_DEBUG);
         $this->output->add_message(t('filemanager_add_files_results','admin',$params));
         $this->task_list_directory();
     } // task_add_file()
@@ -697,7 +697,7 @@ class FileManager {
         if (@mkdir($subdirectory_full_path,0700)) {
             @touch($subdirectory_full_path.'/index.html'); // "protect" the newly created directory from prying eyes
             $this->output->add_message(t('filemanager_add_subdirectory_success','admin',$params));
-            logger(sprintf('%s.%s(): success with mkdir %s',__CLASS__,__FUNCTION__,$path.'/'.$subdirectory),LOG_DEBUG);
+            logger(sprintf('%s.%s(): success with mkdir %s',__CLASS__,__FUNCTION__,$path.'/'.$subdirectory),WLOG_DEBUG);
         } else {
             $this->output->add_message(t('filemanager_add_subdirectory_failure','admin',$params));
             logger(sprintf('%s.%s(): cannot mkdir %s',__CLASS__,__FUNCTION__,$path.'/'.$subdirectory));
@@ -748,7 +748,7 @@ class FileManager {
 
         // 1 -- always disallow attempts to escape from tree via parent directory tricks
         if (in_array('..',$path_components)) {
-            logger(sprintf("%s.%s(): no .. allowed in path '%s'",__CLASS__,__FUNCTION__,$path),LOG_DEBUG);
+            logger(sprintf("%s.%s(): no .. allowed in path '%s'",__CLASS__,__FUNCTION__,$path),WLOG_DEBUG);
             return FALSE;
         }
 
@@ -1507,7 +1507,7 @@ class FileManager {
             $entrypath = sprintf('%s/%s',$path,$entryname);
             $full_entrypath = $CFG->datadir.$entrypath;
             if (@unlink($full_entrypath)) {
-                logger(sprintf("%s.%s(): success unlinking '%s'",__CLASS__,__FUNCTION__,$entrypath),LOG_DEBUG);
+                logger(sprintf("%s.%s(): success unlinking '%s'",__CLASS__,__FUNCTION__,$entrypath),WLOG_DEBUG);
             } else {
                 logger(sprintf("%s.%s(): cannot unlink '%s'",__CLASS__,__FUNCTION__,$entrypath));
                 ++$errors;
@@ -1516,13 +1516,13 @@ class FileManager {
             $full_thumbpath = $CFG->datadir.$thumbpath;
             if (is_file($full_thumbpath)) {
                 if (@unlink($full_thumbpath)) {
-                    logger(sprintf("%s.%s(): success unlinking '%s'",__CLASS__,__FUNCTION__,$thumbpath),LOG_DEBUG);
+                    logger(sprintf("%s.%s(): success unlinking '%s'",__CLASS__,__FUNCTION__,$thumbpath),WLOG_DEBUG);
                 } else {
                     logger(sprintf("%s.%s(): cannot unlink '%s'",__CLASS__,__FUNCTION__,$thumbpath));
                     ++$errors;
                 }
             } else {
-                logger(sprintf("%s.%s(): no thumbnail '%s' exists",__CLASS__,__FUNCTION__,$thumbpath),LOG_DEBUG);
+                logger(sprintf("%s.%s(): no thumbnail '%s' exists",__CLASS__,__FUNCTION__,$thumbpath),WLOG_DEBUG);
             }
         }
         return ($errors == 0) ? TRUE : FALSE;
@@ -1572,7 +1572,7 @@ class FileManager {
                     if ((($filename == 'index.html') && (filesize($full_filepath) == 0)) || 
                         (substr($filename,0,strlen(THUMBNAIL_PREFIX)) == THUMBNAIL_PREFIX)) {
                         if (@unlink($full_filepath)) {
-                            logger(sprintf("%s.%s(): success unlinking '%s'",__CLASS__,__FUNCTION__,$filepath),LOG_DEBUG);
+                            logger(sprintf("%s.%s(): success unlinking '%s'",__CLASS__,__FUNCTION__,$filepath),WLOG_DEBUG);
                         } else {
                             logger(sprintf("%s.%s(): cannot unlink '%s'",__CLASS__,__FUNCTION__,$filepath));
                             ++$errors;
@@ -1593,7 +1593,7 @@ class FileManager {
                 ++$errors;
             } else {
                 if (@rmdir($full_directorypath)) {
-                    logger(sprintf("%s.%s(): success removing '%s/'",__CLASS__,__FUNCTION__,$directorypath),LOG_DEBUG);
+                    logger(sprintf("%s.%s(): success removing '%s/'",__CLASS__,__FUNCTION__,$directorypath),WLOG_DEBUG);
                 } else {
                     logger(sprintf("%s.%s(): cannot remove '%s/'",__CLASS__,__FUNCTION__,$directorypath));
                     ++$errors;
@@ -2338,13 +2338,13 @@ class FileManager {
 
         if ((empty($clamscan)) && (!($mandatory))) {
             logger(sprintf('%s.%s(): file %s (%s) unconditionally accepted because virusscanner is unconfigured',
-                            __CLASS__,__FUNCTION__,$path,$name),LOG_DEBUG);
+                            __CLASS__,__FUNCTION__,$path,$name),WLOG_DEBUG);
             return 0;
         }
 
         // Make sure that the virusscanner can actually read this file
         if (!@chmod($path,0644)) {
-            logger(sprintf('%s.%s(): chmod() %s (%s) to 0644 failed',__CLASS__,__FUNCTION__,$path,$name),LOG_DEBUG);
+            logger(sprintf('%s.%s(): chmod() %s (%s) to 0644 failed',__CLASS__,__FUNCTION__,$path,$name),WLOG_DEBUG);
         }
 
         // Construct the command to execute including redirecting stderr to stdout (a quirk in libclamav), see @todo 1
@@ -2354,7 +2354,7 @@ class FileManager {
         $dummy = @exec($command,$lines,$exit_code);
 
         if ($exit_code == 0) { // Pfew! File appears to be clean
-            logger(sprintf('%s.%s(): %s (%s) considered clean',__CLASS__,__FUNCTION__,$path,$name),LOG_DEBUG);
+            logger(sprintf('%s.%s(): %s (%s) considered clean',__CLASS__,__FUNCTION__,$path,$name),WLOG_DEBUG);
             return 0;
         }
 
@@ -2372,13 +2372,13 @@ class FileManager {
         if ($exit_code == 1) { // Darn. We have a virus
             $retval = 1;
             logger(sprintf('%s.%s(): %s (%s) infected: %s',
-                            __CLASS__,__FUNCTION__,$path,$name,$params['{OUTPUT}']),LOG_WARNING);
+                            __CLASS__,__FUNCTION__,$path,$name,$params['{OUTPUT}']),WLOG_WARNING);
             $subject = t('filemanager_virus_mailsubject1','admin',$params);
             $message = t('filemanager_virus_mailmessage1','admin',$params);
         } elseif ($mandatory) { // we were not able to scan it and scanning is mandatory: consider the file infected
             $retval = 2;
             logger(sprintf('%s.%s(): virusscan of %s (%s) failed and scanning is mandatory: %s',
-                            __CLASS__,__FUNCTION__,$path,$name,$params['{OUTPUT}']),LOG_WARNING);
+                            __CLASS__,__FUNCTION__,$path,$name,$params['{OUTPUT}']),WLOG_WARNING);
             $subject = t('filemanager_virus_mailsubject2','admin',$params);
             $message = t('filemanager_virus_mailmessage2','admin',$params);
         } else {
@@ -2402,7 +2402,7 @@ class FileManager {
         $email->set_header('X-Priority','1 (Highest)'); // "1 (Highest)" | "3 (Normal)" | "5 (Lowest)"
 
         if ($email->send()) { // success, mail was accepted for delivery
-            logger(sprintf('%s.%s(): success sending \'%s\' to %s',__CLASS__,__FUNCTION__,$subject,$mailto),LOG_DEBUG);
+            logger(sprintf('%s.%s(): success sending \'%s\' to %s',__CLASS__,__FUNCTION__,$subject,$mailto),WLOG_DEBUG);
         } else {
             logger(sprintf('%s.%s(): failure sending \'%s\' to %s',__CLASS__,__FUNCTION__,$subject,$mailto));
         }
@@ -2486,7 +2486,7 @@ class FileManager {
         } else {
             $new_name = $filename.'.'.$new_extension;
         }
-        logger(sprintf('%s.%s(): namechange %s -> %s (%s)',__CLASS__,__FUNCTION__,$name,$new_name,$type_path),LOG_DEBUG);
+        logger(sprintf('%s.%s(): namechange %s -> %s (%s)',__CLASS__,__FUNCTION__,$name,$new_name,$type_path),WLOG_DEBUG);
         return $new_name;
     } // sanitise_filetype()
 
@@ -2580,7 +2580,7 @@ class FileManager {
      *  - we do not create thumbnails for images smaller than that square box
      *  - the aspect ratio is preserved
      *  - we use default quality settings for write jpeg and png thumbnails
-     *  - all errors are logged, successes are logged to LOG_DEBUG
+     *  - all errors are logged, successes are logged to WLOG_DEBUG
      *  - this routine totally relies on GD
      *  - we try to extend our stay with set_time_limit() every time a thumbnail
      *    is created because image processing is quite time-consuming
@@ -2602,7 +2602,7 @@ class FileManager {
         $image_path = sprintf('%s%s/%s',$CFG->datadir,$directory,$filename);
         $thumb_path = sprintf('%s%s/%s%s',$CFG->datadir,$directory,THUMBNAIL_PREFIX,$filename);
         if (($image_info = @getimagesize($image_path)) === FALSE) {
-            logger(sprintf('%s.%s(): file \'%s\' is not an image',__CLASS__,__FUNCTION__,$filename),LOG_DEBUG);
+            logger(sprintf('%s.%s(): file \'%s\' is not an image',__CLASS__,__FUNCTION__,$filename),WLOG_DEBUG);
             return;
         }
 
@@ -2610,7 +2610,7 @@ class FileManager {
         if ((!function_exists('imagecreatetruecolor')) ||
             (!function_exists('imagecopyresampled')) ||
             (!function_exists('imagedestroy'))) {
-            logger(sprintf('%s.%s(): no GD-support (file=\'%s\')',__CLASS__,__FUNCTION__,$filename),LOG_DEBUG);
+            logger(sprintf('%s.%s(): no GD-support (file=\'%s\')',__CLASS__,__FUNCTION__,$filename),WLOG_DEBUG);
             return;
         }
 
@@ -2621,7 +2621,7 @@ class FileManager {
             (($image_type == IMAGETYPE_JPEG) && (!($supported_formats & IMG_JPG))) ||
             (($image_type == IMAGETYPE_PNG)  && (!($supported_formats & IMG_PNG)))) {
             logger(sprintf('%s.%s(): unsupported imagetype %d (file=\'%s\', mimetype=\'%s\')',
-                           __CLASS__,__FUNCTION__,$image_type,$filename,$image_info['mime']),LOG_DEBUG);
+                           __CLASS__,__FUNCTION__,$image_type,$filename,$image_info['mime']),WLOG_DEBUG);
             return;
         }
 
@@ -2632,7 +2632,7 @@ class FileManager {
         $image_dimension = max($image_w,$image_h);
         if (($image_dimension <= $thumb_dimension)) {
             logger(sprintf('%s.%s(): no scaling necessary for file \'%s\', dimensions are: %dx%d',
-                           __CLASS__,__FUNCTION__,$filename,$image_w,$image_h),LOG_DEBUG);
+                           __CLASS__,__FUNCTION__,$filename,$image_w,$image_h),WLOG_DEBUG);
             return; // nothing to do, image is already smaller than a thumbnail
         }
 
@@ -2717,7 +2717,7 @@ class FileManager {
         imagedestroy($thumb_img);
         imagedestroy($image_img);
         logger(sprintf('%s.%s(): success creating %dx%d thumbnail \'%s/%s%s\'',__CLASS__,__FUNCTION__,
-                               $thumb_w,$thumb_h,$directory,THUMBNAIL_PREFIX,$filename),LOG_DEBUG);
+                               $thumb_w,$thumb_h,$directory,THUMBNAIL_PREFIX,$filename),WLOG_DEBUG);
         return;
     } // make_thumbnail()
 

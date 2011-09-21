@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: theme.class.php,v 1.16 2011/06/30 10:09:52 pfokker Exp $
+ * @version $Id: theme.class.php,v 1.17 2011/09/21 18:54:20 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -146,7 +146,7 @@ class Theme {
             }
         } else {
             $this->area_record = array('area_id' => $this->area_id,'title' => '?');
-            logger(sprintf('constructor %s(): cannot get list of areas: %s',__FUNCTION__,db_errormessage()),LOG_DEBUG);
+            logger(sprintf('constructor %s(): cannot get list of areas: %s',__FUNCTION__,db_errormessage()),WLOG_DEBUG);
         }
         $this->node_id = intval($node_id);
         $this->tree = $this->construct_tree($this->area_id);
@@ -1035,7 +1035,7 @@ class Theme {
         if ($tries <= 0) {
             $breadcrumbs = array();
             // too many iterations (endless loop?)
-            logger('DEBUG '.__FILE__.'('.__LINE__.'): too many iterations (endless loop?) in node '.$node_id,LOG_DEBUG);
+            logger('DEBUG '.__FILE__.'('.__LINE__.'): too many iterations (endless loop?) in node '.$node_id,WLOG_DEBUG);
         }
 
         // Insert the name of the current area as a bread crumb too

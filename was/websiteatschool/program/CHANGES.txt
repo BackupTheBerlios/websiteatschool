@@ -1,5 +1,5 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.82 2011/09/21 16:03:10 pfokker Exp $
+$Id: CHANGES.txt,v 1.83 2011/09/21 18:54:19 pfokker Exp $
 -------------------------------------------------------------------------------
 
 2011-09-21
@@ -8,6 +8,10 @@ $Id: CHANGES.txt,v 1.82 2011/09/21 16:03:10 pfokker Exp $
 - [usermanager.class.php]: additional checks before deleting user account,
   including blocking of delete own account; cosmetics
 - [filemanager.class.php]: minor UTF8-related changes + cosmetics
+- Global search and replace to change all references to the LOG_XXXX
+  constants (replaced with WLOG_XXX) to circumvent a stupid difference
+  between *nix and win platforms (see task_logview() in toolslib.php
+  for more information).
 
 2011-09-20
 - [updatelib.php] Incorporated changes to nodes.modules_id in upgrade routine.

@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wastheme_rosalina
- * @version $Id: rosalina.class.php,v 1.2 2011/06/29 19:29:08 pfokker Exp $
+ * @version $Id: rosalina.class.php,v 1.3 2011/09/21 18:54:19 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -543,7 +543,7 @@ class ThemeRosalina extends Theme {
                                  $this->menu_sub[3],$item_width_px)."\n";
                     ++$level;
                     if ($level > MAXIMUM_ITERATIONS) {
-                        logger(__FILE__.'('.__LINE__.') too many levels in node '.$node_id,LOG_DEBUG);
+                        logger(__FILE__.'('.__LINE__.') too many levels in node '.$node_id,WLOG_DEBUG);
                     } else {
                         $s .= $this->rosalina_show_tree_walk($m.'  ',$sub_id,$menu_name.strval($i).'_',$sub_width_px);
                     }

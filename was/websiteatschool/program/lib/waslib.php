@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: waslib.php,v 1.11 2011/09/21 15:54:48 pfokker Exp $
+ * @version $Id: waslib.php,v 1.12 2011/09/21 18:54:20 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -340,9 +340,9 @@ function t($phrase_key,$full_domain='',$replace='',$location_hint='',$language='
  *
  * This adds a message to the table log_messages, including a time, the remote address
  * and (of course) a message. See also the standard PHP-function syslog(). We use the
- * existing symbolic constants for priority. Default value is LOG_INFO.
+ * existing symbolic constants for priority. Default value is WLOG_INFO.
  *
- * Note that messages with a priority LOG_DEBUG are only written to the log
+ * Note that messages with a priority WLOG_DEBUG are only written to the log
  * if the global parameter $CFG->debug is TRUE. All other messages are simply
  * logged, no further questions asked.
  *
@@ -353,6 +353,8 @@ function t($phrase_key,$full_domain='',$replace='',$location_hint='',$language='
  * Note that with a field definition of varchar(255) there is room to store either
  * an IPv4 address (max 15 bytes) or a full-blown IPv6 address (max 39 bytes).
  *
+ * See also {@link task_logview()} for a rant on the difference between LOG_DEBUG and LOG_INFO.
+ *
  * @param string $message the message to write to the log
  * @param int $priority loglevel, see PHP-function syslog() for a list of predefined constants
  * @return bool FALSE on error, TRUE on success
@@ -361,10 +363,10 @@ function t($phrase_key,$full_domain='',$replace='',$location_hint='',$language='
  *       (with automatic logrotate) or do we want to keep this 'self-contained'
  *       (the webmaster can read the table, but not the machine's syslog)?
  */
-function logger($message,$priority=LOG_INFO,$user_id='') {
+function logger($message,$priority=WLOG_INFO,$user_id='') {
     global $CFG;
 
-    if (($priority == LOG_DEBUG) && (!($CFG->debug))) {
+    if (($priority == WLOG_DEBUG) && (!($CFG->debug))) {
         return TRUE;
     }
 
@@ -551,7 +553,7 @@ function redirect_and_exit($url,$message='') {
     $line = 0;
     if (headers_sent($file,$line)) {
         // headers were already sent, log this strange event
-        logger("headers were already sent in file $file($line)",LOG_DEBUG);
+        logger("headers were already sent in file $file($line)",WLOG_DEBUG);
     } else {
         header('Location: '.$url);
     }
@@ -686,12 +688,12 @@ function lock_record($id,&$lockinfo,$tablename, $pkey,$locked_by,$locked_since) 
     $now = strftime("%Y-%m-%d %T");
     $lockinfo = array();
     if (!isset($_SESSION['session_id'])) { // weird, we SHOULD have a session id
-        logger('weird: no session_id in lock_record()',LOG_DEBUG);
+        logger('weird: no session_id in lock_record()',WLOG_DEBUG);
         return FALSE;
     } else {
         $session_id = $_SESSION['session_id'];
         if (!is_int($session_id)) {
-            logger('weird: session_id in lock_record() is not an int',LOG_DEBUG);
+            logger('weird: session_id in lock_record() is not an int',WLOG_DEBUG);
             return FALSE;
         }
     }
@@ -772,12 +774,12 @@ function lock_record($id,&$lockinfo,$tablename, $pkey,$locked_by,$locked_since) 
  */
 function lock_release($id,$tablename, $pkey,$locked_by,$locked_since) {
     if (!isset($_SESSION['session_id'])) { // weird, we SHOULD have a session id
-        logger('weird: no session_id in lock_release()',LOG_DEBUG);
+        logger('weird: no session_id in lock_release()',WLOG_DEBUG);
         return FALSE;
     } else {
         $session_id = $_SESSION['session_id'];
         if (!is_int($session_id)) {
-            logger('weird: session_id in lock_release() is not an int',LOG_DEBUG);
+            logger('weird: session_id in lock_release() is not an int',WLOG_DEBUG);
             return FALSE;
         }
     }
@@ -831,7 +833,7 @@ function lock_release($id,$tablename, $pkey,$locked_by,$locked_since) {
  * that we didn't do anything since the previous run. (Or is this
  * a feature after all?)
  *
- * Failures are logged, success are logged as LOG_DEBUG.
+ * Failures are logged, success are logged as WLOG_DEBUG.
  *
  * @param int $max_messages do not send more than this number of messages
  * @return int the number of messages that were processed
@@ -852,7 +854,7 @@ function cron_send_queued_alerts($max_messages=10) {
         logger(sprintf('%s(): error retrieving alerts: %s',__FUNCTION__,db_errormessage()));
         return 0;
     } elseif (sizeof($alerts) < 1) { // nothing to do
-        logger(sprintf('%s(): nothing to do',__FUNCTION__),LOG_DEBUG);
+        logger(sprintf('%s(): nothing to do',__FUNCTION__),WLOG_DEBUG);
         return 0;
     }
 
@@ -883,7 +885,7 @@ function cron_send_queued_alerts($max_messages=10) {
                            'messages' => $messages); // don't update if another message was added while we were working
             if (($retval = db_update('alerts',$fields,$where)) !== FALSE) {
                 logger(sprintf('%s(): %d message(s) for %s (%s) (id=%d) sent; %d record(s) updated',
-                               __FUNCTION__,$messages,$mailto,$full_name,$alert_id,$retval),LOG_DEBUG);
+                               __FUNCTION__,$messages,$mailto,$full_name,$alert_id,$retval),WLOG_DEBUG);
                 ++$alert_messages_sent;
                 if ($max_messages <= $alert_messages_sent) {
                     break;
@@ -1014,7 +1016,7 @@ function tree_build($area_id, $force = FALSE) {
             $fields = array('parent_id' => $node_id, 'sort_order' => $sort_order);
             $where = array('node_id' => $node_id);
             $sql = db_update_sql('nodes',$fields,$where);
-            logger("tree_build(): moved orphan '$node_id' (original parent '$parent_id') to top with '$sql'",LOG_DEBUG);
+            logger("tree_build(): moved orphan '$node_id' (original parent '$parent_id') to top with '$sql'",WLOG_DEBUG);
             $DB->exec($sql);
         } elseif ($parent_id == $tree[$prev_node_id]['parent_id']) {
             $tree[$prev_node_id]['next_sibling_id'] = $node_id;
@@ -1132,7 +1134,7 @@ function is_under_embargo(&$tree,$node_id) {
         $where = array('node_id' => $next_id);
         $sql = db_update_sql('nodes',$fields,$where);
         $parent_id = intval($tree[$node_id]['parent_id']);
-        logger("is_under_embargo(): circular reference '$node_id' (parent '$parent_id') fixed with '$sql'",LOG_DEBUG);
+        logger("is_under_embargo(): circular reference '$node_id' (parent '$parent_id') fixed with '$sql'",WLOG_DEBUG);
         $DB->exec($sql);
     }
     return FALSE;
@@ -1180,7 +1182,7 @@ function is_expired($node_id,&$tree) {
         $where = array('node_id' => $next_id);
         $sql = db_update_sql('nodes',$fields,$where);
         $parent_id = intval($tree[$node_id]['parent_id']);
-        logger("is_expired(): circular reference '$node_id' (parent '$parent_id') fixed with '$sql'",LOG_DEBUG);
+        logger("is_expired(): circular reference '$node_id' (parent '$parent_id') fixed with '$sql'",WLOG_DEBUG);
         $DB->exec($sql);
     }
     return FALSE;

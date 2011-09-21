@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: node.class.php,v 1.2 2011/02/03 14:04:04 pfokker Exp $
+ * @version $Id: node.class.php,v 1.3 2011/09/21 18:54:20 pfokker Exp $
  * @todo we probably need to get rid of this file because it is not used (2010-12-07/PF)
  */
 if (!defined('WASENTRY')) { die('no entry'); }
@@ -131,7 +131,7 @@ function calculate_node($node,$area,&$node_path) {
                 if ($CFG->debug) { trigger_error($DB->errno.'/\''.$DB->error.'\''); }
                 return FALSE;
             } elseif ($DBResult->num_rows != 1) {
-                if ($CFG->debug) { logger('DEBUG '.__FILE__.'('.__LINE__.'): no available area',LOG_DEBUG); }
+                if ($CFG->debug) { logger('DEBUG '.__FILE__.'('.__LINE__.'): no available area',WLOG_DEBUG); }
                 $DBResult->close();
                 return FALSE;
             } else {
@@ -154,7 +154,7 @@ function calculate_node($node,$area,&$node_path) {
                 if ($CFG->debug) { trigger_error($DB->errno.'/\''.$DB->error.'\''); }
                 return FALSE;
             } elseif ($DBResult->num_rows != 1) {
-                if ($CFG->debug) { logger('DEBUG '.__FILE__.'('.__LINE__.'): no available node',LOG_DEBUG); }
+                if ($CFG->debug) { logger('DEBUG '.__FILE__.'('.__LINE__.'): no available node',WLOG_DEBUG); }
                 $DBResult->close();
                 return FALSE;
             }
@@ -164,7 +164,7 @@ function calculate_node($node,$area,&$node_path) {
             $node = intval($record['node_id']);
             if (isset($node_path[$node])) { // Deja vu! This circular reference shouldn't happen
                 if ($CFG->debug) {
-                    logger('DEBUG '.__FILE__.'('.__LINE__.'): circular reference in area '.$area.' node '.$node,LOG_DEBUG);
+                    logger('DEBUG '.__FILE__.'('.__LINE__.'): circular reference in area '.$area.' node '.$node,WLOG_DEBUG);
                 }
                 return FALSE;
             } else {
@@ -177,7 +177,7 @@ function calculate_node($node,$area,&$node_path) {
             }
         }
         if ($CFG->debug) {
-            logger('DEBUG '.__FILE__.'('.__LINE__.'): too many iterations (endless loop) in area '.$area,LOG_DEBUG);
+            logger('DEBUG '.__FILE__.'('.__LINE__.'): too many iterations (endless loop) in area '.$area,WLOG_DEBUG);
         }
         return FALSE; // if we arrive here, we have spent MAXIMUM_ITERATIONS without conclusive answer, ergo: not found
     } else {
@@ -198,7 +198,7 @@ function calculate_node($node,$area,&$node_path) {
             if ($CFG->debug) { trigger_error($DB->errno.'/\''.$DB->error.'\''); }
             return FALSE;
         } elseif ($DBResult->num_rows != 1) {
-            if ($CFG->debug) { logger('DEBUG '.__FILE__.'('.__LINE__.'): no such node',LOG_DEBUG); }
+            if ($CFG->debug) { logger('DEBUG '.__FILE__.'('.__LINE__.'): no such node',WLOG_DEBUG); }
             $DBResult->close();
             return FALSE;
         } else {
@@ -229,7 +229,7 @@ function calculate_node($node,$area,&$node_path) {
                     if ($CFG->debug) { trigger_error($DB->errno.'/\''.$DB->error.'\''); }
                     return FALSE;
                 } elseif ($DBResult->num_rows != 1) {
-                    if ($CFG->debug) { logger('DEBUG '.__FILE__.'('.__LINE__.'): no such parent node',LOG_DEBUG); }
+                    if ($CFG->debug) { logger('DEBUG '.__FILE__.'('.__LINE__.'): no such parent node',WLOG_DEBUG); }
                     $DBResult->close();
                     return FALSE;
                 }
@@ -244,7 +244,7 @@ function calculate_node($node,$area,&$node_path) {
             }
             if (MAXIMUM_ITERATIONS <= $i) {
                 if ($CFG->debug) {
-                    logger('DEBUG '.__FILE__.'('.__LINE__.'): too many iterations (endless loop) in node '.$node,LOG_DEBUG);
+                    logger('DEBUG '.__FILE__.'('.__LINE__.'): too many iterations (endless loop) in node '.$node,WLOG_DEBUG);
                 }
                 return FALSE;
             }
@@ -278,7 +278,7 @@ function calculate_node($node,$area,&$node_path) {
             $node = intval($record['node_id']);
             if (isset($node_path[$node])) { // Deja vu! This circular reference shouldn't happen
                 if ($CFG->debug) {
-                    logger('DEBUG '.__FILE__.'('.__LINE__.'): circular reference in area '.$area.' node '.$node,LOG_DEBUG);
+                    logger('DEBUG '.__FILE__.'('.__LINE__.'): circular reference in area '.$area.' node '.$node,WLOG_DEBUG);
                 }
                 return FALSE;
             } else {
@@ -291,7 +291,7 @@ function calculate_node($node,$area,&$node_path) {
             }
         }
         if ($CFG->debug) {
-            logger('DEBUG '.__FILE__.'('.__LINE__.'): too many iterations (endless loop) in area '.$area,LOG_DEBUG);
+            logger('DEBUG '.__FILE__.'('.__LINE__.'): too many iterations (endless loop) in area '.$area,WLOG_DEBUG);
         }
         return FALSE; // if we arrive here, we have spent MAXIMUM_ITERATIONS without conclusive answer, ergo: not found
     }

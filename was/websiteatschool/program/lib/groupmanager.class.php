@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: groupmanager.class.php,v 1.3 2011/09/09 14:29:57 pfokker Exp $
+ * @version $Id: groupmanager.class.php,v 1.4 2011/09/21 18:54:20 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -613,10 +613,10 @@ class GroupManager {
                 ++$errors;
                 logger("groupmanager->group_save(): error saving data group '$group_id': ".db_errormessage());
             } else {
-                logger("groupmanager->group_save(): success saving changes to '$group_id' in 'groups'",LOG_DEBUG);
+                logger("groupmanager->group_save(): success saving changes to '$group_id' in 'groups'",WLOG_DEBUG);
             }
         } else {
-            logger("groupmanager->group_save(): no changes to '$group_id' in 'groups'",LOG_DEBUG);
+            logger("groupmanager->group_save(): no changes to '$group_id' in 'groups'",WLOG_DEBUG);
         }
 
         //
@@ -642,7 +642,7 @@ class GroupManager {
                                    $acl_id,$group_id,$capacity_code));
                 } else {
                     logger(sprintf("group_save(): success removing acl_id '%d' from group/capacity '%d/%d'",
-                                   $acl_id,$group_id,$capacity_code),LOG_DEBUG);
+                                   $acl_id,$group_id,$capacity_code),WLOG_DEBUG);
                     $where = array('group_id' => $group_id, 'capacity_code' => $capacity_code);
                     $tables = array('groups_capacities','users_groups_capacities');
                     foreach ($tables as $table) {
@@ -652,7 +652,7 @@ class GroupManager {
                                            $group_id,$capacity_code,$table,db_errormessage()));
                         } else {
                             logger(sprintf("group_save(): success removing group/capacity '%d/%d' from '%s', %d records",
-                                           $group_id,$capacity_code,$table,$retval),LOG_DEBUG);
+                                           $group_id,$capacity_code,$table,$retval),WLOG_DEBUG);
                         }
                     }
                 }
@@ -667,7 +667,7 @@ class GroupManager {
                                    $group_id,$capacity_code,db_errormessage()));
                 } else {
                     logger(sprintf("group_save(): success changing sort order '%d' -> '%d' for group/capacity '%d/%d'",
-                                   $sort_order,$capacities_new[$capacity_code],$group_id,$capacity_code),LOG_DEBUG);
+                                   $sort_order,$capacities_new[$capacity_code],$group_id,$capacity_code),WLOG_DEBUG);
                 }
             } //  else
                 // no changes
@@ -901,7 +901,7 @@ class GroupManager {
 
         // 4 -- did they specify a dialog?
         if (!isset($_POST['dialog'])) {
-            logger("groupmanager->capacity_save(): weird: 'dialog' not set",LOG_DEBUG);
+            logger("groupmanager->capacity_save(): weird: 'dialog' not set",WLOG_DEBUG);
             $this->capacity_overview();
             return;
         }
@@ -970,7 +970,7 @@ class GroupManager {
             break;
 
         default:
-            logger(sprintf("groupmanager->save_data(): weird: dialog='%d'. Huh?",$dialog),LOG_DEBUG);
+            logger(sprintf("groupmanager->save_data(): weird: dialog='%d'. Huh?",$dialog),WLOG_DEBUG);
             break;
         }
 
@@ -1705,7 +1705,7 @@ class GroupManager {
                 $message .= sprintf(" '%s':%d",$table,$rowcount);
             }
         }
-        logger($message,LOG_DEBUG);
+        logger($message,WLOG_DEBUG);
         return TRUE;
     } // acl_delete()
 
@@ -1744,7 +1744,7 @@ class GroupManager {
             return FALSE;
         }
         logger(sprintf("add_group_capacity(): success adding group/capacity '%d/%d' with acl_id='%d'",
-                       $group_id, $capacity_code,$new_acl_id),LOG_DEBUG);
+                       $group_id, $capacity_code,$new_acl_id),WLOG_DEBUG);
         return TRUE;
     } // add_group_capacity()
 
@@ -1806,7 +1806,7 @@ class GroupManager {
                 $message .= sprintf(" '%s':%d",$table,$rowcount);
             }
         }
-        logger($message,LOG_DEBUG);
+        logger($message,WLOG_DEBUG);
         return TRUE;
     } // delete_group_capacities_acls()
 
@@ -1863,7 +1863,7 @@ class GroupManager {
         // except area area_id.
         $records = db_select_all_records('areas','area_id','','','area_id');
         if ($records === FALSE) {
-            logger('areas_expand_collapse(): cannot retrieve areas. Mmmm...',LOG_DEBUG);
+            logger('areas_expand_collapse(): cannot retrieve areas. Mmmm...',WLOG_DEBUG);
             return TRUE;
         }
         $open_areas = array();

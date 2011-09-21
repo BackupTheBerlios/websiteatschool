@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: usermanager.class.php,v 1.5 2011/09/21 15:55:22 pfokker Exp $
+ * @version $Id: usermanager.class.php,v 1.6 2011/09/21 18:54:20 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -597,7 +597,7 @@ class UserManager {
             break;
 
         default:
-            logger(sprintf("usermanager->save_data(): weird: dialog='%d'. Huh?",$dialog),LOG_DEBUG);
+            logger(sprintf("usermanager->save_data(): weird: dialog='%d'. Huh?",$dialog),WLOG_DEBUG);
             break;
         }
         // 4 -- we always end up in the basic properties screen (if we're still here)
@@ -708,7 +708,7 @@ class UserManager {
             logger("usermanager->user_save(): error saving data user '$user_id': ".db_errormessage());
         } else {
             $this->output->add_message(t('usermanager_save_user_success','admin',$params));
-            logger("usermanager->user_save(): success saving changes to '$user_id' in 'users'",LOG_DEBUG);
+            logger("usermanager->user_save(): success saving changes to '$user_id' in 'users'",WLOG_DEBUG);
         }
         $this->users_overview();
         return;
@@ -1386,7 +1386,7 @@ class UserManager {
             }
         }
         // commit transaction here
-        logger($message,LOG_DEBUG);
+        logger($message,WLOG_DEBUG);
         return TRUE;
     } // delete_user_records()
 
@@ -2223,7 +2223,7 @@ class UserManager {
         // except area area_id.
         $records = db_select_all_records('areas','area_id','','','area_id');
         if ($records === FALSE) {
-            logger('areas_expand_collapse(): cannot retrieve areas. Mmmm...',LOG_DEBUG);
+            logger('areas_expand_collapse(): cannot retrieve areas. Mmmm...',WLOG_DEBUG);
             return TRUE;
         }
         $open_areas = array();

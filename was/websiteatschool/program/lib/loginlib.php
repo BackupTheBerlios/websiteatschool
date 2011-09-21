@@ -100,7 +100,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: loginlib.php,v 1.4 2011/05/04 07:32:46 pfokker Exp $
+ * @version $Id: loginlib.php,v 1.5 2011/09/21 18:54:20 pfokker Exp $
  * @todo should we suppress the username in the laissez-passer routine? We _do_ leak the
  *       the username in an insecure email message. This does require making the
  *       laissez-passer code unique in the database (currently only username+code
@@ -207,7 +207,7 @@ function was_logout() {
             /* ...and also in the sessions table */
             session_destroy();
             /* log the event */
-            logger($logmessage,LOG_INFO,$user_id);
+            logger($logmessage,WLOG_INFO,$user_id);
             if (!empty($redirect)) {
                 header('Location: '.$redirect);
                 echo '<a href="'.$redirect.'">'.htmlspecialchars($redirect) .'</a>';
@@ -218,7 +218,7 @@ function was_logout() {
             /* kill the cookie in the user's browser even when the session does no longer exist in database */
             $a = session_get_cookie_params();
             setcookie($CFG->session_name,'',time()-86400,$a['path'],$a['domain'],$a['secure']);
-            logger('logout: reset user\'s cookie even without corresponding session record in database',LOG_DEBUG);
+            logger('logout: reset user\'s cookie even without corresponding session record in database',WLOG_DEBUG);
             /* since we don't know where to go next (no redirect), we'll go to login screen #1 */
             show_login(LOGIN_PROCEDURE_NORMAL,t('logout_forced','loginlib'));
         }
@@ -305,7 +305,7 @@ function was_login($procedure=LOGIN_PROCEDURE_SHOWLOGIN,$message='') {
                     $_SESSION['remote_addr'] = $_SERVER['REMOTE_ADDR'];
                     $_SESSION['salt'] = $CFG->salt; // allow for extra check on rogue sessions
                     $_SESSION['username'] = $username;
-                    logger('login: \''.$username.'\' ('.$user_id.'): success',LOG_INFO,$user_id);
+                    logger('login: \''.$username.'\' ('.$user_id.'): success',WLOG_INFO,$user_id);
                     // now that we logged on successfully, make sure that obsolete sessions
                     // will not bother us (or other logged in users). Note the 900 seconds minimum duration;
                     $time_out = max(900,intval(ini_get('session.gc_maxlifetime')));
@@ -390,7 +390,7 @@ function was_login($procedure=LOGIN_PROCEDURE_SHOWLOGIN,$message='') {
                 $_SESSION['username'] = $username;
                 session_write_close(); // save the session
                 login_send_confirmation($user);
-                logger('login: \''.$username.'\' ('.$user_id.'), change password: success',LOG_INFO,$user_id);
+                logger('login: \''.$username.'\' ('.$user_id.'), change password: success',WLOG_INFO,$user_id);
                 show_login(LOGIN_PROCEDURE_MESSAGE_BOX,t('password_changed','loginlib'));
                 exit;
             }
@@ -1000,7 +1000,7 @@ function login_send_laissez_passer($user) {
     $where = array('user_id' => $user_id);
     $num_affected = db_update('users',$fields,$where);
     if (($num_affected === FALSE) || ($num_affected != 1)) {
-        logger($logmessage.'failed',LOG_INFO,$user_id);
+        logger($logmessage.'failed',WLOG_INFO,$user_id);
         return FALSE;
     }
 
@@ -1022,7 +1022,7 @@ function login_send_laissez_passer($user) {
     $email->set_message($message);
     $retval = $email->send();
     $logmessage .= ($retval) ? 'success' : 'failed';
-    logger($logmessage,LOG_INFO,$user_id);
+    logger($logmessage,WLOG_INFO,$user_id);
     return $retval;
 } // login_send_laissez_passer()
 
@@ -1072,7 +1072,7 @@ function login_send_bypass($user) {
         'user_id' => $user_id);
     $num_affected = db_update('users',$fields,$where);
     if (($num_affected === FALSE) || ($num_affected != 1)) {
-        logger($logmessage.'failed',LOG_INFO,$user_id);
+        logger($logmessage.'failed',WLOG_INFO,$user_id);
         return FALSE;
     }
     $subject = replace_crlf(t('your_forgotten_password_subject2','loginlib'),' ');
@@ -1090,7 +1090,7 @@ function login_send_bypass($user) {
     $retval = $email->send();
 
     $logmessage .= ($retval) ? 'success' : 'failed';
-    logger($logmessage,LOG_INFO,$user_id);
+    logger($logmessage,WLOG_INFO,$user_id);
     return $retval;
 } // login_send_bypass()
 
@@ -1514,14 +1514,14 @@ function login_failure_increment($remote_addr,$procedure,$username='') {
             if ($record !== FALSE) {
                 $retval = intval($record['score']);
             } else {
-                logger('could not calculate failure score',LOG_DEBUG);
+                logger('could not calculate failure score',WLOG_DEBUG);
             }
         } else {
-            logger('could not increment failure count',LOG_DEBUG);
+            logger('could not increment failure count',WLOG_DEBUG);
         }
         logger('login: failed; procedure='.$procedure_names[$procedure].', count='.$retval.', username=\''.$username.'\'');
     } else {
-        logger('internal error: unknown procedure',LOG_DEBUG);
+        logger('internal error: unknown procedure',WLOG_DEBUG);
     }
     return $retval;
 } // login_failure()

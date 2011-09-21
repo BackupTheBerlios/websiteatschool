@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: toolslib.php,v 1.3 2011/06/17 18:19:11 pfokker Exp $
+ * @version $Id: toolslib.php,v 1.4 2011/09/21 18:54:20 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -236,14 +236,14 @@ function task_backuptool(&$output) {
     $archive  = $basename.'.zip';
     $backup   = $basename.'.sql';
     $data     = '';
-    logger(sprintf('%s(): start creating/streaming backup %s',__FUNCTION__,$basename),LOG_DEBUG);
+    logger(sprintf('%s(): start creating/streaming backup %s',__FUNCTION__,$basename),WLOG_DEBUG);
     if ($DB->dump($data)) {
         $data_length = strlen($data);
-        logger(sprintf('%s(): backup file %s is %d bytes',__FUNCTION__,$backup,$data_length),LOG_DEBUG);
+        logger(sprintf('%s(): backup file %s is %d bytes',__FUNCTION__,$backup,$data_length),WLOG_DEBUG);
         if ($download == 'sql') {
             header('Content-Type: text/x-sql');
             header(sprintf('Content-Disposition: attachment; filename="%s"',$backup));
-            logger(sprintf('%s(): about to stream %d bytes (backup = %s)',__FUNCTION__,$data_length,$backup),LOG_DEBUG);
+            logger(sprintf('%s(): about to stream %d bytes (backup = %s)',__FUNCTION__,$data_length,$backup),WLOG_DEBUG);
             echo $data;
             logger(sprintf('%s(): success streaming data %s (%d bytes uncompressed)',__FUNCTION__,$backup,$data_length));
             exit;
@@ -280,11 +280,20 @@ function task_backuptool(&$output) {
 
 /** quick and dirty logfile viewer
  *
- * this constructs a table with the contents of the logtable.
+ * this constructs a table of the HTML-variety with the contents of the logtable.
  * fields displayed are: datim, IP-address, username, logpriority and message
  * we use a LEFT JOIN in order to get to a meaningful username rather than a numeric user_id
  * an attempt is made to start with the last page of the logs because that would probably
  * be the most interesting part. We paginate the log in order to keep it manageable.
+ *
+ * Rant
+ * I used to use the built-in constants like LOG_INFO and LOG_DEBUG to allow for different levels
+ * of loggin (see {@link logger()}). To my complete surprise loggin didn't work at all on
+ * Windows (it did on Linux). The reason was that LOG_DEBUG and LOG_INFO and LOG_NOTICE are all
+ * defined to be the same value. WTF? Any test based on LOG_DEBUG and LOG_INFO being different
+ * would fail, hence no logging at all. The mind boggles! So, instead of using built-in constants
+ * I had to define my own and do a global search&replace. Aaarghhhhhh!!!!
+ * /Rant
  *
  * @param object &$output collects output to show to user
  * @return output displayed via $output
@@ -293,14 +302,14 @@ function task_backuptool(&$output) {
 function task_logview(&$output) {
     global $CFG,$WAS_SCRIPT_NAME,$DB;
     static $priorities = array(
-        LOG_EMERG   => 'LOG_EMERG',
-        LOG_ALERT   => 'LOG_ALERT',
-        LOG_CRIT    => 'LOG_CRIT',
-        LOG_ERR     => 'LOG_ERR',
-        LOG_WARNING => 'LOG_WARNING',
-        LOG_NOTICE  => 'LOG_NOTICE',
-        LOG_INFO    => 'LOG_INFO',
-        LOG_DEBUG   => 'LOG_DEBUG');
+        WLOG_EMERG   => 'LOG_EMERG',
+        WLOG_ALERT   => 'LOG_ALERT',
+        WLOG_CRIT    => 'LOG_CRIT',
+        WLOG_ERR     => 'LOG_ERR',
+        WLOG_WARNING => 'LOG_WARNING',
+        WLOG_NOTICE  => 'LOG_NOTICE',
+        WLOG_INFO    => 'LOG_INFO',
+        WLOG_DEBUG   => 'LOG_DEBUG');
 
     // 0 -- at least we allow the user to navigate away if something goes wrong
     $output->set_helptopic('logview');
@@ -321,7 +330,7 @@ function task_logview(&$output) {
         $output->add_content('<h2>'.t('menu_logview','admin').'</h2>');
         $output->add_content(t('logview_no_messages','admin'));
         $output->add_message(t('logview_no_messages','admin'));
-        logger(sprintf('%s(): no messages to show',__FUNCTION__),LOG_DEBUG);
+        logger(sprintf('%s(): no messages to show',__FUNCTION__),WLOG_DEBUG);
         return;
     }
 

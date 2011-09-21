@@ -26,7 +26,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: main_file.php,v 1.2 2011/02/03 14:04:02 pfokker Exp $
+ * @version $Id: main_file.php,v 1.3 2011/09/21 18:54:19 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -164,14 +164,14 @@ function main_file() {
         $table = 'areas';
         if (($record = db_select_single_record($table,$fields,$where)) === FALSE) {
             logger(sprintf("%s(): access denied for file '%s': non-existing or inactive area: return 404 Not Found",
-                           __FUNCTION__,$path),LOG_DEBUG);
+                           __FUNCTION__,$path),WLOG_DEBUG);
             error_exit404($path);
         }
         $area_id = intval($record['area_id']);
         if ((db_bool_is(TRUE,$record['is_private'])) &&
             (!$USER->has_intranet_permissions(ACL_ROLE_INTRANET_ACCESS,$area_id))) {
             logger(sprintf("%s(): access denied for file '%s' in private area '%d': return 404 Not Found",
-                            __FUNCTION__,$path,$area_id),LOG_DEBUG);
+                            __FUNCTION__,$path,$area_id),WLOG_DEBUG);
             error_exit404($path);
         }
         break;        
@@ -183,7 +183,7 @@ function main_file() {
         $table = 'users';
         if (($record = db_select_single_record($table,$fields,$where)) === FALSE) {
             logger(sprintf("%s(): access denied for file '%s': non-existing or inactive user: return 404 Not Found",
-                           __FUNCTION__,$path),LOG_DEBUG);
+                           __FUNCTION__,$path),WLOG_DEBUG);
             error_exit404($path);
         }
         break;
@@ -195,14 +195,14 @@ function main_file() {
         $table = 'groups';
         if (($record = db_select_single_record($table,$fields,$where)) === FALSE) {
             logger(sprintf("%s(): access denied for file '%s': non-existing or inactive group: return 404 Not Found",
-                           __FUNCTION__,$path),LOG_DEBUG);
+                           __FUNCTION__,$path),WLOG_DEBUG);
             error_exit404($path);
         }
         break;
 
     default:
         logger(sprintf("%s(): access denied for file '%s': subdirectory '%s' not recognised: return 404 Not Found",
-                        __FUNCTION__,$path,$path_components[0]),LOG_DEBUG);
+                        __FUNCTION__,$path,$path_components[0]),WLOG_DEBUG);
         error_exit404($path);
         break;
     }
@@ -210,12 +210,12 @@ function main_file() {
     // 2B -- still here? 1st and 2nd components are good but are there tricks furter down the line?
     if (!is_file($CFG->datadir.$path)) {
         logger(sprintf("%s(): access denied for file '%s': file does not exist: return 404 Not Found",
-                       __FUNCTION__,$path),LOG_DEBUG);
+                       __FUNCTION__,$path),WLOG_DEBUG);
         error_exit404($path);
     }
     if (strpos($path,'/../') !== FALSE) {
         logger(sprintf("%s(): access denied for file '%s': no tricks with '/../': return 404 Not Found",
-                       __FUNCTION__,$path),LOG_DEBUG);
+                       __FUNCTION__,$path),WLOG_DEBUG);
         error_exit404($path);
     }
 
@@ -469,7 +469,7 @@ function download_source($component) {
         foreach($files as $file) {
             $path = $CFG->dir.'/'.$file;
             if (!file_exists($path)) {
-                logger(sprintf("%s(): missing file '%s' in archive '%s'",__FUNCTION__,$path,$archive),LOG_DEBUG);
+                logger(sprintf("%s(): missing file '%s' in archive '%s'",__FUNCTION__,$path,$archive),WLOG_DEBUG);
                 $data = sprintf('<'.'?'.'php echo "%s: file was not found"; ?'.'>',$file);
                 $comment = sprintf('%s: missing',$file);
                 if (!$zip->AddData($data,$file,$comment)) {
@@ -528,12 +528,12 @@ function download_source($component) {
  */
 function download_source_tree(&$zip,$path,$vpath,&$excludes) {
     if (in_array(realpath($path),$excludes)) {
-        logger(sprintf("%s(): skipping excluded directory '%s'",__FUNCTION__,$path),LOG_DEBUG);
+        logger(sprintf("%s(): skipping excluded directory '%s'",__FUNCTION__,$path),WLOG_DEBUG);
         return TRUE;
     }
 
     if (($handle = opendir($path)) === FALSE) {
-        logger(sprintf("%s(): cannot open directory '%s'",__FUNCTION__,$path),LOG_DEBUG);
+        logger(sprintf("%s(): cannot open directory '%s'",__FUNCTION__,$path),WLOG_DEBUG);
         return FALSE;
     }
 
@@ -543,7 +543,7 @@ function download_source_tree(&$zip,$path,$vpath,&$excludes) {
         }
         if (is_file($path.'/'.$file)) {
             if (!$zip->AddFile($path.'/'.$file,$vpath.'/'.$file)) {
-                logger(sprintf("%s(): cannot add file '%s/%s': %s",__FUNCTION__,$path,$file,$zip->Error),LOG_DEBUG);
+                logger(sprintf("%s(): cannot add file '%s/%s': %s",__FUNCTION__,$path,$file,$zip->Error),WLOG_DEBUG);
                 closedir($handle);
                 return FALSE;
             }
@@ -576,7 +576,7 @@ function readfile_chunked($path) {
     }
     while (!feof($fp)) {
         if (($buffer = @fread($fp, $chunk_size)) === FALSE) {
-            logger(sprintf("%s(): error reading from '%s' (did %d bytes sofar)",__FUNCTION__,$path,$count),LOG_DEBUG);
+            logger(sprintf("%s(): error reading from '%s' (did %d bytes sofar)",__FUNCTION__,$path,$count),WLOG_DEBUG);
             @fclose($fp);
             return FALSE;
         }
@@ -584,7 +584,7 @@ function readfile_chunked($path) {
         $bytes = strlen($buffer);
         $count += $bytes;
         if ($bytes >= $chunk_size) { // we just read a full chunk, probably more to come; request more time...
-            logger(sprintf("%s(): need more time for '%s' (%d bytes sofar)",__FUNCTION__,$path,$count),LOG_DEBUG);
+            logger(sprintf("%s(): need more time for '%s' (%d bytes sofar)",__FUNCTION__,$path,$count),WLOG_DEBUG);
             set_time_limit($add_execution_time);
         }
         ob_flush();

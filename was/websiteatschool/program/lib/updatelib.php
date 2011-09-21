@@ -54,7 +54,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: updatelib.php,v 1.12 2011/09/20 10:21:49 pfokker Exp $
+ * @version $Id: updatelib.php,v 1.13 2011/09/21 18:54:20 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1080,7 +1080,7 @@ function update_create_tables($filename) {
                 logger(sprintf('%s(): cannot create table \'%s\': %s',__FUNCTION__,$tabledef['name'],db_errormessage()));
                 $retval = FALSE;
             } else {
-                logger(sprintf('%s(): success creating table \'%s\'',__FUNCTION__,$tabledef['name']),LOG_DEBUG);
+                logger(sprintf('%s(): success creating table \'%s\'',__FUNCTION__,$tabledef['name']),WLOG_DEBUG);
             }
         }
     }
@@ -1243,7 +1243,7 @@ function update_core_2011051100(&$output) {
     // 2B -- visit all tables
     foreach($tables as $table) {
         if ((isset($table['Collation'])) && (utf8_strcasecmp($table['Collation'],$collation) == 0)) {
-            logger(sprintf('%s(): table \'%s\' is already \'%s\'',__FUNCTION__,$table['Name'],$collation),LOG_DEBUG);
+            logger(sprintf('%s(): table \'%s\' is already \'%s\'',__FUNCTION__,$table['Name'],$collation),WLOG_DEBUG);
             continue; // somehow someone already changed this table; carry on with the next one
         }
         // 3A -- prepare to step through all columns of this table
@@ -1264,7 +1264,7 @@ function update_core_2011051100(&$output) {
                     continue; // nothing to do; no collation to change
                 } elseif (utf8_strcasecmp($column['Collation'],$collation) == 0) {
                     logger(sprintf('%s(): column \'%s.%s\' is already converted to \'%s\'',
-                                    __FUNCTION__,$table['Name'],$column['Field'],$collation),LOG_DEBUG);
+                                    __FUNCTION__,$table['Name'],$column['Field'],$collation),WLOG_DEBUG);
                     continue; // somehow someone already changed this column; carry on with the next one
                 }
             } else {
@@ -1294,7 +1294,7 @@ function update_core_2011051100(&$output) {
                 break;
             default:
                 logger(sprintf('%s(): cannot handle \'%s.%s\' type \'%s\'; skipping',
-                                __FUNCTION__,$table['Name'],$column['Field'],$vtype[0]),LOG_DEBUG);
+                                __FUNCTION__,$table['Name'],$column['Field'],$vtype[0]),WLOG_DEBUG);
                 continue;
                 break;
             }
@@ -1316,7 +1316,7 @@ function update_core_2011051100(&$output) {
                 return FALSE;
             } else {
                 logger(sprintf('%s(): alter column \'%s.%s\': changed collation from \'%s\' to  \'%s\'',
-                               __FUNCTION__,$table['Name'],$column['Field'],$column['Collation'],$collation),LOG_DEBUG);
+                               __FUNCTION__,$table['Name'],$column['Field'],$column['Collation'],$collation),WLOG_DEBUG);
             }
 
         }
@@ -1332,7 +1332,7 @@ function update_core_2011051100(&$output) {
             return FALSE;
         } else {
             logger(sprintf('%s(): alter table \'%s\': changed collation from \'%s\' to  \'%s\'',
-                           __FUNCTION__,$table['Name'],$table['Collation'],$collation),LOG_DEBUG);
+                           __FUNCTION__,$table['Name'],$table['Collation'],$collation),WLOG_DEBUG);
         }
         @set_time_limit($overtime); // try to get additional processing time after every processed table
     }
@@ -1706,7 +1706,7 @@ function update_core_2011092100(&$output) {
             } else {
                 $msg = 'changed \'notnull\' and \'default\' properties'; // there is only nodes.modules_id here...
             }
-            logger(sprintf('%s(): alter table \'%s\' field \'%s\': %s',__FUNCTION__,$table,$field,$msg),LOG_DEBUG);
+            logger(sprintf('%s(): alter table \'%s\' field \'%s\': %s',__FUNCTION__,$table,$field,$msg),WLOG_DEBUG);
         }
         @set_time_limit($overtime); // try to get additional processing time after every processed table
     }
@@ -1724,7 +1724,7 @@ function update_core_2011092100(&$output) {
         $output->add_message(t('update_core_error','admin',array('{VERSION}' => strval($version))));
         return FALSE;
     } else {
-        logger(sprintf('%s(): update field \'nodes.module_id\': %d rows affected',__FUNCTION__,$retval),LOG_DEBUG);
+        logger(sprintf('%s(): update field \'nodes.module_id\': %d rows affected',__FUNCTION__,$retval),WLOG_DEBUG);
     }
 
     //

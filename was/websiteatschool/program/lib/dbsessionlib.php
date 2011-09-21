@@ -72,7 +72,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: dbsessionlib.php,v 1.3 2011/09/09 14:29:57 pfokker Exp $
+ * @version $Id: dbsessionlib.php,v 1.4 2011/09/21 18:54:20 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -358,9 +358,9 @@ function dbsession_remove_obsolete_sessions($seconds,$time_field) {
         }
     }
     if ($retval === FALSE) {
-        logger('dbsession_remove_obsolete_sessions(): errors retrieving obsolete sessions',LOG_DEBUG);
+        logger('dbsession_remove_obsolete_sessions(): errors retrieving obsolete sessions',WLOG_DEBUG);
     } elseif (sizeof($records) < 1) {
-        logger('dbsession_remove_obsolete_sessions(): nothing to do',LOG_DEBUG);
+        logger('dbsession_remove_obsolete_sessions(): nothing to do',WLOG_DEBUG);
     } else {
         foreach($records as $session_id => $record) {
             $msg = sprintf("session %d %s (%d seconds) [login %s(%d) from %s on %s, last access %s]",
@@ -374,7 +374,7 @@ function dbsession_remove_obsolete_sessions($seconds,$time_field) {
                    $record['atime']);
             logger($msg);
         }
-        logger('dbsession_remove_obsolete_sessions(): number of removed sessions: '.sizeof($records),LOG_DEBUG);
+        logger('dbsession_remove_obsolete_sessions(): number of removed sessions: '.sizeof($records),WLOG_DEBUG);
     }
     unset($records);
     $where = $time_field.' < '.db_escape_and_quote($xtime);

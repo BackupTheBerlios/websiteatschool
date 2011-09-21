@@ -24,7 +24,7 @@
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
  * @todo we probably need to get rid of this file because it is not used (2010-12-07/PF)
- * @version $Id: area.class.php,v 1.2 2011/02/03 14:04:03 pfokker Exp $
+ * @version $Id: area.class.php,v 1.3 2011/09/21 18:54:20 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -99,27 +99,27 @@ class Area {
         $this->nodes = array();
         $retval = $this->calculate_node_id($this->requested_area,$this->requested_node,$this->nodes);
         if ($retval === FALSE) { // no valid node found, bail out
-            logger('DEBUG '.__FILE__.'('.__LINE__.'): no valid node found',LOG_DEBUG);
+            logger('DEBUG '.__FILE__.'('.__LINE__.'): no valid node found',WLOG_DEBUG);
             return;
         }
         $this->node_id = intval($retval);
         $this->area_id = intval($this->nodes[$this->node_id]['area_id']);
         $this->area_record = db_select_single_record(AREA_CONST_TABLE_AREAS,'*',array('area_id' => intval($this->area_id)));
         if ($this->area_record === FALSE) { // failure reading area record, bail out
-            logger('DEBUG '.__FILE__.'('.__LINE__.'): failure reading area record '.$this->area_id,LOG_DEBUG);
+            logger('DEBUG '.__FILE__.'('.__LINE__.'): failure reading area record '.$this->area_id,WLOG_DEBUG);
             return;
         }
 
         $this->nodes = $this->retrieve_nodes_from_database($this->area_id);
         if ($this->nodes === FALSE) { // failure reading all node records into cache, bail out
-            logger('DEBUG '.__FILE__.'('.__LINE__.'): failure reading nodes in area '.$this->area_id,LOG_DEBUG);
+            logger('DEBUG '.__FILE__.'('.__LINE__.'): failure reading nodes in area '.$this->area_id,WLOG_DEBUG);
             return;
         }
         $this->tree = $this->build_tree_of_nodes($this->nodes);
 
         $this->module = module_factory(intval($this->nodes[$this->node_id]['module_id']),$this->node_id);
         if ($this->module === FALSE) { // failure setting up module, bail out
-            logger('DEBUG '.__FILE__.'('.__LINE__.'): failure constructing module for node '.$this->node_id,LOG_DEBUG);
+            logger('DEBUG '.__FILE__.'('.__LINE__.'): failure constructing module for node '.$this->node_id,WLOG_DEBUG);
             return;
         }
         $this->area_exists = TRUE; // finally indicate success
@@ -258,7 +258,7 @@ class Area {
             }
         }
         // too many iterations (endless loop?)
-        logger('DEBUG '.__FILE__.'('.__LINE__.'): too many iterations (endless loop) in node '.$node_id,LOG_DEBUG);
+        logger('DEBUG '.__FILE__.'('.__LINE__.'): too many iterations (endless loop) in node '.$node_id,WLOG_DEBUG);
         return FALSE;
     } // get_breadcrumb_anchors()
 
@@ -418,7 +418,7 @@ class Area {
                 if ($CFG->debug) { trigger_error($DB->errno.'/\''.$DB->error.'\''); }
                 return FALSE;
             } elseif ($DBResult->num_rows != 1) {
-                if ($CFG->debug) { logger('DEBUG '.__FILE__.'('.__LINE__.'): no available area',LOG_DEBUG); }
+                if ($CFG->debug) { logger('DEBUG '.__FILE__.'('.__LINE__.'): no available area',WLOG_DEBUG); }
                 $DBResult->close();
                 return FALSE;
             } else {
@@ -480,7 +480,7 @@ class Area {
             if ($CFG->debug) { trigger_error($DB->errno.'/\''.$DB->error.'\''); }
             return FALSE;
         } elseif ($DBResult->num_rows != 1) {
-            if ($CFG->debug) { logger('DEBUG '.__FILE__.'('.__LINE__.'): no such node',LOG_DEBUG); }
+            if ($CFG->debug) { logger('DEBUG '.__FILE__.'('.__LINE__.'): no such node',WLOG_DEBUG); }
             $DBResult->close();
             return FALSE;
         } else {
@@ -514,7 +514,7 @@ class Area {
                     if ($CFG->debug) { trigger_error($DB->errno.'/\''.$DB->error.'\''); }
                     return FALSE;
                 } elseif ($DBResult->num_rows != 1) {
-                    if ($CFG->debug) { logger('DEBUG '.__FILE__.'('.__LINE__.'): no such parent '.$parent_id,LOG_DEBUG); }
+                    if ($CFG->debug) { logger('DEBUG '.__FILE__.'('.__LINE__.'): no such parent '.$parent_id,WLOG_DEBUG); }
                     $DBResult->close();
                     return FALSE;
                 }
@@ -532,7 +532,7 @@ class Area {
                 }
             }
             if (MAXIMUM_ITERATIONS <= $i) {
-                logger('DEBUG '.__FILE__.'('.__LINE__.'): endless loop in node '.$node_id,LOG_DEBUG);
+                logger('DEBUG '.__FILE__.'('.__LINE__.'): endless loop in node '.$node_id,WLOG_DEBUG);
                 return FALSE;
             }
         }
@@ -592,7 +592,7 @@ class Area {
             $DBResult->close();
             $node_id = intval($record['node_id']);
             if (isset($local_node_cache[$node_id])) { // Deja vu! This circular reference shouldn't happen
-                logger(__FILE__.'('.__LINE__.'): circular reference in area '.$area_id.' node '.$node_id,LOG_DEBUG);
+                logger(__FILE__.'('.__LINE__.'): circular reference in area '.$area_id.' node '.$node_id,WLOG_DEBUG);
                 return FALSE;
             } else {
                 $local_node_cache[$node_id] = $record; // cache this node record (for detecting circular reference)
@@ -604,7 +604,7 @@ class Area {
                 $node_id_clause = 'n.parent_id = '.$node_id;
             }
         }
-        logger(__FILE__.'('.__LINE__.'): too many iterations (endless loop) in area '.$area_id,LOG_DEBUG);
+        logger(__FILE__.'('.__LINE__.'): too many iterations (endless loop) in area '.$area_id,WLOG_DEBUG);
         return FALSE; // if we arrive here, we have spent MAXIMUM_ITERATIONS without conclusive answer, ergo: not found
     } // calculate_default_descendant_node_id()
 

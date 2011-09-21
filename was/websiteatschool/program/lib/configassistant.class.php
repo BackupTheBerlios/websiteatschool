@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: configassistant.class.php,v 1.3 2011/05/11 07:46:27 pfokker Exp $
+ * @version $Id: configassistant.class.php,v 1.4 2011/09/21 18:54:20 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -364,7 +364,7 @@ class ConfigAssistant {
                             ++$errors;
                         } else {
                             logger(sprintf("configassistant: success updating %s[%s] => '%s'",
-                                            $this->table,$id,strval($this->dialogdef[$name]['value'])),LOG_DEBUG);
+                                            $this->table,$id,strval($this->dialogdef[$name]['value'])),WLOG_DEBUG);
                         }
                     } else {
                         ++$records_unchanged;
@@ -373,7 +373,7 @@ class ConfigAssistant {
             } // foreach
         } // if (records)
         logger(sprintf('configassistant: save configuration in table %s: unchanged: %d, changed: %d, errors: %d',
-                       $this->table,$records_unchanged, $records_changed,$errors),LOG_DEBUG);
+                       $this->table,$records_unchanged, $records_changed,$errors),WLOG_DEBUG);
         if ($errors == 0) {
             $output->add_message(t('success_saving_data','admin'));
             $retval = TRUE;
@@ -495,7 +495,7 @@ class ConfigAssistant {
      * Most recognised parameters yield an integer value. Exceptions are:
      * minvalue and maxvalue: these yield a variable of the same type as the config parameter itself
      * options yields an array with all options from the comma delimited list
-     * Unknown name=value pairs are logged with LOG_DEBUG.
+     * Unknown name=value pairs are logged with WLOG_DEBUG.
      *
      * @param string $type variable type (necessary for calculating minvalue/maxvalue)
      * @param string $extras semicolon-delimited list of name=value pairs
@@ -534,7 +534,7 @@ class ConfigAssistant {
                     $extra[$name] = explode(',',$value);
                     break;
                 default:
-                    logger("configassistant: weird: '$pair' not recognised in table '{$this->table}'",LOG_DEBUG);
+                    logger("configassistant: weird: '$pair' not recognised in table '{$this->table}'",WLOG_DEBUG);
                     break;
                 }
             }
