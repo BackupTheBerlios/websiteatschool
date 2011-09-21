@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: filemanager.class.php,v 1.4 2011/09/21 07:18:06 pfokker Exp $
+ * @version $Id: filemanager.class.php,v 1.5 2011/09/21 16:03:10 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -167,32 +167,16 @@ class FileManager {
 
         $task = get_parameter_string('task',TASK_LIST_DIRECTORY);
         switch ($task) {
-        case TASK_LIST_DIRECTORY:
-            $this->task_list_directory();
-            break;
-        case TASK_CHANGE_DIRECTORY:
-            $this->task_change_directory();
-            break;
-        case TASK_PREVIEW_FILE:
-            $this->task_preview_file();
-            break;
-        case TASK_REMOVE_FILE:
-            $this->task_remove_file();
-            break;
-        case TASK_REMOVE_DIRECTORY:
-            $this->task_remove_directory();
-            break;
-        case TASK_REMOVE_MULTIPLE_FILES:
-            $this->task_remove_multiple_files();
-            break;
-        case TASK_ADD_FILE:
-            $this->task_add_file();
-            break;
-        case TASK_ADD_DIRECTORY:
-            $this->task_add_directory();
-            break;
+        case TASK_LIST_DIRECTORY:        $this->task_list_directory();        break;
+        case TASK_CHANGE_DIRECTORY:      $this->task_change_directory();      break;
+        case TASK_PREVIEW_FILE:          $this->task_preview_file();          break;
+        case TASK_REMOVE_FILE:           $this->task_remove_file();           break;
+        case TASK_REMOVE_DIRECTORY:      $this->task_remove_directory();      break;
+        case TASK_REMOVE_MULTIPLE_FILES: $this->task_remove_multiple_files(); break;
+        case TASK_ADD_FILE:              $this->task_add_file();              break;
+        case TASK_ADD_DIRECTORY:         $this->task_add_directory();         break;
         default:
-            $s = (strlen($task) <= 50) ? $task : substr($task,0,44).' (...)';
+            $s = (utf8_strlen($task) <= 50) ? $task : utf8_substr($task,0,44).' (...)';
             $message = t('task_unknown','admin',array('{TASK}' => htmlspecialchars($s)));
             $this->output->add_message($message);
             logger(__FUNCTION__.'(): unknown task: '.htmlspecialchars($s));
@@ -1935,7 +1919,7 @@ class FileManager {
      *  - THUMBNAIL_PREFIX* the thumbnails of images
      *  - symbolic links
      *
-     * @param string $path the directory to list
+     * @param string $path the directory to list, e.g. '/areas/exemplum' or '/groups/faculty'
      * @return array list of available files and subdirectories
      * @uses $USER;
      * @uses $CFG;
@@ -1991,7 +1975,7 @@ class FileManager {
                     );
             } // else nothing to see here
         }
-	closedir($handle);
+        closedir($handle);
         return $directories + $files;
     } // get_entries()
 
