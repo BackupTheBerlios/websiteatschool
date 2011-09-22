@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: usermanager.class.php,v 1.8 2011/09/22 08:48:37 pfokker Exp $
+ * @version $Id: usermanager.class.php,v 1.9 2011/09/22 17:08:10 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -767,9 +767,10 @@ class UserManager {
         }
 
 
-        // 2B -- are there any files left in this user's private storage $CFG->datadir.'/users/'.$userpath?
+        // 2B -- are there any files left in this user's private storage $CFG->datadir.'/users/'.$path?
         if (($user = $this->get_user_record($user_id)) === FALSE) {
-            return FALSE;
+            $this->users_overview();
+            return;
         }
         $path = '/users/'.$user['path'];
         if (!userdir_is_empty($path)) {
@@ -797,17 +798,14 @@ class UserManager {
                 $retval = FALSE;
             }
             logger(sprintf("%s.%s(): %s deleting user '%d' %s (%s)",
-                       __CLASS__,__FUNCTION__,
-                       ($retval === FALSE) ? 'failure' : 'success',
-                       $user_id,
-                       $params['{USERNAME}'],
-                       $params['{FULL_NAME}']));
+                           __CLASS__,__FUNCTION__,($retval === FALSE) ? 'failure' : 'success',
+                           $user_id,$params['{USERNAME}'],$params['{FULL_NAME}']));
             $this->users_overview();
             return;
         }
 
         //
-        // 3 -- no delete yet, first show confirmation dialog
+        // 4 -- no delete yet, first show confirmation dialog
         //
         // Dialog is very simple: a simple text showing
         // - the name of the user
@@ -2077,7 +2075,7 @@ class UserManager {
      */
     function get_user_names($user_id) {
         if (($record = $this->get_user_record($user_id)) === FALSE) {
-            return FALSE;
+            $record = array('username' => strval($user_id),'full_name' => strval($user_id));
         }
         return array('{USERNAME}' => $record['username'],'{FULL_NAME}' => $record['full_name']);
     } // get_user_names()
@@ -2172,7 +2170,7 @@ class UserManager {
             }
         }
         return (isset($this->users[$user_id])) ? $this->users[$user_id] : FALSE;
-    } // get_user_record()           
+    } // get_user_record()
 
     /** manipulate the current state if indicator(s) for 'open' and 'closed' areas
      * 

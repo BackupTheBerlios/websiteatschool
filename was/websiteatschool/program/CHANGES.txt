@@ -1,5 +1,5 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.85 2011/09/22 08:48:37 pfokker Exp $
+$Id: CHANGES.txt,v 1.86 2011/09/22 17:08:10 pfokker Exp $
 -------------------------------------------------------------------------------
 
 2011-09-22
@@ -7,7 +7,10 @@ $Id: CHANGES.txt,v 1.85 2011/09/22 08:48:37 pfokker Exp $
 - minor cosmetics
 - added function userdir_delete() and we now remove the (empty)
   userdirectory when the user account is deleted
-
+- [groupmanager.class.php]: we now enforce that the files must ber
+  removed before the group can be deleted. Also, the user cannot
+  delete a group of which she is a member. Order of delete rearranged
+  to satisfy FK contraints
 
 2011-09-21
 - [instal.php] better test on JPG Support/JPEG Support specified by gd_info()

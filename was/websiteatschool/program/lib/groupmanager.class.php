@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: groupmanager.class.php,v 1.5 2011/09/22 09:00:14 pfokker Exp $
+ * @version $Id: groupmanager.class.php,v 1.6 2011/09/22 17:08:10 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -45,6 +45,9 @@ class GroupManager {
     /** @var bool if TRUE the calling routing is allowed to use the menu area (e.g. show account mgr menu) */
     var $show_parent_menu = FALSE;
 
+    /** @var array used to cache group records keyed by group_id */
+    var $groups = array();
+
     /** construct a GroupManager object
      *
      * This initialises the GroupManager and also dispatches the task to do.
@@ -55,53 +58,21 @@ class GroupManager {
         global $CFG;
         $this->output = &$output;
         $this->output->set_helptopic('groupmanager');
+        $this->groups = array();
 
         $task = get_parameter_string('task',TASK_GROUPS);
         switch($task) {
-        case TASK_GROUPS:
-            $this->groups_overview();
-            break;
-
-        case TASK_GROUP_ADD:
-            $this->group_add();
-            break;
-
-        case TASK_GROUP_SAVE_NEW:
-            $this->group_savenew();
-            break;
-
-        case TASK_GROUP_EDIT:
-            $this->group_edit();
-            break;
-
-        case TASK_GROUP_SAVE:
-            $this->group_save();
-            break;
-
-        case TASK_GROUP_DELETE:
-            $this->group_delete();
-            break;
-
-        case TASK_GROUP_CAPACITY_OVERVIEW:
-            $this->capacity_overview();
-            break;
-
-        case TASK_GROUP_CAPACITY_INTRANET:
-            $this->capacity_intranet();
-            break;
-
-        case TASK_GROUP_CAPACITY_ADMIN:
-            $this->capacity_admin();
-            break;
-
-        case TASK_GROUP_CAPACITY_PAGEMANAGER:
-            $this->capacity_pagemanager();
-            break;
-
-        case TASK_GROUP_CAPACITY_SAVE:
-            $this->capacity_save();
-            break;
-
+        case TASK_GROUPS:                     $this->groups_overview();      break;
+        case TASK_GROUP_ADD:                  $this->group_add();            break;
+        case TASK_GROUP_SAVE_NEW:             $this->group_savenew();        break;
+        case TASK_GROUP_EDIT:                 $this->group_edit();           break;
+        case TASK_GROUP_SAVE:                 $this->group_save();           break;
+        case TASK_GROUP_DELETE:               $this->group_delete();         break;
+        case TASK_GROUP_CAPACITY_OVERVIEW:    $this->capacity_overview();    break;
+        case TASK_GROUP_CAPACITY_INTRANET:    $this->capacity_intranet();    break;
+        case TASK_GROUP_CAPACITY_ADMIN:       $this->capacity_admin();       break;
+        case TASK_GROUP_CAPACITY_PAGEMANAGER: $this->capacity_pagemanager(); break;
+        case TASK_GROUP_CAPACITY_SAVE:        $this->capacity_save();        break;
         case TASK_GROUP_CAPACITY_MODULE:
             $this->output->add_message("STUB: task '$task' not yet implemented");
             $this->output->add_message('group = '.get_parameter_string('group','(unset)'));
@@ -109,7 +80,6 @@ class GroupManager {
             $this->output->add_message('module = '.get_parameter_string('module','(unset)'));
             $this->groups_overview();
             break;
-
         default:
             $s = (utf8_strlen($task) <= 50) ? $task : utf8_substr($task,0,44).' (...)';
             $message = t('task_unknown','admin',array('{TASK}' => htmlspecialchars($s)));
@@ -478,7 +448,7 @@ class GroupManager {
      * @uses $WAS_SCRIPT_NAME;
      */
     function group_save() {
-        global $WAS_SCRIPT_NAME;
+        global $WAS_SCRIPT_NAME,$USER;
 
         //
         // 0 -- sanity check
@@ -618,9 +588,10 @@ class GroupManager {
         } else {
             logger("groupmanager->group_save(): no changes to '$group_id' in 'groups'",WLOG_DEBUG);
         }
+        // 4 -- santity check for group/capacities versus membership of this $USER
 
         //
-        // 4 -- delete/update/add group-capacities (if necessary)
+        // 5 -- delete/update/add group-capacities (if necessary)
         //
         // At this point we have two arrays with capacities: the old and the new situation.
         // We need to do the following:
@@ -635,7 +606,7 @@ class GroupManager {
             $sort_order = $v['sort_order'];
             if (!isset($capacities_new[$capacity_code])) {
                 //
-                // 4A -- get rid of this group/capacity's acl and also the group/capacity itself
+                // 5A -- get rid of this group/capacity's acl and also the group/capacity itself
                 if ($this->acl_delete($acl_id) === FALSE) {
                     ++$errors;
                     logger(sprintf("group_save(): error removing acl '%d'; skipping delete of group/capacity '%d/%d'",
@@ -658,7 +629,7 @@ class GroupManager {
                 }
             } elseif ($sort_order != $capacities_new[$capacity_code]) {
                 //
-                // 4B -- change sort order
+                // 5B -- change sort order
                 $where = array('group_id' => $group_id, 'capacity_code' => $capacity_code);
                 $fields = array('sort_order' => $capacities_new[$capacity_code]);
                 if (db_update('groups_capacities',$fields,$where) === FALSE) {
@@ -673,7 +644,7 @@ class GroupManager {
                 // no changes
         }
         //
-        // 4C -- add new group/capacities when necessary
+        // 5C -- add new group/capacities when necessary
         foreach($capacities_new as $capacity_code => $sort_order) {
             if (!isset($capacities_old[$capacity_code])) {
                 if ($this->add_group_capacity($group_id,$capacity_code,$sort_order) === FALSE) {
@@ -711,13 +682,13 @@ class GroupManager {
      *       Q: How well is MySQL suited for transactions? A: Mmmmm.... Which version? Which storage engine?
      */
     function group_delete() {
-        global $WAS_SCRIPT_NAME,$DB;
+        global $WAS_SCRIPT_NAME,$DB,$USER;
         //
         // 0 -- sanity check
         //
         $group_id = get_parameter_int('group',NULL);
         if (is_null($group_id)) {
-            logger("groupmanager->group_save(): unspecified parameter group");
+            logger(sprintf("%s.%s(): unspecified parameter group",__CLASS__,__FUNCTION__));
             $this->output->add_message(t('error_invalid_parameters','admin'));
             $this->groups_overview();
             return;
@@ -732,28 +703,58 @@ class GroupManager {
             return;
         }
 
-        //
-        // 2 -- user has confirmed delete?
-        //
-        if ((isset($_POST['button_delete'])) &&
-            (isset($_POST['dialog'])) && ($_POST['dialog'] == GROUPMANAGER_DIALOG_DELETE)) {
-            $params = $this->get_group_capacity_names($group_id); // pick up name before it is gone
-            if (($retval = $this->delete_group_capacities_acls($group_id)) === FALSE) {
-                $this->output->add_message(t('groupmanager_delete_group_failure','admin',$params));
-            } else {
-                $this->output->add_message(t('groupmanager_delete_group_success','admin',$params));
-            }
-            logger(sprintf("groupmanager: %s deleting group '%d' %s (%s)",
-                       ($retval === FALSE) ? 'failure' : 'success',
-                       $group_id,
-                       $params['{GROUP}'],
-                       $params['{GROUP_FULL_NAME}']));
+        // 2A -- do not allow the user to remove a group associated with the user
+        $where = array('user_id' => intval($USER->user_id),'group_id' => $group_id);
+        if (($record = db_select_single_record('users_groups_capacities','capacity_code',$where)) !== FALSE) {
+            // Oops, the current user happens to be a member of this group
+            $params = $this->get_group_capacity_names($group_id,$record['capacity_code']);
+            logger(sprintf("%s.%s(): user attempts to remove group '%s' ('%d', '%s') but she is a '%s'",
+                            __CLASS__,__FUNCTION__,$params['{GROUP}'],$group_id,
+                            $params['{GROUP_FULL_NAME}'],$params['{CAPACITY}']));
+            $this->output->add_message(t('usermanager_delete_group_not_self','admin',$params));
+            $this->groups_overview();
+            return;
+        }
+
+        // 2B -- are there any files left in this user's private storage $CFG->datadir.'/groups/'.$path?
+        if (($group = $this->get_group_record($group_id)) === FALSE) {
+            $this->groups_overview();
+            return;
+        }
+        $path = '/groups/'.$group['path'];
+        if (!userdir_is_empty($path)) {
+            // At this point we know there are still files associated with this
+            // group in the data directory. This is a show stopper; it is up to the
+            // admin requesting this delete to get rid of the files first (eg via File Manager)
+            logger(sprintf("%s.%s(): data directory '%s' not empty",__CLASS__,__FUNCTION__,$path));
+            $params = $this->get_group_capacity_names($group_id);
+            $this->output->add_message(t('usermanager_delete_group_dir_not_empty','admin',$params));
             $this->groups_overview();
             return;
         }
 
         //
-        // 3 -- no delete yet, first show confirmation dialog
+        // 3 -- user has confirmed delete?
+        //
+        if ((isset($_POST['button_delete'])) &&
+            (isset($_POST['dialog'])) && ($_POST['dialog'] == GROUPMANAGER_DIALOG_DELETE)) {
+            $params = $this->get_group_capacity_names($group_id); // pick up name before it is gone
+            if ((userdir_delete($path)) &&  $this->delete_group_capacities_records($group_id)) {
+                $this->output->add_message(t('groupmanager_delete_group_success','admin',$params));
+                $retval = TRUE;
+            } else {
+                $this->output->add_message(t('groupmanager_delete_group_failure','admin',$params));
+                $retval = FALSE;
+            }
+            logger(sprintf("%s.%s(): %s deleting group '%d' %s (%s)",
+                           __CLASS__,__FUNCTION__,($retval === FALSE) ? 'failure' : 'success',
+                           $group_id,$params['{GROUP}'],$params['{GROUP_FULL_NAME}']));
+            $this->groups_overview();
+            return;
+        }
+
+        //
+        // 4 -- no delete yet, first show confirmation dialog
         //
         // Dialog is very simple: a simple text showing
         // - the name of the group
@@ -761,11 +762,10 @@ class GroupManager {
         // - a Delete and a Cancel button
         //
         $dialogdef = array(
-            'dialog' => array('type' => F_INTEGER,'name' => 'dialog','value' => GROUPMANAGER_DIALOG_DELETE,'hidden' => TRUE),
+            'dialog' => array('type'=>F_INTEGER,'name'=>'dialog','value'=>GROUPMANAGER_DIALOG_DELETE,'hidden'=>TRUE),
             'button_save' => dialog_buttondef(BUTTON_DELETE),
             'button_cancel' => dialog_buttondef(BUTTON_CANCEL)
             );
-
         $params = $this->get_group_capacity_names($group_id);
         $header = t('groupmanager_delete_group_header','admin',$params);
         $this->output->add_content('<h2>'.$header.'</h2>');
@@ -1419,8 +1419,7 @@ class GroupManager {
     function get_dialogdef_edit_group($group_id) {
         $group_id = intval($group_id);
         // 1A -- retrieve data from groups-record
-        $group = db_select_single_record('groups','*',array('group_id' => $group_id));
-        if ($group === FALSE) {
+        if (($group = $this->get_group_record($group_id))=== FALSE) {
             return FALSE;
         }
         // 1B -- retrieve the available capacities for this group (could be 0)
@@ -1629,11 +1628,16 @@ class GroupManager {
     } // get_icon_edit()
 
 
+    /** shorthand to get the name of a group
+     *
+     * @param int $group_id the group of interest
+     * @return string the name of the group
+     */
     function get_groupname($group_id) {
-        $group_id = intval($group_id);
-        $record = db_select_single_record('groups','groupname',array('group_id'=>$group_id));
+        $record = $this->get_group_record($group_id);
         return ($record === FALSE) ? "($group_id)" : $record['groupname'];
-    }
+    } // get_groupname()
+
 
     function calc_acl_id($group_id,$capacity_code) {
         $where = array('group_id' => $group_id, 'capacity_code' => $capacity_code);
@@ -1659,12 +1663,20 @@ class GroupManager {
         return TRUE;
     } // valid_group_capacity()
 
+    /** shortcut to retrieve the name and full name of the selected group and optionally a capacity name
+     *
+     * @param int $group_id identifies the group of interest
+     * @param int $capacity_code identifies the capacity (optional)
+     * @return array with ready-to-use name/full_name/capacity name
+     */
     function get_group_capacity_names($group_id,$capacity_code=0) {
-        $record  = db_select_single_record('groups',array('groupname','full_name'),array('group_id' => $group_id));
+        if (($record = $this->get_group_record($group_id)) === FALSE) {
+            $record = array('groupname' => strval($group_id),'full_name' => strval($group_id));
+        }
         return array('{GROUP}' => $record['groupname'],
                      '{GROUP_FULL_NAME}' => $record['full_name'],
                      '{CAPACITY}' => capacity_name($capacity_code));
-    }
+    } // get_group_capacity_names()
 
 
     /** remove all records relating to 1 or more acl_id's from various acl-tables
@@ -1748,57 +1760,64 @@ class GroupManager {
         return TRUE;
     } // add_group_capacity()
 
-    /** actually remove a group and all associated data
+    /** actually remove a group and all associated records
      *
-     * this actually deletes the group $group_id and associated data, in the following order:
-     * First all acls associated with the group-capacities are deleted.
-     * If that worked, we delete the group-capacity records.
-     * If that worked, we delete the group record itself.
+     * this actually deletes the group $group_id and associated records, in a specific order,
+     * to satisfy the FK constraints. ACL's are deleted last if there are any at all.
+     *
+     * Note
+     * This routine looks a lot like the corresponding one in the UserManager. However, we don't
+     * know in advance how many ACLs are associated with this group whereas a user record always
+     * has exactly 1 ACL. This explains the logic in step 1 below.
      *
      * @param int $group_id the group to delete
      * @return bool FALSE if there were errors, TRUE if delete was completely successful
      *
-     * @todo should we also require the user to delete any files associated with the area before we even consider
-     *       deleting it? Or is is OK to leave the files and still delete the area. We do require that nodes are
-     *       removed from the area, but that is mainly because of maintaining referential integrity. Mmmmm... Maybe
-     *       that applies to the files as well, especially in a private area. Food for thought.
      * @todo since multiple tables are involved, shouldn't we use transaction/rollback/commit?
      *       Q: How well is MySQL suited for transactions? A: Mmmmm.... Which version? Which storage engine?
      */
-    function delete_group_capacities_acls($group_id) {
+    function delete_group_capacities_records($group_id) {
         $group_id = intval($group_id);
-        $where = array('group_id' => $group_id);
 
-        // FIXME: we need to do something with path
-        // $record  = db_select_single_record('groups',array('path'),$where);
-        // do_something_with_group_files_and_then_rmdir($record['path']);
-
-        //
-        // 1 -- first try to get rid of the acls associated with the associated capacities
-        //
-        $capacities = db_select_all_records('groups_capacities','acl_id',$where,'sort_order');
-        if ($capacities === FALSE) {
-            logger("delete_group_capacities_acls(): error retrieving acls group '$group_id': ".db_errormessage());
+        // 1 -- prepare a todo list for deletes related to group_id (order is important because of FK constraints)
+        $where_group_id = array('group_id' => $group_id);
+        $table_wheres = array();
+        $table = 'groups_capacities';
+        $fields = 'acl_id';
+        $sort_order = 'sort_order';
+        if (($records = db_select_all_records($table,$fields,$where_group_id,$sort_order)) === FALSE) {
+            logger(sprintf("%s.%s(): cannot retrieve acls of group '%d': %s",
+                            __CLASS__,__FUNCTION__,$group_id,db_errormessage()));
             return FALSE;
         }
-        if (sizeof($capacities) > 0) {
-            $acls = array();
-            foreach($capacities as $capacity) {
-                $acls[] = $capacity['acl_id'];
+        if (sizeof($records) > 0) {
+            $where_acl_id = '(';
+            $count = 0;
+            foreach($records as $record) {
+                $where_acl_id .= sprintf('%s(acl_id = %d)',($count++) ? ' OR ' : '',$record['acl_id']);
             }
-            if ($this->acl_delete($acls) === FALSE) {
-                logger("delete_group_capacities_acls(): error deleting group '$group_id'");
-                return FALSE;
-            }
+            $where_acl_id .= ')';
+            $table_wheres['acls_areas']              = $where_acl_id;
+            $table_wheres['acls_nodes']              = $where_acl_id;
+            $table_wheres['acls_modules']            = $where_acl_id;
+            $table_wheres['acls_modules_areas']      = $where_acl_id;
+            $table_wheres['acls_modules_nodes']      = $where_acl_id;
+            $table_wheres['users_groups_capacities'] = $where_group_id;
+            $table_wheres['groups_capacities']       = $where_group_id;
+            $table_wheres['acls']                    = $where_acl_id;
+            $table_wheres['groups']                  = $where_group_id;
+        } else {
+            $table_wheres['users_groups_capacities'] = $where_group_id;
+            $table_wheres['groups_capacities']       = $where_group_id;
+            $table_wheres['groups']                  = $where_group_id;
         }
 
-        //
-        // 2 -- now remove group-capacities and the user associations and the group itself
-        //
-        $tables = array('users_groups_capacities','groups_capacities','groups');
-        $message = sprintf("delete_group_capacities_acls(group_id=%d) rows: ",$group_id);
-        foreach($tables as $table) {
+        // 2 -- actually process the todo list
+        $message = sprintf("%s.%s(): group_id=%d:",__CLASS__,__FUNCTION__,$group_id);
+        // start transaction
+        foreach($table_wheres as $table => $where) {
             if (($rowcount = db_delete($table,$where)) === FALSE) {
+                // rollback transaction
                 $message .= sprintf(" '%s': FAILED. I'm outta here (%s)",$table,db_errormessage());
                 logger($message);
                 return FALSE;
@@ -1806,10 +1825,35 @@ class GroupManager {
                 $message .= sprintf(" '%s':%d",$table,$rowcount);
             }
         }
+        // commit transaction
         logger($message,WLOG_DEBUG);
         return TRUE;
-    } // delete_group_capacities_acls()
+    } // delete_group_capacities_records()
 
+
+    /** retrieve a single group's record possibly from the cache
+     *
+     * @param int $group_id identifies the group record
+     * @param bool $forced if TRUE unconditionally fetch the record from the database 
+     * @return bool|array FALSE if there were errors, the group record otherwise
+     */
+    function get_group_record($group_id,$forced=FALSE) {
+        $group_id = intval($group_id);
+        if ((!isset($this->groups[$group_id])) || ($forced)) {
+            $table = 'groups';
+            $fields = '*';
+            $where = array('group_id' => $group_id);
+            if (($record = db_select_single_record($table,$fields,$where)) === FALSE) {
+                logger(sprintf("%s.%s(): cannot retrieve record for group '%d': %s",
+                               __CLASS__,__FUNCTION__,$group_id,db_errormessage()));
+                $this->output->add_message(t('error_retrieving_data','admin'));
+                return FALSE;
+            } else {
+                $this->groups[$group_id] = $record;
+            }
+        }
+        return (isset($this->groups[$group_id])) ? $this->groups[$group_id] : FALSE;
+    } // get_group_record()
 
     /** manipulate the current state if indicator(s) for 'open' and 'closed' areas
      * 

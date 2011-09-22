@@ -37,7 +37,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: admin.php,v 1.10 2011/09/21 15:56:18 pfokker Exp $
+ * @version $Id: admin.php,v 1.11 2011/09/22 17:08:09 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -695,6 +695,10 @@ $string['groupmanager_delete_group_capacity'] = '{CAPACITY}: {COUNT}';
 
 $string['groupmanager_delete_group_success'] = 'Success deleting group {GROUP} ({GROUP_FULL_NAME})';
 $string['groupmanager_delete_group_failure'] = 'There were errors deleting group {GROUP} ({GROUP_FULL_NAME})';
+
+$string['usermanager_delete_group_dir_not_empty'] = 'The data folder of group \'{GROUP_FULL_NAME}\' ({GROUP}) is not empty yet. Please remove the files and folders first.';
+$string['usermanager_delete_group_not_self'] = 'You cannot delete group \'{GROUP_FULL_NAME}\' ({GROUP}) because you are associated with this group as \'{CAPACITY}\'. You have to remove your association with the group before you can delete it';
+
 
 $string['groupmanager_capacity_overview_header'] = 'Overview: {GROUP} - {CAPACITY}';
 $string['groupmanager_capacity_overview_explanation'] = 'Here is an overview of all user accounts associated with this group ({GROUP_FULL_NAME}) and capacity ({CAPACITY})';
