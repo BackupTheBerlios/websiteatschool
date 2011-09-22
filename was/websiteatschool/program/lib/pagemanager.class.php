@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: pagemanager.class.php,v 1.8 2011/09/21 18:54:20 pfokker Exp $
+ * @version $Id: pagemanager.class.php,v 1.9 2011/09/22 09:00:15 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -228,7 +228,7 @@ class PageManager {
             break;
 
         default:
-            $s = (strlen($task) <= 50) ? $task : substr($task,0,44).' (...)';
+            $s = (utf8_strlen($task) <= 50) ? $task : utf8_substr($task,0,44).' (...)';
             $message = t('task_unknown','admin',array('{TASK}' => htmlspecialchars($s)));
             $this->output->add_message($message);
             logger(__FUNCTION__.'(): unknown task: '.htmlspecialchars($s));

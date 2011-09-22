@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: areamanager.class.php,v 1.5 2011/09/21 18:54:20 pfokker Exp $
+ * @version $Id: areamanager.class.php,v 1.6 2011/09/22 09:00:14 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -121,7 +121,7 @@ class AreaManager {
             break;
 
         default:
-            $s = (strlen($chore) <= 50) ? $chore : substr($chore,0,44).' (...)';
+            $s = (utf8_strlen($chore) <= 50) ? $chore : utf8_substr($chore,0,44).' (...)';
             $message = t('chore_unknown','admin',array('{CHORE}' => htmlspecialchars($s)));
             $output->add_message($message);
             logger('areamanager: unknown chore: '.htmlspecialchars($s));

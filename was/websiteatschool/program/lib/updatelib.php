@@ -54,7 +54,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: updatelib.php,v 1.13 2011/09/21 18:54:20 pfokker Exp $
+ * @version $Id: updatelib.php,v 1.14 2011/09/22 09:00:15 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -148,11 +148,7 @@ function job_update(&$output) {
             break;
 
         default:
-            if (strlen($task) > 50) {
-                $s = substr($task,0,44).' (...)';
-            } else {
-                $s = $task;
-            }
+            $s = (utf8_strlen($task) <= 50) ? $task : utf8_substr($task,0,44).' (...)';
             $message = t('task_unknown','admin',array('{TASK}' => htmlspecialchars($s)));
             $output->add_message($message);
             logger('tools: unknown task: '.htmlspecialchars($s));

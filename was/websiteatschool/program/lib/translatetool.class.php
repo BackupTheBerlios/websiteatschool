@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: translatetool.class.php,v 1.5 2011/09/21 18:54:20 pfokker Exp $
+ * @version $Id: translatetool.class.php,v 1.6 2011/09/22 09:00:15 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -113,7 +113,7 @@ class TranslateTool {
             break;
 
         default:
-            $s = (strlen($chore) <= 50) ? $chore : substr($chore,0,44).' (...)';
+            $s = (utf8_strlen($chore) <= 50) ? $chore : utf8_substr($chore,0,44).' (...)';
             $message = t('chore_unknown','admin',array('{CHORE}' => htmlspecialchars($s)));
             $output->add_message($message);
             logger(sprintf('%s.%s(): unknown chore \'%s\'',__CLASS__,__FUNCTION__,htmlspecialchars($s)));
@@ -1099,6 +1099,7 @@ class TranslateTool {
      * @param string $highlight_off is inserted after the code element that is highlighted
      * @return string the string with highlighted code elements and escaped HTML-tags
      * @todo should we turn to ereg() instead of a simple str_replace() for {VARIABLE} highlighting?
+     * @todo check this routine for utf8 problems in substr() and/or strlen()
      */
     function code_highlight(&$source,$highlight_on='<span class="translatetool_code">',$highlight_off='</span>') {
 

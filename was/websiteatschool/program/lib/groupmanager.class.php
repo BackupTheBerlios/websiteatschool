@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: groupmanager.class.php,v 1.4 2011/09/21 18:54:20 pfokker Exp $
+ * @version $Id: groupmanager.class.php,v 1.5 2011/09/22 09:00:14 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -111,7 +111,7 @@ class GroupManager {
             break;
 
         default:
-            $s = (strlen($task) <= 50) ? $task : substr($task,0,44).' (...)';
+            $s = (utf8_strlen($task) <= 50) ? $task : utf8_substr($task,0,44).' (...)';
             $message = t('task_unknown','admin',array('{TASK}' => htmlspecialchars($s)));
             $output->add_message($message);
             logger('groupmanager: unknown task: '.htmlspecialchars($s));
