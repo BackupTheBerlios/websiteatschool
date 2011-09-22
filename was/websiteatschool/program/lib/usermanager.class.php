@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: usermanager.class.php,v 1.6 2011/09/21 18:54:20 pfokker Exp $
+ * @version $Id: usermanager.class.php,v 1.7 2011/09/22 06:43:38 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -727,7 +727,7 @@ class UserManager {
      * the dialog and acting on the dialog.
      *
      * Note that the (user)files should be removed before the account can be removed,
-     * see {@link datadir_is_empty()}. It is up to the user or the admin to remove those files.
+     * see {@link userdir_is_empty()}. It is up to the user or the admin to remove those files.
      *
      * A special test is performed to prevent users from killing their own account (which would
      * immediately kick them out of admin.php never to be seen again). 
@@ -772,7 +772,7 @@ class UserManager {
             return FALSE;
         }
         $path = '/users/'.$user['path'];
-        if (!datadir_is_empty($path)) {
+        if (!userdir_is_empty($path)) {
             // At this point we know there are still files associated with this
             // user in the data directory. This is a show stopper; it is up to the
             //  admin requesting this delete to get rid of the files first (eg via File Manager)

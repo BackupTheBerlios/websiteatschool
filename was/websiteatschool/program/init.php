@@ -26,7 +26,7 @@
  *
  * This file is included at a fairly early stage in the process.
  * It does not rely on any regular libraries which are include()'ed lateron.
- * That is: all relevant libraries (such asl{@link waslib.php} are included
+ * That is: all relevant libraries (such as {@link waslib.php} are included
  * when necessary from within the function {@link initialise()}.
  *
  * Note that this file is _the_ place to defined truly global constants because
@@ -36,7 +36,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: init.php,v 1.7 2011/09/21 18:54:19 pfokker Exp $
+ * @version $Id: init.php,v 1.8 2011/09/22 06:43:37 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 

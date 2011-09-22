@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: toolslib.php,v 1.4 2011/09/21 18:54:20 pfokker Exp $
+ * @version $Id: toolslib.php,v 1.5 2011/09/22 06:43:38 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -286,17 +286,17 @@ function task_backuptool(&$output) {
  * an attempt is made to start with the last page of the logs because that would probably
  * be the most interesting part. We paginate the log in order to keep it manageable.
  *
- * Rant
+ * &lt;Rant&gt;<br>
  * I used to use the built-in constants like LOG_INFO and LOG_DEBUG to allow for different levels
- * of loggin (see {@link logger()}). To my complete surprise loggin didn't work at all on
+ * of logging (see {@link logger()}). To my complete surprise logging didn't work at all on
  * Windows (it did on Linux). The reason was that LOG_DEBUG and LOG_INFO and LOG_NOTICE are all
  * defined to be the same value. WTF? Any test based on LOG_DEBUG and LOG_INFO being different
  * would fail, hence no logging at all. The mind boggles! So, instead of using built-in constants
- * I had to define my own and do a global search&replace. Aaarghhhhhh!!!!
- * /Rant
+ * I had to define my own and do a global search&replace. Aaarghhhhhh!!!!<br>
+ * &lt;/Rant&gt;<br>
  *
  * @param object &$output collects output to show to user
- * @return output displayed via $output
+ * @return void output displayed via $output
  * @todo should we allow for fancy selection mechanisms on the logfile or is that over the top?
  */
 function task_logview(&$output) {

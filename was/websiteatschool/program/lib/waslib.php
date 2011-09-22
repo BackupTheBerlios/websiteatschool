@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: waslib.php,v 1.12 2011/09/21 18:54:20 pfokker Exp $
+ * @version $Id: waslib.php,v 1.13 2011/09/22 06:43:38 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -350,8 +350,9 @@ function t($phrase_key,$full_domain='',$replace='',$location_hint='',$language='
  * read the user_id from the global $_SESSION array, i.e. we try to link
  * events to a particular user if possible.
  *
- * Note that with a field definition of varchar(255) there is room to store either
- * an IPv4 address (max 15 bytes) or a full-blown IPv6 address (max 39 bytes).
+ * Note that with a field definition of varchar(150) there is room to store either
+ * an IPv4 address (max 15 bytes) or a full-blown IPv6 address (39-47 bytes, see RFC3989) or
+ * even twice a complete reverse DNS address (see {@link update_core_2011092100()}).
  *
  * See also {@link task_logview()} for a rant on the difference between LOG_DEBUG and LOG_INFO.
  *
@@ -1955,7 +1956,7 @@ function get_friendly_parameter($name,$default_value=NULL,$force=FALSE) {
  * @param string $path the directory path relative to $CFG->datadir, e.g. '/areas/exemplum' or '/users/acackl'
  * @return bool TRUE if no (user)files or subdirectories exist in $path, FALSE otherwise
  */
-function datadir_is_empty($path) {
+function userdir_is_empty($path) {
     global $CFG;
     $retval = TRUE; // assume success
     $full_path = $CFG->datadir.$path;
@@ -1983,7 +1984,7 @@ function datadir_is_empty($path) {
     }
     @closedir($handle);
     return $retval;
-} // datadir_is_empty()
+} // userdir_is_empty()
 
 
 ?>
