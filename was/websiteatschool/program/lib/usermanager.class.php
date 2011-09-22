@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: usermanager.class.php,v 1.7 2011/09/22 06:43:38 pfokker Exp $
+ * @version $Id: usermanager.class.php,v 1.8 2011/09/22 08:48:37 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -789,12 +789,15 @@ class UserManager {
         if ((isset($_POST['button_delete'])) &&
             (isset($_POST['dialog'])) && ($_POST['dialog'] == USERMANAGER_DIALOG_DELETE)) {
             $params = $this->get_user_names($user_id); // pick up name before it is gone
-            if (($retval = $this->delete_user_records($user_id)) === FALSE) {
-                $this->output->add_message(t('usermanager_delete_user_failure','admin',$params));
-            } else {
+            if ((userdir_delete($path)) && ($this->delete_user_records($user_id))) {
                 $this->output->add_message(t('usermanager_delete_user_success','admin',$params));
+                $retval = TRUE;
+            } else {
+                $this->output->add_message(t('usermanager_delete_user_failure','admin',$params));
+                $retval = FALSE;
             }
-            logger(sprintf("usermanager: %s deleting user '%d' %s (%s)",
+            logger(sprintf("%s.%s(): %s deleting user '%d' %s (%s)",
+                       __CLASS__,__FUNCTION__,
                        ($retval === FALSE) ? 'failure' : 'success',
                        $user_id,
                        $params['{USERNAME}'],

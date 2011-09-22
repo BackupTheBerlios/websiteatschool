@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: waslib.php,v 1.13 2011/09/22 06:43:38 pfokker Exp $
+ * @version $Id: waslib.php,v 1.14 2011/09/22 08:48:37 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1986,5 +1986,67 @@ function userdir_is_empty($path) {
     return $retval;
 } // userdir_is_empty()
 
+
+/** remove an 'empty' directory that used to contain (user)files
+ *
+ * this removes the left-over files in the directory $CFG->datadir.$path
+ * and subsequently the directory itself. The allowable left-over files
+ * are those that are skipped in {@link userdir_is_empty()}.
+ * The (user) files we look at are those that are filtered out:
+ * - . and .. (directory housekeeping)
+ * - index.html of 0 bytes ('protects' directory from prying eyes)
+ * - symbolic links
+ * - thumbnails (filenames starting with THUMBNAIL_PREFIX)
+ * This filtering is the same as that in the file manager (see {@link filemanager.class.php}).  
+ *
+ * Note that any symbolic links are deleted too.
+ *
+ * @param string $path the directory path relative to $CFG->datadir, e.g. '/areas/exemplum' or '/users/acackl'
+ * @return bool TRUE on success, FALSE otherwise
+ */
+function userdir_delete($path) {
+    global $CFG;
+    $retval = TRUE; // assume success
+    $full_path = $CFG->datadir.$path;
+
+    // 1 -- setup shop
+    if (($handle = @opendir($full_path)) === FALSE) {
+        logger(sprintf("%s(): cannot open directory '%s'",__FUNCTION__,$path));
+        return FALSE;
+    }
+    // 2 -- get rid of the left-over files
+    while (($entryname = readdir($handle)) !== FALSE) {
+        if (($entryname == '.') || ($entryname == '..')) { 
+            continue;
+        }
+        $path_entryname = $path.'/'.$entryname;
+        $full_entryname = $full_path.'/'.$entryname;
+        if ((is_link($full_entryname)) ||
+            ((is_file($full_entryname)) && ($entryname == 'index.html') && (filesize($full_entryname) == 0)) ||
+            (substr($entryname,0,strlen(THUMBNAIL_PREFIX)) == THUMBNAIL_PREFIX)) {
+            if (@unlink($full_entryname)) {
+                logger(sprintf("%s(): success unlinking '%s'",__FUNCTION__,$path_entryname),WLOG_DEBUG);
+            } else {
+                logger(sprintf("%s(): cannot unlink '%s'",__FUNCTION__,$path_entryname));
+                $retval = FALSE;
+            }
+        } else {
+            logger(sprintf("%s(): weird: spurious directory entry '%s'; shouldn't happen",__FUNCTION__,$path_entryname));
+            $retval = FALSE;
+        }
+    }
+    @closedir($handle);
+
+    // 3 -- get rid of the directory itself
+    if (!@rmdir($full_path)) {
+        $retval = FALSE;
+    }
+    if ($retval) {
+        logger(sprintf("%s(): success removing '%s/'",__FUNCTION__,$path),WLOG_DEBUG);
+    } else {
+        logger(sprintf("%s(): cannot remove '%s/'",__FUNCTION__,$path));
+    }
+    return $retval;
+} // userdir_delete()
 
 ?>
