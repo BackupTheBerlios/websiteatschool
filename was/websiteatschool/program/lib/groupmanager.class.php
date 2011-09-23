@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: groupmanager.class.php,v 1.7 2011/09/23 14:40:10 pfokker Exp $
+ * @version $Id: groupmanager.class.php,v 1.8 2011/09/23 14:45:14 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -651,8 +651,6 @@ class GroupManager {
      * the dialog and acting on the dialog.
      *
      * @return void results are returned as output in $this->output
-     * @todo should we also require the user to delete any files associated with the group before we even consider
-     *       deleting it? Or is is OK to leave the files and still delete the group. Food for thought.
      * @todo since multiple tables are involved, shouldn't we use transaction/rollback/commit?
      *       Q: How well is MySQL suited for transactions? A: Mmmmm.... Which version? Which storage engine?
      */
