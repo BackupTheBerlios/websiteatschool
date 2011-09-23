@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: admin.php,v 1.10 2011/09/22 17:08:10 pfokker Exp $
+ * @version $Id: admin.php,v 1.11 2011/09/23 14:40:09 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -598,6 +598,8 @@ $string['groupmanager_delete_group_failure'] = 'Er zijn fouten opgetreden bij he
 
 $string['usermanager_delete_group_dir_not_empty'] = 'De datamap van groep \'{GROUP_FULL_NAME}\' ({GROUP}) is nog niet leeg. Verwijder eerst de bestanden en submappen.';
 $string['usermanager_delete_group_not_self'] = 'U kunt de groep \'{GROUP_FULL_NAME}\' ({GROUP}) niet verwijderen omdat u zelf verbonden bent met deze groep als \'{CAPACITY}\'. U moet eerst deze verbinding met de groep verbreken voordat u de groep kunt verwijderen';
+$string['usermanager_delete_group_capacity_not_self'] = '{FIELD}: U kunt de hoedanigheid \'{CAPACITY}\' van \'{GROUP_FULL_NAME}\' ({GROUP}) niet verwijderen omdat u zelf verbonden bent met deze groep in die hoedanigheid. U moet eerst uw eigen verbinding met deze groep/hoedanigheid verbreken voordat u de hoedanigheid kunt verwijderen';
+
 
 $string['groupmanager_capacity_overview_header'] = 'Overzicht: {GROUP} - {CAPACITY}';
 $string['groupmanager_capacity_overview_explanation'] = 'Hier is een overzicht van alle gebruikersaccounts die verbonden zijn met deze groep ({GROUP_FULL_NAME}) en hoedanigheid ({CAPACITY})';

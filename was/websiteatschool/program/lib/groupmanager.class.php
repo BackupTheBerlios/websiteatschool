@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: groupmanager.class.php,v 1.6 2011/09/22 17:08:10 pfokker Exp $
+ * @version $Id: groupmanager.class.php,v 1.7 2011/09/23 14:40:10 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -84,11 +84,11 @@ class GroupManager {
             $s = (utf8_strlen($task) <= 50) ? $task : utf8_substr($task,0,44).' (...)';
             $message = t('task_unknown','admin',array('{TASK}' => htmlspecialchars($s)));
             $output->add_message($message);
-            logger('groupmanager: unknown task: '.htmlspecialchars($s));
+            logger(sprintf('%s.%s(): unknown task: \'%s\'',__CLASS__,__FUNCTION__,htmlspecialchars($s)));
             $this->groups_overview();
             break;
         }
-    }
+    } // GroupManager()
 
     function show_parent_menu() {
         return $this->show_parent_menu;
@@ -157,7 +157,8 @@ class GroupManager {
         $records = $this->get_group_capacity_records();
         if ($records === FALSE) {
             $this->output->add_message(t('error_retrieving_data','admin'));
-            logger('groupmanager: cannot retrieve list of groups+capacities: '.db_errormessage());
+            logger(sprintf('%s.%s(): cannot retrieve list of groups+capacities: %s',
+                           __CLASS__,__FUNCTION__,db_errormessage()));
         } elseif (sizeof($records) > 0) {
             $prev_group = FALSE;
             $line = '';
@@ -365,48 +366,39 @@ class GroupManager {
             'is_active' => ($dialogdef['group_is_active']['value'] == 1) ? TRUE : FALSE,
             'path'      => $groupdata_directory
             );
-        $new_group_id = db_insert_into_and_get_id('groups',$fields,'group_id');
-        if ($new_group_id === FALSE) {
-            logger("groupmanager: saving new group failed: ".db_errormessage());
-            $this->output->add_message(t('groupmanager_savenew_group_failure','admin'));
-            $this->groups_overview();
+        if (($new_group_id = db_insert_into_and_get_id('groups',$fields,'group_id')) === FALSE) {
+            logger(sprintf("%s.%s(): saving new group '%s' failed: %s",
+                           __CLASS__,__FUNCTION__,$groupname,db_errormessage()));
             if ($groupdata_directory_created) { // Only get rid of the directory _we_ created
                 @unlink($groupdata_full_path.'/index.html');
                 @rmdir($groupdata_full_path);
             }
+            $this->output->add_message(t('groupmanager_savenew_group_failure','admin'));
+            $this->groups_overview();
             return;
         }
-
-        // 3B collect the specified capacities and calculate sort order
-        $capacity_codes = array();
+        // 3B -- create 0, 1 or more group/capacities
         $capacity_sort_order = 0;
-        foreach($dialogdef as $k => $item) {
-            if ((isset($item['name'])) && (substr($item['name'],0,15) == 'group_capacity_')) {
-                $value = intval($item['value']);
-                if ($value != CAPACITY_NONE) {
-                    $capacity_codes[$value] = ++$capacity_sort_order;
+        for ($i=1; $i <= GROUPMANAGER_MAX_CAPACITIES; ++$i) {
+            $k = 'group_capacity_'.$i;
+            if (($capacity_code = intval($dialogdef[$k]['value'])) != CAPACITY_NONE) {
+                if ($this->add_group_capacity($new_group_id,$capacity_code,++$capacity_sort_order) === FALSE) {
+                    if ($groupdata_directory_created) { // Only get rid of the directory _we_ created
+                        @unlink($groupdata_full_path.'/index.html');
+                        @rmdir($groupdata_full_path);
+                    }
+                    $this->output->add_message(t('groupmanager_savenew_group_failure','admin'));
+                    $this->groups_overview();
+                    return;
                 }
-            }
-        }
-
-        // 3C -- create 0, 1 or more acls + group-capacity-records
-        foreach($capacity_codes as $capacity_code => $sort_order) {
-            if ($this->add_group_capacity($new_group_id,$capacity_code,$sort_order) === FALSE) {
-                $this->output->add_message(t('groupmanager_savenew_group_failure','admin'));
-                $this->groups_overview();
-                if ($groupdata_directory_created) { // Only get rid of the directory _we_ created
-                    @unlink($groupdata_full_path.'/index.html');
-                    @rmdir($groupdata_full_path);
-                }
-                return;
             }
         }
 
         // 4 -- tell user about success
         $params = array('{GROUP}' => $groupname,'{GROUP_FULL_NAME}' => $group_fullname);
         $this->output->add_message(t('groupmanager_savenew_group_success','admin',$params));
-        logger(sprintf("groupmanager: success saving new group '%d' %s (%s) and datadir /groups/%s",
-                         $new_group_id,$groupname,$group_fullname,$groupdata_directory));
+        logger(sprintf("%s.%s(): success saving new group '%d' %s (%s) and datadir /groups/%s",
+                       __CLASS__,__FUNCTION__,$new_group_id,$groupname,$group_fullname,$groupdata_directory));
         $this->groups_overview();
     } // group_savenew()
 
@@ -420,7 +412,7 @@ class GroupManager {
         global $WAS_SCRIPT_NAME;
         $group_id = get_parameter_int('group',NULL);
         if (is_null($group_id)) {
-            logger("groupmanager->group_edit(): unspecified parameter group");
+            logger(sprintf("%s.%s(): unspecified parameter group",__CLASS__,__FUNCTION__));
             $this->output->add_message(t('error_invalid_parameters','admin'));
             $this->groups_overview();
             return;
@@ -450,59 +442,66 @@ class GroupManager {
     function group_save() {
         global $WAS_SCRIPT_NAME,$USER;
 
-        //
         // 0 -- sanity check
-        //
         $group_id = get_parameter_int('group',NULL);
         if (is_null($group_id)) {
-            logger("groupmanager->group_save(): unspecified parameter group");
+            logger(sprintf("%s.%s(): unspecified parameter group",__CLASS__,__FUNCTION__));
             $this->output->add_message(t('error_invalid_parameters','admin'));
             $this->groups_overview();
             return;
         }
 
-        //
         // 1 -- bail out if the user pressed cancel button
-        //
         if (isset($_POST['button_cancel'])) {
             $this->output->add_message(t('cancelled','admin'));
             $this->groups_overview();
             return;
         }
 
-        //
         // 2 -- validate the data
-        //
         $dialogdef = $this->get_dialogdef_edit_group($group_id);
         if ($dialogdef === FALSE) {
             $this->output->add_message(t('error_retrieving_data','admin'));
             $this->groups_overview();
             return;
         }
-        //
         // 2A -- remember generic errors (string too short, number too small, etc)
         $invalid = FALSE;
         if (!dialog_validate($dialogdef)) {
             $invalid = TRUE;
         }
         // 2B -- check out the groupname: this field should be unique
-        foreach($dialogdef as $k => $item) {
-            if (isset($item['name'])) {
-                switch($item['name']) {
-                case 'group_name':
-                    $record = db_select_single_record('groups','group_id',array('groupname' => $item['value']));
-                    if (($record !== FALSE) && (intval($record['group_id']) != $group_id)) {
-                        // Oops, a record with that groupname already exists and it's not us. Go flag error
-                        ++$dialogdef[$k]['errors'];
-                        $fname = (isset($item['label'])) ? str_replace('~','',$item['label']) : $item['name'];
-                        $dialogdef[$k]['error_messages'][] = t('validate_not_unique','',array('{FIELD}'=>$fname));
-                        $invalid = TRUE;
-                    }
-                    break;
+        $record = db_select_single_record('groups','group_id',array('groupname' => $dialogdef['group_name']['value']));
+        if (($record !== FALSE) && (intval($record['group_id']) != $group_id)) { // Another group exists with this name
+            ++$dialogdef['group_name']['errors'];
+            $fname = (isset($dialogdef['group_name']['label'])) ? str_replace('~','',$dialogdef['group_name']['label'])
+                                                                : $dialogdef['group_name']['name'];
+            $dialogdef['group_name']['error_messages'][] = t('validate_not_unique','',array('{FIELD}'=>$fname));
+            $invalid = TRUE;
+        }
+        // 2C -- watch out for ACLs marked for deletion that are related to this $USER
+        $new = array();
+        for ($i=1; $i <= GROUPMANAGER_MAX_CAPACITIES; ++$i) {
+            if (($capacity_code = intval($dialogdef['group_capacity_'.$i]['value'])) != CAPACITY_NONE) {
+                $new[$capacity_code] = $capacity_code;
+            }
+        }
+        for ($i=1; $i <= GROUPMANAGER_MAX_CAPACITIES; ++$i) {
+            $k = 'group_capacity_'.$i;
+            if ((($capacity_code = intval($dialogdef[$k]['old_value'])) != CAPACITY_NONE) &&
+                (!isset($new[$capacity_code]))) { // this existing capacity code is marked for deletion
+                $acl_id = intval($dialogdef[$k]['acl_id']);
+                if (isset($USER->related_acls[$acl_id])) { // Houston we have a problem: user's membership at stake
+                    ++$dialogdef[$k]['errors'];
+                    $params = $this->get_group_capacity_names($group_id,$capacity_code);
+                    $params['{FIELD}'] = (isset($dialogdef[$k]['label'])) ? str_replace('~','',$dialogdef[$k]['label'])
+                                                                          : $dialogdef[$k]['name'];
+                    $dialogdef[$k]['error_messages'][] = t('usermanager_delete_group_capacity_not_self','admin',$params);
+                    $invalid = TRUE;
                 }
             }
         }
-        // 2C -- if there were any errors go redo dialog while keeping data already entered
+        // 2D -- if there were any errors go redo dialog while keeping data already entered
         if ($invalid) {
             foreach($dialogdef as $k => $item) {
                 if ((isset($item['errors'])) && ($item['errors'] > 0)) {
@@ -524,143 +523,119 @@ class GroupManager {
         }
 
         // 3 -- store update group data
-
-        // At this point we have a validated group dialog in our hands
-        // We now need to convert the data from the dialog to sensible
-        // fields and store the data.
-
-        // 3A -- update group record AND (as a side effect) collect the specified capacities
-        $fields = array('groupname' => '','full_name' => '','is_active' => TRUE);
-        $capacities_old = array();
-        $capacities_new = array();
-        $new_sort_order = 0;
-        $new_group_name = '';
-        $new_group_fullname = '';
-        $modified = FALSE; // assume no changes
-        foreach($dialogdef as $k => $item) {
-            if (isset($item['name'])) {
-                switch ($item['name']) {
-                case 'group_name':
-                    $new_group_name = $item['value'];
-                    $fields['groupname'] = $new_group_name;
-                    if ($new_group_name != $item['old_value']) {
-                        $modified = TRUE;
-                    }
-                    break;
-                case 'group_fullname':
-                    $new_group_fullname = $item['value'];
-                    $fields['full_name'] = $new_group_fullname;
-                    if ($new_group_fullname != $item['old_value']) {
-                        $modified = TRUE;
-                    }
-                    break;
-                case 'group_is_active':
-                    $fields['is_active'] = ($item['value'] == 1) ? TRUE : FALSE;
-                    if ($item['value'] != $item['old_value']) {
-                        $modified = TRUE;
-                    }
-                    break;
-                default:
-                    if (substr($item['name'],0,15) == 'group_capacity_') {
-                        $old_value = intval($item['old_value']);
-                        $value = intval($item['value']);
-                        if ($old_value != CAPACITY_NONE) {
-                            $capacities_old[$old_value] = array(
-                                'sort_order' => intval($item['sort_order']),
-                                'acl_id' => intval($item['acl_id']));
-                        }
-                        if (($value != CAPACITY_NONE) && (!isset($capacities_new[$value]))) {
-                            $capacities_new[$value] = ++$new_sort_order;
-                        }
-                    }
-                    break;
-                }
-            }
-        }
         $errors = 0;
-        if ($modified) {
-            if (db_update('groups',$fields,array('group_id' => $group_id)) === FALSE) {
+        // 3A -- maybe update group record in table 'groups'
+        $fields = array();
+        if ($dialogdef['group_name']['value'] != $dialogdef['group_name']['old_value']) {
+            $fields['groupname'] = $dialogdef['group_name']['value'];
+        }
+        if ($dialogdef['group_fullname']['value'] != $dialogdef['group_fullname']['old_value']) {
+            $fields['full_name'] = $dialogdef['group_fullname']['value'];
+        }
+        if ($dialogdef['group_is_active']['value'] != $dialogdef['group_is_active']['old_value']) {
+            $fields['is_active'] = ($dialogdef['group_is_active']['value'] == 1) ? TRUE : FALSE;
+        }
+        $table = 'groups';
+        if (sizeof($fields) > 0) {
+            $where = array('group_id' => $group_id);
+            if (db_update($table,$fields,$where) === FALSE) {
                 ++$errors;
-                logger("groupmanager->group_save(): error saving data group '$group_id': ".db_errormessage());
+                logger(sprintf("%s.%s(): error saving data group '%d' (%s) in table '%s': %s",__CLASS__,__FUNCTION__,
+                               $group_id,$dialogdef['group_name']['value'],$table,db_errormessage()));
             } else {
-                logger("groupmanager->group_save(): success saving changes to '$group_id' in 'groups'",WLOG_DEBUG);
+                logger(sprintf("%s.%s(): success saving changes to group '%d' (%s) in table '%s'",
+                               __CLASS__,__FUNCTION__,$group_id,$dialogdef['group_name']['value'],$table),WLOG_DEBUG);
             }
         } else {
-            logger("groupmanager->group_save(): no changes to '$group_id' in 'groups'",WLOG_DEBUG);
+            logger(sprintf("%s.%s(): no changes to save for group '%d' (%s) in table '%s'",
+                           __CLASS__,__FUNCTION__,$group_id,$dialogdef['group_name']['value'],$table),WLOG_DEBUG);
         }
-        // 4 -- santity check for group/capacities versus membership of this $USER
 
-        //
-        // 5 -- delete/update/add group-capacities (if necessary)
-        //
-        // At this point we have two arrays with capacities: the old and the new situation.
-        // We need to do the following:
-        // Step through the OLD list and 
-        //  - remove/deactivate all capacities that are not in the NEW list (step 4A)
-        //  - update the records that have a different sort order in the NEW list (step 4B)
-        // Step through the NEW list and
-        //  - insert records that do not occur in the OLD list (step 4C).
-        //
-        foreach($capacities_old as $capacity_code => $v) {
-            $acl_id = $v['acl_id'];
+        // 4 -- maybe add, change or delete child records for this group (ie. links to capacities etc.)
+        // 4A -- collect the lists of old capacities (with sort order and acl) and new capacities (with new sort order)
+        $new = array();
+        $old = array(); 
+        $sort_order_new = 0;
+        for ($i=1; $i <= GROUPMANAGER_MAX_CAPACITIES; ++$i) {
+            $k = 'group_capacity_'.$i;
+            if ((($capacity_code = intval($dialogdef[$k]['value'])) != CAPACITY_NONE) && (!isset($new[$capacity_code]))){
+                $new[$capacity_code] = ++$sort_order_new;
+            }
+            if (($capacity_code = intval($dialogdef[$k]['old_value'])) != CAPACITY_NONE) {
+                 $old[$capacity_code] = array('sort_order' => intval($dialogdef[$k]['sort_order']),
+                                              'acl_id'     => intval($dialogdef[$k]['acl_id']));
+            }
+        }
+        // 4B -- handle deletions and updates
+        foreach($old as $capacity_code => $v) {
+            $acl_id     = $v['acl_id'];
             $sort_order = $v['sort_order'];
-            if (!isset($capacities_new[$capacity_code])) {
+            $where_group_capacity = array('group_id' => $group_id, 'capacity_code' => $capacity_code);
+            if (!isset($new[$capacity_code])) {
                 //
-                // 5A -- get rid of this group/capacity's acl and also the group/capacity itself
-                if ($this->acl_delete($acl_id) === FALSE) {
-                    ++$errors;
-                    logger(sprintf("group_save(): error removing acl '%d'; skipping delete of group/capacity '%d/%d'",
-                                   $acl_id,$group_id,$capacity_code));
-                } else {
-                    logger(sprintf("group_save(): success removing acl_id '%d' from group/capacity '%d/%d'",
-                                   $acl_id,$group_id,$capacity_code),WLOG_DEBUG);
-                    $where = array('group_id' => $group_id, 'capacity_code' => $capacity_code);
-                    $tables = array('groups_capacities','users_groups_capacities');
-                    foreach ($tables as $table) {
-                        if (($retval = db_delete($table,$where)) === FALSE) {
-                            ++$errors;
-                            logger(sprintf("group_save(): error removing group/capacity '%d/%d' from '%s': %s",
-                                           $group_id,$capacity_code,$table,db_errormessage()));
-                        } else {
-                            logger(sprintf("group_save(): success removing group/capacity '%d/%d' from '%s', %d records",
-                                           $group_id,$capacity_code,$table,$retval),WLOG_DEBUG);
-                        }
+                // 4B1 -- get rid of this group/capacity and acl (in correct order due to FK constraints)
+                $where_acl_id = array('acl_id' => $acl_id);
+                $table_wheres = array(
+                    'acls_areas'              => $where_acl_id,
+                    'acls_nodes'              => $where_acl_id,
+                    'acls_modules'            => $where_acl_id,
+                    'acls_modules_areas'      => $where_acl_id,
+                    'acls_modules_nodes'      => $where_acl_id,
+                    'users_groups_capacities' => $where_group_capacity,
+                    'groups_capacities'       => $where_group_capacity,
+                    'acls'                    => $where_acl_id);
+                $message = sprintf("%s.%s(): del group/capacity=%d/%d:",__CLASS__,__FUNCTION__,$group_id,$capacity_code);
+                foreach($table_wheres as $table => $where) {
+                    if (($rowcount = db_delete($table,$where)) === FALSE) {
+                        ++$errors;
+                        logger(sprintf("%s.%s(): delete from '%s' failed: %s",
+                                       __CLASS__,__FUNCTION__,$table,db_errormessage()));
+                    } else {
+                        $message .= sprintf(" '%s':%d",$table,$rowcount);
                     }
                 }
-            } elseif ($sort_order != $capacities_new[$capacity_code]) {
+                logger($message,WLOG_DEBUG);
+            } elseif ($sort_order != $new[$capacity_code]) {
                 //
-                // 5B -- change sort order
-                $where = array('group_id' => $group_id, 'capacity_code' => $capacity_code);
-                $fields = array('sort_order' => $capacities_new[$capacity_code]);
-                if (db_update('groups_capacities',$fields,$where) === FALSE) {
+                // 4B2 -- save changed sort order of this group/capacity
+                $fields = array('sort_order' => $new[$capacity_code]);
+                if (db_update('groups_capacities',$fields,$where_group_capacity) === FALSE) {
                     ++$errors;
-                    logger(sprintf("groupmanager->group_save(): cannot update sort order in  group/capacity '%d/%d': %s",
-                                   $group_id,$capacity_code,db_errormessage()));
+                    logger(sprintf("%s.%s(): cannot update sort order in  group/capacity '%d/%d': %s",
+                                   __CLASS__,__FUNCTION__,$group_id,$capacity_code,db_errormessage()));
                 } else {
-                    logger(sprintf("group_save(): success changing sort order '%d' -> '%d' for group/capacity '%d/%d'",
-                                   $sort_order,$capacities_new[$capacity_code],$group_id,$capacity_code),WLOG_DEBUG);
+                    logger(sprintf("%s.%s(): success changing sort order '%d' -> '%d' for group/capacity '%d/%d'",
+                                   __CLASS__,__FUNCTION__,
+                                   $sort_order,$new[$capacity_code],$group_id,$capacity_code),WLOG_DEBUG);
                 }
             } //  else
                 // no changes
         }
-        //
-        // 5C -- add new group/capacities when necessary
-        foreach($capacities_new as $capacity_code => $sort_order) {
-            if (!isset($capacities_old[$capacity_code])) {
+
+        // 4C -- add new group/capacities when necessary
+        foreach($new as $capacity_code => $sort_order) {
+            if (!isset($old[$capacity_code])) {
                 if ($this->add_group_capacity($group_id,$capacity_code,$sort_order) === FALSE) {
                     ++$errors;
                 }
             }
         }
+        // 5 -- all done
+        $params = array(
+            '{GROUP}'           => $dialogdef['group_name']['value'],
+            '{GROUP_FULL_NAME}' => $dialogdef['group_name']['value'],
+            '{ERRORS}'          => $errors);
         if ($errors == 0) {
-            $params = array('{GROUP}' => $new_group_name,'{GROUP_FULL_NAME}' => $new_group_fullname);
             $this->output->add_message(t('groupmanager_edit_group_success','admin',$params));
         } else {
-            $this->output->add_message(t('errors_saving_data','admin',array('{ERRORS}' => $errors)));
+            $this->output->add_message(t('errors_saving_data','admin',$params));
         }
-        logger(sprintf("groupmanager: %s saving modified group '%d' %s (%s)",
-                       ($errors == 0) ? "success" : "failure",$group_id,$new_group_name,$new_group_fullname));
+        logger(sprintf("%s.%s(): %s saving group '%d' '%s' (%s)",
+                       __CLASS__,__FUNCTION__,
+                       ($errors == 0) ? "success" : "failure",
+                       $group_id,$params['{GROUP}'],$params['{GROUP_FULL_NAME}']));
         $this->groups_overview();
+        return;
     } // group_save()
 
 
@@ -837,7 +812,7 @@ class GroupManager {
                        'ORDER BY u.username',
                        $DB->prefix,$DB->prefix,$group_id,$capacity_code);
         if (($DBResult = $DB->query($sql)) === FALSE) {
-            logger('groupmanager->capacity_overview(): database error: '.$DB->errno.'/\''.$DB->error.'\'');
+            logger(sprintf('%s.%s(): database error: %s',__CLASS__,__FUNCTION__,db_errormessage()));
             $this->output->add_message(t('error_retrieving_data','admin'));
             $this->groups_overview();
             return;
@@ -901,7 +876,7 @@ class GroupManager {
 
         // 4 -- did they specify a dialog?
         if (!isset($_POST['dialog'])) {
-            logger("groupmanager->capacity_save(): weird: 'dialog' not set",WLOG_DEBUG);
+            logger(sprintf("%s.%s(): weird: 'dialog' not set",__CLASS__,__FUNCTION__),WLOG_DEBUG);
             $this->capacity_overview();
             return;
         }
@@ -970,7 +945,7 @@ class GroupManager {
             break;
 
         default:
-            logger(sprintf("groupmanager->save_data(): weird: dialog='%d'. Huh?",$dialog),WLOG_DEBUG);
+            logger(sprintf("%s.%s(): weird: dialog='%d'. Huh?",__CLASS__,__FUNCTION__,$dialog),WLOG_DEBUG);
             break;
         }
 
@@ -1123,13 +1098,6 @@ class GroupManager {
     } // capacity_pagemanager()
 
 
-
-
-
-
-
-
-
     /** display breadcrumb trail that leads to group capacity overview screen
      *
      * @return void results are returned as output in $this->output
@@ -1165,6 +1133,15 @@ class GroupManager {
     } // show_breadcrumbs_groupcapacity()
 
 
+    /** show a menu for a group capacity with options to modify privileges, etc. etc.
+     *
+     * @param int $group_id the group of interest
+     * @param int $capacity_code identifies the capacity to manage
+     * @param string|null $current_task the name of the task to emphasise in the menu (underlined)
+     * @param string|null $current_capacity_code the name of the capacity to emphasise in the menu (underlined)
+     * @return void results are returned as output in $this->output
+     * @uses $WAS_SCRIPT_NAME;
+     */ 
     function show_menu_groupcapacity($group_id,$capacity_code,$current_task=NULL,$current_module_id=NULL) {
         global $WAS_SCRIPT_NAME;
         $group_id = intval($group_id);
@@ -1277,6 +1254,9 @@ class GroupManager {
 
     /** show a menu for a group including links to the group's capacity overview screens
      *
+     * @param int $group_id the group of interest
+     * @param string|null $current_task the name of the task to emphasise in the menu (underlined)
+     * @param string|null $current_capacity_code the name of the capacity to emphasise in the menu (underlined)
      * @return void results are returned as output in $this->output
      * @uses $WAS_SCRIPT_NAME;
      */
@@ -1508,8 +1488,10 @@ class GroupManager {
         return $dialogdef;
     } // get_dialogdef_edit_group()
 
-
-
+    /** construct a simple option list with all available capacity names keyed by capacity code
+     *
+     * @return array ready to use array with capacity names keyed by capacity code
+     */
     function get_options_capacities() {
         $options = array();
         for ($i = CAPACITY_NONE; $i < CAPACITY_NEXT_AVAILABLE; ++$i) {
@@ -1638,13 +1620,18 @@ class GroupManager {
         return ($record === FALSE) ? "($group_id)" : $record['groupname'];
     } // get_groupname()
 
-
+    /** retrieve the acl_id for a particular group/capacity from the database
+     *
+     * @param int $group_id the group to examine
+     * @param int $capacity_code the capacity to examine
+     * @return int|bool FALSE on error, acl_id on success
+     */
     function calc_acl_id($group_id,$capacity_code) {
         $where = array('group_id' => $group_id, 'capacity_code' => $capacity_code);
         $record = db_select_single_record('groups_capacities','acl_id',$where);
         if ($record === FALSE) {
-            logger(sprintf("groupmanager->calc_acl_id(): cannot retrieve acl_id: group='%d' and capacity='%d': %s",
-			$group_id,$capacity_code),db_errormessage());
+            logger(sprintf("%s.%s(): cannot retrieve acl_id: group='%d' and capacity='%d': %s",
+                           __CLASS__,__FUNCTION__,$group_id,$capacity_code,db_errormessage()));
             $this->output->add_message(t('error_retrieving_data','admin'));
             $this->groups_overview();
             return FALSE;
@@ -1652,9 +1639,16 @@ class GroupManager {
         return intval($record['acl_id']);
     } // calc_acl_id()
 
+    /** shorthand to test the validity of a particular group/capacity
+     *
+     * @param int $group_id the group to examine
+     * @param int $capacity_code the capacity to examine
+     * @return bool TRUE if valid combination, FALSE otherwise
+     */
     function valid_group_capacity($group_id,$capacity_code) {
         if ((is_null($group_id)) || (is_null($capacity_code))) {
-            logger(sprintf("groupmanager: invalid parameters: group='%s', capacity='%s'",
+            logger(sprintf("%s.%s(): invalid parameters: group='%s', capacity='%s'",
+                            __CLASS__,__FUNCTION__,
                             is_null($group_id) ? 'NULL' : strval($group_id),
                             is_null($capacity_code) ? 'NULL' : strval($capacity_code)));
             $this->output->add_message(t('error_invalid_parameters','admin'));
@@ -1662,6 +1656,7 @@ class GroupManager {
         }
         return TRUE;
     } // valid_group_capacity()
+
 
     /** shortcut to retrieve the name and full name of the selected group and optionally a capacity name
      *
@@ -1679,48 +1674,13 @@ class GroupManager {
     } // get_group_capacity_names()
 
 
-    /** remove all records relating to 1 or more acl_id's from various acl-tables
+    /** add a group/capacity and corresponding acl to the database
      *
-     * this bluntly removes all records from the various acls* tables for the specified acl_id's.
-     * Whenever there's an error deleting records, the routine bails out immediately and returns FALSE.
-     * If all goes well, TRUE is returned. Any errors are logged, success is logged to DEBUG-log.
-     *
-     * @param int|array $acl the key(s) to the ACL(s) to delete
-     * @return bool TRUE on success, FALSE on failure
-     * @todo should this routine be moved to an acl-object? Hmmm....
+     * @param int $group_id group of interest
+     * @param int $capacity_code the capacity
+     * @param int $sort_order
+     * @return bool TRUE on success, FALSE otherwise
      */
-    function acl_delete($acl) {
-        $tables = array('acls_areas','acls_nodes','acls_modules_areas','acls_modules_nodes','acls_modules','acls');
-        $message = 'acl_delete(acl_id=';
-        if (is_array($acl)) {
-            $glue = '';
-            $comma = '';
-            $where = '(';
-            foreach($acl as $acl_id) {
-                $where .= sprintf("%s(acl_id = %d)",$glue,intval($acl_id));
-                $glue = ' OR ';
-                $message .= $comma.$acl_id;
-                $comma = ',';
-            }
-            $where .= ')';
-        } else {
-            $where = array('acl_id' => intval($acl));
-            $message .= strval(intval($acl));
-        }
-        $message .= ') rows: ';
-        foreach($tables as $table) {
-            if (($rowcount = db_delete($table,$where)) === FALSE) {
-                $message .= sprintf(" '%s': FAILED. I'm outta here (%s)",$table,db_errormessage());
-                logger($message);
-                return FALSE;
-            } else {
-                $message .= sprintf(" '%s':%d",$table,$rowcount);
-            }
-        }
-        logger($message,WLOG_DEBUG);
-        return TRUE;
-    } // acl_delete()
-
     function add_group_capacity($group_id,$capacity_code,$sort_order) {
         static $fields_acl = array(
             'permissions_intranet' => ACL_ROLE_NONE,
@@ -1733,8 +1693,8 @@ class GroupManager {
         //
         $new_acl_id = db_insert_into_and_get_id('acls',$fields_acl,'acl_id');
         if ($new_acl_id === FALSE) {
-            logger(sprintf("add_group_capacity(): adding new acl for group/capacity '%d/%d' failed: %s",
-                            $group_id, $capacity_code, db_errormessage()));
+            logger(sprintf("%s.%s(): adding new acl for group/capacity '%d/%d' failed: %s",
+                            __CLASS__,__FUNCTION__,$group_id, $capacity_code, db_errormessage()));
             return FALSE;
         }
         //
@@ -1747,18 +1707,19 @@ class GroupManager {
             'acl_id' => $new_acl_id
             );
         if (db_insert_into('groups_capacities',$fields) === FALSE) {
-            logger(sprintf("add_group_capacity(): adding new record for group/capacity '%d/%d' failed: %s",
-                           $group_id, $capacity_code, db_errormessage()));
+            logger(sprintf("%s.%s(): adding new record for group/capacity '%d/%d' failed: %s",
+                            __CLASS__,__FUNCTION__,$group_id, $capacity_code, db_errormessage()));
             $retval = db_delete('acls',array('acl_id' => $new_acl_id));
-            logger(sprintf("add_group_capacity(): removing freshly created acl '%d': %s",
-                           $new_acl_id, 
+            logger(sprintf("%s.%s(): removing freshly created acl '%d': %s",
+                            __CLASS__,__FUNCTION__,$new_acl_id, 
                            ($retval !== FALSE) ? 'success' : 'failure: '.db_errormessage()));
             return FALSE;
         }
-        logger(sprintf("add_group_capacity(): success adding group/capacity '%d/%d' with acl_id='%d'",
-                       $group_id, $capacity_code,$new_acl_id),WLOG_DEBUG);
+        logger(sprintf("%s.%s(): success adding group/capacity '%d/%d' with acl_id='%d'",
+                        __CLASS__,__FUNCTION__,$group_id, $capacity_code,$new_acl_id),WLOG_DEBUG);
         return TRUE;
     } // add_group_capacity()
+
 
     /** actually remove a group and all associated records
      *
@@ -1781,7 +1742,6 @@ class GroupManager {
 
         // 1 -- prepare a todo list for deletes related to group_id (order is important because of FK constraints)
         $where_group_id = array('group_id' => $group_id);
-        $table_wheres = array();
         $table = 'groups_capacities';
         $fields = 'acl_id';
         $sort_order = 'sort_order';
@@ -1797,19 +1757,21 @@ class GroupManager {
                 $where_acl_id .= sprintf('%s(acl_id = %d)',($count++) ? ' OR ' : '',$record['acl_id']);
             }
             $where_acl_id .= ')';
-            $table_wheres['acls_areas']              = $where_acl_id;
-            $table_wheres['acls_nodes']              = $where_acl_id;
-            $table_wheres['acls_modules']            = $where_acl_id;
-            $table_wheres['acls_modules_areas']      = $where_acl_id;
-            $table_wheres['acls_modules_nodes']      = $where_acl_id;
-            $table_wheres['users_groups_capacities'] = $where_group_id;
-            $table_wheres['groups_capacities']       = $where_group_id;
-            $table_wheres['acls']                    = $where_acl_id;
-            $table_wheres['groups']                  = $where_group_id;
+            $table_wheres = array(
+                'acls_areas'              => $where_acl_id,
+                'acls_nodes'              => $where_acl_id,
+                'acls_modules'            => $where_acl_id,
+                'acls_modules_areas'      => $where_acl_id,
+                'acls_modules_nodes'      => $where_acl_id,
+                'users_groups_capacities' => $where_group_id,
+                'groups_capacities'       => $where_group_id,
+                'acls'                    => $where_acl_id,
+                'groups'                  => $where_group_id);
         } else {
-            $table_wheres['users_groups_capacities'] = $where_group_id;
-            $table_wheres['groups_capacities']       = $where_group_id;
-            $table_wheres['groups']                  = $where_group_id;
+            $table_wheres = array(
+                'users_groups_capacities' => $where_group_id,
+                'groups_capacities'       => $where_group_id,
+                'groups'                  => $where_group_id);
         }
 
         // 2 -- actually process the todo list
@@ -1907,7 +1869,7 @@ class GroupManager {
         // except area area_id.
         $records = db_select_all_records('areas','area_id','','','area_id');
         if ($records === FALSE) {
-            logger('areas_expand_collapse(): cannot retrieve areas. Mmmm...',WLOG_DEBUG);
+            logger(sprintf('%s.%s(): cannot retrieve areas. Mmmm...',__CLASS__,__FUNCTION__),WLOG_DEBUG);
             return TRUE;
         }
         $open_areas = array();
