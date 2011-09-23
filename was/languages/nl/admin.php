@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: admin.php,v 1.11 2011/09/23 14:40:09 pfokker Exp $
+ * @version $Id: admin.php,v 1.12 2011/09/23 16:01:29 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -390,6 +390,7 @@ $string['area_delete_private_title'] = '{AREA_FULL_NAME} (beveiligd gebied {AREA
 $string['invalid_area'] = 'Ongeldig gebied {AREA}';
 $string['error_deleting_area'] = 'Fout bij verwijderen gebied {AREA} ({AREA_FULL_NAME})';
 $string['error_deleting_area_not_empty'] = 'Kan gebied {AREA} ({AREA_FULL_NAME}) niet verwijderen: gebied is niet leeg. (aantal paginas/secties: {NODES})';
+$string['error_deleting_area_dir_not_empty'] = 'De datamap van gebied \'{AREA_FULL_NAME}\' ({AREA}) is nog niet leeg. Verwijder eerst de bestanden en submappen.';
 $string['area_deleted'] = 'Gebied {AREA} ({AREA_FULL_NAME}) verwijderd';
 
 $string['delete_an_area_header'] = 'Bevestig verwijdering van gebied {AREA_FULL_NAME}';

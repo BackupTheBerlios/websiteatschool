@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: areamanager.class.php,v 1.6 2011/09/22 09:00:14 pfokker Exp $
+ * @version $Id: areamanager.class.php,v 1.7 2011/09/23 16:01:30 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -397,10 +397,6 @@ class AreaManager {
      * the dialog and acting on the dialog.
      *
      * @return void results are returned as output in $this->output
-     * @todo should we also require the user to delete any files associated with the area before we even consider
-     *       deleting it? Or is is OK to leave the files and still delete the area. We do require that nodes are
-     *       removed from the area, but that is mainly because of maintaining referential integrity. Mmmmm... Maybe
-     *       that applies to the files as well, especially in a private area. Food for thought.
      * @todo since multiple tables are involved, shouldn't we use transaction/rollback/commit?
      *       Q: How well is MySQL suited for transactions? A: Mmmmm.... Which version? Which storage engine?
      * @uses $USER
@@ -428,14 +424,25 @@ class AreaManager {
             $this->area_overview();
             return;
         }
-        // 1B -- are there any nodes left in the area?
+
+        // 1B -- bail out if the user pressed cancel button
+        //
+        if (isset($_POST['button_cancel'])) {
+            $this->output->add_message(t('cancelled','admin'));
+            $this->area_overview();
+            return;
+        }
+
+        // 2 -- basic tests (showstoppers): any nodes or files left?
+        $error_count = 0; // sentinel
+
+        // 2A -- are there any nodes left in the area?
         $record = db_select_single_record('nodes','count(*) as nodes',array('area_id' => $area_id));
         if ($record === FALSE) {
             logger("areamanager: deletion of area '$area_id' failed: ".db_errormessage());
             $params = array('{AREA}' => $area_id,'{AREA_FULL_NAME}' => $areas[$area_id]['title']);
             $this->output->add_message(t('error_deleting_area','admin',$params));
-            $this->area_overview();
-            return;
+            ++$error_count;
         } elseif ($record['nodes'] > 0) {
             $nodes = $record['nodes'];
             logger("areamanager: cannot delete area '$area_id' because $nodes nodes still exist in that area'");
@@ -443,49 +450,60 @@ class AreaManager {
                             '{AREA_FULL_NAME}' => $areas[$area_id]['title'],
                             '{NODES}'=>strval($nodes));
             $this->output->add_message(t('error_deleting_area_not_empty','admin',$params));
+            ++$error_count;
+        }
+        // 2B -- are there any files left in this area
+        $path = '/areas/'.$areas[$area_id]['path'];
+        if (!userdir_is_empty($path)) {
+            // At this point we know there are still files associated with this
+            // area in the data directory. This is a show stopper; it is up to the
+            // admin requesting this delete to get rid of the files first (eg via File Manager)
+            logger(sprintf("%s.%s(): data directory '%s' not empty",__CLASS__,__FUNCTION__,$path));
+            $params = array('{AREA}' => $area_id,'{AREA_FULL_NAME}' => $areas[$area_id]['title']);
+            $this->output->add_message(t('error_deleting_area_dir_not_empty','admin',$params));
+            ++$error_count;
+        }
+        if ($error_count > 0) {
             $this->area_overview();
             return;
         }
-        // 1C -- are there any files left in this area
 
-        // At this point we should check to see if there are any files associated with this
-        // area in the data directory. See comments in the todo above.
-
-        // 2 -- actually perform the delete operation OR show the confirmation dialog
-        if ((isset($_POST['dialog'])) && ($_POST['dialog'] == AREAMANAGER_DIALOG_DELETE)) {
-            // stage 2 - do delete if user pressed delete button or do nothing after Cancel button
-            if (isset($_POST['button_delete'])) {
-                $error_count = 0;
-                $where = array('area_id' => $area_id);
-                // clean up a bunch of tables associated with this area in the correct order (to satisfy FK constraints)
-                $tables = array('themes_areas_properties','alerts_areas_nodes','acls_areas','acls_modules_areas','areas');
-                // db_start_transaction();
-                foreach($tables as $table) {
-                    $retval = db_delete($table,$where);
-                    if ($retval === FALSE) {
-                        logger("areamanager: delete area '$area_id' from table '$table' failed: ".db_errormessage());
-                        ++$error_count;
-                        // db_rollback_transaction();
-                        // break;
-                    } else {
-                        logger("areamanager: delete area '$area_id': records deleted from '$table': $retval ",WLOG_DEBUG);
-                    }
-                }
-                $params = array('{AREA}' => $area_id,'{AREA_FULL_NAME}' => $areas[$area_id]['title']);
-                if ($error_count == 0) {
-                    // db_commit_transaction()
-                    logger("areamanager: successfully deleted area '$area_id'");
-                    $this->output->add_message(t('area_deleted','admin',$params));
-                } else {
-                    $this->output->add_message(t('error_deleting_area','admin',$params));
-                }
-                $areas = get_area_records(TRUE);  // force re-read of areas after deletion
-            } else { // user cancelled
-                $this->output->add_message(t('cancelled','admin'));
+        // 3 -- actually perform the delete operation OR show the confirmation dialog
+        if ((isset($_POST['button_delete'])) &&
+            (isset($_POST['dialog'])) && ($_POST['dialog'] == AREAMANAGER_DIALOG_DELETE)) {
+            // stage 2 - actual delete confirmed
+            $error_count = 0;
+            if (!userdir_delete($path)) {
+                ++$error_count;
             }
+            // clean up a bunch of tables associated with this area in the correct order (to satisfy FK constraints)
+            $where = array('area_id' => $area_id);
+            $tables = array('themes_areas_properties','alerts_areas_nodes','acls_areas','acls_modules_areas','areas');
+            // db_start_transaction();
+            foreach($tables as $table) {
+                if (($rowcount = db_delete($table,$where)) === FALSE) {
+                    logger(sprintf("%s.%s(): delete area '%d' from table '%s' failed: %s",
+                                   __CLASS__,__FUNCTION__,$area_id,$table,db_errormessage()));
+                    ++$error_count;
+                } else {
+                    logger(sprintf("%s.%s(): delete area '%d' from table '%s' succeeded: %d records deleted",
+                                   __CLASS__,__FUNCTION__,$area_id,$table,$rowcount),WLOG_DEBUG);
+                }
+            }
+            $params = array('{AREA}' => $area_id,'{AREA_FULL_NAME}' => $areas[$area_id]['title']);
+            if ($error_count == 0) {
+                // db_commit_transaction()
+                logger(sprintf("%s.%s(): successfully deleted area '%d'",__CLASS__,__FUNCTION__,$area_id));
+                $this->output->add_message(t('area_deleted','admin',$params));
+            } else {
+                // db_rollback_transaction();
+                // break;
+                $this->output->add_message(t('error_deleting_area','admin',$params));
+            }
+            $areas = get_area_records(TRUE);  // force re-read of areas after deletion
             $this->area_overview();
         } else {
-            // stage 1 - show dialog
+            // stage 1 - show confirmation dialog
             $this->show_dialog_confirm_delete($area_id,$areas);
         }
         return;

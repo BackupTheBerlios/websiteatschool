@@ -37,7 +37,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: admin.php,v 1.12 2011/09/23 14:40:09 pfokker Exp $
+ * @version $Id: admin.php,v 1.13 2011/09/23 16:01:29 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -465,6 +465,7 @@ $string['area_delete_private_title'] = '{AREA_FULL_NAME} (private area {AREA})';
 $string['invalid_area'] = 'Invalid area {AREA}';
 $string['error_deleting_area'] = 'Error deleting area {AREA} ({AREA_FULL_NAME})';
 $string['error_deleting_area_not_empty'] = 'Cannot delete area {AREA} ({AREA_FULL_NAME}): must be empty. (remaining number of pages/sections: {NODES})';
+$string['error_deleting_area_dir_not_empty'] = 'The data folder of area \'{AREA_FULL_NAME}\' ({AREA}) is not empty yet. Please remove the files and folders first';
 $string['area_deleted'] = 'Area {AREA} ({AREA_FULL_NAME}) deleted';
 
 $string['delete_an_area_header'] = 'Confirm delete of area {AREA_FULL_NAME}';
@@ -472,7 +473,6 @@ $string['delete_area_explanation'] = 'You are about to delete the following area
 
 $string['task_area_add_access_denied'] = 'You do not have the necessary privileges to add an area to the site';
 $string['task_set_default_area_access_denied'] = 'You have no permissions to make area {AREA} the default area';
-
 
 
 $comment['areamanager_add_area_header'] = 
