@@ -54,7 +54,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: updatelib.php,v 1.14 2011/09/22 09:00:15 pfokker Exp $
+ * @version $Id: updatelib.php,v 1.15 2011/09/26 15:33:40 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1718,13 +1718,83 @@ function update_core_2011092100(&$output) {
         logger($msg);
         $output->add_message(htmlspecialchars($msg));
         $output->add_message(t('update_core_error','admin',array('{VERSION}' => strval($version))));
-        return FALSE;
+        return FALSE; 
     } else {
         logger(sprintf('%s(): update field \'nodes.module_id\': %d rows affected',__FUNCTION__,$retval),WLOG_DEBUG);
     }
 
     //
-    // 4 -- all done: bump version in database
+    // 4 -- add new config option and attempt to fix existing data suffering from sort_order bug in page manager
+    //
+
+    // 4A -- add a new sort option to the CFG
+    $retval = TRUE; // assume success
+    if (!isset($CFG->pagemanager_at_end)) {
+        $table = 'config';
+        $fields = array(
+            'name' => 'pagemanager_at_end',
+            'type' => 'b',
+            'value' => '0',
+            'sort_order' => 240,
+            'extra' => '',
+            'description' => 'sort order position within section for new nodes: TRUE is at the end  - USER-defined'
+            );
+        if (db_insert_into($table,$fields) === FALSE) {
+            $msg = sprintf("%s(): cannot add config option 'pagemanager_at_end': %s",__FUNCTION__,db_errormessage());
+            logger($msg);
+            $output->add_message(htmlspecialchars($msg));
+            $output->add_message(t('update_core_error','admin',array('{VERSION}' => strval($version))));
+            return FALSE; 
+        } else {
+            logger(sprintf("%s(): success adding option 'pagemanager_at_end' to configuration table",__FUNCTION__));
+        }
+    } else {
+        logger(sprintf("%s(): option 'pagemanager_at_end' already set in configuration table",__FUNCTION__));
+    }
+
+    // 4B -- attempt to update sort_orders in nodes that are obviously wrong
+    $table = 'nodes';
+    $fields = array('area_id','CASE WHEN node_id=parent_id THEN 0 ELSE parent_id END AS section','node_id','sort_order');
+    $where = '';
+    $order = array('area_id','CASE WHEN node_id = parent_id THEN 0 ELSE parent_id END','sort_order');
+    $keyfield = 'node_id';
+    if (($records = db_select_all_records($table,$fields,$where,$order,$keyfield)) === FALSE) {
+        $msg = sprintf('%s(): cannot retrieve sort orders in nodes; skipping: %s',__FUNCTION__,db_errormessage());
+        logger($msg);
+        $output->add_message(htmlspecialchars($msg));
+        $output->add_message(t('update_core_error','admin',array('{VERSION}' => strval($version))));
+        return FALSE; 
+    }
+    $count = 0;
+    $area_id = 0;
+    $section = 0;
+    foreach ($records as $node_id => $record) {
+        if (($area_id != $record['area_id']) || ($section != $record['section'])) {
+            $area_id    = $record['area_id'];
+            $section    = $record['section'];
+            $sort_order = $record['sort_order'] + 10;
+        } else {
+            if ($sort_order != $record['sort_order']) {
+                $fields = array('sort_order' => intval($sort_order));
+                $where = array('node_id' => intval($node_id));
+                if (db_update($table,$fields,$where) === FALSE) {
+                    $msg = sprintf("%s(): sort order error in node '%d': %s",__FUNCTION__,$node_id,db_errormessage());
+                    logger($msg);
+                    $output->add_message(htmlspecialchars($msg));
+                    $output->add_message(t('update_core_error','admin',array('{VERSION}' => strval($version))));
+                    return FALSE; 
+                }
+                logger(sprintf('%s(): success updating sort_order from %d => %d in area %d, section %d, node %d',
+                                       __FUNCTION__,$record['sort_order'],$sort_order,$area_id,$section,$node_id));
+                ++$count;
+            }
+            $sort_order += 10;
+        }
+    }
+    logger(sprintf('%s(): success updating sort orders in nodes table; count = %d',__FUNCTION__,$count));
+
+    //
+    // 5 -- all done: bump version in database
     //
     return update_core_version($output,$version);
 } // update_core_2011092100()

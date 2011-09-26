@@ -1,8 +1,15 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.89 2011/09/26 10:40:23 pfokker Exp $
+$Id: CHANGES.txt,v 1.90 2011/09/26 15:33:40 pfokker Exp $
 -------------------------------------------------------------------------------
 2011-09-26
 - [pagemanager.class.php]: get rid of current area if it is no longer there
+- [pagemanager.class.php]: bugfix: sort order is now calculated
+  correctly when inserting a new page/section
+- [updatelib.php]: added one-time fix for mixed-up sort orders in
+  existing nodes
+- New configuration item 'pagemanager_at_end' allows inserting new
+  nodes at the top or appending at the bottom of a (sub)section in
+  the Page Manager.
 
 2011-09-23
 - [groupmanager.class.php] re-arranged some code, mainly dealing with

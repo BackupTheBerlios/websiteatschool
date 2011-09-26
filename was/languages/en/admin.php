@@ -37,7 +37,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: admin.php,v 1.13 2011/09/23 16:01:29 pfokker Exp $
+ * @version $Id: admin.php,v 1.14 2011/09/26 15:33:40 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -612,6 +612,10 @@ $string['site_config_filemanager_images_label'] = 'List of extensions recognised
 $string['site_config_filemanager_images_title'] = 'Only files with one of these extensions are selectable when browsing images from the FCK Editor';
 $string['site_config_filemanager_flash_label'] = 'List of extensions recognised as flash files (comma-delimited)';
 $string['site_config_filemanager_flash_title'] = 'Only files with one of these extensions are selectable when browsing flash files from the FCK Editor';
+$string['site_config_pagemanager_at_end_label'] = '';
+$string['site_config_pagemanager_at_end_title'] = 'Check this box to position newly added pages and sections at the end of a (sub)section';
+$string['site_config_pagemanager_at_end_option'] = 'Add new pages/sections at the end';
+
 
 $string['area_theme_reset'] = 'Properties for theme {THEME_NAME} reset to defaults for area {AREA} ({AREA_FULL_NAME})';
 $string['error_area_theme_reset'] = 'There were problems resetting the properties for theme {THEME_NAME} in area {AREA} ({AREA_FULL_NAME})';

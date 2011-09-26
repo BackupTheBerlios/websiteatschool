@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: pagemanager.class.php,v 1.10 2011/09/26 10:40:23 pfokker Exp $
+ * @version $Id: pagemanager.class.php,v 1.11 2011/09/26 15:33:40 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -3812,7 +3812,7 @@ class PageManager {
      * area than the current working area. The reference to the tree is necessary;
      * we can't simply use $this->tree and $this->area_id.
      *
-     * Depending on the flag $at_end the node is added at the end
+     * Depending on the configuration flag $CFG->pagemanager_at_end the node is added at the end
      * of the section or at the beginning. In the latter case, the new sort order number
      * is always 10 and all the existing nodes are renumbered in such a way that
      * the second node in the section (originally the first one) gets sort order 20.
@@ -3823,18 +3823,16 @@ class PageManager {
      * Note that this routine not only calculates a sort order but it also manipulates the
      * database and moves other nodes in the section around in order to make room.
      *
-     * Note that the feature $at_end is currently not used at all.
-     *
      * @param array &$tree reference to the tree in area $area_id
      * @param int $area_id the area to look at
      * @param int $parent_id the section where we need to make room (where a node is added/inserted)
-     * @param bool $at_end if TRUE a new node is added at the end, otherwise it is inserted at the beginning
      * @return int the sort order for the new node AND maybe changed sort orders amongst the childeren of $parent_id
      * @uses $DB
+     * @uses $CFG
      */
-    function calculate_new_sort_order(&$tree,$area_id,$parent_id,$at_end=FALSE) {
-        global $DB;
-        if ($at_end) {
+    function calculate_new_sort_order(&$tree,$area_id,$parent_id) {
+        global $DB,$CFG;
+        if ((isset($CFG->pagemanager_at_end)) && ($CFG->pagemanager_at_end)) {
             // calculate the new sort order, by default it is 10 larger than the last child of the parent
             $sort_order = 0;
             $next_node_id = $tree[$parent_id]['first_child_id'];
@@ -3852,11 +3850,12 @@ class PageManager {
                 $delta = 20 - intval($tree[$next_node_id]['record']['sort_order']);
                 $sql = sprintf('UPDATE %snodes '.
                                'SET sort_order = sort_order + %d '.
-                               'WHERE (area_id = %d) AND (parent_id = %s)',
+                               'WHERE (area_id = %d) AND %s',
                                $DB->prefix,
                                $delta,
                                $area_id,
-                               ($parent_id == 0) ? 'node_id' : strval($parent_id));
+                               ($parent_id == 0) ? '(node_id = parent_id)' :
+                                           sprintf('(node_id <> parent_id) AND (parent_id = %d)',$parent_id));
                 $DB->exec($sql);
             }
         }

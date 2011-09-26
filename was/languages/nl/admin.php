@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: admin.php,v 1.12 2011/09/23 16:01:29 pfokker Exp $
+ * @version $Id: admin.php,v 1.13 2011/09/26 15:33:40 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -514,6 +514,9 @@ $string['site_config_filemanager_images_label'] = 'Lijst van extensies die als a
 $string['site_config_filemanager_images_title'] = 'Uitsluitend bestanden met een van deze extensies zijn zichtbaar bij bladeren naar afbeeldingen in FCK Editor';
 $string['site_config_filemanager_flash_label'] = 'Lijst van extensies die als flashbestand worden beschouwd (komma-gescheiden)';
 $string['site_config_filemanager_flash_title'] = 'Uitsluitend bestanden met een van deze extensies zijn zichtbaar bij bladeren naar flashbestanden in FCK Editor';
+$string['site_config_pagemanager_at_end_label'] = '';
+$string['site_config_pagemanager_at_end_title'] = 'Aanvinken om paginas en secties toe te voegen aan het eind van een (sub)sectie';
+$string['site_config_pagemanager_at_end_option'] = 'Nieuwe paginas/secties achteraan toevoegen';
 
 $string['area_theme_reset'] = 'Standaardinstellingen hersteld voor thema {THEME_NAME} en gebied {AREA} ({AREA_FULL_NAME})';
 $string['error_area_theme_reset'] = 'Er waren problemen bij het herstellen van de standaardinstellingen voor thema {THEME_NAME} in gebied {AREA} ({AREA_FULL_NAME})';

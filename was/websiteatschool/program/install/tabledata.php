@@ -57,7 +57,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasinstall
- * @version $Id: tabledata.php,v 1.3 2011/06/27 12:18:19 pfokker Exp $
+ * @version $Id: tabledata.php,v 1.4 2011/09/26 15:33:40 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -329,6 +329,17 @@ $tabledata[] = array(
         'sort_order' => 230,
         'extra' => 'maxlength=65535',
         'description' => 'Comma-delimited list of allowable/uploadable flash extensions - USER-defined'
+        )
+    );
+$tabledata[] = array(
+    'table' => 'config',
+    'fields' => array(
+        'name' => 'pagemanager_at_end',
+        'type' => 'b',
+        'value' => '0',
+        'sort_order' => 240,
+        'extra' => '',
+        'description' => 'sort order position within section for new nodes: TRUE is at the end  - USER-defined'
         )
     );
 
