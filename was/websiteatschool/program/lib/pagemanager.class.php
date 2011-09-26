@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: pagemanager.class.php,v 1.9 2011/09/22 09:00:15 pfokker Exp $
+ * @version $Id: pagemanager.class.php,v 1.10 2011/09/26 10:40:23 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -115,6 +115,11 @@ class PageManager {
         $this->output = &$output;
         $this->output->set_helptopic('pagemanager');
         $this->areas = get_area_records();
+
+        // Do not maintain a 'current area' if it is no longer there (it might have been deleted by us or another admin)
+        if ((isset($_SESSION['current_area_id'])) && (!isset($this->areas[intval($_SESSION['current_area_id'])]))) {
+            unset($_SESSION['current_area_id']);
+        }
 
         // Do we have a valid working area? If not, try to calculate one
         if ((!isset($_SESSION['current_area_id'])) ||
