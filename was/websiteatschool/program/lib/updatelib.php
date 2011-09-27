@@ -54,7 +54,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: updatelib.php,v 1.15 2011/09/26 15:33:40 pfokker Exp $
+ * @version $Id: updatelib.php,v 1.16 2011/09/27 15:23:59 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -902,6 +902,9 @@ function update_core(&$output) {
     if (!update_core_2011092100($output)) { return; }
     // if (!update_core_2011mmdd00($output)) { return; }
     // ...
+
+    // finally: check for obsolete files (list is hardcoded in update_remove_obsolete_files())
+    update_remove_obsolete_files($output);
 } // update_core()
 
 
@@ -1082,7 +1085,6 @@ function update_create_tables($filename) {
     }
     return $retval;
 } // update_create_tables()
-
 
 
 // ==================================================================
@@ -1793,10 +1795,47 @@ function update_core_2011092100(&$output) {
     }
     logger(sprintf('%s(): success updating sort orders in nodes table; count = %d',__FUNCTION__,$count));
 
+
     //
     // 5 -- all done: bump version in database
     //
     return update_core_version($output,$version);
 } // update_core_2011092100()
+
+
+/** attempt to remove or at least flag obsolete files
+ *
+ * this routine can grow bigger on every update when perhaps more files are obsoleted.
+ * We always check all files (even the older ones) because the user might not have removed
+ * them yet. If we can delete the files, we do so. If not, we log it and also show a message
+ * to the user via $output.
+ *
+ * @param object &$output collects output
+ * @return bool TRUE on success, FALSE otherwise
+ */
+function update_remove_obsolete_files(&$output) {
+    global $CFG;
+    // This array holds the filenames and the version where the file was obsoleted
+    $obsolete_files = array(
+        '/lib/node.class.php' => '0.90.3 / 2011092100',
+        '/lib/modulelib.php'  => '0.90.3 / 2011092100');
+
+    $retval = TRUE; // assume success
+    foreach($obsolete_files as $filename => $version) {
+        $full_path = $CFG->progdir.$filename;
+        $path = '/program'.$filename;
+        if (!is_file($full_path)) {
+            logger(sprintf("%s(): file '%s' (obsolete since %s) no longer exists, good!",__FUNCTION__,$path,$version));
+        }elseif (@unlink($full_path)) {
+            logger(sprintf("%s(): success unlinking file '%s' (obsolete since %s)",__FUNCTION__,$full_path,$version));
+        } else {
+            logger(sprintf("%s(): cannot unlink file '%s' (obsolete since %s)",__FUNCTION__,$full_path,$version));
+            $params = array('{FILENAME}' => $path, '{VERSION}' => $version);
+            $output->add_message(t('update_warning_obsolete_file','admin',$params));
+            $retval = FALSE;
+        }
+    }
+    return $retval;
+} // update_remove_obsolete_files()
 
 ?>
