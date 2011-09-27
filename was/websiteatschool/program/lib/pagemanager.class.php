@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: pagemanager.class.php,v 1.11 2011/09/26 15:33:40 pfokker Exp $
+ * @version $Id: pagemanager.class.php,v 1.12 2011/09/27 15:25:07 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -643,7 +643,7 @@ class PageManager {
         }
      
         // 4 -- now either show dialog (stage 1) or perform deletion (stage 2)
-        if ((isset($_POST['dialog'])) && ($_POST['dialog'] == DIALOG_NODE_DELETE_CONFIRM)) {
+        if ((isset($_POST['dialog'])) && (intval($_POST['dialog']) == DIALOG_NODE_DELETE_CONFIRM)) {
             // stage 2 - do delete if user pressed delete button
             if (isset($_POST['button_delete'])) {
                 if (!$this->delete_node($node_id)) {
@@ -1907,7 +1907,7 @@ class PageManager {
         global $USER,$WAS_SCRIPT_NAME;
 
         // 0 -- prepare some useful information
-        $is_advanced = ($_POST['dialog'] == DIALOG_NODE_EDIT_ADVANCED) ? TRUE : FALSE;
+        $is_advanced = (intval($_POST['dialog']) == DIALOG_NODE_EDIT_ADVANCED) ? TRUE : FALSE;
         $is_page = db_bool_is(TRUE,$this->tree[$node_id]['record']['is_page']);
         $viewonly = db_bool_is(TRUE,$this->tree[$node_id]['record']['is_readonly']);
         $embargo = is_under_embargo($this->tree,$node_id);

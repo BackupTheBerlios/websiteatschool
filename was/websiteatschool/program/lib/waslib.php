@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: waslib.php,v 1.14 2011/09/22 08:48:37 pfokker Exp $
+ * @version $Id: waslib.php,v 1.15 2011/09/27 15:25:07 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -491,7 +491,7 @@ function get_requested_filename() {
     $filename = NULL;
     if (($CFG->friendly_url) && (isset($_SERVER['PATH_INFO'])) && (utf8_validate($_SERVER['PATH_INFO']))) {
         $filename = $_SERVER['PATH_INFO'];
-    } elseif ((isset($_GET['file'])) && (utf8_validate($_SERVER['PATH_INFO']))) {
+    } elseif ((isset($_GET['file'])) && (utf8_validate($_GET['file']))) {
         $filename = magic_unquote($_GET['file']);
     }
     return $filename;
@@ -1942,7 +1942,7 @@ function get_friendly_parameter($name,$default_value=NULL,$force=FALSE) {
 
 
 
-/** determine whether a directory if empty (free from (user)files)
+/** determine whether a directory is empty (free from (user)files)
  *
  * this scans the directory $CFG->datadir.$path to see if it is empty,
  * i.e. does not contain any (user)files. Returns TRUE if empty, FALSE otherwise.

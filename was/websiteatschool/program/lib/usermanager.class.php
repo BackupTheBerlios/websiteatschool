@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: usermanager.class.php,v 1.9 2011/09/22 17:08:10 pfokker Exp $
+ * @version $Id: usermanager.class.php,v 1.10 2011/09/27 15:25:07 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -788,7 +788,7 @@ class UserManager {
         // 3 -- user has confirmed delete?
         //
         if ((isset($_POST['button_delete'])) &&
-            (isset($_POST['dialog'])) && ($_POST['dialog'] == USERMANAGER_DIALOG_DELETE)) {
+            (isset($_POST['dialog'])) && (intval($_POST['dialog']) == USERMANAGER_DIALOG_DELETE)) {
             $params = $this->get_user_names($user_id); // pick up name before it is gone
             if ((userdir_delete($path)) && ($this->delete_user_records($user_id))) {
                 $this->output->add_message(t('usermanager_delete_user_success','admin',$params));
