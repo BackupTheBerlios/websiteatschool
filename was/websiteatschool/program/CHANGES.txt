@@ -1,9 +1,10 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.91 2011/09/27 09:01:14 pfokker Exp $
+$Id: CHANGES.txt,v 1.92 2011/09/27 14:04:53 pfokker Exp $
 -------------------------------------------------------------------------------
 
 2011-09-27
 - [demodata.php]: bufix: some demo nodes (siblings) had identical sort orders
+- removed obsolete file node.class.php from repository
 
 2011-09-26
 - [pagemanager.class.php]: get rid of current area if it is no longer there
