@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasinstall
- * @version $Id: demodata.php,v 1.9 2011/09/19 13:57:00 pfokker Exp $
+ * @version $Id: demodata.php,v 1.10 2011/09/27 09:01:14 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -770,7 +770,7 @@ function demodata_sections_pages(&$messages,&$config,&$tr) {
             'is_hidden' => TRUE,
             'title' => $tr['quicktop_title'],
             'link_text' => $tr['quicktop_link_text'],
-            'sort_order' => 50),
+            'sort_order' => 60),
         'about' => array(
             'parent_id' => 'quicktop',
             'is_page' => TRUE,
@@ -791,7 +791,7 @@ function demodata_sections_pages(&$messages,&$config,&$tr) {
             'is_hidden' => TRUE,
             'title' => $tr['quickbottom_title'],
             'link_text' => $tr['quickbottom_link_text'],
-            'sort_order' => 60),
+            'sort_order' => 70),
         'disclaimer' => array(
             'parent_id' => 'quickbottom',
             'is_page' => TRUE,
@@ -866,7 +866,7 @@ function demodata_sections_pages(&$messages,&$config,&$tr) {
             'is_page' => FALSE,
             'title' => strtr($tr['minutes_title'],array('{SCHOOLYEAR}' => $replace['{THIS_SCHOOLYEAR}'])),
             'link_text' => strtr($tr['minutes_link_text'],array('{SCHOOLYEAR}' => $replace['{THIS_SCHOOLYEAR}'])),
-            'sort_order' => 20),
+            'sort_order' => 30),
         'minutes5' => array(
             'parent_id' => 'newminutes',
             'is_page' => TRUE,
