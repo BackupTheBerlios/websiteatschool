@@ -18,7 +18,7 @@
 # langdiff.php -- quick and dirty diff between old and current English language files
 # Peter Fokker -- 2011-01-12
 #
-# $Id: langdiff.php,v 1.3 2011/02/14 11:08:36 pfokker Exp $
+# $Id: langdiff.php,v 1.4 2011/09/28 09:54:08 pfokker Exp $
 #
 # See also langdiff.sh
 #
@@ -54,9 +54,21 @@ $Files = array(
         'cvs'    =>         'modules/htmlpage/languages/en/htmlpage.php',
         'dist'   => 'program/modules/htmlpage/languages/en/htmlpage.php'
         ),
+    'm_sitemap'  => array(
+        'cvs'    =>         'modules/sitemap/languages/en/sitemap.php',
+        'dist'   => 'program/modules/sitemap/languages/en/sitemap.php'
+        ),
     't_frugal'   => array(
         'cvs'    =>         'themes/frugal/languages/en/frugal.php',
         'dist'   => 'program/themes/frugal/languages/en/frugal.php'
+        ),
+    't_rosalina'   => array(
+        'cvs'    =>         'themes/rosalina/languages/en/rosalina.php',
+        'dist'   => 'program/themes/rosalina/languages/en/rosalina.php'
+        ),
+    't_schoolyard'   => array(
+        'cvs'    =>         'themes/schoolyard/languages/en/schoolyard.php',
+        'dist'   => 'program/themes/schoolyard/languages/en/schoolyard.php'
         ),
     'i_install'  => array(
         'cvs'    => 'websiteatschool/program/install/languages/en/install.php',

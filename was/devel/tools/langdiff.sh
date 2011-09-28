@@ -19,7 +19,7 @@
 #
 # Peter Fokker -- 2011-01-12
 #
-# $Id: langdiff.sh,v 1.2 2011/02/03 14:03:59 pfokker Exp $
+# $Id: langdiff.sh,v 1.3 2011/09/28 09:54:08 pfokker Exp $
 #
 # This script performs the following actions.
 # - the Website@Schoolversion of date "$1 23:59" is extracted from cvs
@@ -66,13 +66,18 @@ cd "$WORKINGDIRECTORY"
 #
 # 1 -- get the files from cvs and re-arrange subtrees
 #
-echo "$PROG: Export version of $OLD_DATE from CVS"
+echo "$PROG: Export version of $OLD_DATE from CVS ($CVSROOT)"
 cvs export -D "$OLD_DATE 23:59" -d old was >/dev/null 2>&1
-echo "$PROG: Export version of $NEW_DATE from CVS"
+echo "$PROG: Export version of $NEW_DATE from CVS ($CVSROOT)"
 cvs export -D "$NEW_DATE 23:59" -d new was >/dev/null 2>&1
 
 OLD_RELEASE="$(grep "'WAS_RELEASE'" old/websiteatschool/program/version.php | tr -c -d '[0-9.]')"
 NEW_RELEASE="$(grep "'WAS_RELEASE'" new/websiteatschool/program/version.php | tr -c -d '[0-9.]')"
+
+if [ "$OLD_RELEASE" == "$NEW_RELEASE" ]; then
+    NEW_RELEASE=CVS
+    echo "$PROG: warning: OLD and NEW release were the same; using $NEW_RELEASE as NEW"
+fi
 
 #
 # 2 -- use a PHP-script to list the changes in a structured way
