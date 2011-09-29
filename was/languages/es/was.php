@@ -18,20 +18,20 @@
 /** /program/languages/es/was.php
  *
  * Language: es (Español)
- * Release:  0.90.1 / 2011050500 (2011-05-05)
+ * Release:  0.90.2 / 2011092900 (2011-09-29)
  *
  * @author Hanna Tulleken <translators@websiteatschool.eu>
  * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_es
- * @version $Id: was.php,v 1.2 2011/05/05 07:27:20 pfokker Exp $
+ * @version $Id: was.php,v 1.3 2011/09/29 18:58:52 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = 'General';
 $string['translatetool_description'] = 'Este archivo contiene las traducciónes generales usados en el CMS';
 $string['logout_username'] = 'Cerrar sesión {USERNAME}';
 $string['login'] = 'Iniciar sesión';
-$string['button_ok'] = 'O~K';
+$string['button_ok'] = '~OK';
 $string['button_save'] = '~Guardar';
 $string['button_cancel'] = '~Cancelar';
 $string['button_delete'] = '~Eliminar';
@@ -64,7 +64,7 @@ $string['capacity_name_6'] = 'Tesorero';
 $string['capacity_name_7'] = 'Secretario';
 $string['capacity_name_8'] = 'Presidente';
 $string['capacity_name_9'] = 'Editor';
-$string['capacity_name_10'] = 'Editor';
+$string['capacity_name_10'] = 'Publicador';
 $string['capacity_name_11'] = 'Capacidad 11';
 $string['capacity_name_12'] = 'Capacidad 12';
 $string['capacity_name_13'] = 'Capacidad 13';

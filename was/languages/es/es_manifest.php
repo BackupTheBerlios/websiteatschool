@@ -15,7 +15,7 @@
 # You should have received a copy of the License Agreement for Website@School
 # along with this program. If not, see http://websiteatschool.eu/license.html
 
-/** /program/languages/es/es_manifest.php - description of the main language/translation (Spanish)
+/** /program/languages/es/es_manifest.php - description of the Spanish translation
  *
  * This file defines the Spanish language package ('es'). 
  * This file is used when this package is installed.
@@ -24,7 +24,7 @@
  * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam <info@websiteatschool.eu>
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_es
- * @version $Id: es_manifest.php,v 1.2 2011/05/05 07:27:19 pfokker Exp $
+ * @version $Id: es_manifest.php,v 1.3 2011/09/29 18:58:52 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -32,11 +32,11 @@ $manifests['es'] = array(
     'language_key'        => 'es',
     'language_name'       => 'Español',
     'parent_language_key' => 'en',
-    'description'         => 'This is the Spanish translation based on Website@School release 0.90.1',
+    'description'         => 'This is the Spanish translation based on Website@School release 0.90.2',
     'author'              => 'Anouk Coumans, Hanna Tulleken, Margot Molier',
-    'version'             => 2011050500,
-    'release'             => '0.90.1',
-    'release_date'        => '2011-05-05',
+    'version'             => 2011092900,
+    'release'             => '0.90.2',
+    'release_date'        => '2011-09-29',
     'is_core'             => FALSE
    );
 

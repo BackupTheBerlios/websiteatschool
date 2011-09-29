@@ -18,13 +18,13 @@
 /** /program/languages/es/loginlib.php
  *
  * Language: es (Español)
- * Release:  0.90.1 / 2011050500 (2011-05-05)
+ * Release:  0.90.2 / 2011092900 (2011-09-29)
  *
  * @author Anouk Coumans <translators@websiteatschool.eu>
  * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_es
- * @version $Id: loginlib.php,v 1.2 2011/05/05 07:27:19 pfokker Exp $
+ * @version $Id: loginlib.php,v 1.3 2011/09/29 18:58:52 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = 'iniciar sesión';
@@ -46,7 +46,7 @@ $string['email_address'] = 'Dirección correo electrónico';
 $string['failure_sending_laissez_passer_mail'] = 'Fallo en mandar el mensaje electrónico  con el código-único. Si el problema persiste por favor intentar nuevamente o tomar contacto con el administrador del web';
 $string['failure_sending_temporary_password'] = 'Fallo mandar un mensaje electrónico con la contraseña temporánea. Si este problema persiste, por favor intentar nuevamente o tomar contacto con el administrador del web';
 $string['forgot_password'] = '¿olvidado su contraseña?';
-$string['forgotten_password_mailmessage1'] = 'Aquí hay un enlace con un código-único con la cuál usted puede pedir  una contraseña temporal. Cópia el enlace abajo hacía la barra de direcciones en su navegador y hacer clic [Enter]:
+$string['forgotten_password_mailmessage1'] = 'Aquí hay un enlace con un código-único con la cuál usted puede pedir  una contraseña temporal. Cópiar el enlace abajo hacía la barra de direcciones en su navegador y hacer clic [Enter]:
 
     {AUTO_URL}
 
@@ -96,7 +96,7 @@ $string['laissez_passer'] = 'Código-único ';
 $string['login'] = 'Iniciar sesión ';
 $string['logout_forced'] = 'Usted es forzado cerrar la sesión';
 $string['logout_successful'] = 'Usted ha cerrado la sesión con éxito';
-$string['message_box'] = 'Carpeta de mensajes. ';
+$string['message_box'] = 'Casilla de mensajes. ';
 $string['must_change_password'] = 'Usted tiene que cambiar su contraseña ahora.  ';
 $string['new_password1'] = 'Contraseña nueva';
 $string['new_password2'] = 'Confirma contraseña nueva';

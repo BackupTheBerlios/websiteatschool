@@ -18,13 +18,13 @@
 /** /program/install/languages/es/install.php
  *
  * Language: es (Español)
- * Release:  0.90.1 / 2011050500 (2011-05-05)
+ * Release:  0.90.2 / 2011092900 (2011-09-29)
  *
  * @author Hanna Tulleken <translators@websiteatschool.eu>
  * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_es
- * @version $Id: install.php,v 1.4 2011/05/05 07:27:20 pfokker Exp $
+ * @version $Id: install.php,v 1.5 2011/09/29 18:58:53 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = 'Instalar';
@@ -49,13 +49,13 @@ $string['yes'] = 'Si';
 $string['no'] = 'No';
 $string['language_name'] = 'Español';
 $string['dialog_language'] = 'Idioma';
-$string['dialog_language_title'] = 'Seleccionar el idioma por la  instalación';
+$string['dialog_language_title'] = 'Seleccionar el idioma para la instalación';
 $string['dialog_language_explanation'] = 'Por favor seleccionar el idioma para usar durante el procedimiento de la instalación';
 $string['language_label'] = 'Idioma';
 $string['language_help'] = '';
 $string['dialog_installtype'] = 'Tipo de instalación';
-$string['dialog_installtype_title'] = 'Elijir entre una instalación Normal y Personalizar  ';
-$string['dialog_installtype_explanation'] = 'Por favor elijir de la lista aquí abajo el escenario de la instalación ';
+$string['dialog_installtype_title'] = 'Elegir entre una instalación Normal y Personalizar  ';
+$string['dialog_installtype_explanation'] = 'Por favor elegir de la lista aquí abajo el escenario de la instalación ';
 $string['installtype_label'] = 'El escenario de la instalación';
 $string['installtype_help'] = 'Por favor seleccionar el escenario de la instalación apropeada.<br><strong>Estándar</strong> significa una instalación directemente con un mínimo de preguntas para contestar,<br><strong>Personalizar</strong> da control completo de todas las opciónes de la instalación';
 $string['installtype_option_standard'] = 'Estándar ';
@@ -71,7 +71,7 @@ $string['dialog_database'] = 'La base de datos';
 $string['dialog_database_title'] = 'Entrar la información del servidor de base de datos';
 $string['dialog_database_explanation'] = 'Por favor entrar las propiedades de vuestro servidor de base de datos en las casillas aquí abajo';
 $string['db_type_label'] = 'Tipo';
-$string['db_type_help'] = 'Elijir uno de los tipos de bases de datos disponibles';
+$string['db_type_help'] = 'Seleccionar uno de los tipos de bases de datos disponibles';
 $string['db_type_option_mysql'] = 'MySQL';
 $string['db_server_label'] = 'Servidor';
 $string['db_server_help'] = 'Esto es la dirección del servidor de base de datos, generalmente <strong>localhost</strong>. Otros ejemplos: <strong>mysql.ejemplo.org</strong> o <strong>ejemplo.dbserver.provider.net:3306</strong>';
@@ -83,29 +83,29 @@ $string['db_name_label'] = 'Nombre de la base de datos ';
 $string['db_name_help'] = 'Este es el nombre de la base de datos para usar. Tenga en cuenta que este base de datos tendría que existir ya; este programa de instalación no esta diseñado para crear bases de datos ( por razónes de seguridad). Ejemplos: <strong>www</strong> o <strong>example_www</strong>';
 $string['db_prefix_label'] = 'Prefijo';
 $string['db_prefix_help'] = 'Todos los nombres de tablas en la base de datos comienzan con este prefijo. Esto permite instalaciónes múltiples en la misma  base de datos. Tenga en cuenta que el prefijo tiene que comenzar con una letra. Ejamplos: <strong>was_</strong> o <strong>cms2_</strong>';
-$string['dialog_cms'] = 'Página de Internet';
-$string['dialog_cms_title'] = 'Entrar las informaciones escenciales  de la página de Internet.';
-$string['dialog_cms_explanation'] = 'Por favor entra las informaciones escenciales de la página de Internet en las casillas aquí abajo';
-$string['cms_title_label'] = 'Título de la página de Internet';
-$string['cms_title_help'] = 'El nombre de su página de Internet ';
+$string['dialog_cms'] = 'Sitio web';
+$string['dialog_cms_title'] = 'Entrar las informaciones escenciales  del sitio web';
+$string['dialog_cms_explanation'] = 'Por favor entra las informaciones escenciales del sitio web en las casillas aquí abajo';
+$string['cms_title_label'] = 'Título del sitio web';
+$string['cms_title_help'] = 'El nombre de su sitio web ';
 $string['cms_website_from_address_label'] = 'Desde: la dirección de correo electrónico ';
-$string['cms_website_from_address_help'] = 'Esta dirección de correo electrónico es usado por el correo de salida, por ejemplo alertas y recuerdos de contraseña  ';
+$string['cms_website_from_address_help'] = 'Esta dirección de correo electrónico es usado para el correo de salida, por ejemplo alertas y recuerdos de contraseña  ';
 $string['cms_website_replyto_address_label'] = 'Respuesta a: dirección de correo electrónico   ';
 $string['cms_website_replyto_address_help'] = 'Esta dirección de correo electrónico esta agregado al correo de salidas y puede ser usado para especifiquar un buzón a donde las respuestas son leído en efectivo (por ti) y no son descartados (por el software del servidor web)';
 $string['cms_dir_label'] = 'Directorio sitio web';
 $string['cms_dir_help'] = 'Este es la ruta hacía el directorio donde se puede encontrar los archivos como index.php y config.php, por ejemplo <strong>/home/httpd/htdocs</strong> o <strong>C:\Program Files\Apache Group\Apache\htdocs</strong>';
-$string['cms_www_label'] = 'Sitio Web URL';
+$string['cms_www_label'] = 'URL del sitio Web ';
 $string['cms_www_help'] = 'Este es el URL-principal que conduce hacía su sitio web o bien el sitio donde se puede visitar el index.php. Ejemplos son: <strong>http://www.example.org</strong> o <strong>https://example.org:443/schoolsite</strong>.';
 $string['cms_progdir_label'] = 'Programa-directorio';
 $string['cms_progdir_help'] = 'Este es la ruta hacía el directorio donde se puede encontrar los Website@School archivos de programa (generalmente el subdirectorio <strong>program</strong> de sitio web-directorio) Ejemplos: <strong>/home/httpd/htdocs/program</strong> o <strong>C:\Program Files\Apache Group\Apache\htdocs\program</strong>';
 $string['cms_progwww_label'] = 'Programa URL';
-$string['cms_progwww_help'] = 'Este es el URL que dirige al directorio del programa (generalmente el sitio web URL seguido a <strong>/programa</strong>). Ejemplos son: <strong>http://www.example.org/program</strong> o <strong>https://example.org:443/schoolsite/program</strong>';
+$string['cms_progwww_help'] = 'Este es el URL que dirige al directorio del programa (generalmente el URL del sitio web seguido a <strong>/programa</strong>). Ejemplos son: <strong>http://www.example.org/program</strong> o <strong>https://example.org:443/schoolsite/program</strong>';
 $string['cms_datadir_label'] = 'Datos de directorio';
 $string['cms_datadir_help'] = 'Este es un directorio que sostiene archivos cargados y otros archivos de datos. Es muy importante que este directorio está situado fuera de la raíz del documento, es decir no es directamente accesible con un navegador. Tenga en cuenta que el web server debe tener suficiente permiso para leer, para crear y para escribir archivos aquí. Los ejemplos son: <strong>/home/httpd/wasdata</strong> o <strong>C:\Program Files\Apache Group\Apache\wasdata</strong>';
 $string['cms_demodata_label'] = 'Llenar la base de datos';
 $string['cms_demodata_help'] = 'Verificar esta casilla si usted quiere comenzar con su nuevo Sitio Web  usando datos de demostración';
 $string['cms_demodata_password_label'] = 'Contraseña de demostración  ';
-$string['cms_demodata_password_help'] = 'La misma contraseña de demostración será asignada a <em>todas</em>cuentas de usuario de demostración.  Por favor elijir una buena contraseña: escojer por lo menos 8 carácteres de letras mayúsculas, de letras minúsculas y cifras. Usted puede dejar este espacio en blanco del campo si usted no comprobó la casilla \' Llenar la base de datos\' aquí arriba';
+$string['cms_demodata_password_help'] = 'La misma contraseña de demostración será asignada a <em>todas</em>cuentas de usuario de demostración.  Por favor elegir una buena contraseña: escojer por lo menos 8 carácteres de letras mayúsculas, de letras minúsculas y cifras. Usted puede dejar este espacio en blanco del campo si usted no comprobó la casilla \' Llenar la base de datos\' aquí arriba';
 $string['dialog_user'] = ' Cuenta de usuario';
 $string['dialog_user_title'] = 'Crear la primera cuenta';
 $string['dialog_user_explanation'] = 'Incorpore por favor la información para el primer usuario explicando este nuevo sitio web. Tenga en cuenta que esta cuenta tendrá privilegios completos del administrador y todos los permisos posibles así que cualquier persona con acceso a esta cuenta puede hacer lo que sea             ';
@@ -114,12 +114,12 @@ $string['user_full_name_help'] = 'Por favor incorporar su propio nombre o, si us
 $string['user_username_label'] = ' Nombre de usuario';
 $string['user_username_help'] = 'Por favor incorporar el nombre de usuario que usted quiere utilizar para esta cuenta. Usted necesita escribir este nombre cada vez que usted quiere abrir una sesión. Ejemplos:<strong> wblade</strong> o <strong>webmaster</strong>';
 $string['user_password_label'] = 'Contraseña ';
-$string['user_password_help'] = 'Por favor elijir  una buena contraseña: escojer por lo menos 8 caracteres de letras mayúsculas, de letras minúsculas, cifras y de carácteres especiales como % (pecentaje), = (los iguales), / (raya vertical) y. (punto). No comparte su contraseña con otros, pero en lugar crear cuentas adicionales para sus colegas ';
+$string['user_password_help'] = 'Por favor elegir una buena contraseña: escojer por lo menos 8 caracteres de letras mayúsculas, de letras minúsculas, cifras y de carácteres especiales como % (pecentaje), = (los iguales), / (raya vertical) y. (punto). No comparte su contraseña con otros, pero en lugar crear cuentas adicionales para sus colegas ';
 $string['user_email_label'] = 'Dirección de correo electrónico';
 $string['user_email_help'] = ' Por favor entrar aquí su dirección de correo electronico. Se necesita esta dirección siempre cuando se necesita pedir una nueva contraseña. Estar seguro de que solo usted tenga acceso a este buzón (no utilice un buzón compartido). Ejemplos:<strong>wilhelmina.bladergroen@example.org</strong> o <strong>webmaster@example.org</strong>';
 $string['dialog_compatibility'] = 'Compatibilidad ';
 $string['dialog_compatibility_title'] = 'Comprobar la compatibilidad ';
-$string['dialog_compatibility_explanation'] = 'Aquí abajo hay una descripción de ajustes requeridos y deseados. Usted necesita estar seguro de que los requisitos están satisfechos antes de continuar                                                     Hieronder staat een overzicht van noodzakelijke en gewenste instellingen. Overtuig uzelf ervan dat aan alle vereisten is voldaan vooordat u op [Volgende] drukt.';
+$string['dialog_compatibility_explanation'] = 'Aquí abajo hay una descripción de ajustes requeridos y deseados. Usted necesita estar seguro de que los requisitos están satisfechos antes de continuar                    Aquí abajo hay una descripción  de las configuraciones necesarias y deseadas. Usted necesita asegurarse que sus necesidades están satisfechas  antes que usted continua.';
 $string['compatibility_label'] = 'Prueba';
 $string['compatibility_value'] = 'Valor';
 $string['compatibility_result'] = 'Resultado';

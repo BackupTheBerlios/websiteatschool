@@ -18,13 +18,13 @@
 /** /program/install/languages/es/demodata.php
  *
  * Language: es (Español)
- * Release:  0.90.1 / 2011050500 (2011-05-05)
+ * Release:  0.90.2 / 2011092900 (2011-09-29)
  *
  * @author Anouk Coumans & Hanna Tulleken <translators@websiteatschool.eu>
  * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_es
- * @version $Id: demodata.php,v 1.2 2011/05/05 07:27:20 pfokker Exp $
+ * @version $Id: demodata.php,v 1.3 2011/09/29 18:58:53 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = 'Datos de demo';
@@ -47,7 +47,7 @@ $string['extra_area_path'] = 'inactivo';
 $string['alerts_initial_load'] = 'Instalaciones iniciales de los datos demo, incluido este mensaje de prueba.';
 $string['alerts_every_1440_minutes'] = 'Usted reciberá una alarma a lo más una vez cada 1440 minutos (1 día)';
 $string['alerts_every_60_minutes'] = 'Usted reciberá una alarma a lo más una vez cada 60 minutos (1 hora)';
-$string['alerts_email_address'] = 'Alarmas será enviado por correo electrónica a esta dirección:';
+$string['alerts_email_address'] = 'Alarmas serán enviados por correo electrónica a esta dirección:';
 $string['alerts_all_areas'] = 'Alarmas serán activados en un cambio en qualquer área.';
 $string['alerts_private_area'] = 'Alarmas serán enviados solamente  en cambiar algo en el intranet';
 $string['welcome_title'] = 'Bienvenido a nuestro sitio Web';
@@ -70,13 +70,13 @@ $string['oldnews_title'] = 'Viejos artículos noticieros';
 $string['oldnews_link_text'] = 'Noticias viejas';
 $string['oldnewsletters_title'] = 'Viejas ediciones de nuestro boletín de noticias';
 $string['oldnewsletters_link_text'] = 'Viejos boletines de noticias';
-$string['search_title'] = 'Aquí usted puede buscar por nuestro sitio';
+$string['search_title'] = 'Aquí usted puede buscar en nuestro sitio';
 $string['search_link_text'] = 'Buscar';
-$string['searchbox_title'] = 'Buscar por nuestro sitio';
+$string['searchbox_title'] = 'Buscar en nuestro sitio';
 $string['searchbox_link_text'] = 'Buscar';
 $string['sitemap_title'] = 'Descripción del sitio ';
 $string['sitemap_link_text'] = 'Mapa de sitio';
-$string['mypage_title'] = 'Abrir/cerrar sesión y menu  rápido';
+$string['mypage_title'] = 'Abrir/cerrar sesión y menú rápido';
 $string['mypage_link_text'] = 'MiPágina';
 $string['quicktop_title'] = 'Vínculos permanentes en la parte de encima';
 $string['quicktop_link_text'] = '(vínculos rápidos encima)';
@@ -108,9 +108,9 @@ $string['minutes4_title'] = 'Actas de la quarta reunión';
 $string['minutes4_link_text'] = 'Primavera';
 $string['downloads_title'] = 'Una lista de enlaces y cargados prácticos';
 $string['downloads_link_text'] = 'Cargados';
-$string['welcome_content'] = 'Bienvenido al sitio de Exemplum primary School.<br> 
+$string['welcome_content'] = 'Bienvenido al sitio web de Exemplum primary School.<br> 
 
-Por favor usar el menu para navegar o usar el menu-salto MiPágina.
+Por favor usar el menú para navegar o usar el menú-salto MiPágina.
 <p>
 {LOREM} {IPSUM}
 <p>
@@ -123,7 +123,7 @@ $string['aboutus_content'] = 'Exemplum Primary School<br>
 Gummersbach<br>
 
 Director: Amelia Cackle';
-$string['schoolterms1_content'] = '<h2>Términos de escuela y vacaciones por{LAST_SCHOOLYEAR}</h2>
+$string['schoolterms1_content'] = '<h2>Términos de escuela y vacaciones para {LAST_SCHOOLYEAR}</h2>
 Término 1: septiembre - octubre<br>
 
 Término 2: noviembre - deciembre<br>
@@ -142,7 +142,7 @@ Término 6: junio - julio<br>
 
 Vacaciones de verano: agosto<br>
 ';
-$string['schoolterms2_content'] = '<h2>Términos de escuela y vacaciones por{THIS_SCHOOLYEAR}</h2>
+$string['schoolterms2_content'] = '<h2>Términos de escuela y vacaciones para {THIS_SCHOOLYEAR}</h2>
 Término 1: septiembre - octubre<br>
 
 Término 2: noviembre - deciembre<br>
@@ -160,7 +160,7 @@ Término 5: abril - mayo<br>
 Término 6: junio - julio<br>
 
 Vacaciones de verano: agosto<br>';
-$string['schoolterms3_content'] = '<h2>Términos de escuela preliminares y vacaciones por{NEXT_SCHOOLYEAR}</h2>
+$string['schoolterms3_content'] = '<h2>Términos de escuela preliminares y vacaciones para {NEXT_SCHOOLYEAR}</h2>
 Término 1: septiembre - octubre<br>
 
 Término 2: noviembre - deciembre<br>
@@ -182,7 +182,7 @@ Vacaciones de verano: agosto<br>
 Tenga en cuenta: este es un <em>preliminar</em>horario.';
 $string['latestnews_content'] = '<strong>{TODAY}</strong><br>
 
-Estamos feliz de poder informarles que el nuevo sitio Web está operacional a partir de ahora.';
+Estamos feliz de poder informarles que el nuevo sitio web está operacional a partir de ahora.';
 $string['latestnewsletter_content'] = '<h2>Boletin de noticias 5 ({TODAY})</h2>
 <h3>Contenido</h3>
 <ul>
@@ -216,8 +216,8 @@ $string['oldnewsletters_content'] = '<a href="#"><h2>Boletín de noticias 4 ({MO
 <a href="#"><h2>Boletín de noticias 1 ({MONTHS_AGO_4})</h2></a>
 <ul><li>Del Director<li>Agenda de actividades<li>¿Usted sabía…?</ul>
 ';
-$string['searchbox_content'] = 'Reservado por el módulo de buscar';
-$string['mypage_content'] = 'En el fondo reservado por el módulo MiPágina.<p>
+$string['searchbox_content'] = 'Reservado para el módulo de buscar';
+$string['mypage_content'] = 'En el fondo reservado para el módulo MiPágina.<p>
 
 <p>
 
@@ -226,7 +226,7 @@ Enlaces útiles:
 <li><a href="{INDEX_URL}">index.php</a>
 <li><a href="{ADMIN_URL}">admin.php</a>
 <li><a href="{MANUAL_URL}" target="_blank">Website@School Manual</a> (abre en una ventana nueva)
-<li><a href="{WEBSITEATSCHOOL_URL}">Website@School Website</a>
+<li><a href="{WEBSITEATSCHOOL_URL}">Website@School sitio web</a>
 </ul>
 <form method="POST" action="{INDEX_URL}?login=1" name="loginform">
 
