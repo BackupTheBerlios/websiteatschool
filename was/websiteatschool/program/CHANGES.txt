@@ -1,5 +1,5 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.97 2011/09/29 19:38:25 pfokker Exp $
+$Id: CHANGES.txt,v 1.98 2011/09/29 19:57:32 pfokker Exp $
 -------------------------------------------------------------------------------
 
 2011-09-29
@@ -8,6 +8,7 @@ $Id: CHANGES.txt,v 1.97 2011/09/29 19:38:25 pfokker Exp $
 - added new language files for German, Turkish
 - replace icons for account manager and help button with new versions kindly
   supplied by Greg Whitaker
+- [dialoglib.php]: additional input validation (UTF-8)
 
 2011-09-27
 - [demodata.php]: bufix: some demo nodes (siblings) had identical sort orders

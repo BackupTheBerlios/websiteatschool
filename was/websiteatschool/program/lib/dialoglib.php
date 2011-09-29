@@ -180,7 +180,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: dialoglib.php,v 1.3 2011/05/02 20:51:01 pfokker Exp $
+ * @version $Id: dialoglib.php,v 1.4 2011/09/29 19:57:32 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -429,8 +429,11 @@ function dialog_get_widget(&$item) {
  * by the browser and hence cannot be validated. This also means that there is no value set from $_POST
  * for those fields.
  *
+ * Update 2011-09-29: added UTF-8 validation, replace with U+FFFD (Unicode replacement character) on fail
+ *
  * @param array &$dialogdef the complete dialog definition; contains detailed errors and/or reformatted values
  * @return bool TRUE if all submitted values are considered valid, FALSE otherwise
+ * @todo add an error message to
  */
 function dialog_validate(&$dialogdef) {
     $total_errors = 0;
@@ -441,15 +444,21 @@ function dialog_validate(&$dialogdef) {
             }
             $name = $item['name'];
             $fname = (isset($item['label'])) ? str_replace('~','',$item['label']) : $name;
-            if (isset($_POST[$name])) {
-                $posted_value = magic_unquote($_POST[$name]);
-            } else {
-                $posted_value = ''; // should be NULL but empty string is more convenient here
-            }
             $dialogdef[$k]['errors'] = 0;
             $dialogdef[$k]['error_messages'] = array();
             $f_type = (isset($item['type'])) ? $item['type'] : '';
             $value = (isset($item['value'])) ? $item['value'] : '';
+            if (isset($_POST[$name])) {
+                if (utf8_validate($_POST[$name])) {
+                    $posted_value = magic_unquote($_POST[$name]);
+                } else {
+                    $posted_value = "\xEF\xBF\xBD"; // UTF-8 encoded substitution character U+FFFD
+                    ++$dialogdef[$k]['errors'];
+                    $dialogdef[$k]['error_messages'][] = t('validate_invalid','',array('{FIELD}' => $fname));
+                }
+            } else {
+                $posted_value = ''; // should be NULL but empty string is more convenient here
+            }
             switch($f_type) {
             case F_DATE:
             case F_TIME:
