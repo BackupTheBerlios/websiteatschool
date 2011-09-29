@@ -18,13 +18,13 @@
 /** /program/install/languages/fr/install.php
  *
  * Language: fr (Français)
- * Release:  0.90.1 / 2011050400 (2011-05-04)
+ * Release:  0.90.2 / 2011092900 (2011-09-29)
  *
  * @author Jean Peyratout <translators@websiteatschool.eu> <jean.peyratout@abul.org>
  * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_fr
- * @version $Id: install.php,v 1.2 2011/05/04 15:24:16 pfokker Exp $
+ * @version $Id: install.php,v 1.3 2011/09/29 19:06:20 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = 'Installation';
@@ -194,6 +194,5 @@ $string['warning_no_manifest'] = 'Attention : manifeste vide ou pas de manifeste
 $string['error_install_demodata'] = 'Erreur : impossible d\'installer les données de démonstration';
 $string['error_directory_exists'] = 'Erreur :  {FIELD} : ce répertoire existe déjà : {DIRECTORY}';
 $string['error_nameclash'] = 'Erreur : {FIELD} : modifiez le nom {USERNAME} ; il est déjà utilisé par un compte utilisateur de démonstration';
-// v0.90.2
-$string['warning_mysql_obsolete'] = 'Warning: version \'{VERSION}\' of MySQL is obsolete and it does not support UTF-8. Please upgrade MySQL';
+$string['warning_mysql_obsolete'] = 'Avertissement : la version \'{VERSION}\' de MySQL est obsolète et ne permet pas l\'utilisation de UTF-8. Merci de mettre à jour MySQL';
 ?>

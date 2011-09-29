@@ -18,13 +18,13 @@
 /** /program/languages/fr/loginlib.php
  *
  * Language: fr (Français)
- * Release:  0.90.1 / 2011050400 (2011-05-04)
+ * Release:  0.90.2 / 2011092900 (2011-09-29)
  *
  * @author Jean Peyratout <translators@websiteatschool.eu> <jean.peyratout@abul.org>
  * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_fr
- * @version $Id: loginlib.php,v 1.1 2011/05/04 14:22:10 pfokker Exp $
+ * @version $Id: loginlib.php,v 1.2 2011/09/29 19:06:20 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = 'Connexion';
@@ -38,7 +38,7 @@ par l\'adresse {REMOTE_ADDR} le {DATETIME}.
 
 Cordialement, 
 
-Votre webmestre automate';
+Votre webmestre automatique';
 $string['change_password_confirmation_subject'] = 'Votre mot de passe a bien été modifié.';
 $string['contact_webmaster_for_new_password'] = 'Contactez le webmestre pour modifier votre mot de passe. ';
 $string['do_you_want_to_try_forgot_password_procedure'] = 'Identifiant ou mot de passe invalide(s). Voulez-vous utiliser la procédure "Mot de passe oublié" ?';
@@ -66,7 +66,7 @@ La demande pour ce code à usage unique a été reçue depuis cette adresse cour
 
 Bonne chance ! 
 
-Votre webmestre automate';
+Votre webmestre automatique';
 $string['forgotten_password_mailmessage2'] = 'Voici votre mot de passe temporaire : 
 
     {PASSWORD}
@@ -79,7 +79,7 @@ La demande pour ce mot de passe temporaire a été reçue depuis cette adresse c
 
 Bonne chance ! 
 
-Votre webmestre automate';
+Votre webmestre automatique';
 $string['home_page'] = '(home)';
 $string['invalid_credentials_please_retry'] = 'Identifiant ou mot de passe invalide(s), réessayez. ';
 $string['invalid_laissez_passer_please_retry'] = 'Code à usage unique invalide, réessayez.';

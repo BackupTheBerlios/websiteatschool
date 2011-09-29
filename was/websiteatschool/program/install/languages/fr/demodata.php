@@ -18,13 +18,13 @@
 /** /program/install/languages/fr/demodata.php
  *
  * Language: fr (Français)
- * Release:  0.90.1 / 2011050400 (2011-05-04)
+ * Release:  0.90.2 / 2011092900 (2011-09-29)
  *
  * @author Jean Peyratout <translators@websiteatschool.eu> <jean.peyratout@abul.org>
  * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_fr
- * @version $Id: demodata.php,v 1.2 2011/05/05 20:11:19 pfokker Exp $
+ * @version $Id: demodata.php,v 1.3 2011/09/29 19:06:20 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = 'Données de démonstration';
@@ -60,7 +60,7 @@ $string['schoolterms_title'] = 'Périodes scolaires et jours fériés pour {SCHO
 $string['schoolterms_link_text'] = '{SCHOOLYEAR}';
 $string['news_title'] = 'Cette section contient des actualités et les fils d\'information';
 $string['news_link_text'] = 'Actualités';
-$string['latestnews_title'] = 'Extra! Extra! Lisez vite!';
+$string['latestnews_title'] = 'Extra ! Extra ! Lisez vite !';
 $string['latestnews_link_text'] = 'Actualités récentes';
 $string['latestnewsletter_title'] = 'Voici la dernière parution de notre fil d\'information';
 $string['latestnewsletter_link_text'] = 'Fil d\'information';

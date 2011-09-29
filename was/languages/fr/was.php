@@ -18,13 +18,13 @@
 /** /program/languages/fr/was.php
  *
  * Language: fr (Français)
- * Release:  0.90.1 / 2011050400 (2011-05-04)
+ * Release:  0.90.2 / 2011092900 (2011-09-29)
  *
  * @author Jean Peyratout <translators@websiteatschool.eu> <jean.peyratout@abul.org>
  * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_fr
- * @version $Id: was.php,v 1.1 2011/05/04 14:22:10 pfokker Exp $
+ * @version $Id: was.php,v 1.2 2011/09/29 19:06:20 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = 'Général';

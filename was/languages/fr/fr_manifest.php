@@ -15,7 +15,7 @@
 # You should have received a copy of the License Agreement for Website@School
 # along with this program. If not, see http://websiteatschool.eu/license.html
 
-/** /program/languages/fr/fr_manifest.php - description of the main language/translation (French)
+/** /program/languages/fr/fr_manifest.php - description of the French translation
  *
  * This file defines the French language package ('fr'). 
  * This file is used when this package is installed.
@@ -24,7 +24,7 @@
  * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam <info@websiteatschool.eu>
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_fr
- * @version $Id: fr_manifest.php,v 1.1 2011/05/04 14:22:10 pfokker Exp $
+ * @version $Id: fr_manifest.php,v 1.2 2011/09/29 19:06:20 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -32,12 +32,12 @@ $manifests['fr'] = array(
     'language_key'        => 'fr',
     'language_name'       => 'Français',
     'parent_language_key' => '',
-    'description'         => 'This is the French translation based on Website@School release 0.90.1',
-    'release'             => '0.90.1',
+    'description'         => 'This is the French translation based on Website@School release 0.90.2',
     'author'              => 'Jean Peyratout',
     'author_email'        => 'jean.peyratout@abul.org',
-    'version'             => 2011050400,
-    'release_date'        => '2011-05-04',
+    'version'             => 2011092900,
+    'release'             => '0.90.2',
+    'release_date'        => '2011-09-29',
     'is_core'             => FALSE
    );
 

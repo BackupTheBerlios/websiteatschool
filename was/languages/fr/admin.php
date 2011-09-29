@@ -18,20 +18,20 @@
 /** /program/languages/fr/admin.php
  *
  * Language: fr (Français)
- * Release:  0.90.1 / 2011050400 (2011-05-04)
+ * Release:  0.90.2 / 2011092900 (2011-09-29)
  *
  * @author Jean Peyratout <translators@websiteatschool.eu> <jean.peyratout@abul.org>
  * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_fr
- * @version $Id: admin.php,v 1.1 2011/05/04 14:22:10 pfokker Exp $
+ * @version $Id: admin.php,v 1.2 2011/09/29 19:06:19 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = 'Administration';
 $string['translatetool_description'] = 'Ce fichier contient les traductions de l\'interface d\'administration du système de gestion de contenu.';
 $string['generated_in'] = 'généré le {DATE} en {QUERIES} requêtes et {SECONDS} secondes';
 $string['logo_websiteatschool'] = 'logo Website@School&reg;';
-$string['end_this_session'] = 'ferme cette session, déconnecte l\'utilisateur';
+$string['end_this_session'] = 'ferme cette session et déconnecte l\'utilisateur';
 $string['logout_username'] = 'déconnexion {USERNAME}';
 $string['view_public_area'] = 'zone publique';
 $string['go_view_public_area_no_logout'] = 'voir la zone publique sans se déconnecter';
@@ -749,7 +749,7 @@ et le fichier était {PATH} ({FILENAME}).
 
 Cordialement, 
 
-Votre webmestre automate';
+Votre webmestre automatique';
 $string['filemanager_virus_mailsubject2'] = 'Alerte virus pour le site {SITENAME} : échec de scan';
 $string['filemanager_virus_mailmessage2'] = 'Il y a eu un problème lors du scan du fichier {PATH} ({FILENAME}) pour la recherche de virus.
 
@@ -765,7 +765,7 @@ Le fichier a été rejeté parce que le scan de virus est obligatoire.
 
 Cordialement, 
 
-Votre webmestre automate';
+Votre webmestre automatique';
 $string['filemanager_add_files_success'] = 'Ajout réussi du fichier \'{FILENAME}\' en tant que \'{TARGET}\' au répertoire \'{PATH}\'';
 $string['filemanager_add_files_error'] = 'Erreur en ajoutant le fichier \'{FILENAME}\' entant que \'{TARGET}\' au répertoire \'{PATH}\'';
 $string['filemanager_add_files_results'] = 'Fichiers ajoutés : {SAVECOUNT}, fichiers ignorés : {SKIPCOUNT}';
