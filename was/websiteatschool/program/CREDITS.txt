@@ -1,5 +1,5 @@
 /program/CREDITS.txt
-$Id: CREDITS.txt,v 1.3 2011/09/30 13:47:45 pfokker Exp $
+$Id: CREDITS.txt,v 1.4 2011/09/30 17:59:12 pfokker Exp $
 
 For an up to date overview of credits, please visit the
 project website at <http://websiteatschool.eu>.
@@ -54,7 +54,7 @@ Testers
 =======
 
 * J.G.M. Meijer
-
+* Hans Wolters
 
 Others
 ======
