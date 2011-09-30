@@ -18,13 +18,13 @@
 /** /program/install/languages/es/demodata.php
  *
  * Language: es (Español)
- * Release:  0.90.2 / 2011092900 (2011-09-29)
+ * Release:  0.90.3 / 2011093000 (2011-09-30)
  *
  * @author Anouk Coumans & Hanna Tulleken <translators@websiteatschool.eu>
  * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_es
- * @version $Id: demodata.php,v 1.3 2011/09/29 18:58:53 pfokker Exp $
+ * @version $Id: demodata.php,v 1.4 2011/09/30 13:22:52 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = 'Datos de demo';

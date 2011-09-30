@@ -18,13 +18,13 @@
 /** /program/languages/es/loginlib.php
  *
  * Language: es (Español)
- * Release:  0.90.2 / 2011092900 (2011-09-29)
+ * Release:  0.90.3 / 2011093000 (2011-09-30)
  *
  * @author Anouk Coumans <translators@websiteatschool.eu>
  * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_es
- * @version $Id: loginlib.php,v 1.3 2011/09/29 18:58:52 pfokker Exp $
+ * @version $Id: loginlib.php,v 1.4 2011/09/30 13:22:51 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = 'iniciar sesión';

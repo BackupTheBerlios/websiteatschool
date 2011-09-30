@@ -1,5 +1,5 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.99 2011/09/30 13:14:22 pfokker Exp $
+$Id: CHANGES.txt,v 1.100 2011/09/30 13:22:51 pfokker Exp $
 -------------------------------------------------------------------------------
 
 2011-09-30
@@ -7,6 +7,7 @@ $Id: CHANGES.txt,v 1.99 2011/09/30 13:14:22 pfokker Exp $
 - removed obsolete file module.class.php from repository
 - [updatelib.php]: added two files to list of obsolete files
 - [updatelib.php]: renamed the update routine to match the new release version
+- last minute update of Spanish: now completely up to date for 0.90.3
 
 2011-09-29
 - updated existing language files for Spanish, Chinese, French
