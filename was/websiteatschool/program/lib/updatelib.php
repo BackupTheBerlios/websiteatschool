@@ -54,7 +54,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: updatelib.php,v 1.16 2011/09/27 15:23:59 pfokker Exp $
+ * @version $Id: updatelib.php,v 1.17 2011/09/30 13:14:22 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -899,7 +899,7 @@ function update_core(&$output) {
     if (!update_core_2010122100($output)) { return; }
     if (!update_core_2011020100($output)) { return; }
     if (!update_core_2011051100($output)) { return; }
-    if (!update_core_2011092100($output)) { return; }
+    if (!update_core_2011093000($output)) { return; }
     // if (!update_core_2011mmdd00($output)) { return; }
     // ...
 
@@ -1338,7 +1338,7 @@ function update_core_2011051100(&$output) {
 } // update_core_2011051100()
 
 
-/** perform actual update to version 2011092100
+/** perform actual update to version 2011093000
  *
  * this is yet another substantial change in the database: after we (finally)
  * standardised on UTF-8 the last time (see {@link update_core_2011051100()}
@@ -1526,11 +1526,11 @@ function update_core_2011051100(&$output) {
  * @param object &$output collects the html output
  * @return bool TRUE on success, FALSE otherwise
  */
-function update_core_2011092100(&$output) {
+function update_core_2011093000(&$output) {
     global $CFG,$DB;
 
     // 0 -- get outta here when already upgraded
-    $version = 2011092100;
+    $version = 2011093000;
     if ($CFG->version >= $version) {
         return TRUE;
     }
@@ -1800,7 +1800,7 @@ function update_core_2011092100(&$output) {
     // 5 -- all done: bump version in database
     //
     return update_core_version($output,$version);
-} // update_core_2011092100()
+} // update_core_2011093000()
 
 
 /** attempt to remove or at least flag obsolete files
@@ -1817,8 +1817,11 @@ function update_remove_obsolete_files(&$output) {
     global $CFG;
     // This array holds the filenames and the version where the file was obsoleted
     $obsolete_files = array(
-        '/lib/node.class.php' => '0.90.3 / 2011092100',
-        '/lib/modulelib.php'  => '0.90.3 / 2011092100');
+        '/lib/node.class.php'   => '0.90.3 / 2011093000',
+        '/lib/modulelib.php'    => '0.90.3 / 2011093000',
+        '/lib/area.class.php'   => '0.90.3 / 2011093000',
+        '/lib/module.class.php' => '0.90.3 / 2011093000'
+        );
 
     $retval = TRUE; // assume success
     foreach($obsolete_files as $filename => $version) {
