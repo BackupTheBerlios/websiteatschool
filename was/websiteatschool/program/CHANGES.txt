@@ -1,6 +1,9 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.101 2011/09/30 13:47:45 pfokker Exp $
+$Id: CHANGES.txt,v 1.102 2011/09/30 13:52:04 pfokker Exp $
 -------------------------------------------------------------------------------
+
+
+### Release 0.90.3 - 2011-09-30 ###
 
 2011-09-30
 - removed obsolete file area.class.php from repository
@@ -9,6 +12,7 @@ $Id: CHANGES.txt,v 1.101 2011/09/30 13:47:45 pfokker Exp $
 - [updatelib.php]: renamed the update routine to match the new release version
 - last minute update of Spanish: now completely up to date for 0.90.3
 - Updated the list of contributors in CREDITS.txt
+- Bumped version/release/release date to 2011093000 / 0.90.3 / 2011-09-30
 
 2011-09-29
 - updated existing language files for Spanish, Chinese, French
