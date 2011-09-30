@@ -1,6 +1,66 @@
 /program/CREDITS.txt
-$Id: CREDITS.txt,v 1.2 2011/05/04 14:24:52 pfokker Exp $
+$Id: CREDITS.txt,v 1.3 2011/09/30 13:47:45 pfokker Exp $
 
-For a full overview of credits, please visit the
+For an up to date overview of credits, please visit the
 project website at <http://websiteatschool.eu>.
 
+
+Core team
+=========
+
+* Karin Abma (ICT coordinator of the Public Primary School 
+  Rosa Boekdrukker in Amsterdam, The Netherlands).
+* Peter Fokker (Ingenieursbureau PSD, main developer, programmer).
+* Dirk Schouten (former teacher, user manuals writer).
+
+
+Translators
+===========
+
+* Jing Fang Liu (Chinese).
+* Core team (Dutch).
+* Core team (English).
+* Jean Peyratout (French).
+* David (German, under construction).
+* Waldemar Pankiw (Polish).
+* Anouk Coumans (Spanish).
+* Margot Molier (Spanish).
+* Hannah Tulleken (Spanish).
+* Ülkü Gaga (Turkish, under construction).
+
+
+Code contributions
+==================
+
+* Frederico Caldeira Knabben (FCKeditor, see http://ckeditor.com).
+* Ger Versluis (HV Menu, used in the Rosalina theme).
+
+
+Graphics
+========
+
+* Micky Faas (Website@School logos).
+* Greg Whitaker (Some icons).
+
+
+Donations
+=========
+
+* Europees Platform voor het Onderwijs
+  (European Platform for Education)
+
+
+Testers
+=======
+
+* J.G.M. Meijer
+
+
+Others
+======
+
+* Carla Alma
+* Margret Kwantes
+
+
+Please contact us if you feel your name should be mentioned here.
