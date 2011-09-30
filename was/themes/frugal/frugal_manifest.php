@@ -24,7 +24,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wastheme_frugal
- * @version $Id: frugal_manifest.php,v 1.5 2011/05/11 20:45:51 pfokker Exp $
+ * @version $Id: frugal_manifest.php,v 1.6 2011/09/30 14:03:57 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -33,8 +33,8 @@ $manifests['frugal'] = array(
     'description' => 'This is a minimalistic theme',
     'author' => 'Peter Fokker',
     'version' => 2011020100,
-    'release' => '0.90.2',
-    'release_date' => '2011-05-11',
+    'release' => '0.90.3',
+    'release_date' => '2011-09-30',
     'is_core' => TRUE,
     'tabledefs' => 'NULL',
     'install_script' => 'frugal_install.php',

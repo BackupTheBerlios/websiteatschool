@@ -24,7 +24,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wastheme_schoolyard
- * @version $Id: schoolyard_manifest.php,v 1.1 2011/06/07 18:25:01 pfokker Exp $
+ * @version $Id: schoolyard_manifest.php,v 1.2 2011/09/30 14:03:57 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -33,8 +33,8 @@ $manifests['schoolyard'] = array(
     'description' => 'This is an inverted-L theme designed by David Prousch',
     'author' => 'David Prousch, Peter Fokker',
     'version' => 2010060700,
-    'release' => '0.92.2',
-    'release_date' => '2011-06-07',
+    'release' => '0.90.3',
+    'release_date' => '2011-09-30',
     'is_core' => FALSE,
     'tabledefs' => 'NULL',
     'install_script' => 'schoolyard_install.php',

@@ -24,7 +24,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wastheme_rosalina
- * @version $Id: rosalina_manifest.php,v 1.1 2011/06/03 19:18:55 pfokker Exp $
+ * @version $Id: rosalina_manifest.php,v 1.2 2011/09/30 14:03:57 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -33,8 +33,8 @@ $manifests['rosalina'] = array(
     'description' => 'This is a theme patterned after the Site@School theme of the same name',
     'author' => 'Peter Fokker',
     'version' => 2011060300,
-    'release' => '0.90.2',
-    'release_date' => '2011-06-03',
+    'release' => '0.90.3',
+    'release_date' => '2011-09-30',
     'is_core' => FALSE,
     'tabledefs' => 'NULL',
     'install_script' => 'rosalina_install.php',
