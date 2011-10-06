@@ -1,9 +1,10 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.103 2011/10/06 12:13:10 pfokker Exp $
+$Id: CHANGES.txt,v 1.104 2011/10/06 14:57:52 pfokker Exp $
 -------------------------------------------------------------------------------
 
 2011-10-06
 - [index.php, file.php]: re-arranged check for and redirect to maintenance.html
+- [manual.php]: we now offer a choice of manuals if more than one is installed
 
 ### Release 0.90.3 - 2011-09-30 ###
 

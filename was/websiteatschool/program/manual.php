@@ -31,8 +31,11 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: manual.php,v 1.5 2011/06/17 18:19:10 pfokker Exp $
+ * @version $Id: manual.php,v 1.6 2011/10/06 14:57:52 pfokker Exp $
  */
+
+/** Valid entry points define WASENTRY; prevents direct access to include()'s.  */
+define('WASENTRY',__FILE__);
 
 /** This global defines the mapping between topics/subtopics and manual files/filefragments
  *
@@ -74,8 +77,25 @@ $TOPICS = array(
     'update'               => 'tools.html#h6'
     );
 
+// ==================================================================
+// ============================== MAIN ==============================
+// ==================================================================
 
-$language = (isset($_GET['language'])) ? magic_unquote($_GET['language']) : 'en';
+if (!isset($_GET['language'])) {
+    $manuals = get_available_manuals(dirname(__FILE__).'/manuals');
+    if (sizeof($manuals) == 1) {
+        list ($language,$manual) = each($manuals);
+    } else {
+        if (sizeof($manuals) <= 0) {
+            show_screen_download();
+        } else {
+            show_screen_choose_language($manuals);
+        }
+        exit;
+    }
+} else {
+    $language = magic_unquote($_GET['language']);
+}
 $topic    = (isset($_GET['topic']))    ? magic_unquote($_GET['topic'])    : 'toc';
 $subtopic = (isset($_GET['subtopic'])) ? magic_unquote($_GET['subtopic']) : '';
 
@@ -166,43 +186,7 @@ function show_manual($language='en',$topic='toc',$subtopic='') {
         }
     }
     // 4 -- still here? Then there's no manual installed. Hint at downloading it.
-    echo <<<EOT
-<html>
-    <head>
-        <title>Website@School User's Guide not installed</title>
-    </head>
-
-    <body bgcolor="#FFFFDD">
-        <script type="text/javascript">
-        <!--
-            document.write('<input type="button" value="Close" onclick="window.close();">');
-        -->
-        </script>
-        <h3>Website@School Users' Guide not installed</h3>
-
-        It looks like the Website@School Users' Guide is currently not installed on this website or server.
-        <p>
-        Please take the following steps to install it.
-        <ol>
-        <li>Download the latest version of the Website@School Users' Guide
-            archive (either the <tt>.zip</tt>-file or the <tt>.tar.gz</tt>-file) from
-            <strong><a href="http://download.websiteatschool.eu"
-                       target="_blank">download.websiteatschool.eu</a></strong>
-        <li>Unpack the downloaded archive in the <em>CMS Root Folder</em>.
-            This is the directory where <tt>config.php</tt> resides.
-        <li>The Website@School Users' Guide is now available on your website.
-            You can subsequently refresh this screen in your browser by pressing the appropriate key
-            (usually <tt>[F5]</tt>).
-        </ol>
-        <p>
-        <div style="background: #CFCFCF">
-            <a href="about.html" target="_blank"><img
-               src="graphics/poweredby.png" alt="Powered by Website@School" width="280" height="35" border="0"
-               title="The Website@School logo is a registered trademark of Vereniging Website At School"></a>
-        </div>
-    </body>
-</html>
-EOT;
+    show_screen_download();
     exit;
 } // show_manual()
 
@@ -224,6 +208,7 @@ function magic_unquote($value) {
     }
     return $value;
 } // magic_unquote()
+
 
 /** construct a list of 0 or more languages of available manuals
  *
@@ -253,5 +238,130 @@ function get_available_manuals($path) {
     @closedir($handle);
     return $manuals;
 } // get_available_manuals()
+
+
+/** construct a list of 0 or more languages from the languages directory
+ *
+ * This routine examines the directory $path to see which subdirectories
+ * exist. Each subdirectory indicates a possible language. An array
+ * keyed with these languages and the full name of the language in the
+ * language itself is returned (but it could be empty).
+ *
+ * @param string $path is the directory where to look for languages (usually /program/languages).
+ * @return array contains a list of available language names keyed by language_key
+ */
+function get_available_languages($path) {
+    $languages = array();
+    if (!is_dir($path)) {
+        return $languages;
+    } elseif (($handle = @opendir($path)) == FALSE) {
+        return $languages;
+    }
+    $manifests = array();
+    while (($entry = @readdir($handle)) !== FALSE) {
+        if (($entry == '.') || ($entry == '..')) {
+            continue;
+        }
+        $manifest = sprintf('%s/%s/%s_manifest.php',$path,$entry,$entry);
+        if (file_exists($manifest)) {
+            @include($manifest);
+            if (isset($manifests[$entry]['language_name'])) {
+                $languages[$entry] = $manifests[$entry]['language_name'];
+            }
+        }
+    }
+    @closedir($handle);
+    return $languages;
+} // get_available_manuals()
+
+
+/** show a screen to the visitor hinting at downloading a manual archive from download.websiteatschool.eu
+ *
+ * @return void screen sent to visitor
+ */
+function show_screen_download() {
+    echo <<<EOT
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Website@School User's Guide not installed</title>
+  </head>
+
+  <body bgcolor="#FFFFDD">
+    <script type="text/javascript">
+    <!--
+      document.write('<input type="button" value="Close" onclick="window.close();">');
+    -->
+    </script>
+    <h3>Website@School Users' Guide not installed</h3>
+
+    It looks like the Website@School Users' Guide is currently not installed on this website or server.
+    <p>
+    Please take the following steps to install it.
+    <ol>
+    <li>Download the latest version of the Website@School Users' Guide
+        archive (either the <tt>.zip</tt>-file or the <tt>.tar.gz</tt>-file) from
+        <strong><a href="http://download.websiteatschool.eu" target="_blank">download.websiteatschool.eu</a></strong>
+    <li>Unpack the downloaded archive in the <em>CMS Root Folder</em>.
+        This is the directory where <tt>config.php</tt> resides.
+    <li>The Website@School Users' Guide is now available on your website.
+        You can subsequently refresh this screen in your browser by pressing the appropriate key
+        (usually <tt>[F5]</tt>).
+    </ol>
+    <p>
+    <em>Note<br>
+    The Website@School Users' Guide is available in different languages.
+    You can install any or all available translations.</em>
+    <p>
+    <div style="background: #CFCFCF">
+      <a href="about.html" target="_blank"><img
+         src="graphics/poweredby.png" alt="Powered by Website@School" width="280" height="35" border="0"
+         title="The Website@School logo is a registered trademark of Vereniging Website At School"></a>
+    </div>
+  </body>
+</html>
+EOT;
+} // show_screen_download()
+
+
+/** show a screen to the visitor presenting a choice between various available translations of the manual
+ *
+ * @param array $manuals holds a list of relative paths to manuals ToC's keyed by language code
+ * @return void screen sent to visitor
+ */
+function show_screen_choose_language($manuals) {
+    $languages = get_available_languages(dirname(__FILE__).'/languages');
+    $list = "";
+    foreach($manuals as $language => $manual) {
+        $name = (isset($languages[$language])) ? $languages[$language] : $language;
+        $list .= sprintf("      <li><h4><a href=\"manual.php?language=%s\">%s (%s)</a></h4>\n",$language,$language,$name);
+    }
+    echo <<<EOT
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Website@School User's Guide not installed</title>
+  </head>
+
+  <body bgcolor="#FFFFDD">
+    <script type="text/javascript">
+    <!--
+      document.write('<input type="button" value="Close" onclick="window.close();">');
+    -->
+    </script>
+    <h3>Website@School Users' Guide</h3>
+    <ul>
+$list    </ul>
+    <p>
+    <div style="background: #CFCFCF">
+      <a href="about.html" target="_blank"><img
+         src="graphics/poweredby.png" alt="Powered by Website@School" width="280" height="35" border="0"
+         title="The Website@School logo is a registered trademark of Vereniging Website At School"></a>
+    </div>
+  </body>
+</html>
+EOT;
+} // show_screen_choose_language()
+
 
 ?>
