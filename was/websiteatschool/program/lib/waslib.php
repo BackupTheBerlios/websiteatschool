@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: waslib.php,v 1.15 2011/09/27 15:25:07 pfokker Exp $
+ * @version $Id: waslib.php,v 1.16 2011/10/10 15:45:43 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1767,7 +1767,7 @@ function was_file_url($path,$fully_qualified=FALSE) {
  * 'Picture_of_our_field_trip.html' is merely a suggestion to the browser and is not used by W@S.
  *
  * @param array $node record straight from the database (or $tree)
- * @paran array|null $parameters additional parameters for the url (path components in friendly url mode)
+ * @param array|null $parameters additional parameters for the url (path components in friendly url mode)
  * @param string $bookmark the basis for a visual clue to identify the node (in friendly url mode only)
  * @param bool $preview if TRUE, the href is replaced with a bare '#' to obstruct navigation in preview mode
  * @param bool $qualified if TRUE use the scheme and authority, otherwise use the short(er) form without scheme/authority

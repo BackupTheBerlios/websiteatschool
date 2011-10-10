@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: theme.class.php,v 1.17 2011/09/21 18:54:20 pfokker Exp $
+ * @version $Id: theme.class.php,v 1.18 2011/10/10 15:45:43 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -33,7 +33,7 @@ if (!defined('WASENTRY')) { die('no entry'); }
 /** Methods to access properties of a theme
  */
 class Theme {
-    /** @var a copy of the corresponding record from the themes table */
+    /** @var array a copy of the corresponding record from the themes table */
     var $theme_record = NULL;
 
     /** @var int $theme_id primary key of the theme */
@@ -42,13 +42,13 @@ class Theme {
     /** @var int $area_id the area to display */
     var $area_id = NULL;
 
-    /** @var a copy of the area record from the areas table */
+    /** @var array a copy of the area record from the areas table */
     var $area_record = NULL;
 
     /** @var int $node_id the node (page) to display */
     var $node_id = NULL;
 
-    /** @var a convenient copy of the node record copied from the area tree */
+    /** @var array a convenient copy of the node record copied from the area tree */
     var $node_record = NULL;
 
     /** @var array $tree all nodes in area $area_id, keyed by $node_id (see {@link tree_build()}). */
