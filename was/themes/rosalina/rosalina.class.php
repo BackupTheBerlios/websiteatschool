@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wastheme_rosalina
- * @version $Id: rosalina.class.php,v 1.3 2011/09/21 18:54:19 pfokker Exp $
+ * @version $Id: rosalina.class.php,v 1.4 2011/10/11 08:49:15 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -286,7 +286,7 @@ class ThemeRosalina extends Theme {
         } else {
             $title = $this->area_record['title'];
             $params = array('area' => $this->area_id);
-            $href = was_node_url(NULL,$params,$title,$this->preview);
+            $href = was_node_url(NULL,$params,$title,$this->preview_mode);
             $logo = $m.html_a($href,NULL,NULL,html_img($src,$attributes));
         }
         return $logo;

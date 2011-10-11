@@ -1,6 +1,9 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.104 2011/10/06 14:57:52 pfokker Exp $
+$Id: CHANGES.txt,v 1.105 2011/10/11 08:49:16 pfokker Exp $
 -------------------------------------------------------------------------------
+
+2011-10-11
+- [rosalina.class.php]: typo in construction of (single) logo
 
 2011-10-06
 - [index.php, file.php]: re-arranged check for and redirect to maintenance.html
