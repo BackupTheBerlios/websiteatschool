@@ -1,6 +1,9 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.105 2011/10/11 08:49:16 pfokker Exp $
+$Id: CHANGES.txt,v 1.106 2012/03/07 09:06:24 pfokker Exp $
 -------------------------------------------------------------------------------
+
+2012-03-07
+- [base.css, admin_base.css] minor omissions corrected
 
 2011-10-11
 - [rosalina.class.php]: typo in construction of (single) logo
