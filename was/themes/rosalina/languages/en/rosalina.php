@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wastheme_rosalina
- * @version $Id: rosalina.php,v 1.1 2011/06/03 19:18:55 pfokker Exp $
+ * @version $Id: rosalina.php,v 1.2 2012/03/12 06:56:13 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -178,10 +178,10 @@ $string['hvmenu_MenuVerticalCentered_static_option'] = 'static';
 $string['hvmenu_MenuVerticalCentered_title'] = 'Select the vertical alignment of the complete menu';
 
 $string['hvmenu_ChildOverlap_label'] = 'Horizontal overlap';
-$string['hvmenu_ChildOverlap_title'] = 'Horizontal overlap child/parent (a number between -1.00 and 1.00)';
+$string['hvmenu_ChildOverlap_title'] = 'Horizontal overlap child/parent (a number between -1.00 and +1.00)';
 
 $string['hvmenu_ChildVerticalOverlap_label'] = 'Vertical overlap';
-$string['hvmenu_ChildVerticalOverlap_title'] = 'Vertical overlap child/parent (a number between -1.00 and 1.00)';
+$string['hvmenu_ChildVerticalOverlap_title'] = 'Vertical overlap child/parent (a number between -1.00 and +1.00)';
 
 $string['hvmenu_StartTop_label'] = 'Menu offset X';
 $string['hvmenu_StartTop_title'] = 'Menu offset X-coordinate (pixels)';

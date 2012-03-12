@@ -24,7 +24,7 @@
  * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_fr
- * @version $Id: rosalina.php,v 1.1 2011/09/29 19:06:20 pfokker Exp $
+ * @version $Id: rosalina.php,v 1.2 2012/03/12 06:56:13 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['title'] = 'Thème Rosalina';
@@ -138,9 +138,9 @@ $string['hvmenu_MenuVerticalCentered_bottom_option'] = 'vers le bas';
 $string['hvmenu_MenuVerticalCentered_static_option'] = 'statique';
 $string['hvmenu_MenuVerticalCentered_title'] = 'Choisir l\'alignement vertical du menu complet';
 $string['hvmenu_ChildOverlap_label'] = 'Chevauchement horizontal';
-$string['hvmenu_ChildOverlap_title'] = 'Chevauchement horizontal enfant/parent (un nombre entre -1.00 et 1.00)';
+$string['hvmenu_ChildOverlap_title'] = 'Chevauchement horizontal enfant/parent (un nombre entre -1.00 et +1.00)';
 $string['hvmenu_ChildVerticalOverlap_label'] = 'Chevauchement vertical';
-$string['hvmenu_ChildVerticalOverlap_title'] = 'Chevauchement vertical enfant/parent (un nombre entre -1.00 et 1.00)';
+$string['hvmenu_ChildVerticalOverlap_title'] = 'Chevauchement vertical enfant/parent (un nombre entre -1.00 et +1.00)';
 $string['hvmenu_StartTop_label'] = 'Menu offset X';
 $string['hvmenu_StartTop_title'] = 'Menu offset coordonnées X (pixels)';
 $string['hvmenu_StartLeft_label'] = 'Menu offset Y';

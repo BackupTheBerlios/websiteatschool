@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wastheme_rosalina
- * @version $Id: rosalina.php,v 1.1 2011/06/03 19:18:55 pfokker Exp $
+ * @version $Id: rosalina.php,v 1.2 2012/03/12 06:56:14 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -136,9 +136,9 @@ $string['hvmenu_MenuVerticalCentered_bottom_option'] = 'onderaan';
 $string['hvmenu_MenuVerticalCentered_static_option'] = 'statisch';
 $string['hvmenu_MenuVerticalCentered_title'] = 'Kies de uitlijning van het verticale menu';
 $string['hvmenu_ChildOverlap_label'] = 'Horizontale overlapping';
-$string['hvmenu_ChildOverlap_title'] = 'Horizontale overlapping menu/submenu (een getal tussen -1.00 en 1.00)';
+$string['hvmenu_ChildOverlap_title'] = 'Horizontale overlapping menu/submenu (een getal tussen -1.00 en +1.00)';
 $string['hvmenu_ChildVerticalOverlap_label'] = 'Vertikale overlapping';
-$string['hvmenu_ChildVerticalOverlap_title'] = 'Vertikale overlapping menu/submenu (een getal tussen -1.00 en 1.00)';
+$string['hvmenu_ChildVerticalOverlap_title'] = 'Vertikale overlapping menu/submenu (een getal tussen -1.00 en +1.00)';
 $string['hvmenu_StartTop_label'] = 'Menutranslatie X';
 $string['hvmenu_StartTop_title'] = 'Menutranslatie X-coördinaat (pixels)';
 $string['hvmenu_StartLeft_label'] = 'Menutranslatie Y';

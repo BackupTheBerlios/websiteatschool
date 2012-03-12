@@ -24,7 +24,7 @@
  * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_es
- * @version $Id: rosalina.php,v 1.2 2011/09/30 13:22:51 pfokker Exp $
+ * @version $Id: rosalina.php,v 1.3 2012/03/12 06:56:13 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['title'] = 'Tema de Rosalina';
@@ -138,9 +138,9 @@ $string['hvmenu_MenuVerticalCentered_bottom_option'] = 'abajo';
 $string['hvmenu_MenuVerticalCentered_static_option'] = 'estática';
 $string['hvmenu_MenuVerticalCentered_title'] = 'Seleccionar la alineación vertical del menú completo';
 $string['hvmenu_ChildOverlap_label'] = 'Superposición horizontal';
-$string['hvmenu_ChildOverlap_title'] = 'Superposición horizontal niño/pariente (una cantidad entre -1.00 y 1.00)';
+$string['hvmenu_ChildOverlap_title'] = 'Superposición horizontal niño/pariente (una cantidad entre -1.00 y +1.00)';
 $string['hvmenu_ChildVerticalOverlap_label'] = 'Superposición vertical';
-$string['hvmenu_ChildVerticalOverlap_title'] = 'Superposición vertical niño/pariente (una cantidad entre -1.00 y 1.00)';
+$string['hvmenu_ChildVerticalOverlap_title'] = 'Superposición vertical niño/pariente (una cantidad entre -1.00 y +1.00)';
 $string['hvmenu_StartTop_label'] = 'Menú de compensación X';
 $string['hvmenu_StartTop_title'] = 'Menú de compensación X-coordinar (píxeles)';
 $string['hvmenu_StartLeft_label'] = 'Menú de compensación Y';
