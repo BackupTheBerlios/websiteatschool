@@ -26,7 +26,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: main_admin.php,v 1.7 2011/09/21 18:54:19 pfokker Exp $
+ * @version $Id: main_admin.php,v 1.8 2012/03/31 15:18:53 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -40,13 +40,13 @@ define('JOB_PAGEMANAGER','pagemanager');
 /** This is used to dispatch the file manager */
 define('JOB_FILEMANAGER','filemanager');
 
-/** This is used to dispatch the file manager in file browser mode (used with FCK Editor) */
+/** This is used to dispatch the file manager in file browser mode (used with CKEditor and FCKeditor) */
 define('JOB_FILEBROWSER','filebrowser');
 
-/** This is used to dispatch the file manager in image browser mode (used with FCK Editor) */
+/** This is used to dispatch the file manager in image browser mode (used with CKEditor and FCKeditor) */
 define('JOB_IMAGEBROWSER','imagebrowser');
 
-/** This is used to dispatch the file manager in flash browser mode (used with FCK Editor) */
+/** This is used to dispatch the file manager in flash browser mode (used with CKEditor and FCKeditor) */
 define('JOB_FLASHBROWSER','flashbrowser');
 
 /** This is used to dispatch the module manager */
@@ -528,17 +528,45 @@ function add_javascript_popup_function(&$output,$m='') {
 } // add_javascript_popup_function()
 
 
-/** add javascript code that implements a url selection (used in integration with FCKeditor)
+/** add javascript code that implements a url selection (used in integration with CKEditor/FCKeditor)
  *
+ * This adds a JavaScript-function to the currently generated output page
+ * which takes care of returning a URL from a file/image/flash browser
+ * to either the (older) FCKeditor or (newer) CKEditor. Since both editors
+ * use the same filebrowsers we need to discriminate betweek FCKeditor and
+ * CKEditor. This is done by looking at the parameters: the CKEditor provides
+ * the number of an anonymous function in the parameter 'CKEditorFuncNum'.
+ * If this parameter is set we use the (integer) value for the callback to
+ * CKEditor. If it is not set we assume the old interface with FCKeditor.
+ *
+ * Note that our actual file browser is supposed to remember this parameter,
+ * otherwise the file browser will assume FCKeditor after navigating to
+ * another page within the file browser. See also {@link filemanager.class.php}
+ * We remember the parameter via a session variable which is easier than
+ * propagating this number by adding it to every link within the file browser. 
+ * However, we do update this function number every time the parameter
+ * 'CKEditorFuncNum' is specified, ie. on the first call to a file browser
+ * from CKEditor, ie. whenerver the user starts browsing the server.
+ *
+ * @param object &$output collects the html output
+ * @param string $m left margin for increased readability
+ * @return void generated JavaScript-code added to HTML-headers
  */
 function add_javascript_select_url_function(&$output,$m='') {
+    $funcnum = get_parameter_int('CKEditorFuncNum');
+    if (!is_null($funcnum)) {
+        $_SESSION['CKEditorFuncNum'] = $funcnum;
+    } elseif (isset($_SESSION['CKEditorFuncNum'])) {
+        $funcnum = $_SESSION['CKEditorFuncNum'];
+    }
     $javascript_code = array(
-        "<script type=\"text/javascript\"><!--",
-        "  function select_url(url) {",
-        "    window.opener.SetUrl(url);",
-        "    window.close();",
-        "  }",
-        "  //--></script>"
+        '<script type="text/javascript"><!--',
+        '  function select_url(url) {',
+        (is_null($funcnum)) ? '    window.opener.SetUrl(url);' :
+             sprintf('    window.opener.CKEDITOR.tools.callFunction(%d, url);',$funcnum),
+        '    window.close();',
+        '  }',
+        '  //--></script>'
         );
     foreach($javascript_code as $line) {
         $output->add_html_header($m.$line);

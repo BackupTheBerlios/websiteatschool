@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: usermanager.class.php,v 1.10 2011/09/27 15:25:07 pfokker Exp $
+ * @version $Id: usermanager.class.php,v 1.11 2012/03/31 15:18:54 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -2083,22 +2083,31 @@ class UserManager {
 
     /** prepare a list of available editors
      *
+     * this routine returs a hardcoded list of available editors: we do not
+     * expect to be adding or removing editors to/from the CMS soon, even
+     * though CKEditor was added in March 2012.
+     *
+     * Anyway, it might be cleaner to do generate this list elsewhere.
+     * A picklist of available editors is available in the 'editor'
+     * parameter in the table 'config'. The actual implementation of editors
+     * is done in {@link dialog_get_widget_richtextinput()} in 
+     * {@link in dialoglib.php}.
+     *
+     * Here we (re-)use the translations for the (short) editor option
+     * and (long) editor name from the site config dialogs, e.g.. via a
+     * constructed key 'site_config_editor_{$editor}_option'.
+     *
      * @return array list of available editors
-     * @todo this list here is hardcoded: we do not expect to be adding or removing
-     *       editors to/from the CMS soon. However, it might be cleaner to do this
-     *       elsewhere.
+     * @todo retrieve this list from 'config'-table?
      */
     function get_editor_names() {
-        return array(
-            'fckeditor' => array(
-                'option' => t('site_config_editor_fckeditor_option','admin'),
-                'title' =>  t('site_config_editor_fckeditor_title','admin')
-                ),
-            'plain' => array(
-                'option' => t('site_config_editor_plain_option','admin'),
-                'title' => t('site_config_editor_plain_title','admin')
-                )
-            );
+        $options = array();
+        foreach( array('ckeditor','fckeditor','plain') as $editor) {
+            $options[$editor] = array(
+                'option' => t("site_config_editor_{$editor}_option",'admin'),
+                'title' =>  t("site_config_editor_{$editor}_title",'admin'));
+        }
+        return $options;
     } // get_editor_names()
 
 

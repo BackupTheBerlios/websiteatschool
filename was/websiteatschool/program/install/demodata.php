@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasinstall
- * @version $Id: demodata.php,v 1.10 2011/09/27 09:01:14 pfokker Exp $
+ * @version $Id: demodata.php,v 1.11 2012/03/31 15:18:54 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -527,7 +527,7 @@ function demodata_users_groups(&$messages,&$config,&$tr) {
         $fields['is_active']     = TRUE;
         $fields['language_key']  = $language_key;
         $fields['path'] = utf8_strtolower($wizard->sanitise_filename($fields['username']));
-        $fields['editor'] = 'fckeditor';
+        $fields['editor'] = 'ckeditor';
         if (($user_id = db_insert_into_and_get_id('users',$fields,'user_id')) === FALSE) {
             $messages[] = $tr['error'].db_errormessage();
             $retval = FALSE;

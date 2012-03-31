@@ -54,7 +54,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: updatelib.php,v 1.17 2011/09/30 13:14:22 pfokker Exp $
+ * @version $Id: updatelib.php,v 1.18 2012/03/31 15:18:54 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -900,7 +900,8 @@ function update_core(&$output) {
     if (!update_core_2011020100($output)) { return; }
     if (!update_core_2011051100($output)) { return; }
     if (!update_core_2011093000($output)) { return; }
-    // if (!update_core_2011mmdd00($output)) { return; }
+    if (!update_core_2012040100($output)) { return; }
+    // if (!update_core_2012mmdd00($output)) { return; }
     // ...
 
     // finally: check for obsolete files (list is hardcoded in update_remove_obsolete_files())
@@ -1840,5 +1841,39 @@ function update_remove_obsolete_files(&$output) {
     }
     return $retval;
 } // update_remove_obsolete_files()
+
+
+/** perform actual update to version 2012040100
+ *
+ * Changes between 2011093000 and 2012040100:
+ *  - addition of the ckeditor-option in the site configuration table
+ *
+ * @param object &$output collects the html output
+ * @return bool TRUE on success, FALSE otherwise
+ */
+function update_core_2012040100(&$output) {
+    global $CFG;
+    $version = 2012040100;
+    if ($CFG->version >= $version) {
+        return TRUE;
+    }
+    $table = 'config';
+    $fields = array('extra' => 'options=ckeditor,fckeditor,plain',
+                    'description' => 'Default rich text editor - USER-defined, default ckeditor');
+    $where = array('name' => 'editor');
+    if ((!isset($CFG->editor)) || ($CFG->editor == 'fckeditor')) {
+        $fields['value'] = 'ckeditor';
+    }
+    if (db_update($table,$fields,$where) === FALSE) {
+        $msg = sprintf("%s(): cannot update editor configuration: %s",__FUNCTION__,db_errormessage());
+        logger($msg);
+        $output->add_message(htmlspecialchars($msg));
+        $output->add_message(t('update_core_error','admin',array('{VERSION}' => strval($version))));
+        return FALSE; 
+    }
+
+    // If all is well, we update the version number in the database AND in $CFG->version
+    return update_core_version($output,$version);
+} // update_core_2012040100()
 
 ?>

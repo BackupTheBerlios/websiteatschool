@@ -57,7 +57,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasinstall
- * @version $Id: tabledata.php,v 1.4 2011/09/26 15:33:40 pfokker Exp $
+ * @version $Id: tabledata.php,v 1.5 2012/03/31 15:18:54 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -224,10 +224,10 @@ $tabledata[] = array(
     'fields' => array(
         'name' => 'editor',
         'type' => 'l',
-        'value' => 'fckeditor',
+        'value' => 'ckeditor',
         'sort_order' => 150,
-        'extra' => 'options=fckeditor,plain',
-        'description' => 'Default rich text editor - USER-defined, default fckeditor'
+        'extra' => 'options=ckeditor,fckeditor,plain',
+        'description' => 'Default rich text editor - USER-defined, default ckeditor'
         )
     );
 $tabledata[] = array(

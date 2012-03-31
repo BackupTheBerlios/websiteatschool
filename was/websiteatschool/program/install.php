@@ -27,7 +27,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasinstall
- * @version $Id: install.php,v 1.13 2011/09/21 09:19:45 pfokker Exp $
+ * @version $Id: install.php,v 1.14 2012/03/31 15:18:53 pfokker Exp $
  * @todo how prevent third party-access to install.php after initial install? .htaccess? !exists(../config.php)? 
  * @todo we should make sure that autosession is disabled in php.ini, otherwise was won't work
  * @todo we should make sure that register globals is off
@@ -1815,7 +1815,7 @@ class InstallWizard {
             'path' => $userdata_directory, // we created this directory in step 5B above
             'acl_id' => intval($acl_id),
             'high_visibility' => $_SESSION['INSTALL']['high_visibility'],
-            'editor' => 'fckeditor'
+            'editor' => 'ckeditor'
             );
         $user_id = db_insert_into_and_get_id($table,$fields,$key_field);
         if ($user_id === FALSE) {

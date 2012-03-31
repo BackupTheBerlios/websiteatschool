@@ -37,7 +37,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: admin.php,v 1.15 2011/09/27 15:23:59 pfokker Exp $
+ * @version $Id: admin.php,v 1.16 2012/03/31 15:18:53 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -590,6 +590,8 @@ $string['site_config_pagination_width_title'] = 'This is the number of visible j
 
 $string['site_config_editor_label'] = 'Default editor';
 $string['site_config_editor_title'] = 'This is default editor for new user accounts';
+$string['site_config_editor_ckeditor_option'] = 'CKEditor';
+$string['site_config_editor_ckeditor_title'] = 'JavaScript-based WYSIWYG word processor';
 $string['site_config_editor_fckeditor_option'] = 'FCKeditor';
 $string['site_config_editor_fckeditor_title'] = 'JavaScript-based WYSIWYG word processor';
 $string['site_config_editor_plain_option'] = 'Plain';

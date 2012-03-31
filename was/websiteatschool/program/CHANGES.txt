@@ -1,6 +1,18 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.106 2012/03/07 09:06:24 pfokker Exp $
+$Id: CHANGES.txt,v 1.107 2012/03/31 15:18:53 pfokker Exp $
 -------------------------------------------------------------------------------
+
+2012-03-31
+- imported CKEditor 3.6.2 (Minimum setup, ie. without source tree,
+  samples, etc)
+- imported the original CKEditor 3.6.2 source tarball in the
+  devel/imports directory
+- statement of chosen license for CKEditor added to
+  /program/lib/ckeditor/legal.txt
+- updated several files in order to add ckeditor as an editor choice
+  (this includes the install wizard and the demo data)
+- started with an update routine to change the acceptable settings
+  for editors in existing installations.
 
 2012-03-07
 - [base.css, admin_base.css] minor omissions corrected

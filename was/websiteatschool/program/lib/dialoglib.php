@@ -180,7 +180,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: dialoglib.php,v 1.4 2011/09/29 19:57:32 pfokker Exp $
+ * @version $Id: dialoglib.php,v 1.5 2012/03/31 15:18:54 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1106,7 +1106,32 @@ function dialog_get_widget_richtextinput(&$item,$name,$value,$f_type) {
         global $CFG, $USER,$LANGUAGE;
         $rows = max((isset($item['rows'])) ? intval($item['rows']) : 4,4); // at least 4 rows, always
         $preferred_editor = (!empty($USER->editor)) ? $USER->editor : $CFG->editor;
-        if (($preferred_editor == 'fckeditor') && !(isset($_GET['fcksource']))) {
+
+        if ($preferred_editor == 'ckeditor') {
+            require_once($CFG->progdir.'/lib/ckeditor/ckeditor.php');
+            $editor = new CKEditor();
+            $editor->basePath = $CFG->progwww_short.'/lib/ckeditor/';
+            $editor->returnOutput = TRUE;
+            $editor->config['defaultLanguage'] = $LANGUAGE->get_current_language();
+            $editor->config['height'] = sprintf("%dem", $rows); // assume 1em per line
+            $editor->config['width'] = (isset($item['columns'])) ? 10 * intval($item['columns']) : '100%';
+            $editor->config['filebrowserLinkBrowseUrl'] = sprintf('%s/admin.php?job=%s',$CFG->www_short,JOB_FILEBROWSER);
+            $editor->config['filebrowserImageBrowseUrl'] = sprintf('%s/admin.php?job=%s',$CFG->www_short,JOB_IMAGEBROWSER);
+            $editor->config['filebrowserFlashBrowseUrl'] = sprintf('%s/admin.php?job=%s',$CFG->www_short,JOB_FLASHBROWSER);
+            $editor->config['skin'] = 'kama';
+            /* Try to set sensible dimensions in case JavaScript is disabled and CKEditor
+             * falls back on a plain textarea. We attempt to use the full available width
+             * of the element containting this textarea/editor via a style attribute.
+             * Note: the default dimensions in CKEditor are: rows=8, cols=60
+             * (see /program/lib/ckeditor/ckeditor_phpX.php).
+             */
+            $editor->textareaAttributes['rows'] = $rows;
+            if (isset($item['columns'])) {
+                $editor->textareaAttributes['cols'] = $item['columns'];
+            }
+            $editor->textareaAttributes['style'] = 'width: 100%;';
+            return $editor->editor($name,$value);
+        } elseif (($preferred_editor == 'fckeditor') && !(isset($_GET['fcksource']))) {
             require_once($CFG->progdir.'/lib/fckeditor/fckeditor.php');
             $editor = new FCKeditor($name);
             if ($editor->IsCompatible()) {
@@ -1122,8 +1147,6 @@ function dialog_get_widget_richtextinput(&$item,$name,$value,$f_type) {
                 $editor->Config['ImageUpload'] = 'false';
                 $editor->Config['FlashBrowserURL'] = sprintf('%s/admin.php?job=%s',$CFG->www_short,JOB_FLASHBROWSER);
                 $editor->Config['FlashUpload'] = 'false';
-//$editor->Width = '100%';
-//echo "<pre>\n";print_r($editor);echo "<pre>\n";
                 $editor->Config['SkinPath'] = $editor->BasePath.'editor/skins/silver/';
                 return $editor->CreateHtml(); 
             } // else
@@ -1135,7 +1158,7 @@ function dialog_get_widget_richtextinput(&$item,$name,$value,$f_type) {
         $attributes['rows'] = $rows;
         if (isset($item['columns'])) {
             $attributes['cols'] = $item['columns'];
-            }
+        }
         $hotkey = (isset($item['label'])) ? accesskey_from_string($item['label']) : '';
         if (!empty($hotkey)) {
             $attributes['accesskey'] = $hotkey;
@@ -1158,6 +1181,7 @@ function dialog_get_widget_richtextinput(&$item,$name,$value,$f_type) {
         if ((isset($item['viewonly'])) && ($item['viewonly'])) {
             $attributes['disabled'] = NULL;
         }
+        $attributes['style'] = 'width: 100%;';
         return html_tag($widget,$attributes,htmlspecialchars($value));
 } // dialog_get_widget_richtextinput()
 
