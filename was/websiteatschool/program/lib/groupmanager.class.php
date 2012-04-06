@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: groupmanager.class.php,v 1.8 2011/09/23 14:45:14 pfokker Exp $
+ * @version $Id: groupmanager.class.php,v 1.9 2012/04/06 18:47:26 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -141,14 +141,14 @@ class GroupManager {
         // 2 -- Add an 'add a group' option
         $this->output->add_content('  <li class="list">');
         // line up the prompt with links to existing areas below (if any)
-        if (!$USER->high_visibility) {
+        if (!$this->output->text_only) {
             $img_attr = array('width' => 16, 'height' => 16, 'title' => '', 'alt' => t('spacer','admin'));
             $icon_blank = '    '.html_img($CFG->progwww_short.'/graphics/blank16.gif',$img_attr);
             for ($i=0; $i<2; ++$i) {
                 $this->output->add_content($icon_blank);
             }
         } // else
-            // don't clutter the high-visiblity interface with superfluous layout fillers
+            // don't clutter the text-only interface with superfluous layout fillers
         $a_attr = array('title'=> t('groupmanager_add_a_group_title','admin'));
         $a_params = $this->a_params(TASK_GROUP_ADD);
         $this->output->add_content('    '.html_a($WAS_SCRIPT_NAME,$a_params,$a_attr,t('groupmanager_add_a_group','admin')));
@@ -1566,7 +1566,7 @@ class GroupManager {
 
         // 1 -- construct the icon (image or text)
         $title = t('icon_group_delete','admin');
-        if ($USER->high_visibility) {
+        if ($this->output->text_only) {
             $anchor = html_tag('span','class="icon"','['.t('icon_group_delete_text','admin').']');
         } else {
             $img_attr = array('height' => 16, 'width' => 16, 'title' => $title, 'alt' => t('icon_group_delete_alt','admin'));
@@ -1594,7 +1594,7 @@ class GroupManager {
 
         // 1 -- construct the icon (image or text)
         $title = t('icon_group_edit','admin');
-        if ($USER->high_visibility) {
+        if ($this->output->text_only) {
             $anchor = html_tag('span','class="icon"','['.t('icon_group_edit_text','admin').']');
         } else {
             $img_attr = array('height' => 16, 'width' => 16, 'title' => $title, 'alt' => t('icon_area_edit_alt','admin'));

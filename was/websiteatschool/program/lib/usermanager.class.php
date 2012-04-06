@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: usermanager.class.php,v 1.11 2012/03/31 15:18:54 pfokker Exp $
+ * @version $Id: usermanager.class.php,v 1.12 2012/04/06 18:47:27 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -147,7 +147,7 @@ class UserManager {
      * @return void output is returned in $this->output
      */
     function users_overview() {
-        global $USER,$WAS_SCRIPT_NAME,$CFG;
+        global $WAS_SCRIPT_NAME,$CFG;
 
         //
         // 0 -- calculate the subset (if any) to display + remember last choice in session
@@ -199,7 +199,7 @@ class UserManager {
         //
         $this->output->add_content('  <li class="list">');
         // line up the prompt with links to existing users below (if any)
-        if (!$USER->high_visibility) {
+        if (!$this->output->text_only) {
             $img_attr = array('width' => 16, 'height' => 16, 'title' => '', 'alt' => t('spacer','admin'));
             $icon_blank = '    '.html_img($CFG->progwww_short.'/graphics/blank16.gif',$img_attr);
             for ($i=0; $i<2; ++$i) {
@@ -434,8 +434,8 @@ class UserManager {
                 'language_key' => $CFG->language_key,
                 'path' => $userdata_directory,
                 'acl_id' => $new_acl_id,
-                'high_visibility' => FALSE,
-                'editor' => $CFG->editor
+                'editor' => $CFG->editor,
+                'skin' => 'base'
                 );
             $new_user_id = db_insert_into_and_get_id('users',$fields,'user_id');
             if ($new_user_id === FALSE) {
@@ -691,8 +691,8 @@ class UserManager {
             'is_active' => ($dialogdef['user_is_active']['value'] == 1) ? TRUE : FALSE,
             'redirect' => $dialogdef['user_redirect']['value'],
             'language_key' => $dialogdef['user_language_key']['value'],
-            'high_visibility' => ($dialogdef['user_high_visibility']['value'] == 1) ? TRUE : FALSE,
-            'editor' => $dialogdef['user_editor']['value']
+            'editor' => $dialogdef['user_editor']['value'],
+            'skin' => $dialogdef['user_skin']['value']
             );
         if (!empty($password1)) {
             $new_salt = password_salt();
@@ -858,7 +858,7 @@ class UserManager {
      * @return void results are returned as output in $this->output
      */
     function user_groups() {
-        global $USER,$WAS_SCRIPT_NAME,$CFG,$DB;
+        global $WAS_SCRIPT_NAME,$CFG,$DB;
 
         // 0 -- sanity check
         $user_id = get_parameter_int('user',NULL);
@@ -878,7 +878,7 @@ class UserManager {
         // 2 -- add an 'add a membership' option
         $this->output->add_content('  <li class="list">');
         // line up the prompt with links to existing areas below (if any)
-        if (!$USER->high_visibility) {
+        if (!$this->output->text_only) {
             $img_attr = array('width' => 16, 'height' => 16, 'title' => '', 'alt' => t('spacer','admin'));
             $icon_blank = '    '.html_img($CFG->progwww_short.'/graphics/blank16.gif',$img_attr);
             for ($i=0; $i<1; ++$i) {
@@ -1760,15 +1760,14 @@ class UserManager {
      * @param int $user_id the user to delete
      * @return string ready-to-use A-tag
      * @uses $CFG
-     * @uses $USER
      * @uses $WAS_SCRIPT_NAME
      */
     function get_icon_delete($user_id) {
-        global $CFG,$WAS_SCRIPT_NAME,$USER;
+        global $CFG,$WAS_SCRIPT_NAME;
 
         // 1 -- construct the icon (image or text)
         $title = t('icon_user_delete','admin');
-        if ($USER->high_visibility) {
+        if ($this->output->text_only) {
             $anchor = html_tag('span','class="icon"','['.t('icon_user_delete_text','admin').']');
         } else {
             $img_attr = array('height' => 16,'width' => 16,'title' => $title,'alt' => t('icon_user_delete_alt','admin'));
@@ -1787,16 +1786,15 @@ class UserManager {
      * @param int $user_id the user to edit
      * @return string ready-to-use A-tag
      * @uses $CFG
-     * @uses $USER
      * @uses $WAS_SCRIPT_NAME
      */
     function get_icon_edit($user_id) {
-        global $CFG,$WAS_SCRIPT_NAME,$USER;
+        global $CFG,$WAS_SCRIPT_NAME;
 
 
         // 1 -- construct the icon (image or text)
         $title = t('icon_user_edit','admin');
-        if ($USER->high_visibility) {
+        if ($this->output->text_only) {
             $anchor = html_tag('span','class="icon"','['.t('icon_user_edit_text','admin').']');
         } else {
             $img_attr = array('height' => 16,'width' => 16,'title' => $title,'alt' => t('icon_area_edit_alt','admin'));
@@ -1816,15 +1814,14 @@ class UserManager {
      * @param int $user_id the group to delete
      * @return string ready-to-use A-tag
      * @uses $CFG
-     * @uses $USER
      * @uses $WAS_SCRIPT_NAME
      */
     function get_icon_groupdelete($user_id,$group_id) {
-        global $CFG,$WAS_SCRIPT_NAME,$USER;
+        global $CFG,$WAS_SCRIPT_NAME;
 
         // 1 -- construct the icon (image or text)
         $title = t('icon_membership_delete','admin');
-        if ($USER->high_visibility) {
+        if ($this->output->text_only) {
             $anchor = html_tag('span','class="icon"','['.t('icon_membership_delete_text','admin').']');
         } else {
             $img_attr = array('height' => 16,'width' => 16,'title' => $title,'alt' => t('icon_user_delete_alt','admin'));
@@ -2031,15 +2028,6 @@ class UserManager {
                 'value' => $user['language_key'],
                 'old_value' => $user['language_key']
                 ),
-            'user_high_visibility' => array(
-                'type' => F_CHECKBOX,
-                'name' => 'user_high_visibility',
-                'options' => array(1 => t('usermanager_edit_user_high_visibility_check','admin')),
-                'label' => t('usermanager_edit_user_high_visibility_label','admin'),
-                'title' => t('usermanager_edit_user_high_visibility_title','admin'),
-                'value' => (db_bool_is(TRUE,$user['high_visibility'])) ? '1' : '',
-                'old_value' => (db_bool_is(TRUE,$user['high_visibility'])) ? '1' : ''
-                ),
             'user_editor' => array(
                 'type' => F_LISTBOX,
                 'name' => 'user_editor',
@@ -2048,6 +2036,15 @@ class UserManager {
                 'title' => t('usermanager_edit_user_editor_title','admin'),
                 'value' => $user['editor'],
                 'old_value' => $user['editor']
+                ),
+            'user_skin' => array(
+                'type' => F_LISTBOX,
+                'name' => 'user_skin',
+                'options' => $this->get_skin_names(),
+                'label' => t('usermanager_edit_user_skin_label','admin'),
+                'title' => t('usermanager_edit_user_skin_title','admin'),
+                'value' => $user['skin'],
+                'old_value' => $user['skin']
                 ),
             'user_path' => array(
                 'type' => F_ALPHANUMERIC,
@@ -2109,6 +2106,24 @@ class UserManager {
         }
         return $options;
     } // get_editor_names()
+
+
+    /** prepare a list of available skins
+     *
+     * this routine returs a hardcoded list of available skins: we do not
+     * expect to be adding or removing skins to/from the CMS any time soon.
+     *
+     * @return array list of available skins
+     */
+    function get_skin_names() {
+        $options = array();
+        foreach( array('base','textonly','braille', 'big', 'lowvision') as $skin) {
+            $options[$skin] = array(
+                'option' => t("usermanager_edit_user_skin_{$skin}_option",'admin'),
+                'title' =>  t("usermanager_edit_user_skin_{$skin}_title",'admin'));
+        }
+        return $options;
+    } // get_skin_names()
 
 
     /** determine whether a user has permissions for a particular job

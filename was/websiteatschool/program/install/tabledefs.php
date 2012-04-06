@@ -64,7 +64,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasinstall
- * @version $Id: tabledefs.php,v 1.6 2011/09/21 18:54:19 pfokker Exp $
+ * @version $Id: tabledefs.php,v 1.7 2012/04/06 18:47:26 pfokker Exp $
  * @todo automatically create appropriate sequence name for serial fields??? or add seqdefs too?
  */
 if (!defined('WASENTRY')) { die('no entry'); }
@@ -406,18 +406,28 @@ $tabledefs['users'] = array(
             'notnull' => TRUE,
             'comment' => 'link to acls table, provides access control for this user'
             ),
-        array(
-            'name' => 'high_visibility',
-            'type' => 'bool',
-            'notnull' => TRUE,
-            'default' => FALSE,
-            'comment' => 'in admin.php an additional stylesheet is included if this is TRUE',
-            ),
+        /* 2012-04-06: this field replaced with field skin
+         * array(
+         *   'name' => 'high_visibility',
+         *   'type' => 'bool',
+         *   'notnull' => TRUE,
+         *   'default' => FALSE,
+         *   'comment' => 'in admin.php an additional stylesheet is included if this is TRUE',
+         * ),
+         */
         array(
             'name' => 'editor',
             'type' => 'varchar',
             'length' => 20,
             'comment' => 'preferred editor'
+            ),
+        array(
+            'name' => 'skin',
+            'type' => 'varchar',
+            'length' => 20,
+            'notnull' => TRUE,
+            'default' => 'base',
+            'comment' => 'preferred skin'
             )
        ),
     'keys' => array(
@@ -1017,6 +1027,12 @@ $tabledefs['nodes'] = array(
             'default' => 'NULL',
             'comment' => 'if not NULL this fields indicates which session_id has locked this record'
             ),
+        array(
+            'name' => 'style', 
+            'type' => 'text', 
+            'notnull' => TRUE,
+            'comment' => 'additional style information to add AFTER static and area-level style'
+            )
         ),
     'keys' => array(
         array(

@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: aclmanager.class.php,v 1.4 2011/09/21 18:54:20 pfokker Exp $
+ * @version $Id: aclmanager.class.php,v 1.5 2012/04/06 18:47:26 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1872,7 +1872,7 @@ class AclManager {
      * @return string ready-to-use HTML-icon
      */
     function get_icon_area($area_id,$area_is_open,$offset) {
-        global $CFG,$WAS_SCRIPT_NAME,$USER;
+        global $CFG,$WAS_SCRIPT_NAME;
         $img_attr = array('height' => 16, 'width' => 16);
         $a_params = $this->area_view_a_params;
         $a_params['area'] = $area_id;
@@ -1884,7 +1884,7 @@ class AclManager {
             $title = t(($area_id == 0) ? 'icon_close_site' : 'icon_close_area','admin');
             $img_attr['title'] = $title;
             $img_attr['alt'] = t(($area_id == 0) ? 'icon_close_site_alt' : 'icon_close_area_alt','admin');
-            if ($USER->high_visibility) {
+            if ($this->output->text_only) {
                 $anchor = html_tag('span','class="icon"','['.t(($area_id == 0) ? 'icon_close_site_text' : 
                                                                                  'icon_close_area_text','admin').']');
             } else {
@@ -1894,7 +1894,7 @@ class AclManager {
             $title = t(($area_id == 0) ? 'icon_open_site' : 'icon_open_area','admin');
             $img_attr['title'] = $title;
             $img_attr['alt'] = t(($area_id == 0) ? 'icon_open_site_alt' : 'icon_open_area_alt','admin');
-            if ($USER->high_visibility) {
+            if ($this->output->text_only) {
                 $anchor = html_tag('span','class="icon"','['.t(($area_id == 0) ? 'icon_open_site_text' : 
                                                                                  'icon_open_area_text','admin').']');
             } else {
@@ -1907,13 +1907,13 @@ class AclManager {
 
     /** construct a spacer of standard icon width (to line up items)
      *
-     * @return string ready-to-use HTML-icon (or empty string if user wants high-visibility)
+     * @return string ready-to-use HTML-icon (or empty string if user wants text-only)
      * @uses $CFG
      * @uses $USER
      */
     function get_icon_blank() {
-        global $CFG,$USER;
-        if ($USER->high_visibility) {
+        global $CFG;
+        if ($this->output->text_only) {
             $spacer = '';
         } else {
             $img_attr = array('width' => 16, 'height' => 16, 'title' => '', 'alt' => t('spacer','admin'));

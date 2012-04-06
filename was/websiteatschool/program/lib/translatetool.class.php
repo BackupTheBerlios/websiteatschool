@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: translatetool.class.php,v 1.7 2011/09/27 15:25:07 pfokker Exp $
+ * @version $Id: translatetool.class.php,v 1.8 2012/04/06 18:47:27 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -183,12 +183,12 @@ class TranslateTool {
         // 2 -- Add an 'add a language' option
         $this->output->add_content('  <li class="list">');
         // line up the prompt with links to existing languages below (if any)
-        if (!$USER->high_visibility) {
+        if (!$this->output->text_only) {
             $img_attr = array('width' => 16, 'height' => 16, 'title' => '', 'alt' => t('spacer','admin'));
             $icon_blank = '    '.html_img($CFG->progwww_short.'/graphics/blank16.gif',$img_attr);
             $this->output->add_content($icon_blank);
         } // else { 
-            //don't clutter the high-visiblity interface with superfluous layout fillers 
+            //don't clutter the text-only interface with superfluous layout fillers 
         // }
         $a_attr = array('title'=> t('translatetool_add_a_language_title','admin'));
         $a_param = $this->a_param(TRANSLATETOOL_CHORE_LANGUAGE_ADD);
@@ -942,7 +942,7 @@ class TranslateTool {
 
         // 2 -- construct the icon (image or text)
         $title = t('icon_language_edit','admin');
-        if ($USER->high_visibility) {
+        if ($this->output->text_only) {
             $anchor = html_tag('span','class="icon"','['.t('icon_language_edit_text','admin').']');
         } else {
             $img_attr = array('height' => 16, 'width' => 16,

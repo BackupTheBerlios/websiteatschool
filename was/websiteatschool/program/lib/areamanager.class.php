@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: areamanager.class.php,v 1.7 2011/09/23 16:01:30 pfokker Exp $
+ * @version $Id: areamanager.class.php,v 1.8 2012/04/06 18:47:26 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -206,14 +206,14 @@ class AreaManager {
         if ($USER->has_site_permissions(PERMISSION_SITE_ADD_AREA)) {
             $this->output->add_content('  <li class="list">');
             // line up the prompt with links to existing areas below (if any)
-            if (!$USER->high_visibility) {
+            if (!$this->output->text_only) {
                 $img_attr = array('width' => 16, 'height' => 16, 'title' => '', 'alt' => t('spacer','admin'));
                 $icon_blank = '    '.html_img($CFG->progwww_short.'/graphics/blank16.gif',$img_attr);
                 for ($i=0; $i<3; ++$i) {
                     $this->output->add_content($icon_blank);
                 }
             } // else
-                // don't clutter the high-visiblity interface with superfluous layout fillers
+                // don't clutter the text-only interface with superfluous layout fillers
             $a_attr = array('title'=> t('areamanager_add_an_area_title','admin'));
             $a_param = $this->a_param(AREAMANAGER_CHORE_ADD);
             $anchor = t('areamanager_add_an_area','admin');
@@ -1403,7 +1403,7 @@ class AreaManager {
 
         // 2 -- construct the icon (image or text)
         if (db_bool_is(TRUE,$areas[$area_id]['is_default'])) {
-            if ($USER->high_visibility) {
+            if ($this->output->text_only) {
                 $anchor = html_tag('span','class="icon"','['.t('icon_area_default_text','admin').']');
             } else {
                 $img_attr = array('height' => 16, 'width' => 16,
@@ -1411,7 +1411,7 @@ class AreaManager {
                 $anchor = html_img($CFG->progwww_short.'/graphics/startsection.gif',$img_attr);
             }
         } else {
-            if ($USER->high_visibility) {
+            if ($this->output->text_only) {
                 $anchor = html_tag('span','class="icon"','['.t('icon_area_not_default_text','admin').']');
             } else {
                 $img_attr = array('height' => 16, 'width' => 16, 
@@ -1449,7 +1449,7 @@ class AreaManager {
 
         // 2 -- construct the icon (image or text)
         $title = t(($user_has_permission) ? 'icon_area_delete' : 'icon_area_delete_access_denied','admin');
-        if ($USER->high_visibility) {
+        if ($this->output->text_only) {
             $anchor = html_tag('span','class="icon"','['.t('icon_area_delete_text','admin').']');
         } else {
             $img_attr = array('height' => 16, 'width' => 16, 'title' => $title, 'alt' => t('icon_area_delete_alt','admin'));
@@ -1482,7 +1482,7 @@ class AreaManager {
 
         // 2 -- construct the icon (image or text)
         $title = t(($user_has_permission) ? 'icon_area_edit' : 'icon_area_edit_access_denied','admin');
-        if ($USER->high_visibility) {
+        if ($this->output->text_only) {
             $anchor = html_tag('span','class="icon"','['.t('icon_area_edit_text','admin').']');
         } else {
             $img_attr = array('height' => 16, 'width' => 16,

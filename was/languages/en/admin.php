@@ -37,7 +37,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: admin.php,v 1.16 2012/03/31 15:18:53 pfokker Exp $
+ * @version $Id: admin.php,v 1.17 2012/04/06 18:47:24 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -381,6 +381,9 @@ $string['edit_node_embargo_title'] = 'Enter the date/time on which this page/sec
 
 $string['edit_node_expiry'] = 'E~xpiry';
 $string['edit_node_expiry_title'] = 'Enter the date/time on which this page/section will become inaccessible for visitors';
+
+$string['edit_node_style_label'] = 'Extra st~yle at page/section level';
+$string['edit_node_style_title'] = 'Additional style information';
 
 $comment['options_public_area'] = 'Strings below used in the advanced edit node dialog for moving nodes to another area';
 $string['options_public_area'] = 'Public area {AREA} ({AREANAME})';
@@ -909,8 +912,8 @@ E-~mail
 Mark as ~active
 ~Redirection
 ~Language
-~High visibility
 ~Editor
+S~kin
 ~Data directory
 ~Save
 ~Cancel
@@ -935,13 +938,23 @@ $string['usermanager_edit_user_redirect_label'] = '~Redirection (where to go aft
 $string['usermanager_edit_user_redirect_title'] = 'Enter a URL to go to after logout (blank implies the default area)';
 $string['usermanager_edit_user_language_label'] = '~Language';
 $string['usermanager_edit_user_language_title'] = 'Select the preferred language for this user';
-$string['usermanager_edit_user_high_visibility_label'] = 'Enable text interface';
-$string['usermanager_edit_user_high_visibility_title'] = 'Check the box enable high visibility for this user';
-$string['usermanager_edit_user_high_visibility_check'] = '~High visibility';
 $string['usermanager_edit_user_editor_label'] = '~Editor';
 $string['usermanager_edit_user_editor_title'] = 'Select the preferred editor/word processor for this user';
+$string['usermanager_edit_user_skin_label'] = 'S~kin';
+$string['usermanager_edit_user_skin_title'] = 'Select the preferred skin for this user';
 $string['usermanager_edit_user_path_label'] = '~Data folder (pathname cannot be changed)';
 $string['usermanager_edit_user_path_title'] = 'This folder holds the personal data files for this user';
+
+$string['usermanager_edit_user_skin_base_option'] = 'Base';
+$string['usermanager_edit_user_skin_base_title'] = 'Default (graphical)';
+$string['usermanager_edit_user_skin_textonly_option'] = 'TextOnly';
+$string['usermanager_edit_user_skin_textonly_title'] = 'Text-based interface';
+$string['usermanager_edit_user_skin_braille_option'] = 'Braille';
+$string['usermanager_edit_user_skin_braille_title'] = 'For Braille-terminals and speech synthesizers';
+$string['usermanager_edit_user_skin_big_option'] = 'Big';
+$string['usermanager_edit_user_skin_big_title'] = 'Bigger letters and icons';
+$string['usermanager_edit_user_skin_lowvision_option'] = 'LowVision';
+$string['usermanager_edit_user_skin_lowvision_title'] = 'High contrast interface';
 
 $string['usermanager_save_user_failure'] = 'There were problems with saving account {USERNAME} ({FULL_NAME})';
 $string['usermanager_save_user_success'] = 'Success saving changes in account {USERNAME} ({FULL_NAME})';

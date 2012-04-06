@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: useraccount.class.php,v 1.4 2011/09/21 18:54:20 pfokker Exp $
+ * @version $Id: useraccount.class.php,v 1.5 2012/04/06 18:47:27 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -298,11 +298,11 @@ class Useraccount {
     /** @var array $properties */
     var $properties = array();
 
-    /** @var bool $high_visibility */
-    var $high_visibility = FALSE;
-
     /** @var string $editor the preferred editor for this user (empty implies system default from $CFG->editor) */
     var $editor = '';
+
+    /** @var string $skin the preferred skin for this user */
+    var $skin = '';
 
     /** @var bool $is_logged_in TRUE if user is logged in, FALSE otherwise */
     var $is_logged_in = FALSE;
@@ -313,6 +313,15 @@ class Useraccount {
 
     /** get pertinent user information in core
      *
+     * Note:
+     * We used to have a bool named 'high_visibility' in both the users table
+     * and this class. That changed with version 0.90.4 (April 2012) and we now
+     * have a field and variable 'skin' which is a varchar(20). The values were
+     * mapped as follows: high_availability=FALSE -> skin='base' and 
+     * high_availability=TRUE -> skin='textonly'. The extra test for the
+     * existence of $record['skin'] was necessary for the case where the user
+     * wanted to upgrade from 0.90.3 to 0.90.4 where 'skin' replaced 'high_visibility'.
+     * 
      * @param int $user_id identifies data from which user to load, 0 means no user/a passerby
      * @return void
      */
@@ -323,7 +332,7 @@ class Useraccount {
             return FALSE;
         }
         // Now try to fetch data for this user from database
-        $fields = array('username','full_name','email','language_key','path','acl_id','high_visibility','editor');
+        $fields = '*';
         $record = db_select_single_record('users',$fields,array('user_id' => $user_id, 'is_active' => TRUE));
         if ($record === FALSE) {
             logger('useraccount: cannot find record for user_id \''.$user_id.'\'',WLOG_INFO,$user_id);
@@ -334,8 +343,8 @@ class Useraccount {
         $this->email = $record['email'];
         $this->language_key = $record['language_key'];
         $this->path = $record['path'];
-        $this->high_visibility = db_bool_is(TRUE,$record['high_visibility']);
         $this->editor = $record['editor'];
+        $this->skin = (isset($record['skin'])) ? $record['skin'] : 'base'; // see note above
 
         // Prepare for retrieval of acls/permissions
         $this->acl_id = intval($record['acl_id']);

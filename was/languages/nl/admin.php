@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: admin.php,v 1.15 2012/03/31 15:18:53 pfokker Exp $
+ * @version $Id: admin.php,v 1.16 2012/04/06 18:47:24 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -303,6 +303,8 @@ $string['edit_node_embargo_title'] = 'Geef de datum/tijd op wanneer deze pagina/
 $string['edit_node_expiry'] = 'Verva~ldatum';
 $string['edit_node_expiry_title'] = 'Geef de datum/tijd op wanneer deze pagina/sectie automatisch vervalt (totaal onzichtbaar wordt)';
 
+$string['edit_node_style_label'] = 'E~xtra stijlinformatie op pagina/sectieniveau';
+$string['edit_node_style_title'] = 'Aanvullende stijlinformatie voor pagina of sectie (inclusief onderliggende paginas/secties)';
 
 $string['options_public_area'] = 'Publiekelijk gebied {AREA} ({AREANAME})';
 $string['options_private_area'] = 'Beveiligd gebied {AREA} ({AREANAME})';
@@ -818,12 +820,22 @@ $string['usermanager_edit_user_redirect_label'] = 'Omleidin~g (waarheen na uitlo
 $string['usermanager_edit_user_redirect_title'] = 'Geef een URL om naartoe te gaan na uitloggen (blanco betekent het standaard-gebied van de webstek)';
 $string['usermanager_edit_user_language_label'] = '~Taal';
 $string['usermanager_edit_user_language_title'] = 'Selecteer de taal voor deze gebruiker';
-$string['usermanager_edit_user_high_visibility_label'] = 'Gebruik de tekstinterface';
-$string['usermanager_edit_user_high_visibility_title'] = 'Aanvinken om extra zichtbaarheid te activeren';
-$string['usermanager_edit_user_high_visibility_check'] = '~Extra zichtbaarheid';
-
 $string['usermanager_edit_user_editor_label'] = 'Te~kstverwerker';
 $string['usermanager_edit_user_editor_title'] = 'Selecteer de standaard tekstverwerker/editor voor deze gebruiker';
+$string['usermanager_edit_user_skin_label'] = 'Weergav~e';
+$string['usermanager_edit_user_skin_title'] = 'Selecteer de standaardweergave voor deze gebruiker';
+
+$string['usermanager_edit_user_skin_base_option'] = 'Basis';
+$string['usermanager_edit_user_skin_base_title'] = 'Standaardweergave (grafisch)';
+$string['usermanager_edit_user_skin_textonly_option'] = 'Tekst';
+$string['usermanager_edit_user_skin_textonly_title'] = 'Weergave met uitsluitend tekst';
+$string['usermanager_edit_user_skin_braille_option'] = 'Braille';
+$string['usermanager_edit_user_skin_braille_title'] = 'Voor Braille-terminals en spraaksynthesizers';
+$string['usermanager_edit_user_skin_big_option'] = 'Groot';
+$string['usermanager_edit_user_skin_big_title'] = 'Grotere letters en afbeeldingen';
+$string['usermanager_edit_user_skin_lowvision_option'] = 'Slechtziend';
+$string['usermanager_edit_user_skin_lowvision_title'] = 'Weergave voor slechtzienden (hoog contrast)';
+
 $string['usermanager_edit_user_path_label'] = '~Datamap (padnaam kan niet gewijzigd worden)';
 $string['usermanager_edit_user_path_title'] = 'Deze map bevat de persoonlijke gegevensbestanden van deze gebruiker';
 

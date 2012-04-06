@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: waslib.php,v 1.16 2011/10/10 15:45:43 pfokker Exp $
+ * @version $Id: waslib.php,v 1.17 2012/04/06 18:47:27 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1607,14 +1607,14 @@ function get_unique_number($increment=TRUE) {
  *
  * Note: a comparable routine can be found in {@link install.php}.
  *
- * @param bool $high_visibility if TRUE we return a text-only link, otherwise a clickable image
+ * @param bool $text_only if TRUE we return a text-only link, otherwise a clickable image
  * @param string $m margin to improve readability of generated code
  * @return string ready-to-use HTML
  *
  */
-function appropriate_legal_notices($high_visibility,$m='      ') {
+function appropriate_legal_notices($text_only=FALSE, $m='') {
     global $CFG;
-    if ($high_visibility) {
+    if ($text_only) {
         $prefix = (WAS_ORIGINAL) ? 'Powered by ' : 'Based on ';
         $anchor = 'Website@School';
     } else {

@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: theme.class.php,v 1.18 2011/10/10 15:45:43 pfokker Exp $
+ * @version $Id: theme.class.php,v 1.19 2012/04/06 18:47:27 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -82,7 +82,7 @@ class Theme {
     var $messages_bottom = array();
 
     /** @var bool this switches the navigation between image-based and text-based */
-    var $high_visibility = FALSE;
+    var $text_only = FALSE;
 
     /** @var bool $preview_mode if TRUE, we are previewing a page (from pagemanager) */
     var $preview_mode = FALSE;
@@ -264,7 +264,7 @@ class Theme {
               "    </div>\n".
                    $this->get_div_breadcrumbs('    ').
               "    <div id=\"navigation\">\n".
-                     $this->get_navigation('      ',$this->high_visibility).
+                     $this->get_navigation('      ',$this->text_only).
               "    </div>\n".
                    $this->get_div_messages('    ').
 
@@ -796,7 +796,7 @@ class Theme {
         $a = array('{DATE}'=>strftime("%Y-%m-%d %T"),
                    '{QUERIES}'=>performance_get_queries(),
                    '{SECONDS}'=>sprintf("%01.3f",performance_get_seconds()));
-        $s = appropriate_legal_notices($this->high_visibility,$m)."\n";
+        $s = appropriate_legal_notices($this->text_only,$m)."\n";
         if ($CFG->debug) {
             $separator = (empty($this->quickbottom_separator)) ? '' : $this->quickbottom_separator.' '; // readability
             $s .= $m.$separator.t('generated_in','admin',$a)."\n";

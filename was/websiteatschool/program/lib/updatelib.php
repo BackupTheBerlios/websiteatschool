@@ -54,7 +54,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: updatelib.php,v 1.18 2012/03/31 15:18:54 pfokker Exp $
+ * @version $Id: updatelib.php,v 1.19 2012/04/06 18:47:27 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -900,7 +900,7 @@ function update_core(&$output) {
     if (!update_core_2011020100($output)) { return; }
     if (!update_core_2011051100($output)) { return; }
     if (!update_core_2011093000($output)) { return; }
-    if (!update_core_2012040100($output)) { return; }
+    if (!update_core_2012040600($output)) { return; }
     // if (!update_core_2012mmdd00($output)) { return; }
     // ...
 
@@ -1843,20 +1843,23 @@ function update_remove_obsolete_files(&$output) {
 } // update_remove_obsolete_files()
 
 
-/** perform actual update to version 2012040100
+/** perform actual update to version 2012040600
  *
- * Changes between 2011093000 and 2012040100:
+ * Changes between 2011093000 and 2012040600:
  *  - addition of the ckeditor-option in the site configuration table
  *
  * @param object &$output collects the html output
  * @return bool TRUE on success, FALSE otherwise
  */
-function update_core_2012040100(&$output) {
-    global $CFG;
-    $version = 2012040100;
+function update_core_2012040600(&$output) {
+    global $CFG,$DB;
+    $version = 2012040600;
     if ($CFG->version >= $version) {
         return TRUE;
     }
+    //
+    // 1 -- maybe change default editor to CKEditor
+    //
     $table = 'config';
     $fields = array('extra' => 'options=ckeditor,fckeditor,plain',
                     'description' => 'Default rich text editor - USER-defined, default ckeditor');
@@ -1871,9 +1874,77 @@ function update_core_2012040100(&$output) {
         $output->add_message(t('update_core_error','admin',array('{VERSION}' => strval($version))));
         return FALSE; 
     }
-
-    // If all is well, we update the version number in the database AND in $CFG->version
+    //
+    // 2 -- maybe add some additional fields to nodes, users
+    //
+    $addfielddefs = array(
+        'nodes:style' => array(
+            'name' => 'style', 
+            'type' => 'text', 
+            'notnull' => TRUE,
+            'comment' => 'additional style information to add AFTER static and area-level style'
+            ),
+        'users:skin' =>  array(
+            'name' => 'skin',
+            'type' => 'varchar',
+            'length' => 20,
+            'notnull' => TRUE,
+            'default' => 'base',
+            'comment' => 'preferred skin'
+            )
+        );
+    foreach($addfielddefs as $table_field => $fielddef) {
+        list($table, $field) = explode(':',$table_field);
+        if (($DBResult = $DB->query(db_select_sql($table,$field),1)) !== FALSE) {
+            $DBResult->close();
+            logger(sprintf("%s(): field '%s' already exists in '%s', skipping ALTER TABLE", __FUNCTION__, $field, $table));
+        } else {
+            $sql = sprintf('ALTER TABLE %s%s ADD COLUMN (%s)', $DB->prefix, $table, $DB->column_definition($fielddef));
+            if (($retval = $DB->exec($sql)) === FALSE) {
+                $msg = sprintf("%s(): cannot add field '%s' to table '%s': %s", __FUNCTION__, $field, $table, db_errormessage());
+                logger($msg);
+                $output->add_message(htmlspecialchars($msg));
+                $output->add_message(t('update_core_error','admin',array('{VERSION}' => strval($version))));
+                return FALSE; 
+            } else {
+                logger(sprintf("%s(): success adding field '%s' to table '%s'",__FUNCTION__, $field, $table));
+            }
+        }
+    }
+    //
+    // 3 -- maybe get rid of old field 'high_visibility'
+    //
+    if (($DBResult = $DB->query(db_select_sql('users','high_visibility'),1)) === FALSE) {
+            logger(sprintf("%s(): field 'high_visibility' no longer exists in 'users', skipping ALTER TABLE", __FUNCTION__));
+    } else {
+        $DBResult->close();
+        $changes = array('base' => FALSE, 'textonly' => TRUE);
+        foreach ($changes as $newval => $oldval) {
+            if (($retval = db_update('users',array('skin' => $newval), array('high_visibility' => $oldval))) === FALSE) {
+                $msg = sprintf("%s(): cannot update field 'users.skin' to '%s': %s", __FUNCTION__, $newval, db_errormessage());
+                logger($msg);
+                $output->add_message(htmlspecialchars($msg));
+                $output->add_message(t('update_core_error','admin',array('{VERSION}' => strval($version))));
+                return FALSE; 
+            } else {
+                logger(sprintf("%s(): success setting 'users.skin' to '%s' in %d record(s)",__FUNCTION__, $newval, $retval));
+            }
+        }
+        $sql = sprintf('ALTER TABLE %susers DROP COLUMN high_visibility',$DB->prefix);
+        if (($retval = $DB->exec($sql)) === FALSE) {
+            $msg = sprintf("%s(): cannot drop field 'high_visibility' from table 'users': %s", __FUNCTION__, db_errormessage());
+            logger($msg);
+            $output->add_message(htmlspecialchars($msg));
+            $output->add_message(t('update_core_error','admin',array('{VERSION}' => strval($version))));
+            return FALSE; 
+        } else {
+            logger(sprintf("%s(): success dropping field 'high_visibility' from table 'users'",__FUNCTION__));
+        }
+    }
+    //
+    // 4 -- If all is well, we update the version number in the database AND in $CFG->version
+    //
     return update_core_version($output,$version);
-} // update_core_2012040100()
+} // update_core_2012040600()
 
 ?>

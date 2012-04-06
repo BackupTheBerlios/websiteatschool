@@ -1,6 +1,21 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.107 2012/03/31 15:18:53 pfokker Exp $
+$Id: CHANGES.txt,v 1.108 2012/04/06 18:47:25 pfokker Exp $
 -------------------------------------------------------------------------------
+
+2012-04-06
+- [updatelib.php, tabledefs.php]:
+  . added field 'style' to table 'nodes' (for Bazar Style Style Sheets)
+  . replaced field 'high_visibility' with field 'skin' in table 'users' and
+    updated existing users in database:  high_visibility=FALSE -> skin='base'
+    and high_visibility=TRUE -> skin='textonly'
+- renamed variables $high_visibility to $text_only throughout preparing
+  for the introduction of skins
+- [usermanager.class.php] relaced field 'high_visibility' with 'skin'
+  in the edit user dialog
+- added a 'proof of concept' for the braille skin
+
+2012-04-05
+- [about.html]: the logo now links to the project website
 
 2012-03-31
 - imported CKEditor 3.6.2 (Minimum setup, ie. without source tree,
@@ -48,7 +63,7 @@ $Id: CHANGES.txt,v 1.107 2012/03/31 15:18:53 pfokker Exp $
 - removed obsolete file node.class.php from repository
 - removed obsolete file modulelib.php from repository
 - [updatelib.php]: we now check for obsolete files too
-- minor cosmic changes
+- minor cosmetic changes
 
 2011-09-26
 - [pagemanager.class.php]: get rid of current area if it is no longer there
@@ -552,10 +567,8 @@ Changes in /program/lib/updatelib.php:
 - incorporated the 'powered by' and 'based on' graphics in install.php
 - incorporated new logo in install.php
 - header height in base_admin.css from 53 to 71 pixels for new logo
-- added link to about.html via function appropriate_legal_notices() in
-  install.php
-- added link to about.html via function appropriate_legal_notices() in
-  main_admin.php
+- added link to about.html via appropriate_legal_notices() in install.php
+- added link to about.html via appropriate_legal_notices() in main_admin.php
 - modified the translatable text in footer: we now force the English
   'powered by' (or 'based on') even in other languages.
 - added an explanation for creating modified versions in '/program/about.html'

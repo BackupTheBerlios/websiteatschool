@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wastheme_schoolyard
- * @version $Id: schoolyard.class.php,v 1.3 2011/06/22 13:32:12 pfokker Exp $
+ * @version $Id: schoolyard.class.php,v 1.4 2012/04/06 18:47:25 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -118,7 +118,7 @@ class ThemeSchoolyard extends Theme {
               "      <h1>".$this->title."</h1>\n".
               "    </div>\n".
               "    <div id=\"navigation\">\n".
-                     $this->get_navigation('      ',$this->high_visibility).
+                     $this->get_navigation('      ',$this->text_only).
               "    </div>\n".
               "    <div id=\"navigation_belt\"></div>\n".
               "    <div id=\"information\">\n".

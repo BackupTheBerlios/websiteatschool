@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: pagemanager.class.php,v 1.12 2011/09/27 15:25:07 pfokker Exp $
+ * @version $Id: pagemanager.class.php,v 1.13 2012/04/06 18:47:26 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -517,10 +517,9 @@ class PageManager {
      *
      * @param string $task identifies whether a page or a section should be added
      * @return void results are returned as output in $this->output
-     * @uses $USER
      */
     function task_node_add($task) {
-        global $USER,$WAS_SCRIPT_NAME;
+        global $WAS_SCRIPT_NAME;
         $is_page = ($task == TASK_ADD_PAGE) ? TRUE : FALSE;
 
         // 1 -- are we allowed at all?
@@ -590,13 +589,11 @@ class PageManager {
      * Note that a page that is readonly will not be deleted.
      *
      * @return void results are returned as output in $this->output
-     * @uses $USER
      * @todo should we display trash can icons for sections with non-empty subsections in treeview?
      *       there really is no point, because we eventually will not accept deletion of sections
      *       with grandchilderen. Hmmmmm.....
      */
     function task_node_delete() {
-        global $USER;
 
         // 1 -- do we have a sane value for node_id?
         $node_id = get_parameter_int('node',0);
@@ -678,10 +675,9 @@ class PageManager {
      *
      * @param string $task identifies whether the basic of advanced properties should be edited
      * @return void results are returned as output in $this->output
-     * @uses $USER
      */
     function task_node_edit($task) {
-        global $USER,$WAS_SCRIPT_NAME;
+        global $WAS_SCRIPT_NAME;
 
         // 1 -- do we have a sane value for node_id?
         $node_id = get_parameter_int('node',0);
@@ -753,11 +749,9 @@ class PageManager {
      * the treeview. In that process the lock may be released.
      *
      * @return void results are returned as output in $this->output
-     * @uses $USER
      * @uses module_show_edit()
      */
     function task_node_edit_content() {
-        global $USER;
 
         // 1A -- do we have a sane value for node_id?
         $node_id = get_parameter_int('node',0);
@@ -876,7 +870,6 @@ class PageManager {
      * permissions. Put it on the todo-list.
      *
      * @return void results are returned as output in $this->output
-     * @uses $USER
      * @uses $CFG
      * @todo the check on permissions can be improved (is PERMISSION_XXXX_EDIT_NODE enough?)
      * @todo there is an issue with redirecting to another site:
@@ -886,7 +879,7 @@ class PageManager {
      *       See {@link calculate_uri_shortcuts} for more information.
      */
     function task_page_preview() {
-        global $CFG,$USER;
+        global $CFG;
 
         // 1A -- do we have a sane value for node_id?
         $node_id = get_parameter_int('node',0);
@@ -981,7 +974,6 @@ class PageManager {
      * have a handy opportunity to send alerts because the embargo date will eventually come
      * around and the node will become visible automatically, without anyone being alerted to the
      * fact. Mmmm....
-     * 
      *
      * @param string $task disinguishes between saving a page or a section
      * @return void results are returned as output in $this->output
@@ -1115,7 +1107,6 @@ class PageManager {
      * @uses save_node()
      */
     function task_save_node() {
-        global $USER;
 
         // 1 -- do we have a sane value for node_id?
         $node_id = get_parameter_int('node',0);
@@ -1366,11 +1357,10 @@ class PageManager {
      * @param int $current_option the currently selected edit mode (basic, advanced or content)
      * @return void results are returned as output in $this->output
      * @uses $CFG
-     * @uses $USER
      * @uses $WAS_SCRIPT_NAME
      */
     function show_edit_menu($node_id,$is_page=FALSE,$current_option=NULL) {
-        global $CFG,$WAS_SCRIPT_NAME,$USER;
+        global $CFG,$WAS_SCRIPT_NAME;
 
         // 0 -- does the user have permission to edit this node at all?
         $user_has_permission = $this->permission_edit_node($node_id,$is_page);
@@ -1440,13 +1430,12 @@ class PageManager {
      * if this program has no stylesheet whatsoever).
      *
      * @return void results are returned as output in $this->output
-     * @uses $USER
      * @uses $CFG
      * @uses $WAS_SCRIPT_NAME
      * @uses show_tree_walk()
      */
     function show_tree() {
-        global $CFG,$WAS_SCRIPT_NAME,$USER;
+        global $CFG,$WAS_SCRIPT_NAME;
 
         // 1 -- try to construct a title
         $area_title = (isset($this->areas[$this->area_id])) ? $this->areas[$this->area_id]['title'] : strval($this->area_id);
@@ -1459,16 +1448,16 @@ class PageManager {
         // 2B -- add 'add a page' and/or 'add a section' as LI's in a UL
         if (($can_add_page) || ($can_add_section)) {
             // line up the "add a node" prompt with the other page links by prepending a few 'dummy' icon images
-            // if NOT in high visibility mode (for high visibilty it is better not to clutter the screen with
+            // if NOT in text-only mode (for that it is better not to clutter the screen with
             // superfluous layout manipulation, KISS)
-            if (!$USER->high_visibility) {
+            if (!$this->output->text_only) {
                 $img_attr = array('width' => 16, 'height' => 16, 'title' => '', 'alt' => t('spacer','admin'));
                 $dummy = '    '.html_img($CFG->progwww_short.'/graphics/blank16.gif',$img_attr);
             }
             $this->output->add_content('<ul>');
             if ($can_add_page) {
                 $this->output->add_content('  <li class="level0">');
-                if (!$USER->high_visibility) {
+                if (!$this->output->text_only) {
                     for ($i=0; $i<5; ++$i) {
                         $this->output->add_content($dummy);
                     }
@@ -1479,7 +1468,7 @@ class PageManager {
             }
             if ($can_add_section) {
                 $this->output->add_content('  <li class="level0">');
-                if (!$USER->high_visibility) {
+                if (!$this->output->text_only) {
                     for ($i=0; $i<5; ++$i) {
                         $this->output->add_content($dummy);
                     }
@@ -1515,7 +1504,6 @@ class PageManager {
      * @param int $node_id the first node of this tree level to show
      * @param string $m left margin for increased readability
      * @return void results are returned as output in $this->output
-     * @uses $USER
      * @uses $CFG
      * @uses $WAS_SCRIPT_NAME
      * @uses show_tree_walk()
@@ -2052,6 +2040,9 @@ class PageManager {
             case 'node_expiry':
                 $fields['expiry'] = $item['value'];
                 break;
+            case 'node_style':
+                $fields['style'] = $item['value'];
+                break;
             } // switch
         } // foreach
 
@@ -2308,11 +2299,10 @@ class PageManager {
      * @param int $node_id the node of interest
      * @return void results are returned as output in $this->output
      * @uses $CFG
-     * @uses $USER
      * @uses $WAS_SCRIPT_NAME
      */
     function get_icon_home($node_id) {
-        global $CFG,$WAS_SCRIPT_NAME,$USER;
+        global $CFG,$WAS_SCRIPT_NAME;
 
         // 1 -- check out permissions for node_id and also home_id if any
         $user_has_permission = $this->permission_set_default($node_id);
@@ -2327,14 +2317,14 @@ class PageManager {
 
         // 2 -- construct the icon (image or text)
         if ($this->tree[$node_id]['is_default']) {
-            if ($USER->high_visibility) {
+            if ($this->output->text_only) {
                 $anchor = html_tag('span','class="icon"','['.t('icon_default_text','admin').']');
             } else {
                 $img_attr = array('height'=>16,'width'=>16,'title'=>$title,'alt'=>t('icon_default_alt','admin'));
                 $anchor = html_img($CFG->progwww_short.'/graphics/startsection.gif',$img_attr);
             }
         } else {
-            if ($USER->high_visibility) {
+            if ($this->output->text_only) {
                 $anchor = html_tag('span','class="icon"','['.t('icon_not_default_text','admin').']');
             } else {
                 $img_attr = array('height'=>16,'width'=>16,'title'=>$title,'alt'=>t('icon_not_default_alt','admin'));
@@ -2357,7 +2347,6 @@ class PageManager {
      * @param int $node_id  the node to delete
      * @return void results are returned as output in $this->output
      * @uses $CFG
-     * @uses $USER
      * @uses $WAS_SCRIPT_NAME
      * @todo should we display trash can icons for sections with non-empty subsections?
      *       there really is no point, because we eventually will not accept deletion of sections
@@ -2366,7 +2355,7 @@ class PageManager {
      *       Also, how about readonly nodes? Surely those cannot be deleted... should it not show in the icon?
      */
     function get_icon_delete($node_id) {
-        global $CFG,$WAS_SCRIPT_NAME,$USER;
+        global $CFG,$WAS_SCRIPT_NAME;
 
         // 1 -- does the user have permission to delete this node at all?
         $user_has_permission = ($this->permission_delete_node($node_id,$this->tree[$node_id]['is_page'])) && 
@@ -2374,7 +2363,7 @@ class PageManager {
 
         // 2 -- construct the icon (image or text)
         $title = t(($user_has_permission) ? 'icon_delete' : 'icon_delete_access_denied','admin');
-        if ($USER->high_visibility) {
+        if ($this->output->text_only) {
             $anchor = html_tag('span','class="icon"','['.t('icon_delete_text','admin').']');
         } else {
             $img_attr = array('height' => 16, 'width' => 16, 'title' => $title, 'alt' => t('icon_delete_alt','admin'));
@@ -2396,19 +2385,18 @@ class PageManager {
      * @param int $node_id the node to edit
      * @return void results are returned as output in $this->output
      * @uses $CFG
-     * @uses $USER
      * @uses $WAS_SCRIPT_NAME
      * @todo move permission check to a separate function permission_edit_node()
      */
     function get_icon_edit($node_id) {
-        global $CFG,$WAS_SCRIPT_NAME,$USER;
+        global $CFG,$WAS_SCRIPT_NAME;
 
         // 1 -- does the user have permission to edit this node at all?
         $user_has_permission = $this->permission_edit_node($node_id,$this->tree[$node_id]['is_page']);
 
         // 2 -- construct the icon (image or text)
         $title = t(($user_has_permission) ? 'icon_edit' : 'icon_edit_access_denied','admin');
-        if ($USER->high_visibility) {
+        if ($this->output->text_only) {
             $anchor = html_tag('span','class="icon"','['.t('icon_edit_text','admin').']');
         } else {
             $img_attr = array('height' => 16, 'width' => 16, 'title' => $title, 'alt' => t('icon_edit_alt','admin'));
@@ -2439,11 +2427,10 @@ class PageManager {
      * @param int $node_id the node to edit
      * @return void results are returned as output in $this->output
      * @uses $CFG
-     * @uses $USER
      * @uses $WAS_SCRIPT_NAME
      */
     function get_icon_invisibility($node_id) {
-        global $CFG,$WAS_SCRIPT_NAME,$USER;
+        global $CFG,$WAS_SCRIPT_NAME;
 
         // 1 -- does the user have permission to edit this node at all?
         $user_has_permission = $this->permission_edit_node($node_id,$this->tree[$node_id]['is_page']);
@@ -2476,7 +2463,7 @@ class PageManager {
             $title = t('icon_visible_access_denied','admin');
             $a_attr['class'] = 'dimmed';
         }
-        if ($USER->high_visibility) {
+        if ($this->output->text_only) {
             $anchor = html_tag('span','class="icon"','['.$icon_text.']');
         } else {
             $img_attr = array('height' => 16, 'width' => 16, 'title' => $title, 'alt' => $icon_alt);
@@ -2501,7 +2488,6 @@ class PageManager {
      * @param int $node_id the node to preview
      * @return void results are returned as output in $this->output
      * @uses $CFG
-     * @uses $USER
      * @uses $WAS_SCRIPT_NAME
      * @todo if this is a public area, the user can see every page, except the expired/embargo'ed ones
      *       should we take that into account too? I'd say that is way over the top. How about pages
@@ -2509,7 +2495,7 @@ class PageManager {
      *       those that can edit or edit content.
      */
     function get_icon_page_preview($node_id) {
-        global $CFG,$WAS_SCRIPT_NAME,$USER;
+        global $CFG,$WAS_SCRIPT_NAME;
 
         // 1 -- does the user have permission to edit and thus view this page at all?
         $user_has_permission = (($this->permission_edit_node_content($node_id)) ||
@@ -2522,7 +2508,7 @@ class PageManager {
         }
 
         // 2 -- construct the icon (image or text)
-        if ($USER->high_visibility) {
+        if ($this->output->text_only) {
             $anchor = html_tag('span','class="icon"','['.t('icon_preview_page_text','admin').']');
         } else {
             $img_attr = array('height'=>16,'width'=>16,'title'=>$title,'alt'=>t('icon_preview_page_alt','admin'));
@@ -2553,11 +2539,10 @@ class PageManager {
      * @param int $node_id the section to open/close
      * @return void results are returned as output in $this->output
      * @uses $CFG
-     * @uses $USER
      * @uses $WAS_SCRIPT_NAME
      */
     function get_icon_section($node_id) {
-        global $CFG,$WAS_SCRIPT_NAME,$USER;
+        global $CFG,$WAS_SCRIPT_NAME;
 
         $img_attr = array('height' => 16, 'width' => 16);
         $a_params = array('job' => JOB_PAGEMANAGER,'node' => strval($node_id));
@@ -2567,7 +2552,7 @@ class PageManager {
             $a_params['task'] = TASK_SUBTREE_COLLAPSE;
             $img_attr['title'] = $title;
             $img_attr['alt'] = t('icon_close_section_alt','admin');
-            if ($USER->high_visibility) {
+            if ($this->output->text_only) {
                 $anchor = html_tag('span','class="icon"','['.t('icon_close_section_text','admin').']');
             } else {
                 $anchor = html_img($CFG->progwww_short.'/graphics/folder_open.gif',$img_attr);
@@ -2577,7 +2562,7 @@ class PageManager {
             $a_params['task'] = TASK_SUBTREE_EXPAND;
             $img_attr['title'] = $title;
             $img_attr['alt'] = t('icon_open_section_alt','admin');
-            if ($USER->high_visibility) {
+            if ($this->output->text_only) {
                 $anchor = html_tag('span','class="icon"','['.t('icon_open_section_text','admin').']');
             } else {
                 $anchor = html_img($CFG->progwww_short.'/graphics/folder_closed.gif',$img_attr);
@@ -2597,11 +2582,10 @@ class PageManager {
      * @param int $node_id the node for which to make the link
      * @return void results are returned as output in $this->output
      * @uses $CFG
-     * @uses $USER
      * @uses $WAS_SCRIPT_NAME
      */
     function get_link_node_edit($node_id) {
-        global $WAS_SCRIPT_NAME,$USER;
+        global $WAS_SCRIPT_NAME;
 
         // 1 -- does the user have permission to edit this node at all?
         $is_page = $this->tree[$node_id]['is_page'];
@@ -2944,6 +2928,16 @@ class PageManager {
                 'title' => t('edit_node_expiry_title','admin'),
                 'viewonly' => $viewonly
                 );
+        $dialogdef['node_style'] = array(
+                'type' => F_ALPHANUMERIC,
+                'name' => 'node_style',
+                'maxlength' => 65432,
+                'columns' => 70,
+                'rows' => 10,
+                'label' => t('edit_node_style_label','admin'),
+                'title' => t('edit_node_style_title','admin'),
+                'viewonly' => $viewonly
+                );
         $dialogdef['button_save'] = dialog_buttondef(BUTTON_SAVE);
         $dialogdef['button_cancel'] = dialog_buttondef(BUTTON_CANCEL);
         return $dialogdef;
@@ -3017,6 +3011,9 @@ class PageManager {
                 break;
             case 'node_expiry':
                 $dialogdef[$name]['value'] = $record['expiry'];
+                break;
+            case 'node_style':
+                $dialogdef[$name]['value'] = $record['style'];
                 break;
             }
         }
@@ -3141,11 +3138,10 @@ class PageManager {
      *
      * @param int $node_id the node for which the list of siblings must be constructed
      * @return array ready for use as an options array in a listbox or radiobuttons
-     * @uses $USER
      * @uses $CFG
      */
     function get_options_sort_order($node_id) {
-        global $USER,$CFG;
+        global $CFG;
         $class = 'level0';
         $options = array();
         $options[0] = array('option' => t('options_sort_order_at_top','admin'),
@@ -4061,7 +4057,6 @@ class PageManager {
      *       to another area without informing the module? Questions, questions, questions...
      */
     function module_disconnect($area_id, $node_id, $module_id) {
-        global $USER;
 
         if (($module = $this->module_load_admin($module_id)) === FALSE) {
             return FALSE;
@@ -4101,7 +4096,6 @@ class PageManager {
      *       to another area without informing the module? Questions, questions, questions...
      */
     function module_connect($area_id, $node_id, $module_id) {
-        global $USER;
 
         if (($module = $this->module_load_admin($module_id)) === FALSE) {
             return FALSE;
@@ -4147,7 +4141,7 @@ class PageManager {
      * @return bool FALSE on failure, otherwise the result of <modulename>_show_dialog()
      */
     function module_show_edit($node_id,$module_id,$viewonly,$edit_again) {
-        global $WAS_SCRIPT_NAME,$USER;
+        global $WAS_SCRIPT_NAME;
 
         if (($module = $this->module_load_admin($module_id)) === FALSE) {
             return FALSE;
@@ -4181,7 +4175,7 @@ class PageManager {
      * @return bool FALSE on failure, otherwise the result of <modulename>_save()
      */
     function module_save($node_id,$module_id,$viewonly,&$edit_again) {
-        global $WAS_SCRIPT_NAME,$USER;
+        global $WAS_SCRIPT_NAME;
 
         if (($module = $this->module_load_admin($module_id)) === FALSE) {
             return FALSE;

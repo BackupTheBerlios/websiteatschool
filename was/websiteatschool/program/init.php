@@ -36,7 +36,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: init.php,v 1.8 2011/09/22 06:43:37 pfokker Exp $
+ * @version $Id: init.php,v 1.9 2012/04/06 18:47:25 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -318,7 +318,7 @@ function error_exit($bare_condition_code,$page_title='Fatal Error') {
         $anchor_self = "\n    <p>\n    <a href=\"{$CFG->www}\">{$CFG->www}</a>";
     }
     if (function_exists('appropriate_legal_notices')) {
-        $poweredby = appropriate_legal_notices(FALSE,'');
+        $poweredby = appropriate_legal_notices();
     } else {
         $poweredby = sprintf('%s <a href="%s/about.html" target="_blank">Website@School<a>',
                          (WAS_ORIGINAL) ? 'Powered by' : 'Based on',$CFG->progwww);

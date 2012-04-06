@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: filemanager.class.php,v 1.6 2011/09/21 18:54:20 pfokker Exp $
+ * @version $Id: filemanager.class.php,v 1.7 2012/04/06 18:47:26 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -973,7 +973,7 @@ class FileManager {
         // 3B -- open 4, 5 or 6 column table including clickable headers to sort by file/size/date
         $this->output->add_content(html_table());
         $this->output->add_content('  '.html_table_row(array('class'=>'header')));
-        if ($USER->high_visibility) {
+        if ($this->output->text_only) {
             $spacer = '';
         } else { // quick&dirty minimum column width
             $img_attr = array('width' => 16, 'height' => 16, 'title' => '', 'alt' => t('spacer','admin'));
@@ -1026,7 +1026,7 @@ class FileManager {
             $title = t('filemanager_parent_title','admin');
             $a_attr = array('title' => $title);
             $anchor = t('filemanager_parent','admin');
-            if ($USER->high_visibility) {
+            if ($this->output->text_only) {
                 $icon = html_tag('span','class="icon"','['.t('icon_open_directory_text','admin').']');
             } else {
                 $img_attr = array('height'=>16,'width'=>16,'title'=>$title,'alt'=>t('icon_open_directory_alt','admin'));
@@ -1099,7 +1099,7 @@ class FileManager {
                                       'task' => TASK_REMOVE_FILE,
                                       PARAM_PATH => $entry['path']);
                     $a_attr = array('title' => $title);
-                    if ($USER->high_visibility) {
+                    if ($this->output->text_only) {
                         $anchor = html_tag('span','class="icon"','['.t('icon_delete_file_text','admin').']');
                     } else {
                         $img_attr = array('height'=>16,'width'=>16,'title'=>$title,'alt'=>t('icon_delete_file_alt','admin'));
@@ -1113,7 +1113,7 @@ class FileManager {
                                       'task' => TASK_REMOVE_DIRECTORY,
                                       PARAM_PATH => $entry['path']);
                     $a_attr = array('title' => $title);
-                    if ($USER->high_visibility) {
+                    if ($this->output->text_only) {
                         $anchor = html_tag('span','class="icon"','['.t('icon_delete_directory_text','admin').']');
                     } else {
                         $img_attr = array('height'=>16,'width'=>16,'title'=>$title,'alt'=>t('icon_delete_directory_alt','admin'));
@@ -1128,7 +1128,7 @@ class FileManager {
             if ($entry['is_file']) {
                 // 4Bc (file): preview file icon
                 $title = $entry['title'];
-                if ($USER->high_visibility) {
+                if ($this->output->text_only) {
                     $anchor = html_tag('span','class="icon"','['.t('icon_preview_file_text','admin').']');
                 } else {
                     $img_attr=array('height'=>16,'width'=>16,'alt'=>t('icon_preview_file_alt','admin'));
@@ -1190,7 +1190,7 @@ class FileManager {
                                   PARAM_PATH => $entry['path']);
                 $title = $entry['title'];
                 $a_attr = array('title' => $title);
-                if ($USER->high_visibility) {
+                if ($this->output->text_only) {
                     $anchor = html_tag('span','class="icon"','['.t('icon_open_directory_text','admin').']');
                 } else {
                     $img_attr=array('height'=>16,'width'=>16,'title'=>$title,'alt'=>t('icon_open_directory_alt','admin'));
@@ -1275,12 +1275,11 @@ class FileManager {
      * @param array &$entries ready to use data describing all subdirectories to show
      * @param bool|string $parent suppress link to parent if FALSE otherwise path of parent
      * @return void output generated via $this->output
-     * @uses $USER
      * @uses $CFG
      * @uses $WAS_SCRIPT_NAME
      */
     function show_directories(&$entries,$parent) {
-        global $USER,$CFG,$WAS_SCRIPT_NAME;
+        global $CFG,$WAS_SCRIPT_NAME;
 
         $a_params = array('job' => $this->job,'task' => TASK_CHANGE_DIRECTORY);
         $this->output->add_content('<ul>');
@@ -1290,7 +1289,7 @@ class FileManager {
             $title = t('filemanager_parent_title','admin');
             $a_params[PARAM_PATH] = $parent;
             $a_attr = array('title' => $title);
-            if ($USER->high_visibility) {
+            if ($this->output->text_only) {
                 $icon = html_tag('span','class="icon"','['.t('icon_open_directory_text','admin').']');
             } else {
                 $img_attr=array('height'=>16,'width'=>16,'title'=>$title,'alt'=>t('icon_open_directory_alt','admin'));
@@ -1307,7 +1306,7 @@ class FileManager {
             $title = $entry['title'];
             $a_params[PARAM_PATH] = $entry['path'];
             $a_attr = array('title' => $title);
-            if ($USER->high_visibility) {
+            if ($this->output->text_only) {
                 $icon = html_tag('span','class="icon"','['.t('icon_open_directory_text','admin').']');
             } else {
                 $img_attr=array('height'=>16,'width'=>16,'title'=>$title,'alt'=>t('icon_open_directory_alt','admin'));
@@ -1921,7 +1920,6 @@ class FileManager {
      *
      * @param string $path the directory to list, e.g. '/areas/exemplum' or '/groups/faculty'
      * @return array list of available files and subdirectories
-     * @uses $USER;
      * @uses $CFG;
      */
     function get_entries($path) {
@@ -2748,10 +2746,9 @@ class FileManager {
      * @return output generated via $this->output
      * @uses $WAS_SCRIPT_NAME
      * @uses $CFG
-     * @uses $USER
      */
     function show_file_as_thumbnail($directory,$entry,$delete_file,$index,$m='') {
-        global $WAS_SCRIPT_NAME,$CFG,$USER;
+        global $WAS_SCRIPT_NAME,$CFG;
 
 
         // 1A -- prepare the clickable thumbnail (or 'unknown') image
@@ -2828,7 +2825,7 @@ class FileManager {
                               'task' => TASK_REMOVE_FILE,
                               PARAM_PATH => $entry['path']);
             $a_attr = array('title' => $title);
-            if ($USER->high_visibility) {
+            if ($this->output->text_only) {
                 $anchor = html_tag('span','class="icon"','['.t('icon_delete_file_text','admin').']');
             } else {
                 $img_attr = array('height'=>16,'width'=>16,'title'=>$title,'alt'=>t('icon_delete_file_alt','admin'));

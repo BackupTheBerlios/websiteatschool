@@ -27,7 +27,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasinstall
- * @version $Id: install.php,v 1.14 2012/03/31 15:18:53 pfokker Exp $
+ * @version $Id: install.php,v 1.15 2012/04/06 18:47:25 pfokker Exp $
  * @todo how prevent third party-access to install.php after initial install? .htaccess? !exists(../config.php)? 
  * @todo we should make sure that autosession is disabled in php.ini, otherwise was won't work
  * @todo we should make sure that register globals is off
@@ -1814,8 +1814,8 @@ class InstallWizard {
             'language_key' => $_SESSION['INSTALL']['language_key'], // Foreign Key dictates that language MUST exist
             'path' => $userdata_directory, // we created this directory in step 5B above
             'acl_id' => intval($acl_id),
-            'high_visibility' => $_SESSION['INSTALL']['high_visibility'],
-            'editor' => 'ckeditor'
+            'editor' => 'ckeditor',
+            'skin' => ($_SESSION['INSTALL']['high_visibility']) ? 'textonly' : 'base'
             );
         $user_id = db_insert_into_and_get_id($table,$fields,$key_field);
         if ($user_id === FALSE) {
@@ -2487,7 +2487,7 @@ class InstallWizard {
      * @param string $m margin to improve readability of generated code
      * @return string ready-to-use HTML
      */
-    function appropriate_legal_notices($high_visibility,$m='      ') {
+    function appropriate_legal_notices($high_visibility=FALSE,$m='') {
         if ($high_visibility) {
             $prefix = (WAS_ORIGINAL) ? 'Powered by ' : 'Based on ';
             $anchor = 'Website@School';

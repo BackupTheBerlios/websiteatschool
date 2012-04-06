@@ -26,7 +26,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: main_admin.php,v 1.8 2012/03/31 15:18:53 pfokker Exp $
+ * @version $Id: main_admin.php,v 1.9 2012/04/06 18:47:25 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -147,12 +147,10 @@ function main_admin() {
     // We are still here if versions are OK _or_ versions mismatch but user has UPDATE privilege.
 
     // Now we know we _will_ be generating output => setup output object
-    $output = new AdminOutput($CFG->title);
-    $output->add_stylesheet($CFG->progwww_short.'/styles/admin_base.css');
-    if ($USER->high_visibility) {
-        $output->high_visibility = TRUE;
-        $output->add_stylesheet($CFG->progwww_short.'/styles/admin_high_visibility.css');
-    }
+    // using the specified skin OR the user's prefererred skin OR the one
+    // stored before in $_SESSION
+    $_SESSION['skin'] = get_parameter_string('skin', (isset($_SESSION['skin'])) ? $_SESSION['skin'] : $USER->skin);
+    $output = new AdminOutput($_SESSION['skin'], $CFG->title);
 
     // Display a 'welcome message' if this is the first page after logging in.
     if ($_SESSION['session_counter'] == 1) {
@@ -467,12 +465,12 @@ function admin_show_login_and_exit($message='') {
  * @uses $CFG
  */
 function non_admin_redirect_and_exit() {
-    global $CFG,$USER;
+    global $CFG;
     $access_denied = t('access_denied','admin');
     $access_denied_explanation = t('no_access_admin_php','admin');
     $site = html_a($CFG->www_short.'/index.php',NULL,NULL,t('view_public_area','admin'));
     $login = html_a($CFG->www_short.'/admin.php',array('login' => '1'),NULL,t('view_login_dialog','admin'));
-    $about = appropriate_legal_notices($USER->high_visibility,'');
+    $about = appropriate_legal_notices();
     echo <<<EOT
 <html>
   <head>
@@ -647,7 +645,10 @@ class AdminOutput {
     var $messages_bottom = array();
 
     /** @var bool this switches the navigation between image-based and text-based */
-    var $high_visibility = FALSE;
+    var $text_only = FALSE;
+
+    /** @var string the currently selected skin */
+    var $skin = 'base';
 
     /** @var string the additional parameter to add to the help link in the navigation */
     var $helptopic = '';
@@ -676,7 +677,7 @@ class AdminOutput {
      * @todo do we need a link rel="shortcut icon" type of header too?
      * @todo do we really need more meta-headers?
      */
-    function AdminOutput($title='',$subtitle='') {
+    function AdminOutput($skin='base', $title='',$subtitle='') {
         global $CFG;
         $charset = 'UTF-8';
         $content_type = 'text/html; charset='.$charset;
@@ -696,7 +697,28 @@ class AdminOutput {
             );
         $favicon_header = sprintf('<link rel="shortcut icon" href="%s">',$CFG->progwww_short.'/graphics/favicon.ico');
         $this->add_html_header($favicon_header);
+
+        switch($skin) {
+        case 'base':
+        case 'big':
+        case 'lowvision':
+            $this->add_stylesheet($CFG->progwww_short.'/styles/admin_base.css');
+            break;
+        case 'textonly':
+        case 'braille':
+            $this->text_only = TRUE;
+            $this->add_stylesheet($CFG->progwww_short.'/styles/admin_base.css');
+            $this->add_stylesheet($CFG->progwww_short.'/styles/admin_high_visibility.css');
+            break;
+        default:
+            logger(sprintf("%s.%s(): weird: unknown skin '%s'; using nothing",__CLASS__,__FUNCTION__,$skin));
+            $skin = 'base';
+            $_SESSION['skin'] = $skin; // dirty... remember base for the next time
+            break;
+        }
+        $this->skin = $skin;
     } // AdminOutput()
+
 
     /** send collected HTTP-headers to user's browser
      *
@@ -772,6 +794,9 @@ class AdminOutput {
      * @return string complete HTML-page, ready for output
      */     
     function get_html() {
+        if ($this->skin == 'braille') {
+            return $this->get_lmth();
+        }
         $s  = $this->dtd."\n".
               "<html>\n".
               "<head>\n".
@@ -793,7 +818,7 @@ class AdminOutput {
               "      <h2>".$this->subtitle."</h2>\n".
               "    </div>\n".
               "    <div id=\"navigation\">\n".
-                     $this->get_navigation('      ',$this->high_visibility).
+                     $this->get_navigation('      ',$this->text_only).
               "    </div>\n".
                    $this->get_div_messages('    ').
               "    <div id=\"menu\">\n".
@@ -827,6 +852,73 @@ class AdminOutput {
                $this->get_bottomline('        ').
                $t;
     } // get_html()
+
+
+    /** proof of concept for braille-skin */
+    function get_lmth() {
+        $s  = $this->dtd."\n".
+              "<html>\n".
+              "<head>\n".
+              $this->get_html_head('  ').
+              "</head>\n".
+              "<body>\n".
+
+              "  <div id=\"top\">\n".
+                   $this->get_popups($this->messages_top,'    ').
+              "  </div>\n".
+
+              "  <div id=\"page\">\n".
+
+                   $this->get_div_messages('    ').
+
+              "    <div id=\"content\">\n".
+                     $this->get_breadcrumbs('      ').
+                     $this->get_content('      ').
+                     $this->get_pagination('      ').
+              "    </div>\n".
+
+              "    <div id=\"menu\">\n".
+                     $this->get_menu('      ').
+              "    </div>\n".
+
+              "    <div id=\"navigation\">\n".
+                     $this->get_navigation('      ',$this->text_only).
+              "    </div>\n".
+
+              "    <div id=\"header\">\n".
+              "      <div id=\"logo\">\n".
+                       $this->get_logo('        ').
+              "      </div>\n".
+              "      <div id=\"quicktop\">\n".
+                       $this->get_quicktop('        ').
+              "      </div>\n".
+              "      <h1>".$this->title."</h1>\n".
+              "      <h2>".$this->subtitle."</h2>\n".
+              "    </div>\n".
+
+              "    <div id=\"footer\">\n".
+              "      <div id=\"quickbottom\">\n";
+
+        $t  =          $this->get_quickbottom('        ').
+              "      </div>\n".
+              "      <div id=\"address\">\n".
+                         $this->get_address('        ').
+              "      </div>\n".
+              "    </div>\n".
+              "  </div>\n".
+              "  <div id=\"bottom\">\n".
+                   $this->get_popups($this->messages_bottom,'    ').
+              "  </div>\n".
+              "</body>\n".
+              "</html>\n";
+
+        // we want to add the line with performance 
+        // information as late as possible to catch
+        // as much as we can 
+        return $s.
+               $this->get_bottomline('        ').
+               $t;
+    } // get_lmth()
 
 
     /** get all lines in the HTML head section in a single properly indented string
@@ -1269,7 +1361,7 @@ class AdminOutput {
      */
     function get_bottomline($m='') {
         global $CFG;
-        $bottom_line = appropriate_legal_notices($this->high_visibility,$m)."\n";
+        $bottom_line = appropriate_legal_notices($this->text_only,$m)."\n";
         if ($CFG->debug) {
             $dummy = t('generated_in','admin');
             $a = array('{DATE}'=>strftime("%Y-%m-%d %T"),
