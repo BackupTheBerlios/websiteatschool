@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: theme.class.php,v 1.19 2012/04/06 18:47:27 pfokker Exp $
+ * @version $Id: theme.class.php,v 1.20 2012/04/07 13:57:04 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -310,7 +310,6 @@ class Theme {
      *
      * @param string $m left margin for increased readability
      * @return string generated HTML-code
-     * @todo also deal with Bazaar Style Style Sheets at node level in this routine (requires new field 'nodes.style')
      */
     function get_html_head($m='') {
         //
@@ -339,31 +338,7 @@ class Theme {
             }
         }
 
-        //
-        // If the area-theme configuration uses additional area style,
-        // include it ad-hoc
-        //
-        if ((isset($this->config['style_usage_area'])) && 
-            ($this->config['style_usage_area']) &&
-            (isset($this->config['style']))) {
-            $style = trim($this->config['style']);
-            if (!empty($style)) {
-                if (strlen($m) > 0) {
-                    $style = str_replace("\n","\n  ".$m,$style);
-                }
-                $s .= $m."<style><!--\n".
-                      $m."  ".$style."\n".
-                      $m."--></style>\n";
-            }
-        }
-        //
-        // STUB
-        //
-        if ((isset($this->config['style_usage_node'])) && ($this->config['style_usage_node'])) {
-            $s .= $m."<style><!--\n".
-                  $m."  /* STUB Page level Bazaar Style Style goes here (if any) /STUB */\n".
-                  $m."--></style>\n";
-        }
+        $s .= $this->get_bazaar_style_style($m);
         return $s;
     } // get_html_head()
 
@@ -1142,6 +1117,57 @@ class Theme {
         }
     } // dump_subtree()
 
+    /** collect bazaar style style from area and nodes
+     *
+     * this collects the additional style per node and per area
+     * This implements the Bazaaar Style Style Sheets: every node
+     * can add additional style information ad hoc.
+     *
+     * The additional information is constructed backwards so the
+     * style cascades in the correct direction, ie. from area to
+     * top-level section, subsections and finally the page.
+     *
+     * Note that the style information is trim()'ed and that individual lines
+     * in the style information area indented by two additional spaces for
+     * increased readability. All Bazaar Style Style is concatenated within
+     * a single style-tag.
+     *
+     * @param string $m margin for increased readability
+     * @return string Empty string or ready to use HTML with Bazaar Style Style
+     */
+    function get_bazaar_style_style($m='') {
+        $styles = ''; 
+
+        //
+        // 1 -- Maybe include bazaar style style at node level
+        //
+        if ((isset($this->config['style_usage_node'])) && ($this->config['style_usage_node'])) {
+            $tries = MAXIMUM_ITERATIONS;
+            $next_id = $this->node_id;
+            for ( ; (($next_id != 0) && ($tries-- > 0)); $next_id = $this->tree[$next_id]['parent_id']) {
+                $style = trim($this->tree[$next_id]['record']['style']);
+                if (!empty($style)) {
+                    $styles = $m."  ".str_replace("\n", "\n  ".$m, $style)."\n".$styles;
+              }
+            }
+        }
+        //
+        // 2 -- Maybe include bazaar style style at area level
+        //
+        if ((isset($this->config['style_usage_area'])) && 
+            ($this->config['style_usage_area']) &&
+            (isset($this->config['style']))) {
+            $style = trim($this->config['style']);
+            if (!empty($style)) {
+                $styles = $m."  ".str_replace("\n","\n  ".$m,$style)."\n".$styles;
+            }
+        }
+
+        //
+        // 3 -- Return bazaar style style (if any) sandwiched between style tags
+        //
+        return (empty($styles)) ? '' : $m."<style><!--\n".$styles.$m."--></style>\n";
+    } // get_bazaar_style_style()
 
 
 } // class Theme

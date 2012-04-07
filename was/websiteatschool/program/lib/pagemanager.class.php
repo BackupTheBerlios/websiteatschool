@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: pagemanager.class.php,v 1.13 2012/04/06 18:47:26 pfokker Exp $
+ * @version $Id: pagemanager.class.php,v 1.14 2012/04/07 13:57:04 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -2931,7 +2931,7 @@ class PageManager {
         $dialogdef['node_style'] = array(
                 'type' => F_ALPHANUMERIC,
                 'name' => 'node_style',
-                'maxlength' => 65432,
+                'maxlength' => 16383, // about 16 kB
                 'columns' => 70,
                 'rows' => 10,
                 'label' => t('edit_node_style_label','admin'),
