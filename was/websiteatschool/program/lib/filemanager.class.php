@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: filemanager.class.php,v 1.7 2012/04/06 18:47:26 pfokker Exp $
+ * @version $Id: filemanager.class.php,v 1.8 2012/04/07 14:16:46 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1346,7 +1346,7 @@ class FileManager {
             $name = $this->vname('/');
             $a_params[PARAM_PATH] = '/';
             $attributes = array('title' => t('filemanager_navigate_to','admin',array('{DIRECTORY}' => $name)));
-            $anchor = strtolower($name);
+            $anchor = utf8_strtolower($name);
             $this->output->add_breadcrumb($href,$a_params,$attributes,$anchor);
         }
 
@@ -1357,7 +1357,7 @@ class FileManager {
             $a_params[PARAM_PATH] = $directory;
             $title_path .= (empty($title_path)) ? $name : '/'.$name;
             $attributes = array('title' => t('filemanager_navigate_to','admin',array('{DIRECTORY}' => $title_path)));
-            $anchor = strtolower($name);
+            $anchor = utf8_strtolower($name);
             $this->output->add_breadcrumb($href,$a_params,$attributes,$anchor);
             ++$i;
         }
@@ -2449,7 +2449,7 @@ class FileManager {
 
         // 1 -- does actual file mimetype agree with the file extension?
         $type_path = get_mediatype(get_mimetype($path,$name));
-        $ext = strtolower($extension);
+        $ext = utf8_strtolower($extension);
         $mimetypes = get_mimetypes_array();
         $type_name = (isset($mimetypes[$ext])) ? get_mediatype($mimetypes[$ext]) : 'application/octet-stream';
         if (strcmp($type_path,$type_name) == 0) {
@@ -2873,7 +2873,7 @@ class FileManager {
             $ext = '';
         } else {
             $components = explode('.',$filename);
-            $ext = array_pop($components);
+            $ext = utf8_strtolower(array_pop($components));
             unset($components);
         }
         return (array_search($ext,$extensions) === FALSE) ? FALSE : TRUE;
@@ -2895,7 +2895,7 @@ class FileManager {
     function allowed_extensions($allowed_extensions_list) {
         $allowed_extensions_list = str_replace('.','',$allowed_extensions_list);
         $allowed_extensions_list = str_replace(' ','',$allowed_extensions_list);
-        return (empty($allowed_extensions_list)) ? FALSE : explode(',',strtolower($allowed_extensions_list));
+        return (empty($allowed_extensions_list)) ? FALSE : explode(',',utf8_strtolower($allowed_extensions_list));
     } // allowed_extensions()
 
 } // FileManager
