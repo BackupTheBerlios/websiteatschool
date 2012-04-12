@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: statisticslib.php,v 1.2 2011/02/03 14:04:04 pfokker Exp $
+ * @version $Id: statisticslib.php,v 1.3 2012/04/12 12:19:52 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -31,7 +31,9 @@ if (!defined('WASENTRY')) { die('no entry'); }
  * @return void results are returned as output in $output
  */
 function job_statistics(&$output) {
-    $output->subtitle = 'stub: statistics';
+    $output->add_message(t('function_not_implemented','admin'));
+    $output->add_content('<h2>'.t('description_statistics','admin').'</h2>');
+    $output->add_content(t('function_not_implemented','admin'));
 }
 
 ?>

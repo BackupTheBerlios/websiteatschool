@@ -37,7 +37,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: admin.php,v 1.17 2012/04/06 18:47:24 pfokker Exp $
+ * @version $Id: admin.php,v 1.18 2012/04/12 12:19:50 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1261,5 +1261,7 @@ $string['update_field_value_too_long'] = 'Table \'{TABLE}\' field \'{FIELD}\': c
 $string['update_please_correct_field_value_manually'] = 'The number of fields that need to be shortened manually (outside of Website@School) is {ERRORS}';
 $string['update_warning_obsolete_file'] = 'Warning: the file \'{FILENAME}\' is obsolete (since version {VERSION}) and can be safely removed';
 
+$string['donors'] = 'Donors';
+$string['function_not_implemented'] = 'Function not implemented';
 
 ?>

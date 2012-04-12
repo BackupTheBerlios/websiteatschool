@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: admin.php,v 1.16 2012/04/06 18:47:24 pfokker Exp $
+ * @version $Id: admin.php,v 1.17 2012/04/12 12:19:51 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1153,5 +1153,8 @@ $string['update_version_database_too_old'] = 'De interne versie {VERSION} is te 
 $string['update_field_value_too_long'] = 'Tabel \'{TABLE}\' veld \'{FIELD}\': inhoud is langer dan {LENGTH} tekens: \'{CONTENT}\'.';
 $string['update_please_correct_field_value_manually'] = 'Het aantal velden dat handmatig (buiten Website@School om) ingekort moet worden is {ERRORS}';
 $string['update_warning_obsolete_file'] = 'Waarschuwing: het bestand \'{FILENAME}\' is niet meer nodig (sinds versie {VERSION}) en kan veilig worden verwijderd';
+
+$string['donors'] = 'Donateurs';
+$string['function_not_implemented'] = 'Functie niet geïmplementeerd';
 
 ?>
