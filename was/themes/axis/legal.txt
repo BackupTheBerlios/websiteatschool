@@ -1,0 +1,28 @@
+/program/themes/axis/legal.txt
+
+$Id: legal.txt,v 1.1 2012/04/12 20:57:18 pfokker Exp $
+
+This theme uses an image derived from a painting by Paulus Potter (1646) called
+"Peasant Family with Animals". On April 4, 2012 the full image was retrieved from
+http://commons.wikimedia.org/wiki/File:Paulus_Potter_Bauernfamilie_m_Vieh.jpg.
+
+This page states the following.
+
+  "This is a faithful photographic reproduction of an original
+  two-dimensional work of art. The work of art itself is in the public
+  domain for the following reason: Public domain This work is in the
+  public domain in the United States, and those countries with a
+  copyright term of life of the author plus 100 years or fewer.
+
+  The official position taken by the Wikimedia Foundation is that
+  "faithful reproductions of two-dimensional public domain works of art
+  are public domain, and that claims to the contrary represent an
+  assault on the very concept of a public domain". For details, see
+  http://commons.wikimedia.org/wiki/Commons:When_to_use_the_PD-Art_tag
+
+  This photographic reproduction is therefore also considered to be in
+  the public domain. Please be aware that depending on local laws,
+  re-use of this content may be prohibited or restricted in your
+  jurisdiction."
+
+[eof]

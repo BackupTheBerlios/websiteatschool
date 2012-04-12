@@ -1,0 +1,122 @@
+/* /program/themes/axis/style.css - stylesheet for theme 'axis' for Website@School
+ *
+ * This file is part of Website@School, a Content Management System especially designed for schools.
+ * Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker <peter@berestijn.nl>
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License version 3 as published by
+ * the Free Software Foundation supplemented with the Additional Terms, as set
+ * forth in the License Agreement for Website@School (see /program/license.html).
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
+ * for more details.
+ *
+ * You should have received a copy of the License Agreement for Website@School
+ * along with this file. If not, see http://websiteatschool.eu/license.html
+ *
+ * $Id: style.css,v 1.1 2012/04/12 20:57:19 pfokker Exp $
+ *
+ */
+body {
+  font-family:		Arial, Helvetica, sans-serif;
+  font-size:		0.95em;
+}
+a:link,
+a:visited {
+  text-decoration:	none;
+  color:		#000;
+}
+a:active,
+a:hover {
+  text-decoration:	underline;
+  color:		#F00;
+}
+#page {
+  margin:		auto;
+  width:		955px;
+  height:		600px;
+  background-image:	url('blanco.jpg');
+  background-repeat:	no-repeat;
+}
+#header {
+  width:		338px;
+  height:		580px;
+  float:		left;
+}
+#menu {
+  width:		96px;
+  margin:		350px 8px 0px 0px;
+  height:		230px;
+  float:		left;
+  font-size:		0.7em;
+}
+#menu ul {
+  list-style:		none;
+  margin:		0px 0px 0px 10px;
+  padding:		0px 0px 0px 0px;
+  line-height:		140%;
+}
+a.current {
+  font-weight: bold;
+}
+#content {
+  float:		left;
+  width:		480px;
+  height:		560px;
+  overflow:		auto;
+  margin:		20px 11px 0px 22px;
+  font-size:		0.8em;
+}
+#content a:link,
+#content a:visited {
+  text-decoration:	none;
+  color:		#00F;
+}
+#content a:active,
+#content a:hover {
+  text-decoration:	underline;
+  color:		#F00;
+}
+#messages {
+  border:		2px #FFCC00 dashed;
+  background-color:	#FFFF00;
+}
+#footer {
+  clear:		both;
+  width:		955px;
+  height:		20px;
+  color:		#FF0;
+  font-size:		0.9em;
+}
+#footer-left {
+  float:		left;
+  margin:		0px 0px 0px 5px;
+  font-size:		0.9em;
+  font-weight:		bold;
+}
+#footer-right {
+  float:		right;
+  margin:		0px 10px 0px 0px;
+  font-size:		0.8em;
+  font-weight:		bold;
+  color:                #000;
+}
+#footer-right a {
+  color:                #167272;
+}
+#footer-right a:active,
+#footer-right a:hover {
+  text-decoration:	underline;
+  color:		#F00;
+}
+
+#footer-right img {
+  border:		none;
+  margin:		0px 11px 2px 0px;
+}
+#address {
+  display:		none;
+}
+/* eof */

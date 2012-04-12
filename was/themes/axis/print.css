@@ -1,0 +1,46 @@
+/* /program/themes/axis/print.css - additional printer style for theme 'axis' for Website@School
+ *
+ * This file is part of Website@School, a Content Management System especially designed for schools.
+ * Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker <peter@berestijn.nl>
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License version 3 as published by
+ * the Free Software Foundation supplemented with the Additional Terms, as set
+ * forth in the License Agreement for Website@School (see /program/license.html).
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
+ * for more details.
+ *
+ * You should have received a copy of the License Agreement for Website@School
+ * along with this file. If not, see http://websiteatschool.eu/license.html
+ *
+ * $Id: print.css,v 1.1 2012/04/12 20:57:19 pfokker Exp $
+ *
+ */
+#header {
+  display:		none;
+}
+#menu {
+  display:		none;
+}
+#content {
+  margin:		0px;
+  border-bottom:	1px #167272 solid;
+  width:		955px;
+  height:               955px;
+}
+#footer {
+  color:		#000;
+}
+#footer-left {
+  margin:		0px;
+}
+#footer-right {
+  margin:		0px;
+}
+#address {
+  display:		block;
+}
+/* eof */
