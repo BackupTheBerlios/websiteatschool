@@ -26,7 +26,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: main_admin.php,v 1.9 2012/04/06 18:47:25 pfokker Exp $
+ * @version $Id: main_admin.php,v 1.10 2012/04/12 20:22:38 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -348,7 +348,8 @@ function job_start(&$output) {
     $output->add_content('<p>');
     $output->add_content($a_tag);
     $output->add_content(t('please_send_us_mail','admin',array('{MAILTO}' => $email_address)));
-
+    include_once($CFG->progdir.'/lib/donors/donors.php');
+    show_benefactor_logo($output,$output->text_only);
 } // job_start()
 
 

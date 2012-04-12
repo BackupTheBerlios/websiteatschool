@@ -1,9 +1,10 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.111 2012/04/12 12:19:51 pfokker Exp $
+$Id: CHANGES.txt,v 1.112 2012/04/12 20:22:38 pfokker Exp $
 -------------------------------------------------------------------------------
 
 2012-04-12
 - better message stating module manager and statistics are not yet implemented
+- [main_admin.php] added display of donor logos to the start centre
 
 2012-04-07
 - [theme.class.php]: done with Bazaar Style Style Sheets
