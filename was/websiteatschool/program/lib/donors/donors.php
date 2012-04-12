@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: donors.php,v 1.1 2012/04/12 20:22:39 pfokker Exp $
+ * @version $Id: donors.php,v 1.2 2012/04/12 20:25:41 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -37,7 +37,7 @@ if (!defined('WASENTRY')) { die('no entry'); }
  * @param string $m margin for increased readability
  * @return void output added to output
  */
-function show_benefactor_logo(&$output, $text_only=FALSE, $num=10, $m='') {
+function show_benefactor_logo(&$output, $text_only=FALSE, $num=1, $m='') {
     global $CFG;
     static $benefactors = array(
         array(
