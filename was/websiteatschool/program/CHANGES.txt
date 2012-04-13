@@ -1,6 +1,9 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.113 2012/04/12 20:57:20 pfokker Exp $
+$Id: CHANGES.txt,v 1.114 2012/04/13 08:01:32 pfokker Exp $
 -------------------------------------------------------------------------------
+
+2012-04-13
+- typo in translation: not implemented -> not YET implmemented.
 
 2012-04-12
 - better message stating module manager and statistics are not yet implemented

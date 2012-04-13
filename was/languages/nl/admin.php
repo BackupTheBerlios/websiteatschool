@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: admin.php,v 1.17 2012/04/12 12:19:51 pfokker Exp $
+ * @version $Id: admin.php,v 1.18 2012/04/13 08:01:32 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1155,6 +1155,6 @@ $string['update_please_correct_field_value_manually'] = 'Het aantal velden dat h
 $string['update_warning_obsolete_file'] = 'Waarschuwing: het bestand \'{FILENAME}\' is niet meer nodig (sinds versie {VERSION}) en kan veilig worden verwijderd';
 
 $string['donors'] = 'Donateurs';
-$string['function_not_implemented'] = 'Functie niet geïmplementeerd';
+$string['function_not_yet_implemented'] = 'Functie nog niet geïmplementeerd';
 
 ?>

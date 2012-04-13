@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: modulemanagerlib.php,v 1.3 2012/04/12 12:19:51 pfokker Exp $
+ * @version $Id: modulemanagerlib.php,v 1.4 2012/04/13 08:01:33 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -31,8 +31,9 @@ if (!defined('WASENTRY')) { die('no entry'); }
  * @return void results are returned as output in $output
  */
 function job_modulemanager(&$output) {
-    $output->add_message(t('function_not_implemented','admin'));
     $output->add_content('<h2>'.t('description_modulemanager','admin').'</h2>');
-    $output->add_content(t('function_not_implemented','admin'));
+    $msg = t('function_not_yet_implemented','admin');
+    $output->add_content($msg);
+    $output->add_message($msg);
 }
 ?>
