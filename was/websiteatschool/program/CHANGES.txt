@@ -1,6 +1,13 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.114 2012/04/13 08:01:32 pfokker Exp $
+$Id: CHANGES.txt,v 1.115 2012/04/14 14:36:25 pfokker Exp $
 -------------------------------------------------------------------------------
+
+2012-04-14
+- we now show the word 'Messages' in the yellow message area to make
+  it easier for the vision impaired to identify error messages 
+- changed a lot of alt texts to better convey the meaning of
+  icons, ie. what is the effect of clicking on the icon rather than a
+  description of a pretty picture (see http://webaim.org/techniques/alttext).
 
 2012-04-13
 - typo in translation: not implemented -> not YET implmemented.

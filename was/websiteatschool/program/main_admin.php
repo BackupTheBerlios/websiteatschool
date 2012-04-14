@@ -26,7 +26,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: main_admin.php,v 1.10 2012/04/12 20:22:38 pfokker Exp $
+ * @version $Id: main_admin.php,v 1.11 2012/04/14 14:36:25 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -149,7 +149,10 @@ function main_admin() {
     // Now we know we _will_ be generating output => setup output object
     // using the specified skin OR the user's prefererred skin OR the one
     // stored before in $_SESSION
-    $_SESSION['skin'] = get_parameter_string('skin', (isset($_SESSION['skin'])) ? $_SESSION['skin'] : $USER->skin);
+    $_SESSION['skin'] = get_current_skin();
+
+// echo "DDD: {$_SESSION['skin']}";
+
     $output = new AdminOutput($_SESSION['skin'], $CFG->title);
 
     // Display a 'welcome message' if this is the first page after logging in.
@@ -648,8 +651,8 @@ class AdminOutput {
     /** @var bool this switches the navigation between image-based and text-based */
     var $text_only = FALSE;
 
-    /** @var string the currently selected skin */
-    var $skin = 'base';
+    /** @var object the currently selected skin */
+    var $skin;
 
     /** @var string the additional parameter to add to the help link in the navigation */
     var $helptopic = '';
@@ -698,26 +701,11 @@ class AdminOutput {
             );
         $favicon_header = sprintf('<link rel="shortcut icon" href="%s">',$CFG->progwww_short.'/graphics/favicon.ico');
         $this->add_html_header($favicon_header);
-
-        switch($skin) {
-        case 'base':
-        case 'big':
-        case 'lowvision':
-            $this->add_stylesheet($CFG->progwww_short.'/styles/admin_base.css');
-            break;
-        case 'textonly':
-        case 'braille':
-            $this->text_only = TRUE;
-            $this->add_stylesheet($CFG->progwww_short.'/styles/admin_base.css');
-            $this->add_stylesheet($CFG->progwww_short.'/styles/admin_high_visibility.css');
-            break;
-        default:
-            logger(sprintf("%s.%s(): weird: unknown skin '%s'; using nothing",__CLASS__,__FUNCTION__,$skin));
-            $skin = 'base';
-            $_SESSION['skin'] = $skin; // dirty... remember base for the next time
-            break;
+        $this->skin = new AdminSkin($skin);
+        $this->text_only = $this->skin->is_text_only();
+        foreach($this->skin->get_stylesheets() as $stylesheet) {
+            $this->add_stylesheet($stylesheet);
         }
-        $this->skin = $skin;
     } // AdminOutput()
 
 
@@ -795,7 +783,7 @@ class AdminOutput {
      * @return string complete HTML-page, ready for output
      */     
     function get_html() {
-        if ($this->skin == 'braille') {
+        if ($this->skin->name == 'braille') {
             return $this->get_lmth();
         }
         $s  = $this->dtd."\n".
@@ -975,8 +963,11 @@ class AdminOutput {
      *
      * This constructs an unordered list with messages, if there are any 
      * If there is no message at all, an empty string is returned (without DIV).
-     * If there is a single message, no bullet is added to the message.
-     * If there are two or more messages, bullets are added.
+     * Previously, if there was a single message, no bullet was added to the message.
+     * If there were two or more messages, bullets were added.
+     * We now (april 2012) always add bullets to make this list more predictable
+     * for vision impaired users. Note that we also added an H2 with
+     * the word 'Messages' to make it even easier to identify this div.
      *
      * Note that this routine is an exception with respect to
      * the DIV-tags: this helper routine DOES generate its own DIVs
@@ -989,8 +980,9 @@ class AdminOutput {
     function get_div_messages($m='') {
         $s = '';
         if (!empty($this->messages_inline)) {
-            $s .= $m."<div id=\"messages\">\n";
-            if (sizeof($this->messages_inline) > 1) {
+            $s .= $m."<div id=\"messages\">\n".
+                  $m."  <h2>".t('messages','admin')."</h2>\n";
+            if (sizeof($this->messages_inline) > 0) {
                 $ul_start = $m."  <ul>\n";
                 $ul_stop  = $m."  </ul>\n";
                 $li       = $m."    <li>";
@@ -1763,5 +1755,106 @@ class AdminOutput {
     } // set_suppress_output()
 
 } // AdminOutput
+
+
+/** determine the default skin to use
+ *
+ * This routine determines which skin to use in AdminOutput.
+ * It always returns a valid skin (using 'base' in case of error).
+ *
+ * @uses $USER;
+ * @uses $_SESSION;
+ * @return string a valid skin name
+ */
+function get_current_skin() {
+    global $USER;
+    $skins = array('base','textonly','braille','big','lowvision');
+    $skin = get_parameter_string('skin', (isset($_SESSION['skin'])) ? $_SESSION['skin'] : $USER->skin);
+    return (in_array($skin, $skins)) ? $skin : 'base';
+} // get_current_skin()
+
+
+
+class AdminSkin {
+    var $name = '';
+    var $images = array();
+    var $stylesheets = array();
+    var $text_only = FALSE;
+    var $text_icons = FALSE;
+    var $icon_path = '';
+    var $icon_width = 16;
+    var $icon_height = 16;
+    /** constructor
+     */
+    function AdminSkin($name='base') {
+        global $CFG;
+        $this->icon_path = $CFG->progwww_short.'/graphics/';
+        $this->name = $name;
+        switch($name) {
+        case 'base':
+            $this->stylesheets[] = $CFG->progwww_short.'/styles/admin_base.css';
+            break;
+
+        case 'big':
+            $this->stylesheets[] = $CFG->progwww_short.'/styles/admin_base.css';
+            $this->icon_width = 32;
+            $this->icon_height = 32;
+            break;
+
+        case 'lowvision':
+            $this->stylesheets[] = $CFG->progwww_short.'/styles/admin_base.css';
+            break;
+
+        case 'textonly':
+            $this->text_only = TRUE;
+            $this->stylesheets[] = $CFG->progwww_short.'/styles/admin_base.css';
+            $this->stylesheets[] = $CFG->progwww_short.'/styles/admin_high_visibility.css';
+            break;
+
+        case 'braille':
+            $this->text_only = TRUE;
+            $this->text_icons = TRUE;
+            $this->stylesheets[] = $CFG->progwww_short.'/styles/admin_base.css';
+            $this->stylesheets[] = $CFG->progwww_short.'/styles/admin_high_visibility.css';
+            break;
+
+        default:
+            logger(sprintf("%s.%s(): weird: unknown skin '%s'; using nothing",__CLASS__,__FUNCTION__,$name));
+            $this->name = 'base';
+            break;
+        }
+    } // AdminSkin()
+
+    function is_text_only() {
+        return $this->text_only;
+    }
+
+    function get_stylesheets() {
+        return $this->stylesheets;
+    }
+
+    function get_icon($icon, $title='', $alt='', $text='') {
+        if ($this->text_only) {
+            if (($this->text_icons) || (empty($text))) {
+                $anchor = html_tag('span','class="icon"',$alt);
+            } else {
+                $anchor = html_tag('span','class="icon"','['.$text.']');
+            }
+        } else {
+            $img_attr = array(
+                'width' => $this->icon_width,
+                'height'=> $this->icon_height,
+                'alt' => $alt
+                );
+            if (!empty($title)) {
+                $img_attr['title'] = $title;
+            }
+            $anchor = html_img($this->icon_path.$icon.'.gif',$img_attr);
+        }
+        return $anchor;
+    } // get_icon()
+
+
+} // AdminSkin
 
 ?>

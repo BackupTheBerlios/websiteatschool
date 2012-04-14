@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: pagemanager.class.php,v 1.14 2012/04/07 13:57:04 pfokker Exp $
+ * @version $Id: pagemanager.class.php,v 1.15 2012/04/14 14:36:26 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1451,8 +1451,7 @@ class PageManager {
             // if NOT in text-only mode (for that it is better not to clutter the screen with
             // superfluous layout manipulation, KISS)
             if (!$this->output->text_only) {
-                $img_attr = array('width' => 16, 'height' => 16, 'title' => '', 'alt' => t('spacer','admin'));
-                $dummy = '    '.html_img($CFG->progwww_short.'/graphics/blank16.gif',$img_attr);
+                $dummy = $this->output->skin->get_icon('blank');
             }
             $this->output->add_content('<ul>');
             if ($can_add_page) {
@@ -2317,19 +2316,9 @@ class PageManager {
 
         // 2 -- construct the icon (image or text)
         if ($this->tree[$node_id]['is_default']) {
-            if ($this->output->text_only) {
-                $anchor = html_tag('span','class="icon"','['.t('icon_default_text','admin').']');
-            } else {
-                $img_attr = array('height'=>16,'width'=>16,'title'=>$title,'alt'=>t('icon_default_alt','admin'));
-                $anchor = html_img($CFG->progwww_short.'/graphics/startsection.gif',$img_attr);
-            }
+            $anchor = $this->output->skin->get_icon('startsection', $title, t('icon_default_alt','admin'), t('icon_default_text','admin'));
         } else {
-            if ($this->output->text_only) {
-                $anchor = html_tag('span','class="icon"','['.t('icon_not_default_text','admin').']');
-            } else {
-                $img_attr = array('height'=>16,'width'=>16,'title'=>$title,'alt'=>t('icon_not_default_alt','admin'));
-                $anchor = html_img($CFG->progwww_short.'/graphics/not_startsection.gif',$img_attr);
-            }
+            $anchor = $this->output->skin->get_icon('not_startsection', $title, t('icon_not_default_alt','admin'), t('icon_not_default_text','admin'));
         }
 
         // 3 -- construct the A tag
@@ -2363,12 +2352,7 @@ class PageManager {
 
         // 2 -- construct the icon (image or text)
         $title = t(($user_has_permission) ? 'icon_delete' : 'icon_delete_access_denied','admin');
-        if ($this->output->text_only) {
-            $anchor = html_tag('span','class="icon"','['.t('icon_delete_text','admin').']');
-        } else {
-            $img_attr = array('height' => 16, 'width' => 16, 'title' => $title, 'alt' => t('icon_delete_alt','admin'));
-            $anchor = html_img($CFG->progwww_short.'/graphics/delete.gif',$img_attr);
-        }
+        $anchor = $this->output->skin->get_icon('delete', $title, t('icon_delete_alt','admin'), t('icon_delete_text','admin'));
 
         // 3 -- construct the A tag
         $a_params = array('job' => JOB_PAGEMANAGER,'task' => TASK_NODE_DELETE,'node' => strval($node_id));
@@ -2396,12 +2380,7 @@ class PageManager {
 
         // 2 -- construct the icon (image or text)
         $title = t(($user_has_permission) ? 'icon_edit' : 'icon_edit_access_denied','admin');
-        if ($this->output->text_only) {
-            $anchor = html_tag('span','class="icon"','['.t('icon_edit_text','admin').']');
-        } else {
-            $img_attr = array('height' => 16, 'width' => 16, 'title' => $title, 'alt' => t('icon_edit_alt','admin'));
-            $anchor = html_img($CFG->progwww_short.'/graphics/edit.gif',$img_attr);
-        }
+        $anchor = $this->output->skin->get_icon('edit', $title, t('icon_edit_alt','admin'), t('icon_edit_text','admin'));
 
         // 3 -- construct the A tag
         $a_params = array('job' => JOB_PAGEMANAGER,'task' => TASK_NODE_EDIT,'node' => strval($node_id));
@@ -2440,7 +2419,7 @@ class PageManager {
         $datim_now = strftime('%Y-%m-%d %T');
 
         // 2 -- determine which icon to use + set title
-        $icon_src = 'invisible.gif';
+        $icon_src = 'invisible';
         $icon_text = t('icon_invisible_text','admin');
         $icon_alt = t('icon_invisible_alt','admin');
         if ($datim_now < $datim_embargo) {
@@ -2451,7 +2430,7 @@ class PageManager {
             $title = t('icon_invisible_hidden','admin');
         } else {
             $title = t('icon_visible','admin');
-            $icon_src = 'visible.gif';
+            $icon_src = 'visible';
             $icon_text = t('icon_visible_text','admin');
             $icon_alt = t('icon_visible_alt','admin');
         }
@@ -2463,12 +2442,8 @@ class PageManager {
             $title = t('icon_visible_access_denied','admin');
             $a_attr['class'] = 'dimmed';
         }
-        if ($this->output->text_only) {
-            $anchor = html_tag('span','class="icon"','['.$icon_text.']');
-        } else {
-            $img_attr = array('height' => 16, 'width' => 16, 'title' => $title, 'alt' => $icon_alt);
-            $anchor = html_img($CFG->progwww_short.'/graphics/'.$icon_src,$img_attr);
-        }
+        $anchor = $this->output->skin->get_icon($icon_src, $title, $icon_alt, $icon_text);
+
         // 3B -- return complete icon
         return html_a($WAS_SCRIPT_NAME,$a_params,$a_attr,$anchor);
     } // get_icon_invisiblity()
@@ -2508,12 +2483,8 @@ class PageManager {
         }
 
         // 2 -- construct the icon (image or text)
-        if ($this->output->text_only) {
-            $anchor = html_tag('span','class="icon"','['.t('icon_preview_page_text','admin').']');
-        } else {
-            $img_attr = array('height'=>16,'width'=>16,'title'=>$title,'alt'=>t('icon_preview_page_alt','admin'));
-            $anchor = html_img($CFG->progwww_short.'/graphics/view.gif',$img_attr);
-        }
+        $anchor = $this->output->skin->get_icon('view', $title, t('icon_preview_page_alt','admin'), t('icon_preview_page_text','admin'));
+
 
         // 3 -- construct the A tag
         // This is tricky, because we want to present the preview in a separate
@@ -2544,30 +2515,21 @@ class PageManager {
     function get_icon_section($node_id) {
         global $CFG,$WAS_SCRIPT_NAME;
 
-        $img_attr = array('height' => 16, 'width' => 16);
         $a_params = array('job' => JOB_PAGEMANAGER,'node' => strval($node_id));
-
         if ($this->section_is_open($node_id)) {
+            $icon = 'folder_open';
             $title = t('icon_close_section','admin');
+            $alt = t('icon_close_section_alt','admin');
+            $text = t('icon_close_section_text','admin');
             $a_params['task'] = TASK_SUBTREE_COLLAPSE;
-            $img_attr['title'] = $title;
-            $img_attr['alt'] = t('icon_close_section_alt','admin');
-            if ($this->output->text_only) {
-                $anchor = html_tag('span','class="icon"','['.t('icon_close_section_text','admin').']');
-            } else {
-                $anchor = html_img($CFG->progwww_short.'/graphics/folder_open.gif',$img_attr);
-            }
         } else {
+            $icon = 'folder_closed';
             $title = t('icon_open_section','admin');
+            $alt = t('icon_open_section_alt','admin');
+            $text =t('icon_open_section_text','admin');
             $a_params['task'] = TASK_SUBTREE_EXPAND;
-            $img_attr['title'] = $title;
-            $img_attr['alt'] = t('icon_open_section_alt','admin');
-            if ($this->output->text_only) {
-                $anchor = html_tag('span','class="icon"','['.t('icon_open_section_text','admin').']');
-            } else {
-                $anchor = html_img($CFG->progwww_short.'/graphics/folder_closed.gif',$img_attr);
-            }
         }
+        $anchor = $this->output->skin->get_icon($icon,$title,$alt,$text);
         $a_attr = array('title' => $title);
         return html_a($WAS_SCRIPT_NAME,$a_params,$a_attr,$anchor);
     } // get_icon_section()
