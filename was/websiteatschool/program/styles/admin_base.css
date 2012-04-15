@@ -47,7 +47,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: admin_base.css,v 1.4 2012/04/12 20:22:40 pfokker Exp $
+ * @version $Id: admin_base.css,v 1.5 2012/04/15 15:27:58 pfokker Exp $
  */
 
 body {
@@ -62,7 +62,6 @@ img {
 div {
   border: 0px #000000 solid;
 }
-
 
 #page {
   border: 0px #000000 solid;
@@ -175,6 +174,10 @@ div {
   background-color: #FFFF00;
   padding: 1% 1% 1% 1%;
 }
+#messages h2 {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
 
 #menu {
   clear: both;
@@ -273,7 +276,6 @@ div {
   line-height: 1.5em;
 }
 
-
 #content a:link,
 #content a:visited {
   font-weight: bold;
@@ -328,9 +330,6 @@ div {
   text-decoration: underline;
 }
 
-
-
-
 #footer {
   clear: both;
   background-color: #CCC;
@@ -343,7 +342,6 @@ div {
 #address {
   display: none;
 }
-
 
 /*
  * Styling of input elements
@@ -386,7 +384,6 @@ option.level7 { margin-left: 140px; }
 option.level8 { margin-left: 160px; }
 option.level9 { margin-left: 180px; }
 
-
 /* This allows for a 'tree-like' display in tabular lists like pagemanager permissions in the aclmanager */
 span.level0 { margin-left: 0px; }
 span.level1 { margin-left: 20px; }
@@ -398,7 +395,6 @@ span.level6 { margin-left: 120px; }
 span.level7 { margin-left: 140px; }
 span.level8 { margin-left: 160px; }
 span.level9 { margin-left: 180px; }
-
 
 input.button_save {
   background-color: #E7E7E7;
@@ -532,7 +528,5 @@ div.translatetool_label {
 span.translatetool_code {
   color: #FF0000;
 }
-
-
 
 /* eof /program/styles/admin_base.css */
