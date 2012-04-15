@@ -24,7 +24,7 @@
  * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_zh
- * @version $Id: admin.php,v 1.2 2011/09/29 19:01:14 pfokker Exp $
+ * @version $Id: admin.php,v 1.3 2012/04/15 09:32:11 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = '管理';
@@ -83,7 +83,6 @@ $string['add_a_section_title'] = '点击此处添加新部件';
 $string['hidden'] = '隐藏';
 $string['embargo'] = '禁运';
 $string['expired'] = '过期';
-$string['spacer'] = '空格';
 $string['icon_delete'] = '删除此结点';
 $string['icon_delete_access_denied'] = '您没有权限删除此结点';
 $string['icon_delete_alt'] = '删除图标';

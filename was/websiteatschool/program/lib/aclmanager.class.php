@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: aclmanager.class.php,v 1.5 2012/04/06 18:47:26 pfokker Exp $
+ * @version $Id: aclmanager.class.php,v 1.6 2012/04/15 09:32:11 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1491,7 +1491,7 @@ class AclManager {
                 if (isset($item['area_id'])) { // site level or area level
                     $icon = $this->get_icon_area($item['area_id'],$item['area_is_open'],$item['area_offset']);
                 } else { // node level, show a blank icon to line things up
-                    $icon = $this->get_icon_blank();
+                    $icon = $this->output->skin->get_icon('blank');
                 }
             } else {
                 $icon = '';
@@ -1882,45 +1882,18 @@ class AclManager {
 
         if ($area_is_open) {
             $title = t(($area_id == 0) ? 'icon_close_site' : 'icon_close_area','admin');
-            $img_attr['title'] = $title;
-            $img_attr['alt'] = t(($area_id == 0) ? 'icon_close_site_alt' : 'icon_close_area_alt','admin');
-            if ($this->output->text_only) {
-                $anchor = html_tag('span','class="icon"','['.t(($area_id == 0) ? 'icon_close_site_text' : 
-                                                                                 'icon_close_area_text','admin').']');
-            } else {
-                $anchor = html_img($CFG->progwww_short.'/graphics/folder_open.gif',$img_attr);
-            }
+            $alt = t(($area_id == 0) ? 'icon_close_site_alt' : 'icon_close_area_alt','admin');
+            $text = t(($area_id == 0) ? 'icon_close_site_text' : 'icon_close_area_text','admin');
+            $anchor = $this->output->skin->get_icon('folder_open',$title,$alt,$text);
         } else {
             $title = t(($area_id == 0) ? 'icon_open_site' : 'icon_open_area','admin');
-            $img_attr['title'] = $title;
-            $img_attr['alt'] = t(($area_id == 0) ? 'icon_open_site_alt' : 'icon_open_area_alt','admin');
-            if ($this->output->text_only) {
-                $anchor = html_tag('span','class="icon"','['.t(($area_id == 0) ? 'icon_open_site_text' : 
-                                                                                 'icon_open_area_text','admin').']');
-            } else {
-                $anchor = html_img($CFG->progwww_short.'/graphics/folder_closed.gif',$img_attr);
-            }
+            $alt = t(($area_id == 0) ? 'icon_open_site_alt' : 'icon_open_area_alt','admin');
+            $text = t(($area_id == 0) ? 'icon_open_site_text' : 'icon_open_area_text','admin');
+            $anchor = $this->output->skin->get_icon('folder_closed',$title,$alt,$text);
         }
         $a_attr = array('title' => $title);
         return html_a($WAS_SCRIPT_NAME,$a_params,$a_attr,$anchor);
     } // get_icon_area()
-
-    /** construct a spacer of standard icon width (to line up items)
-     *
-     * @return string ready-to-use HTML-icon (or empty string if user wants text-only)
-     * @uses $CFG
-     * @uses $USER
-     */
-    function get_icon_blank() {
-        global $CFG;
-        if ($this->output->text_only) {
-            $spacer = '';
-        } else {
-            $img_attr = array('width' => 16, 'height' => 16, 'title' => '', 'alt' => t('spacer','admin'));
-            $spacer = html_img($CFG->progwww_short.'/graphics/blank16.gif',$img_attr);
-        }
-        return $spacer;
-    } // get_icon_blank()
 
 } // AclManager
 

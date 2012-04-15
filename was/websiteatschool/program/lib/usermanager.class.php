@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: usermanager.class.php,v 1.12 2012/04/06 18:47:27 pfokker Exp $
+ * @version $Id: usermanager.class.php,v 1.13 2012/04/15 09:32:12 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -200,8 +200,7 @@ class UserManager {
         $this->output->add_content('  <li class="list">');
         // line up the prompt with links to existing users below (if any)
         if (!$this->output->text_only) {
-            $img_attr = array('width' => 16, 'height' => 16, 'title' => '', 'alt' => t('spacer','admin'));
-            $icon_blank = '    '.html_img($CFG->progwww_short.'/graphics/blank16.gif',$img_attr);
+            $icon_blank = '    '.$this->output->skin->get_icon('blank');
             for ($i=0; $i<2; ++$i) {
                 $this->output->add_content($icon_blank);
             }
@@ -879,8 +878,7 @@ class UserManager {
         $this->output->add_content('  <li class="list">');
         // line up the prompt with links to existing areas below (if any)
         if (!$this->output->text_only) {
-            $img_attr = array('width' => 16, 'height' => 16, 'title' => '', 'alt' => t('spacer','admin'));
-            $icon_blank = '    '.html_img($CFG->progwww_short.'/graphics/blank16.gif',$img_attr);
+            $icon_blank = '    '.$this->output->skin->get_icon('blank');
             for ($i=0; $i<1; ++$i) {
                 $this->output->add_content($icon_blank);
             }
@@ -1767,12 +1765,9 @@ class UserManager {
 
         // 1 -- construct the icon (image or text)
         $title = t('icon_user_delete','admin');
-        if ($this->output->text_only) {
-            $anchor = html_tag('span','class="icon"','['.t('icon_user_delete_text','admin').']');
-        } else {
-            $img_attr = array('height' => 16,'width' => 16,'title' => $title,'alt' => t('icon_user_delete_alt','admin'));
-            $anchor = html_img($CFG->progwww_short.'/graphics/delete.gif',$img_attr);
-        }
+        $alt = t('icon_user_delete_alt','admin');
+        $text = t('icon_user_delete_text','admin');
+        $anchor = $this->output->skin->get_icon('delete', $title, $alt, $text);
 
         // 2 -- construct the A tag
         $a_params = $this->a_params(TASK_USER_DELETE,$user_id);
@@ -1791,15 +1786,11 @@ class UserManager {
     function get_icon_edit($user_id) {
         global $CFG,$WAS_SCRIPT_NAME;
 
-
         // 1 -- construct the icon (image or text)
         $title = t('icon_user_edit','admin');
-        if ($this->output->text_only) {
-            $anchor = html_tag('span','class="icon"','['.t('icon_user_edit_text','admin').']');
-        } else {
-            $img_attr = array('height' => 16,'width' => 16,'title' => $title,'alt' => t('icon_area_edit_alt','admin'));
-            $anchor = html_img($CFG->progwww_short.'/graphics/edit.gif',$img_attr);
-        }
+        $alt = t('icon_user_edit_alt','admin');
+        $text = t('icon_user_edit_text','admin');
+        $anchor = $this->output->skin->get_icon('edit', $title, $alt, $text);
 
         // 2 -- construct the A tag
         $a_params = $this->a_params(TASK_USER_EDIT,$user_id);
@@ -1821,12 +1812,9 @@ class UserManager {
 
         // 1 -- construct the icon (image or text)
         $title = t('icon_membership_delete','admin');
-        if ($this->output->text_only) {
-            $anchor = html_tag('span','class="icon"','['.t('icon_membership_delete_text','admin').']');
-        } else {
-            $img_attr = array('height' => 16,'width' => 16,'title' => $title,'alt' => t('icon_user_delete_alt','admin'));
-            $anchor = html_img($CFG->progwww_short.'/graphics/delete.gif',$img_attr);
-        }
+        $alt = t('icon_membership_delete_alt','admin');
+        $text = t('icon_membership_delete_text','admin');
+        $anchor = $this->output->skin->get_icon('delete', $title, $alt, $text);
 
         // 2 -- construct the A tag
         $a_params = $this->a_params(TASK_USER_GROUPDELETE,$user_id);
@@ -2091,7 +2079,7 @@ class UserManager {
      * {@link in dialoglib.php}.
      *
      * Here we (re-)use the translations for the (short) editor option
-     * and (long) editor name from the site config dialogs, e.g.. via a
+     * and (long) editor name from the site config dialogs, e.g. via a
      * constructed key 'site_config_editor_{$editor}_option'.
      *
      * @return array list of available editors

@@ -24,7 +24,7 @@
  * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_pl
- * @version $Id: admin.php,v 1.1 2011/09/29 19:11:35 pfokker Exp $
+ * @version $Id: admin.php,v 1.2 2012/04/15 09:32:10 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = 'Administracja';
@@ -83,7 +83,6 @@ $string['add_a_section_title'] = 'Kliknij tutaj w , żeby dodać nową sekcję';
 $string['hidden'] = 'ukryta';
 $string['embargo'] = 'embargo';
 $string['expired'] = 'wygasła';
-$string['spacer'] = 'odstęp';
 $string['icon_delete'] = 'Usuń stronę lub sekcję';
 $string['icon_delete_access_denied'] = 'Nie posiadasz uprawnień, żeby usunąć tę stronę/sekcję';
 $string['icon_delete_alt'] = 'ikona usunięć';

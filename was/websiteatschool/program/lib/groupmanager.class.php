@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: groupmanager.class.php,v 1.9 2012/04/06 18:47:26 pfokker Exp $
+ * @version $Id: groupmanager.class.php,v 1.10 2012/04/15 09:32:12 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -142,8 +142,7 @@ class GroupManager {
         $this->output->add_content('  <li class="list">');
         // line up the prompt with links to existing areas below (if any)
         if (!$this->output->text_only) {
-            $img_attr = array('width' => 16, 'height' => 16, 'title' => '', 'alt' => t('spacer','admin'));
-            $icon_blank = '    '.html_img($CFG->progwww_short.'/graphics/blank16.gif',$img_attr);
+            $icon_blank = '    '.$this->output->skin->get_icon('blank');
             for ($i=0; $i<2; ++$i) {
                 $this->output->add_content($icon_blank);
             }
@@ -1566,12 +1565,9 @@ class GroupManager {
 
         // 1 -- construct the icon (image or text)
         $title = t('icon_group_delete','admin');
-        if ($this->output->text_only) {
-            $anchor = html_tag('span','class="icon"','['.t('icon_group_delete_text','admin').']');
-        } else {
-            $img_attr = array('height' => 16, 'width' => 16, 'title' => $title, 'alt' => t('icon_group_delete_alt','admin'));
-            $anchor = html_img($CFG->progwww_short.'/graphics/delete.gif',$img_attr);
-        }
+        $alt = t('icon_group_delete_alt','admin');
+        $text = t('icon_group_delete_text','admin');
+        $anchor = $this->output->skin->get_icon('delete', $title, $alt, $text);
 
         // 2 -- construct the A tag
         $a_params = $this->a_params(TASK_GROUP_DELETE,$group_id);
@@ -1591,15 +1587,11 @@ class GroupManager {
     function get_icon_edit($group_id) {
         global $CFG,$WAS_SCRIPT_NAME,$USER;
 
-
         // 1 -- construct the icon (image or text)
         $title = t('icon_group_edit','admin');
-        if ($this->output->text_only) {
-            $anchor = html_tag('span','class="icon"','['.t('icon_group_edit_text','admin').']');
-        } else {
-            $img_attr = array('height' => 16, 'width' => 16, 'title' => $title, 'alt' => t('icon_area_edit_alt','admin'));
-            $anchor = html_img($CFG->progwww_short.'/graphics/edit.gif',$img_attr);
-        }
+        $alt = t('icon_group_edit_alt','admin');
+        $text = t('icon_group_edit_text','admin');
+        $anchor = $this->output->skin->get_icon('edit', $title, $alt, $text);
 
         // 2 -- construct the A tag
         $a_params = $this->a_params(TASK_GROUP_EDIT,$group_id);

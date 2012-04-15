@@ -37,7 +37,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: admin.php,v 1.19 2012/04/13 08:01:32 pfokker Exp $
+ * @version $Id: admin.php,v 1.20 2012/04/15 09:32:09 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -45,7 +45,7 @@ $string['translatetool_title'] = 'Administration';
 $string['translatetool_description'] = 'This file contains translations of the CMS administration interface';
 
 $string['generated_in'] = 'generated on {DATE} in {QUERIES} queries and {SECONDS} seconds';
-$string['logo_websiteatschool'] = 'logo Website@School&reg;';
+$string['logo_websiteatschool'] = 'Website@School®';
 $string['end_this_session'] = 'end this session, logout the user';
 $string['logout_username'] = 'logout {USERNAME}';
 $string['view_public_area'] = 'public area';
@@ -110,67 +110,63 @@ $string['hidden'] = 'hidden';
 $string['embargo'] = 'embargo';
 $string['expired'] = 'expired';
 
-$string['spacer'] = 'spacer';
-
 $string['icon_delete'] = 'Delete this node';
 $string['icon_delete_access_denied'] = 'You have no permissions to delete this node';
-$string['icon_delete_alt'] = 'icon delete';
+$string['icon_delete_alt'] = 'delete';
 $string['icon_delete_text'] = 'D';
 
 $string['icon_edit'] = 'Edit this node';
 $string['icon_edit_access_denied'] = 'You have no permissions to edit this node';
-$string['icon_edit_alt'] = 'icon edit';
+$string['icon_edit_alt'] = 'edit';
 $string['icon_edit_text'] = 'E';
 
 $string['icon_default'] = 'Make this node the home (default) node';
 $string['icon_default_access_denied'] = 'You have no permissions to change the home (default) node';
-$string['icon_default_alt'] = 'icon home';
+$string['icon_default_alt'] = 'is home';
 $string['icon_default_text'] = 'H';
 $string['icon_not_default_text'] = '_';
-$string['icon_not_default_alt'] = 'icon not home';
+$string['icon_not_default_alt'] = 'make home';
 $string['icon_is_default'] = 'This node is the home (default) node';
 
 $string['icon_preview_page'] = 'Display a preview of the page (in a separate window)';
 $string['icon_preview_page_access_denied'] = 'You have no permission to display a preview of the page';
-$string['icon_preview_page_alt'] = 'icon page';
+$string['icon_preview_page_alt'] = 'preview';
 $string['icon_preview_page_text'] = 'P';
 
 $string['icon_open_section'] = 'Open the section (expand the tree 1 level)';
-$string['icon_open_section_alt'] = 'icon closed folder';
+$string['icon_open_section_alt'] = 'open section';
 $string['icon_open_section_text'] = '+';
 
 $string['icon_close_section'] = 'Close the section (collapse the tree)';
-$string['icon_close_section_alt'] = 'icon opened folder';
+$string['icon_close_section_alt'] = 'close section';
 $string['icon_close_section_text'] = '-';
 
 $string['icon_open_area'] = 'Open the area (expand the full tree)';
-$string['icon_open_area_alt'] = 'icon closed folder';
+$string['icon_open_area_alt'] = 'open area';
 $string['icon_open_area_text'] = '+';
 
 $string['icon_close_area'] = 'Close the area (collapse the tree)';
-$string['icon_close_area_alt'] = 'icon opened folder';
+$string['icon_close_area_alt'] = 'close area';
 $string['icon_close_area_text'] = '-';
 
 $string['icon_open_site'] = 'Open all areas (expand the full tree in all areas)';
-$string['icon_open_site_alt'] = 'icon closed folder';
+$string['icon_open_site_alt'] = 'open all areas';
 $string['icon_open_site_text'] = '+';
 
 $string['icon_close_site'] = 'Close all areas (collapse the tree in all areas)';
-$string['icon_close_site_alt'] = 'icon opened folder';
+$string['icon_close_site_alt'] = 'close all areas';
 $string['icon_close_site_text'] = '-';
 
 $string['icon_visible'] = 'This node is visible (not hidden, no embargo, not expired)';
 $string['icon_visible_access_denied'] = 'You have no permissions to edit this node';
-$string['icon_visible_alt'] = 'icon visible';
+$string['icon_visible_alt'] = 'advanced edit or make invisible';
 $string['icon_visible_text'] = '_';
 
 $string['icon_invisible_hidden'] = 'This node is invisible (hidden)';
 $string['icon_invisible_embargo'] = 'This node is invisible (embargo until {DATIM})';
 $string['icon_invisible_expiry'] = 'This node is invisible (expiration on {DATIM})';
-$string['icon_invisible_alt'] = 'icon invisible';
+$string['icon_invisible_alt'] = 'advanced edit or make visible';
 $string['icon_invisible_text'] = 'I';
-
-
 
 $string['too_many_levels'] = 'Can not display section {NODE}: nested too deep';
 
@@ -443,20 +439,20 @@ $string['areamanager_add_an_area_title'] = 'Click here to add a new area';
 
 $string['icon_area_default'] = 'Make this area the home (default) area';
 $string['icon_area_default_access_denied'] = 'You have no permission to change the default area';
-$string['icon_area_default_alt'] = 'icon home';
+$string['icon_area_default_alt'] = 'is home';
 $string['icon_area_default_text'] = 'H';
 $string['icon_area_not_default_text'] = '_';
-$string['icon_area_not_default_alt'] = 'icon not home';
+$string['icon_area_not_default_alt'] = 'make home';
 $string['icon_area_is_default'] = 'This area is the home (default) area';
 
 $string['icon_area_delete'] = 'Delete this area';
 $string['icon_area_delete_access_denied'] = 'You have no permission to delete this area';
-$string['icon_area_delete_alt'] = 'icon delete';
+$string['icon_area_delete_alt'] = 'delete';
 $string['icon_area_delete_text'] = 'D';
 
 $string['icon_area_edit'] = 'Edit this area';
 $string['icon_area_edit_access_denied'] = 'You have no permission to edit this area';
-$string['icon_area_edit_alt'] = 'icon edit';
+$string['icon_area_edit_alt'] = 'edit';
 $string['icon_area_edit_text'] = 'E';
 
 $string['area_edit_public_title'] = '(public) {AREA_FULL_NAME} ({AREA}, {SORT_ORDER})';
@@ -652,11 +648,11 @@ $string['groupmanager_group_edit_title'] = 'Edit \'{FULL_NAME}\'';
 $string['groupmanager_group_capacity_edit_title'] = 'Edit properties for this group/capacity';
 
 $string['icon_group_delete'] = 'Delete this group';
-$string['icon_group_delete_alt'] = 'icon delete';
+$string['icon_group_delete_alt'] = 'delete';
 $string['icon_group_delete_text'] = 'D';
 
 $string['icon_group_edit'] = 'Edit this group';
-$string['icon_group_edit_alt'] = 'icon edit';
+$string['icon_group_edit_alt'] = 'edit';
 $string['icon_group_edit_text'] = 'E';
 
 $string['groupmanager_add_group_header'] = 'Add a new group';
@@ -847,11 +843,11 @@ $string['usermanager_user_edit'] = '{FULL_NAME} ({USERNAME})';
 $string['usermanager_user_edit_title'] = 'Edit this user';
 
 $string['icon_user_delete'] = 'Delete this user';
-$string['icon_user_delete_alt'] = 'icon delete';
+$string['icon_user_delete_alt'] = 'delete';
 $string['icon_user_delete_text'] = 'D';
 
 $string['icon_user_edit'] = 'Edit this user';
-$string['icon_user_edit_alt'] = 'icon edit';
+$string['icon_user_edit_alt'] = 'edit';
 $string['icon_user_edit_text'] = 'E';
 
 
@@ -975,7 +971,7 @@ $string['usermanager_user_groups_add_title'] = 'Click here to add a new group me
 $string['usermanager_user_groups'] = '{GROUP} ({GROUP_FULL_NAME}) / {CAPACITY}';
 
 $string['icon_membership_delete'] = 'Delete this group membership';
-$string['icon_membership_delete_alt'] = 'icon delete';
+$string['icon_membership_delete_alt'] = 'delete';
 $string['icon_membership_delete_text'] = 'D';
 
 $string['usermanager_user_groupadd_header'] = 'Add a group membership to user {USERNAME} ({FULL_NAME})';
@@ -1027,15 +1023,15 @@ $string['filemanager_parent_title'] = 'Use this link to change to the parent fol
 
 $string['invalid_path'] = 'Invalid path \'{PATH}\'';
 
-$string['icon_preview_file_alt'] = 'icon file preview';
+$string['icon_preview_file_alt'] = 'preview file';
 $string['icon_preview_file_text'] = 'P';
 
 $string['icon_delete_file'] = 'Delete this file';
-$string['icon_delete_file_alt'] = 'icon file delete';
+$string['icon_delete_file_alt'] = 'delete file';
 $string['icon_delete_file_text'] = 'D';
 
 $string['icon_delete_directory'] = 'Delete this folder';
-$string['icon_delete_directory_alt'] = 'icon folder delete';
+$string['icon_delete_directory_alt'] = 'delete folder';
 $string['icon_delete_directory_text'] = 'D';
 
 $string['filemanager_column_file'] = 'Name';
@@ -1054,8 +1050,11 @@ $string['filemanager_add_subdirectory_title'] = 'Please enter the name of the ne
 $string['filemanager_add_subdirectory_success'] = 'Subfolder \'{DIRECTORY}\' added to \'{PATH}\'';
 $string['filemanager_add_subdirectory_failure'] = 'Error: could not add subfolder \'{DIRECTORY}\' to \'{PATH}\'';
 
-$string['icon_open_directory_alt'] = 'icon closed folder';
+$string['icon_open_directory_alt'] = 'open folder';
 $string['icon_open_directory_text'] = '+';
+
+$string['icon_open_parent_directory_alt'] = 'open parent folder';
+$string['icon_open_parent_directory_text'] = '+';
 
 $string['filemanager_nothing_to_delete'] = 'Warning: nothing to delete';
 $string['filemanager_success_delete_file'] = 'Success deleting file \'{FILENAME}\'';
@@ -1148,7 +1147,7 @@ $string['translatetool_add_a_language'] = 'Add a language';
 $string['translatetool_add_a_language_title'] = 'Click here to add a new language';
 
 $string['icon_language_edit'] = 'Edit language properties';
-$string['icon_language_edit_alt'] = 'icon edit';
+$string['icon_language_edit_alt'] = 'edit';
 $string['icon_language_edit_text'] = 'E';
 $string['translatetool_edit_translation'] = '{LANGUAGE_NAME} ({LANGUAGE_KEY})';
 $string['translatetool_edit_translation_title'] = 'Click here to edit translations for this language';
@@ -1263,5 +1262,6 @@ $string['update_warning_obsolete_file'] = 'Warning: the file \'{FILENAME}\' is o
 
 $string['donors'] = 'Donors';
 $string['function_not_yet_implemented'] = 'Function not yet implemented';
+$string['messages'] = 'Messages';
 
 ?>

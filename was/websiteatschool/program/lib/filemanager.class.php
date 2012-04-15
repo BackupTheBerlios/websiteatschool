@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: filemanager.class.php,v 1.8 2012/04/07 14:16:46 pfokker Exp $
+ * @version $Id: filemanager.class.php,v 1.9 2012/04/15 09:32:11 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -973,12 +973,9 @@ class FileManager {
         // 3B -- open 4, 5 or 6 column table including clickable headers to sort by file/size/date
         $this->output->add_content(html_table());
         $this->output->add_content('  '.html_table_row(array('class'=>'header')));
-        if ($this->output->text_only) {
-            $spacer = '';
-        } else { // quick&dirty minimum column width
-            $img_attr = array('width' => 16, 'height' => 16, 'title' => '', 'alt' => t('spacer','admin'));
-            $spacer = html_img($CFG->progwww_short.'/graphics/blank16.gif',$img_attr);
-        }
+        // quick&dirty minimum column width
+        $spacer = ($this->output->text_only)? '' : $this->output->skin->get_icon('blank');
+
         // 3Ba -- column with checkboxes (only if not in thumbnail view mode)
         if (($delete_file) && (!($show_thumbnails))) {
             $this->output->add_content('    '.html_table_head('',$spacer));
@@ -1026,12 +1023,10 @@ class FileManager {
             $title = t('filemanager_parent_title','admin');
             $a_attr = array('title' => $title);
             $anchor = t('filemanager_parent','admin');
-            if ($this->output->text_only) {
-                $icon = html_tag('span','class="icon"','['.t('icon_open_directory_text','admin').']');
-            } else {
-                $img_attr = array('height'=>16,'width'=>16,'title'=>$title,'alt'=>t('icon_open_directory_alt','admin'));
-                $icon = html_img($CFG->progwww_short.'/graphics/folder_closed.gif',$img_attr);
-            }
+            $alt = t('icon_open_parent_directory_alt','admin');
+            $text =t('icon_open_parent_directory_text','admin');
+            $icon = $this->output->skin->get_icon('folder_closed',$title,$alt,$text);
+
             $oddeven = ($oddeven == 'even') ? 'odd' : 'even';
             $this->output->add_content('  '.html_table_row(array('class' => $oddeven)));
             if (($delete_file) && (!($show_thumbnails))) {
@@ -1099,13 +1094,11 @@ class FileManager {
                                       'task' => TASK_REMOVE_FILE,
                                       PARAM_PATH => $entry['path']);
                     $a_attr = array('title' => $title);
-                    if ($this->output->text_only) {
-                        $anchor = html_tag('span','class="icon"','['.t('icon_delete_file_text','admin').']');
-                    } else {
-                        $img_attr = array('height'=>16,'width'=>16,'title'=>$title,'alt'=>t('icon_delete_file_alt','admin'));
-                        $anchor = html_img($CFG->progwww_short.'/graphics/delete.gif',$img_attr);
-                    }
+                    $alt = t('icon_delete_file_alt','admin');
+                    $text = t('icon_delete_file_text','admin');
+                    $anchor = $this->output->skin->get_icon('delete', $title, $alt, $text);
                     $cell = html_a($WAS_SCRIPT_NAME,$a_params,$a_attr,$anchor);
+
                 } elseif (($delete_directory) && (!($entry['is_file']))) {
                     $title = t('filemanager_delete_directory','admin',
                                array('{DIRECTORY}'=>htmlspecialchars($entry['vname'])));
@@ -1113,12 +1106,9 @@ class FileManager {
                                       'task' => TASK_REMOVE_DIRECTORY,
                                       PARAM_PATH => $entry['path']);
                     $a_attr = array('title' => $title);
-                    if ($this->output->text_only) {
-                        $anchor = html_tag('span','class="icon"','['.t('icon_delete_directory_text','admin').']');
-                    } else {
-                        $img_attr = array('height'=>16,'width'=>16,'title'=>$title,'alt'=>t('icon_delete_directory_alt','admin'));
-                        $anchor = html_img($CFG->progwww_short.'/graphics/delete.gif',$img_attr);
-                    }
+                    $alt = t('icon_delete_directory_alt','admin');
+                    $text = t('icon_delete_directory_text','admin');
+                    $anchor = $this->output->skin->get_icon('delete', $title, $alt, $text);
                     $cell = html_a($WAS_SCRIPT_NAME,$a_params,$a_attr,$anchor);
                 } else {
                     $cell = '';
@@ -1128,15 +1118,9 @@ class FileManager {
             if ($entry['is_file']) {
                 // 4Bc (file): preview file icon
                 $title = $entry['title'];
-                if ($this->output->text_only) {
-                    $anchor = html_tag('span','class="icon"','['.t('icon_preview_file_text','admin').']');
-                } else {
-                    $img_attr=array('height'=>16,'width'=>16,'alt'=>t('icon_preview_file_alt','admin'));
-                    if (!$file_forbidden) {
-                        $img_attr['title'] = $title;
-                    }
-                    $anchor = html_img($CFG->progwww_short.'/graphics/view.gif',$img_attr);
-                }
+                $alt = t('icon_preview_file_alt','admin');
+                $text = t('icon_preview_file_text','admin');
+                $anchor = $this->output->skin->get_icon('view', $title, $alt, $text);
                 if ($file_forbidden) {
                     // Show a 'dead' preview link with icon and a dead link with the filename;
                     // prevent that the user accidently displays a rogue file.
@@ -1190,12 +1174,9 @@ class FileManager {
                                   PARAM_PATH => $entry['path']);
                 $title = $entry['title'];
                 $a_attr = array('title' => $title);
-                if ($this->output->text_only) {
-                    $anchor = html_tag('span','class="icon"','['.t('icon_open_directory_text','admin').']');
-                } else {
-                    $img_attr=array('height'=>16,'width'=>16,'title'=>$title,'alt'=>t('icon_open_directory_alt','admin'));
-                    $anchor = html_img($CFG->progwww_short.'/graphics/folder_closed.gif',$img_attr);
-                }
+                $alt = t('icon_open_directory_alt','admin');
+                $text = t('icon_open_directory_text','admin');
+                $anchor = $this->output->skin->get_icon('folder_closed', $title, $alt, $text);
                 $this->output->add_content('    '.html_table_cell($attributes,
                                                                   html_a($WAS_SCRIPT_NAME,$a_params,$a_attr,$anchor)));
                 // 4Bd (dir): another A tag but now with the directory name as anchor
@@ -1289,12 +1270,9 @@ class FileManager {
             $title = t('filemanager_parent_title','admin');
             $a_params[PARAM_PATH] = $parent;
             $a_attr = array('title' => $title);
-            if ($this->output->text_only) {
-                $icon = html_tag('span','class="icon"','['.t('icon_open_directory_text','admin').']');
-            } else {
-                $img_attr=array('height'=>16,'width'=>16,'title'=>$title,'alt'=>t('icon_open_directory_alt','admin'));
-                $icon = html_img($CFG->progwww_short.'/graphics/folder_closed.gif',$img_attr);
-            }
+            $alt = t('icon_open_parent_directory_alt','admin');
+            $text = t('icon_open_parent_directory_text','admin');
+            $icon = $this->output->skin->get_icon('folder_closed', $title, $alt, $text);
             $anchor = t('filemanager_parent','admin');
             $this->output->add_content('  '.html_tag('li',array('class' => 'level0')));
             $this->output->add_content('      '.html_a($WAS_SCRIPT_NAME,$a_params,$a_attr,$icon));
@@ -1306,12 +1284,9 @@ class FileManager {
             $title = $entry['title'];
             $a_params[PARAM_PATH] = $entry['path'];
             $a_attr = array('title' => $title);
-            if ($this->output->text_only) {
-                $icon = html_tag('span','class="icon"','['.t('icon_open_directory_text','admin').']');
-            } else {
-                $img_attr=array('height'=>16,'width'=>16,'title'=>$title,'alt'=>t('icon_open_directory_alt','admin'));
-                $icon = html_img($CFG->progwww_short.'/graphics/folder_closed.gif',$img_attr);
-            }
+            $alt = t('icon_open_directory_alt','admin');
+            $text = t('icon_open_directory_text','admin');
+            $icon = $this->output->skin->get_icon('folder_closed', $title, $alt, $text);
             $anchor = htmlspecialchars($entry['vname']);
             $this->output->add_content('  '.html_tag('li',array('class' => 'level0')));
             $this->output->add_content('    '.html_a($WAS_SCRIPT_NAME,$a_params,$a_attr,$icon));
@@ -2825,12 +2800,9 @@ class FileManager {
                               'task' => TASK_REMOVE_FILE,
                               PARAM_PATH => $entry['path']);
             $a_attr = array('title' => $title);
-            if ($this->output->text_only) {
-                $anchor = html_tag('span','class="icon"','['.t('icon_delete_file_text','admin').']');
-            } else {
-                $img_attr = array('height'=>16,'width'=>16,'title'=>$title,'alt'=>t('icon_delete_file_alt','admin'));
-                $anchor = html_img($CFG->progwww_short.'/graphics/delete.gif',$img_attr);
-            }
+            $alt = t('icon_delete_file_alt','admin');
+            $text = t('icon_delete_file_text','admin');
+            $anchor = $this->output->skin->get_icon('delete', $title, $alt, $text);
             $icon = html_a($WAS_SCRIPT_NAME,$a_params,$a_attr,$anchor);
         } else {
             $icon = '';

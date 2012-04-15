@@ -54,7 +54,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: updatelib.php,v 1.19 2012/04/06 18:47:27 pfokker Exp $
+ * @version $Id: updatelib.php,v 1.20 2012/04/15 09:32:12 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1818,10 +1818,11 @@ function update_remove_obsolete_files(&$output) {
     global $CFG;
     // This array holds the filenames and the version where the file was obsoleted
     $obsolete_files = array(
-        '/lib/node.class.php'   => '0.90.3 / 2011093000',
-        '/lib/modulelib.php'    => '0.90.3 / 2011093000',
-        '/lib/area.class.php'   => '0.90.3 / 2011093000',
-        '/lib/module.class.php' => '0.90.3 / 2011093000'
+        '/lib/node.class.php'     => '0.90.3 / 2011093000',
+        '/lib/modulelib.php'      => '0.90.3 / 2011093000',
+        '/lib/area.class.php'     => '0.90.3 / 2011093000',
+        '/lib/module.class.php'   => '0.90.3 / 2011093000',
+        '/lib/graphics/blank.gif' => '0.90.4 / 2012040600'
         );
 
     $retval = TRUE; // assume success

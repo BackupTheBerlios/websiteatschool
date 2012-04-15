@@ -1,6 +1,11 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.115 2012/04/14 14:36:25 pfokker Exp $
+$Id: CHANGES.txt,v 1.116 2012/04/15 09:32:11 pfokker Exp $
 -------------------------------------------------------------------------------
+
+2012-04-15
+- more support for skins in area manager, translate tool, group
+  manager, file manager, user manager and acl manager.
+- more fine tuning in alt-text translations 
 
 2012-04-14
 - we now show the word 'Messages' in the yellow message area to make

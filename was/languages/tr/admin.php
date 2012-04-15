@@ -24,7 +24,7 @@
  * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_tr
- * @version $Id: admin.php,v 1.1 2011/09/29 19:19:22 pfokker Exp $
+ * @version $Id: admin.php,v 1.2 2012/04/15 09:32:11 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = 'Yönetim';
@@ -83,7 +83,6 @@ $string['add_a_section_title'] = 'Yeni bir bölüm eklemek için buraya tıklay�
 $string['hidden'] = 'gizli';
 $string['embargo'] = 'ambargo';
 $string['expired'] = 'süresi doldu';
-$string['spacer'] = 'boşluk';
 $string['icon_delete'] = 'Düğümü sil';
 $string['icon_delete_access_denied'] = 'Bu düğümü silme yetkiniz yok';
 $string['icon_delete_alt'] = 'sil iconu';

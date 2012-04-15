@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: admin.php,v 1.18 2012/04/13 08:01:32 pfokker Exp $
+ * @version $Id: admin.php,v 1.19 2012/04/15 09:32:10 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -29,7 +29,7 @@ $string['translatetool_title'] = 'Beheer';
 $string['translatetool_description'] = 'Dit bestand bevat vertalingen van de beheer-interface';
 
 $string['generated_in'] = 'gegenereerd op {DATE} in {QUERIES} queries en {SECONDS} seconden';
-$string['logo_websiteatschool'] = 'logo Website@School&reg;';
+$string['logo_websiteatschool'] = 'Website@School®';
 $string['end_this_session'] = 'de sessie be&euml;ndigen, de gebruiker afmelden';
 $string['logout_username'] = '{USERNAME} afmelden';
 $string['view_public_area'] = 'naar de openbare site';
@@ -91,65 +91,63 @@ $string['hidden'] = 'verborgen';
 $string['embargo'] = 'embargo';
 $string['expired'] = 'vervallen';
 
-$string['spacer'] = 'spati&euml;ring';
-
 $string['icon_delete'] = 'Pagina of sectie wissen';
 $string['icon_delete_access_denied'] = 'U hebt geen permissie om deze pagina/sectie te wissen';
-$string['icon_delete_alt'] = 'icoon wissen';
+$string['icon_delete_alt'] = 'wissen';
 $string['icon_delete_text'] = 'W';
 
 $string['icon_edit'] = 'Pagina of sectie bewerken';
 $string['icon_edit_access_denied'] = 'U hebt geen permissie om deze pagina/sectie te bewerken';
-$string['icon_edit_alt'] = 'icoon bewerken';
+$string['icon_edit_alt'] = 'bewerken';
 $string['icon_edit_text'] = 'B';
 
 $string['icon_default'] = 'Promoveer deze pagina/sectie tot startpagina of -sectie';
 $string['icon_default_access_denied'] = 'U hebt geen permissie om deze pagina/sectie tot startpagina of -sectie te promoveren';
-$string['icon_default_alt'] = 'icoon startpagina of startsectie';
+$string['icon_default_alt'] = 'dit is de startpagina of startsectie';
 $string['icon_default_text'] = 'S';
 $string['icon_not_default_text'] = '_';
-$string['icon_not_default_alt'] = 'icoon niet startpagina of startsectie';
+$string['icon_not_default_alt'] = 'maak dit de startpagina of startsectie';
 $string['icon_is_default'] = 'Dit is momenteel de startpagina of -sectie';
 
 $string['icon_preview_page'] = 'Toon voorbeeld van de pagina (in nieuw venster)';
 $string['icon_preview_page_access_denied'] = 'U hebt geen permissie om een voorbeeld van de pagina te tonen';
-$string['icon_preview_page_alt'] = 'icoon pagina';
+$string['icon_preview_page_alt'] = 'toon voorbeeld';
 $string['icon_preview_page_text'] = 'V';
 
 $string['icon_open_section'] = 'Open de sectie (klap de boomstructuur 1 niveau uit)';
-$string['icon_open_section_alt'] = 'icoon gesloten map';
+$string['icon_open_section_alt'] = 'open deze sectie';
 $string['icon_open_section_text'] = '+';
 
 $string['icon_close_section'] = 'Sluit de sectie (klap de onderliggende boomstructuur in)';
-$string['icon_close_section_alt'] = 'icoon geopende map';
+$string['icon_close_section_alt'] = 'sluit deze sectie';
 $string['icon_close_section_text'] = '-';
 
 $string['icon_open_area'] = 'Open het gebied (klap de boomstructuur helemaal uit)';
-$string['icon_open_area_alt'] = 'icoon gesloten map';
+$string['icon_open_area_alt'] = 'open dit gebied';
 $string['icon_open_area_text'] = '+';
 
 $string['icon_close_area'] = 'Sluit het gebied (klap de onderliggende boomstructuur in)';
-$string['icon_close_area_alt'] = 'icoon geopende map';
+$string['icon_close_area_alt'] = 'sluit dit gebied';
 $string['icon_close_area_text'] = '-';
 
 $string['icon_open_site'] = 'Open alle gebieden (klap de boomstructuur in alle gebieden helemaal uit)';
-$string['icon_open_site_alt'] = 'icoon gesloten map';
+$string['icon_open_site_alt'] = 'open alle gebieden';
 $string['icon_open_site_text'] = '+';
 
 $string['icon_close_site'] = 'Sluit alle gebieden (klap de onderliggende boomstructuur in alle gebieden in)';
-$string['icon_close_site_alt'] = 'icoon geopende map';
+$string['icon_close_site_alt'] = 'sluit alle gebieden';
 $string['icon_close_site_text'] = '-';
 
 
 $string['icon_visible'] = 'Deze pagina of sectie is zichtbaar (niet verborgen, geen embargo, niet vervallen)';
 $string['icon_visible_access_denied'] = 'U hebt geen permissie om deze pagina/sectie te bewerken';
-$string['icon_visible_alt'] = 'icoon zichtbaar';
+$string['icon_visible_alt'] = 'geavanceerd bewerken of onzichtbaar maken';
 $string['icon_visible_text'] = '_';
 
 $string['icon_invisible_hidden'] = 'Deze pagina/sectie is onzichtbaar (verborgen)';
 $string['icon_invisible_embargo'] = 'Deze pagina/sectie is onzichtbaar (embargo tot {DATIM})';
 $string['icon_invisible_expiry'] = 'Deze pagina/sectie is onzichtbaar (vervallen op {DATIM})';
-$string['icon_invisible_alt'] = 'icoon onzichtbaar';
+$string['icon_invisible_alt'] = 'geavanceerd bewerken of zichtbaar maken';
 $string['icon_invisible_text'] = 'O';
 
 $string['too_many_levels'] = 'Kan sectie {NODE} niet weergeven: boomstructuur is te diep';
@@ -367,20 +365,20 @@ $string['areamanager_add_an_area_title'] = 'Klik hier om een nieuw gebied toe te
 
 $string['icon_area_default'] = 'Promoveer dit gebied tot startgebied';
 $string['icon_area_default_access_denied'] = 'U hebt geen permissie om dit gebied tot startgebied te promoveren';
-$string['icon_area_default_alt'] = 'icoon startgebied';
+$string['icon_area_default_alt'] = 'dit gebied is startgebied';
 $string['icon_area_default_text'] = 'H';
 $string['icon_area_not_default_text'] = '_';
-$string['icon_area_not_default_alt'] = 'icon niet startgenbied';
+$string['icon_area_not_default_alt'] = 'maak dit gebied startgebied';
 $string['icon_area_is_default'] = 'Dit gebied is het startgebied';
 
 $string['icon_area_delete'] = 'Gebied verwijderen';
 $string['icon_area_delete_access_denied'] = 'U hebt geen permissie om dit gebied te verwijderen';
-$string['icon_area_delete_alt'] = 'icoon verwijderen';
+$string['icon_area_delete_alt'] = 'verwijderen';
 $string['icon_area_delete_text'] = 'V';
 
 $string['icon_area_edit'] = 'Bewerk dit gebied';
 $string['icon_area_edit_access_denied'] = 'U hebt geen permissie om dit gebied te bewerken';
-$string['icon_area_edit_alt'] = 'icoon bewerken';
+$string['icon_area_edit_alt'] = 'bewerken';
 $string['icon_area_edit_text'] = 'B';
 
 $string['area_edit_public_title'] = '(publiek) {AREA_FULL_NAME} ({AREA}, {SORT_ORDER})';
@@ -551,11 +549,11 @@ $string['groupmanager_group_edit_title'] = 'Bewerk de gegevens van deze groep';
 $string['groupmanager_group_capacity_edit_title'] = 'Bewerk de gegevens van deze groep/hoedanigheid';
 
 $string['icon_group_delete'] = 'Deze groep verwijderen';
-$string['icon_group_delete_alt'] = 'icoon verwijderen';
+$string['icon_group_delete_alt'] = 'verwijderen';
 $string['icon_group_delete_text'] = 'W';
 
 $string['icon_group_edit'] = 'Bewerk deze groep';
-$string['icon_group_edit_alt'] = 'icoon bewerken';
+$string['icon_group_edit_alt'] = 'bewerken';
 $string['icon_group_edit_text'] = 'B';
 
 $string['groupmanager_add_group_header'] = 'Voeg een nieuwe groep toe';
@@ -744,11 +742,11 @@ $string['usermanager_user_edit'] = '{FULL_NAME} ({USERNAME})';
 $string['usermanager_user_edit_title'] = 'Bewerk deze gebruiker';
 
 $string['icon_user_delete'] = 'Gebruiker wissen';
-$string['icon_user_delete_alt'] = 'icoon wissen';
+$string['icon_user_delete_alt'] = 'wissen';
 $string['icon_user_delete_text'] = 'W';
 
 $string['icon_user_edit'] = 'Gebruiker bewerken';
-$string['icon_user_edit_alt'] = 'icoon bewerken';
+$string['icon_user_edit_alt'] = 'bewerken';
 $string['icon_user_edit_text'] = 'B';
 
 
@@ -859,7 +857,7 @@ $string['usermanager_user_groups_add_title'] = 'Klik hier om een nieuw groepslid
 $string['usermanager_user_groups'] = '{GROUP} ({GROUP_FULL_NAME}) / {CAPACITY}';
 
 $string['icon_membership_delete'] = 'Be&euml;indig dit groepslidmaatschap';
-$string['icon_membership_delete_alt'] = 'icon wissen';
+$string['icon_membership_delete_alt'] = 'wissen';
 $string['icon_membership_delete_text'] = 'W';
 
 $string['usermanager_user_groupadd_header'] = 'Groepslidmaatschap toevoegen aan gebruikersaccount {USERNAME} ({FULL_NAME})';
@@ -916,15 +914,15 @@ $string['filemanager_parent_title'] = 'Gebruik deze link om naar de bovenliggend
 
 $string['invalid_path'] = 'Ongeldig pad \'{PATH}\'';
 
-$string['icon_preview_file_alt'] = 'icoon voorbeeld bestand';
+$string['icon_preview_file_alt'] = 'bekijk voorbeeld bestand';
 $string['icon_preview_file_text'] = 'V';
 
 $string['icon_delete_file'] = 'Wis dit bestand';
-$string['icon_delete_file_alt'] = 'icoon bestand wissen';
+$string['icon_delete_file_alt'] = 'wis bestand';
 $string['icon_delete_file_text'] = 'W';
 
 $string['icon_delete_directory'] = 'Verwijder deze map';
-$string['icon_delete_directory_alt'] = 'icoon map wissen';
+$string['icon_delete_directory_alt'] = 'wis map';
 $string['icon_delete_directory_text'] = 'W';
 
 $string['filemanager_column_file'] = 'Naam';
@@ -942,7 +940,7 @@ $string['filemanager_add_subdirectory_title'] = 'Geef de naam van de nieuwe map 
 $string['filemanager_add_subdirectory_success'] = 'Submap \'{DIRECTORY}\' toegevoegd aan \'{PATH}\'';
 $string['filemanager_add_subdirectory_failure'] = 'Fout: toevoegen submap \'{DIRECTORY}\' aan \'{PATH}\' mislukt';
 
-$string['icon_open_directory_alt'] = 'icoon gesloten map';
+$string['icon_open_directory_alt'] = 'open map';
 $string['icon_open_directory_text'] = '+';
 
 $string['filemanager_nothing_to_delete'] = 'Waarshuwing: geen bestanden om te wissen opgegeven';
@@ -1037,7 +1035,7 @@ $string['translatetool_add_a_language'] = 'Nieuwe taal';
 $string['translatetool_add_a_language_title'] = 'Klik hier om een nieuwe taal toe te voegen';
 
 $string['icon_language_edit'] = 'Taal bewerken';
-$string['icon_language_edit_alt'] = 'icoon bewerken';
+$string['icon_language_edit_alt'] = 'bewerken';
 $string['icon_language_edit_text'] = 'B';
 $string['translatetool_edit_translation'] = '{LANGUAGE_NAME} ({LANGUAGE_KEY})';
 $string['translatetool_edit_translation_title'] = 'Klik hier voor het bewerken van vertalingen in deze taal';
@@ -1156,5 +1154,6 @@ $string['update_warning_obsolete_file'] = 'Waarschuwing: het bestand \'{FILENAME
 
 $string['donors'] = 'Donateurs';
 $string['function_not_yet_implemented'] = 'Functie nog niet geïmplementeerd';
+$string['messages'] = 'Meldingen';
 
 ?>

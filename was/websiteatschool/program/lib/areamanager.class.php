@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: areamanager.class.php,v 1.8 2012/04/06 18:47:26 pfokker Exp $
+ * @version $Id: areamanager.class.php,v 1.9 2012/04/15 09:32:11 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -207,8 +207,7 @@ class AreaManager {
             $this->output->add_content('  <li class="list">');
             // line up the prompt with links to existing areas below (if any)
             if (!$this->output->text_only) {
-                $img_attr = array('width' => 16, 'height' => 16, 'title' => '', 'alt' => t('spacer','admin'));
-                $icon_blank = '    '.html_img($CFG->progwww_short.'/graphics/blank16.gif',$img_attr);
+                $icon_blank = '    '.$this->output->skin->get_icon('blank');
                 for ($i=0; $i<3; ++$i) {
                     $this->output->add_content($icon_blank);
                 }
@@ -1403,22 +1402,15 @@ class AreaManager {
 
         // 2 -- construct the icon (image or text)
         if (db_bool_is(TRUE,$areas[$area_id]['is_default'])) {
-            if ($this->output->text_only) {
-                $anchor = html_tag('span','class="icon"','['.t('icon_area_default_text','admin').']');
-            } else {
-                $img_attr = array('height' => 16, 'width' => 16,
-                                  'title' => $title, 'alt' => t('icon_area_default_alt','admin'));
-                $anchor = html_img($CFG->progwww_short.'/graphics/startsection.gif',$img_attr);
-            }
+            $icon = 'startsection';
+            $alt = t('icon_area_default_alt','admin');
+            $text = t('icon_area_default_text','admin');
         } else {
-            if ($this->output->text_only) {
-                $anchor = html_tag('span','class="icon"','['.t('icon_area_not_default_text','admin').']');
-            } else {
-                $img_attr = array('height' => 16, 'width' => 16, 
-                                  'title' => $title, 'alt' => t('icon_area_not_default_alt','admin'));
-                $anchor = html_img($CFG->progwww_short.'/graphics/not_startsection.gif',$img_attr);
-            }
+            $icon = 'not_startsection';
+            $alt = t('icon_area_not_default_alt','admin');
+            $text = t('icon_area_not_default_text','admin');
         }
+        $anchor = $this->output->skin->get_icon($icon, $title, $alt, $text);
 
         // 3 -- construct the A tag
         $a_params = $this->a_param(AREAMANAGER_CHORE_SET_DEFAULT,$area_id);
@@ -1449,12 +1441,7 @@ class AreaManager {
 
         // 2 -- construct the icon (image or text)
         $title = t(($user_has_permission) ? 'icon_area_delete' : 'icon_area_delete_access_denied','admin');
-        if ($this->output->text_only) {
-            $anchor = html_tag('span','class="icon"','['.t('icon_area_delete_text','admin').']');
-        } else {
-            $img_attr = array('height' => 16, 'width' => 16, 'title' => $title, 'alt' => t('icon_area_delete_alt','admin'));
-            $anchor = html_img($CFG->progwww_short.'/graphics/delete.gif',$img_attr);
-        }
+        $anchor = $this->output->skin->get_icon('delete', $title, t('icon_area_delete_alt','admin'), t('icon_area_delete_text','admin'));
 
         // 3 -- construct the A tag
         $a_params = $this->a_param(AREAMANAGER_CHORE_DELETE,$area_id);
@@ -1482,13 +1469,7 @@ class AreaManager {
 
         // 2 -- construct the icon (image or text)
         $title = t(($user_has_permission) ? 'icon_area_edit' : 'icon_area_edit_access_denied','admin');
-        if ($this->output->text_only) {
-            $anchor = html_tag('span','class="icon"','['.t('icon_area_edit_text','admin').']');
-        } else {
-            $img_attr = array('height' => 16, 'width' => 16,
-                              'title' => $title, 'alt' => t('icon_area_edit_alt','admin'));
-            $anchor = html_img($CFG->progwww_short.'/graphics/edit.gif',$img_attr);
-        }
+        $anchor = $this->output->skin->get_icon('edit', $title, t('icon_area_edit_alt','admin'), t('icon_area_edit_text','admin'));
 
         // 3 -- construct the A tag
         $a_params = $this->a_param(AREAMANAGER_CHORE_EDIT_THEME,$area_id);
