@@ -26,7 +26,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: main_admin.php,v 1.11 2012/04/14 14:36:25 pfokker Exp $
+ * @version $Id: main_admin.php,v 1.12 2012/04/15 15:32:53 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1146,15 +1146,16 @@ class AdminOutput {
      * The list of available options is stored in an array of arrays. This should
      * make it easier to add a new 'manager' in the future: simply add another
      * element to the $items array below (and of course the necessary changes in
-     * the dipatcher in main_admin() above).
+     * the dispatcher in main_admin() above).
      *
      * A a rule the links are presented to the user in the form of clickable images
-     * (icons) of 32x32 pixels. If no image is specified, a text-link is used instead.
-     * If the optional flag $textonly is set, _all_ links are displayed as a text-link.
+     * (icons) as provided by the currently selected skin. If the optional flag
+     * $textonly is set, all links are displayed as a text-link (using the alt text
+     * from the image).
      *
      * Depending on the user's privileges, access to some 'managers' is denied. This
-     * is visualised by displaying either a black/white 32x32 image (instead of the
-     * coloured icon) or by adding the class 'dimmed' to the text-based anchor tags.
+     * is visualised by displaying either a black/white image (instead of the
+     * coloured one) or by adding the class 'dimmed' to the text-based anchor tags.
      * This makes it possible to show 'dimmed' or 'greyed out' text if the user has
      * no access. Note, however, that these 'forbidden' links are not suppressed: the
      * W@S philosophy says that everything should be transparent as possible and that
@@ -1173,164 +1174,138 @@ class AdminOutput {
      * so the images startcenter-bw.gif and help-bw.gif do not really make sense, but
      * for completeness sake...
      *
+     * Note that we rely on the fact the the names of the black/white navigation
+     * images are systematically derived from the base name by appending '-bw' to
+     * the image name.
+     *
      * @param string $m left margin for increased readability
      * @param bool $textonly if TRUE, no images are used to construct navigation links
      * @return string constructed navigation bar
-     * @todo we need to clean up this code and properly implement the funnel mode (2009-12-18)
      */
     function get_navigation($m='',$textonly=FALSE) {
         global $USER,$CFG,$WAS_SCRIPT_NAME,$LANGUAGE;
 
-        $helpurl = $CFG->progwww_short.'/manual.php?language='.$LANGUAGE->get_current_language();
+        // 1 -- help is a special case due to the JavaScript popup
+        $href_help = $CFG->progwww_short.'/manual.php';
+        $a_params_help = array('language' => $LANGUAGE->get_current_language());
         if (!empty($this->helptopic)) {
-            $helpurl .= '&amp;topic='.rawurlencode($this->helptopic);
+            $a_params_help['topic'] = $this->helptopic;
         }
+
+        // 2 -- collect info about all main menu knobs in a convenient array
+        $helpurl = href($href_help,$a_params_help);
         $items = array(
             array(
-                'url' => $WAS_SCRIPT_NAME.'?job='.htmlspecialchars(JOB_STARTCENTER),
+                'a_params' => array('job' => JOB_STARTCENTER),
                 'name' => t('name_startcenter','admin'),
-                'img' => array('src'=>$CFG->progwww_short.'/graphics/startcenter.gif','width'=>32,'height'=>32),
-                'img_bw' => array('src'=>$CFG->progwww_short.'/graphics/startcenter-bw.gif','width'=>32,'height'=>32),
+                'knob' => 'startcenter',
                 'description' => t('description_startcenter','admin'),
                 'msg_no_access' => t('no_access_startcenter','admin'),
                 'mask' => JOB_PERMISSION_STARTCENTER
             ),
             array(
-                'url' => $WAS_SCRIPT_NAME.'?job='.htmlspecialchars(JOB_PAGEMANAGER),
+                'a_params' => array('job' => JOB_PAGEMANAGER),
                 'name' => t('name_pagemanager','admin'),
-                'img' => array('src'=>$CFG->progwww_short.'/graphics/pagemanager.gif','width'=>32,'height'=>32),
-                'img_bw' => array('src'=>$CFG->progwww_short.'/graphics/pagemanager-bw.gif','width'=>32,'height'=>32),
+                'knob' => 'pagemanager',
                 'description' => t('description_pagemanager','admin'),
                 'msg_no_access' => t('no_access_pagemanager','admin'),
                 'mask' => JOB_PERMISSION_PAGEMANAGER
             ),
             array(
-                'url' => $WAS_SCRIPT_NAME.'?job='.htmlspecialchars(JOB_FILEMANAGER),
+                'a_params' => array('job' => JOB_FILEMANAGER),
                 'name' => t('name_filemanager','admin'),
-                'img' => array('src'=>$CFG->progwww_short.'/graphics/filemanager.gif','width'=>32,'height'=>32),
-                'img_bw' => array('src'=>$CFG->progwww_short.'/graphics/filemanager-bw.gif','width'=>32,'height'=>32),
+                'knob' => 'filemanager',
                 'description' => t('description_filemanager','admin'),
                 'msg_no_access' => t('no_access_filemanager','admin'),
                 'mask' => JOB_PERMISSION_FILEMANAGER
             ),
             array(
-                'url' => $WAS_SCRIPT_NAME.'?job='.htmlspecialchars(JOB_MODULEMANAGER),
+                'a_params' => array('job' => JOB_MODULEMANAGER),
                 'name' => t('name_modulemanager','admin'),
-                'img' => array('src'=>$CFG->progwww_short.'/graphics/modules.gif','width'=>32,'height'=>32),
-                'img_bw' => array('src'=>$CFG->progwww_short.'/graphics/modules-bw.gif','width'=>32,'height'=>32),
+                'knob' => 'modules',
                 'description' => t('description_modulemanager','admin'),
                 'msg_no_access' => t('no_access_modulemanager','admin'),
                 'mask' => JOB_PERMISSION_MODULEMANAGER
             ),
             array(
-                'url' => $WAS_SCRIPT_NAME.'?job='.htmlspecialchars(JOB_ACCOUNTMANAGER),
+                'a_params' => array('job' => JOB_ACCOUNTMANAGER),
                 'name' => t('name_accountmanager','admin'),
-                'img' => array('src'=>$CFG->progwww_short.'/graphics/accounts.gif','width'=>32,'height'=>32),
-                'img_bw' => array('src'=>$CFG->progwww_short.'/graphics/accounts-bw.gif','width'=>32,'height'=>32),
+                'knob' => 'accounts',
                 'description' => t('description_accountmanager','admin'),
                 'msg_no_access' => t('no_access_accountmanager','admin'),
                 'mask' => JOB_PERMISSION_ACCOUNTMANAGER
             ),
             array(
-                'url' => $WAS_SCRIPT_NAME.'?job='.htmlspecialchars(JOB_CONFIGURATIONMANAGER),
+                'a_params' => array('job' => JOB_CONFIGURATIONMANAGER),
                 'name' => t('name_configurationmanager','admin'),
-                'img' => array('src'=>$CFG->progwww_short.'/graphics/configuration.gif','width'=>32,'height'=>32),
-                'img_bw' => array('src'=>$CFG->progwww_short.'/graphics/configuration-bw.gif','width'=>32,'height'=>32),
+                'knob' => 'configuration',
                 'description' => t('description_configurationmanager','admin'),
                 'msg_no_access' => t('no_access_configurationmanager','admin'),
                 'mask' => JOB_PERMISSION_CONFIGURATIONMANAGER
             ),
             array(
-                'url' => $WAS_SCRIPT_NAME.'?job='.htmlspecialchars(JOB_STATISTICS),
+                'a_params' => array('job' => JOB_STATISTICS),
                 'name' => t('name_statistics','admin'),
-                'img' => array('src'=>$CFG->progwww_short.'/graphics/graph.gif','width'=>32,'height'=>32),
-                'img_bw' => array('src'=>$CFG->progwww_short.'/graphics/graph-bw.gif','width'=>32,'height'=>32),
+                'knob' => 'graph',
                 'description' => t('description_statistics','admin'),
                 'msg_no_access' => t('no_access_statistics','admin'),
                 'mask' => JOB_PERMISSION_STATISTICS
             ),
             array(
-                'url' => $WAS_SCRIPT_NAME.'?job='.htmlspecialchars(JOB_TOOLS),
+                'a_params' => array('job' => JOB_TOOLS),
                 'name' => t('name_tools','admin'),
-                'img' => array('src'=>$CFG->progwww_short.'/graphics/tools1.gif','width'=>32,'height'=>32),
-                'img_bw' => array('src'=>$CFG->progwww_short.'/graphics/tools1-bw.gif','width'=>32,'height'=>32),
+                'knob' => 'tools1',
                 'description' => t('description_tools','admin'),
                 'msg_no_access' => t('no_access_tools','admin'),
                 'mask' => JOB_PERMISSION_TOOLS
             ),
             array(
-                'url' => $helpurl,
+                'href' => $href_help,
+                'a_params' => $a_params_help,
                 'name' => t('name_help','admin'),
-                'img' => array('src'=>$CFG->progwww_short.'/graphics/help.gif','width'=>32,'height'=>32),
-                'img_bw' => array('src'=>$CFG->progwww_short.'/graphics/help-bw.gif','width'=>32,'height'=>32),
+                'knob' => 'help',
                 'description' => t('description_help','admin'),
                 'msg_no_access' => t('no_access_help','admin'),
                 'mask' => JOB_PERMISSION_STARTCENTER,
-                'li' => array('class' => 'right'),
-                'a' => array('target' => '_blank',
-                       'onclick' => "window.open('$helpurl','','left=100,top=100,height=480,width=640');return false;")
+                'li_attr' => array('class' => 'right'),
+                'a_attr' => array('target' => '_blank',
+                           'onclick' => "window.open('$helpurl','','left=100,top=100,height=480,width=640');return false;")
             )
         );
 
-        // $s is the string that will hold the resulting string
-        // we always start with a UL
+        // 3 -- and iterate through the array to create navigation in $s
         $s = $m."<ul>\n";
         foreach($items as $item) {
-
-            // construct the LI tag with optional attributes
-            $s .= $m."  <li";
-            if (isset($item['li'])) {
-                foreach($item['li'] as $attr => $value) {
-                    $s .= " $attr=\"$value\"";
-                }
-            }
-            $s .= '>';
-
-
+            $s .= $m.'  '.html_tag('li',(isset($item['li_attr'])) ? $item['li_attr'] : NULL);
             if ($USER->has_job_permissions($item['mask'])) {
-                // construct anchor tag for the user 
-                // that is granted access to this item
-                $url = ($this->funnel_mode) ? "#" : $item['url'];
-                $class = ($this->funnel_mode) ? ' class="dimmed"' : '';
-
-                $s .= "<a href=\"{$url}\" title=\"{$item['description']}\"".$class;
-                if (isset($item['a'])) {
-                    foreach($item['a'] as $attr => $value) {
-                        $s .= " $attr=\"$value\"";
-                    }
-                }
-                $s .= ">";
-
-                // decide whether to show a colourful image or a text link
-                $img = ($this->funnel_mode) ? 'img_bw' : 'img'; // always in b/w if in funnel mode
-                if ((isset($item[$img])) && !($textonly)) {
-                    $s .= '<img';
-                    foreach($item[$img] as $attr => $value) {
-                        $s .= " $attr=\"$value\"";
-                    }
-                    $s .= " title=\"{$item['description']}\" alt=\"{$item['name']}\">";
+                $a_attr = (isset($item['a_attr'])) ? $item['a_attr'] : array();
+                if ($this->funnel_mode) {
+                    $href = "#";
+                    $a_params = NULL;
+                    $a_attr['class'] = 'dimmed';
                 } else {
-                    $s .= $item['name'];
+                    $href = (isset($item['href'])) ? $item['href'] : $WAS_SCRIPT_NAME;
+                    $a_params = $item['a_params'];
                 }
-                $s .= "</a>\n";
+                $knob = $item['knob'].(($this->funnel_mode) ? '-bw' : ''); // always in b/w if in funnel mode
+                $title = $item['description'];
             } else {
-                // construct anchor tag for the user 
-                // that is denied access to this item
-                $url = ($this->funnel_mode) ? "#" : $item['url'];
-                $s .= "<a href=\"{$url}\" title=\"{$item['msg_no_access']}\" class=\"dimmed\">";
-
-                // decide whether to show a black/white image or a (dimmed) text link
-                if ((isset($item['img_bw'])) && !($textonly)) {
-                    $s .= '<img';
-                    foreach($item['img_bw'] as $attr => $value) {
-                        $s .= " $attr=\"$value\"";
-                    }
-                    $s .= " title=\"{$item['msg_no_access']}\" alt=\"{$item['name']}\">";
+                $a_attr = (isset($item['a_attr'])) ? $item['a_attr'] : array();
+                $a_attr['class'] = 'dimmed';
+                if ($this->funnel_mode) {
+                    $href = "#";
+                    $a_params = NULL;
                 } else {
-                    $s .= $item['name'];
+                    $href = (isset($item['href'])) ? $item['href'] : $WAS_SCRIPT_NAME;
+                    $a_params = $item['a_params'];
                 }
-                $s .= "</a>\n";
+                $knob = $item['knob'].'-bw';
+                $title = $item['msg_no_access'];
             }
+            $alt = $item['name'];
+            $anchor = $this->skin->get_knob($knob,$title,$alt);
+            $a_attr['title'] = $title;
+            $s .= html_a($href,$a_params,$a_attr,$anchor)."\n";
         }
         $s .= $m."</ul>\n";
         return $s;
@@ -1774,17 +1749,51 @@ function get_current_skin() {
 } // get_current_skin()
 
 
-
+/** change the looks of the user interface
+ *
+ * This class provides 'skinned' navigation elements (icons) and styling.
+ * It is used within the {@link AdminOutput} class.
+ *
+ * Note:
+ * We simply trust the caller to provide us with a valid filename in $icon
+ * and $knob (but without the .gif extension), see {@link get_icon()} and
+ * {@link get_knopb()}. This makes it a lot easier to generate the graphical
+ * icons and knobs: we simply prepend the appropriate path and append the
+ * extension .gif and there we go. The penalty for checking the actual file
+ * existence every time we generate an icon or knob is too expensive imho.
+ */
 class AdminSkin {
+    /** @var string $name holds the name of the selected skin */
     var $name = '';
-    var $images = array();
-    var $stylesheets = array();
+
+    /** @var bool $text_only if TRUE limits generated icons and knobs to textual representation */
     var $text_only = FALSE;
+
+    /** @var bool $text_icons if TRUE uses 'text' rather than 'alt' parameter for text-based icons */
     var $text_icons = FALSE;
+
+    /** @var array $stylesheets contains 1 or more static stylesheets that define the skin's styling */
+    var $stylesheets = array();
+
+    /** @var string $icon_path holds the path to the graphical images used when creating icons and knobs */
     var $icon_path = '';
+
+    /** @var int $icon_width the horizontal size of icons in this skin */
     var $icon_width = 16;
+
+    /** @var int $icon_width the vertical size of icons in this skin */
     var $icon_height = 16;
-    /** constructor
+
+    /** @var int $icon_width the horizontal size of knobs in this skin */
+    var $knob_width = 32;
+
+    /** @var int $icon_width the vertical size of knobs in this skin */
+    var $knob_height = 32;
+
+    /** construct an AdminSkin object (called from AdminOutput)
+     *
+     * @param string $name identifies the skin to setup
+     * @return void
      */
     function AdminSkin($name='base') {
         global $CFG;
@@ -1797,12 +1806,16 @@ class AdminSkin {
 
         case 'big':
             $this->stylesheets[] = $CFG->progwww_short.'/styles/admin_base.css';
+            $this->stylesheets[] = $CFG->progwww_short.'/styles/admin_big.css';
             $this->icon_width = 32;
             $this->icon_height = 32;
+            $this->knob_width = 64;
+            $this->knob_height = 64;
             break;
 
         case 'lowvision':
             $this->stylesheets[] = $CFG->progwww_short.'/styles/admin_base.css';
+            $this->stylesheets[] = $CFG->progwww_short.'/styles/admin_lowvision.css';
             break;
 
         case 'textonly':
@@ -1819,20 +1832,46 @@ class AdminSkin {
             break;
 
         default:
-            logger(sprintf("%s.%s(): weird: unknown skin '%s'; using nothing",__CLASS__,__FUNCTION__,$name));
+            logger(sprintf("%s.%s(): weird: unknown skin '%s'",__CLASS__,__FUNCTION__,$name));
             $this->name = 'base';
             break;
         }
     } // AdminSkin()
 
+
+    /** is this skin a text-only skin?
+     *
+     * @return bool TRUE if this skin is text-only (no graphical icons/knobs)
+     */
     function is_text_only() {
         return $this->text_only;
-    }
+    } // text_only()
 
+
+    /** return the list of stylesheets associated with this skin
+     *
+     * @return array a list of stylesheets to include in the output for this skin
+     */
     function get_stylesheets() {
         return $this->stylesheets;
-    }
+    } // get_stylesheets()
 
+    /** return ready-to-use HTML-code for an anchor (to be used with an A-tag)
+     *
+     * this routine can create three variations of an anchor for an icon:
+     *
+     *  - graphical: this includes the file {$icon}.gif and the $title and $alt attributes
+     *  - text with $text: this yields a text-based icon using the $text-parameter
+     *  - text with $alt: this yields a text-based icon using the $alt-parameter
+     *
+     *The distinction between the latter two is made via $this->text_icons.
+     *
+     * @param string $icon identifies the image file (without the .gif extension)
+     * @param string $title attribute to add to graphical icon
+     * @param string $alt attribute to add to graphical icon OR text of icon
+     * @param string $text text of the icon if not graphical and not using alt text
+     * @return string ready to use HTML-code
+     */
     function get_icon($icon, $title='', $alt='', $text='') {
         if ($this->text_only) {
             if (($this->text_icons) || (empty($text))) {
@@ -1854,6 +1893,41 @@ class AdminSkin {
         return $anchor;
     } // get_icon()
 
+
+    /** return ready-to-use HTML-code for an anchor to be used in the navigation bar
+     *
+     * this routine can create two variations of an anchor for a knob in the navigation bar:
+     *
+     *  - graphical: this includes the file {$icon}.gif and the $title and $alt attributes
+     *  - text with $alt: this yields a text-based icon using the $alt-parameter
+     *
+     * The difference with the routine {@link get_icon()} is that we do not have
+     * a variation with a separate $text parameter. Another difference is that the
+     * 'knobs' in the navigation bar have different dimensions than the icons used
+     * elsewhere. (Knobs usually are 32x32 and icons are usually 16x16).
+     *
+     * @param string $icon identifies the image file (without the .gif extension)
+     * @param string $title attribute to add to graphical icon
+     * @param string $alt attribute to add to graphical icon OR text of icon
+     * @param string $text text of the icon if not graphical and not using alt text
+     * @return string ready to use HTML-code
+     */
+    function get_knob($knob, $title='', $alt='') {
+        if ($this->text_only) {
+            $anchor = html_tag('span','class="knob"',$alt);
+        } else {
+            $img_attr = array(
+                'width' => $this->knob_width,
+                'height'=> $this->knob_height,
+                'alt' => $alt
+                );
+            if (!empty($title)) {
+                $img_attr['title'] = $title;
+            }
+            $anchor = html_img($this->icon_path.$knob.'.gif',$img_attr);
+        }
+        return $anchor;
+    } // get_knob()
 
 } // AdminSkin
 
