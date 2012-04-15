@@ -1,0 +1,148 @@
+/** /program/styles/admin_lowvision.css - additional stylesheet for the 'lowvision' skin
+ *
+ * This file is part of Website@School, a Content Management System especially designed for schools.
+ * Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker <peter@berestijn.nl>
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License version 3 as published by
+ * the Free Software Foundation supplemented with the Additional Terms, as set
+ * forth in the License Agreement for Website@School (see /program/license.html).
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
+ * for more details.
+ *
+ * You should have received a copy of the License Agreement for Website@School
+ * along with this program. If not, see http://websiteatschool.eu/license.html
+ *
+ * This is the additional style sheet used in the 'lowvision' skin.
+ *
+ * @author Peter Fokker <peter@berestijn.nl>
+ * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
+ * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
+ * @package wascore
+ * @version $Id: admin_lowvision.css,v 1.1 2012/04/15 15:30:18 pfokker Exp $
+ */
+body {
+  background-color: #00C;
+  color: #FFF;
+}
+a {
+  color: #FF0;
+}
+#page {
+  background-color: #00C;
+}
+#page a.dimmed:link,
+#page a.dimmed:visited {
+  color: #DDD;
+}
+#page a.dimmed:active,
+#page a.dimmed:hover {
+  font-weight: bold;
+  text-decoration: underline;
+  color: #D66;
+}
+#header {
+  background-color: #00F;
+}
+#quicktop a:link,
+#quicktop a:visited {
+  color: #FD0;
+}
+#quicktop a:active,
+#quicktop a:hover {
+  color: #FFF;
+}
+#navigation {
+  border-bottom: 2px #FFF solid;
+}
+#navigation a:link,
+#navigation a:visited {
+  color: #FD0;
+}
+#navigation a:active,
+#navigation a:hover {
+  color: #FFF;
+}
+#messages {
+  background-color: #000;
+  color: #FD0;
+  font-weight: bold;
+}
+#menu a:link,
+#menu a:visited {
+  color: #FD0;
+}
+#menu a:active,
+#menu a:hover {
+  color: #FFF;
+}
+#content {
+  background-color: #00F;
+  border: 1px #00F solid;
+}
+#content a:link,
+#content a:visited {
+  color: #FD0;
+}
+#content a:active,
+#content a:hover {
+  color: #FFF;
+}
+#breadcrumbs a:link,
+#breadcrumbs a:visited {
+  color: #FD0;
+}
+#breadcrumbs a:active,
+#breadcrumbs a:hover {
+  color: #FFF;
+}
+#pagination a:link,
+#pagination a:visited {
+  text-decoration: none;
+  color: #FD0;
+}
+#pagination a:active,
+#pagination a:hover {
+  text-decoration: underline;
+  color: #FFF;
+}
+#footer {
+  background-color: #00C;
+}
+input,
+select,
+textarea {
+  background-color: #003;
+  font-weight: bold;
+  color: #FFF;
+}
+label.viewonly {
+  color: #880;
+}
+input.button_save,
+input.button_cancel,
+input.button_delete,
+input.button_previous,
+input.button_next,
+input.button_ok {
+  background-color: #003;
+}
+#content tr.header {
+  background-color: #337;
+} 
+#content tr.odd {
+  background-color: #444;
+} 
+#content tr.even {
+  background-color: #000;
+}
+/* footer is currently unused */
+#content tr.footer {
+  background-color: #DDDDFF;
+} 
+
+
+/* eof /program/styles/admin_lowvision.css */
