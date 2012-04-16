@@ -18,7 +18,7 @@
 # langdiff.php -- quick and dirty diff between old and current English language files
 # Peter Fokker -- 2011-01-12
 #
-# $Id: langdiff.php,v 1.4 2011/09/28 09:54:08 pfokker Exp $
+# $Id: langdiff.php,v 1.5 2012/04/16 10:15:13 pfokker Exp $
 #
 # See also langdiff.sh
 #
@@ -57,6 +57,10 @@ $Files = array(
     'm_sitemap'  => array(
         'cvs'    =>         'modules/sitemap/languages/en/sitemap.php',
         'dist'   => 'program/modules/sitemap/languages/en/sitemap.php'
+        ),
+    't_axis'     => array(
+        'cvs'    =>         'themes/axis/languages/en/axis.php',
+        'dist'   => 'program/themes/axis/languages/en/axis.php'
         ),
     't_frugal'   => array(
         'cvs'    =>         'themes/frugal/languages/en/frugal.php',
