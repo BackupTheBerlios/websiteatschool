@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasinstall
- * @version $Id: install.php,v 1.3 2011/05/02 16:21:19 pfokker Exp $
+ * @version $Id: install.php,v 1.4 2012/04/16 11:13:50 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -74,7 +74,7 @@ $string['dialog_license_i_agree'] = 'Ik stem toe';
 $string['dialog_license_you_must_accept'] = 'U moet accoord gaan met de licentieovereenkomst door &quot;<b>{IAGREE}</b>&quot; (zonder de aanhalingstekens) in te typen in het invoerveld hieronder.';
 
 $string['dialog_cms'] = 'Website';
-$string['dialog_cms_title'] = 'Essenti&euml;le gegevens van de website invoeren';
+$string['dialog_cms_title'] = 'Essentiële gegevens van de website invoeren';
 $string['dialog_cms_explanation'] = 'Voert u hieronder alstublieft de gegevens over uw website in.';
 $string['cms_title_label'] = 'Naam';
 $string['cms_title_help'] = 'De naam van uw website.';
@@ -184,7 +184,7 @@ $string['dialog_download_title'] = 'Download config.php naar uw computer';
 
 $string['dialog_unknown'] = 'Onbekend';
 
-$string['error_already_installed'] = 'Fout: Website@School is reeds ge&iuml;nstalleerd';
+$string['error_already_installed'] = 'Fout: Website@School is reeds geïnstalleerd';
 $string['error_wrong_version'] = 'Fout: versienummer klopt niet. Hebt u een nieuwe versie gedownload tijdens de installatieprocedure?';
 $string['error_fatal'] = 'Fatale fout {ERROR}: neem contact op met &lt;{EMAIL}&gt; voor assistentie';
 $string['error_php_obsolete'] = 'Fout: deze versie van PHP is te oud';

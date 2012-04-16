@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wastheme_axis
- * @version $Id: axis.php,v 1.1 2012/04/12 20:57:19 pfokker Exp $
+ * @version $Id: axis.php,v 1.2 2012/04/16 11:13:49 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -30,7 +30,7 @@ $string['description'] = 'Een eenvoudig thema met een hiërarchisch verticaal me
 $string['translatetool_title'] = 'Axis';
 $string['translatetool_description'] = 'Dit bestand bevat de vertalingen voor het Axis Thema';
 
-$string['copyright'] = '&copy;{COPYRIGHT_YEAR} {SITENAME}';
+$string['copyright'] = '©{COPYRIGHT_YEAR} {SITENAME}';
 $string['logout_username'] = '{USERNAME} afmelden';
 $string['logout_username_title'] = 'sessie voor {FULL_NAME} afsluiten';
 $string['print'] = 'print';

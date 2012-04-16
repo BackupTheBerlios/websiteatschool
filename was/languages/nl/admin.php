@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: admin.php,v 1.19 2012/04/15 09:32:10 pfokker Exp $
+ * @version $Id: admin.php,v 1.20 2012/04/16 11:13:48 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -30,7 +30,7 @@ $string['translatetool_description'] = 'Dit bestand bevat vertalingen van de beh
 
 $string['generated_in'] = 'gegenereerd op {DATE} in {QUERIES} queries en {SECONDS} seconden';
 $string['logo_websiteatschool'] = 'Website@School®';
-$string['end_this_session'] = 'de sessie be&euml;ndigen, de gebruiker afmelden';
+$string['end_this_session'] = 'de sessie beëndigen, de gebruiker afmelden';
 $string['logout_username'] = '{USERNAME} afmelden';
 $string['view_public_area'] = 'naar de openbare site';
 $string['go_view_public_area_no_logout'] = 'naar het openbare deel van de site, zonder af te melden';
@@ -201,7 +201,7 @@ $string['add_node_hidden'] = '~Verborgen';
 $string['add_node_hidden_title'] = 'Als u de pagina/sectie verbergt dan is deze niet zichtbaar in de navigatie maar wel toegankelijk';
 $string['add_node_embargo'] = '~Embargo';
 $string['add_node_embargo_title'] = 'Onder embargo betekent dat de pagina pas zichtbaar en toegankelijk wordt na het moment dat het embargo vervalt';
-$string['add_node_initial_visibility'] = 'Initi&euml;le zichtbaarheid';
+$string['add_node_initial_visibility'] = 'Initiële zichtbaarheid';
 $string['add_node_initial_visibility_title'] = 'Kies hier of de pagina/sectie meteen zichbaar wordt of niet';
 
 
@@ -402,8 +402,7 @@ $string['task_set_default_area_access_denied'] = 'U hebt geen permissie om gebie
 
 
 $string['areamanager_add_area_header'] = 'Nieuw gebied toevoegen';
-$string['areamanager_add_area_explanation'] = '
-Hier kunt u een nieuw gebied toevoegen door de naam en andere informatie op te geven. Zodra het nieuwe gebied is gemaakt kunt u paginas en secties toevoegen via Paginabeheer. Merk op dat het niet mogelijk is om achteraf een beveiligd gebied om te zetten in een publiekelijk gebied of andersom.';
+$string['areamanager_add_area_explanation'] = 'Hier kunt u een nieuw gebied toevoegen door de naam en andere informatie op te geven. Zodra het nieuwe gebied is gemaakt kunt u paginas en secties toevoegen via Paginabeheer. Merk op dat het niet mogelijk is om achteraf een beveiligd gebied om te zetten in een publiekelijk gebied of andersom.';
 
 $string['areamanager_add_area_title_label'] = '~Naam';
 $string['areamanager_add_area_title_title'] = 'Geef hier de naam van het nieuwe gebied op';
@@ -420,8 +419,7 @@ $string['errors_saving_data'] = 'Er waren problemen bij het opslaan van de gegev
 $string['success_saving_data'] =  'Wijzigingen zijn opgeslagen in de database';
 
 $string['areamanager_edit_theme_header'] = 'Configureer thema \'{THEME_NAME}\' voor gebied {AREA}';
-$string['areamanager_edit_theme_explanation'] = '
-Hier kunt u het thema {THEME_NAME} voor gebied {AREA} ({AREA_FULL_NAME}) configureren.<br>De eigenschappen die u hier kunt veranderen zijn uitsluitend van toepassing op dit gebied, d.w.z. elk gebied kan zijn eigen unieke eigenschappen hebben in combinatie met een bepaald thema.';
+$string['areamanager_edit_theme_explanation'] = 'Hier kunt u het thema {THEME_NAME} voor gebied {AREA} ({AREA_FULL_NAME}) configureren.<br>De eigenschappen die u hier kunt veranderen zijn uitsluitend van toepassing op dit gebied, d.w.z. elk gebied kan zijn eigen unieke eigenschappen hebben in combinatie met een bepaald thema.';
 
 
 $string['areamanager_menu_edit'] = 'Basiseigenschappen';
@@ -557,8 +555,7 @@ $string['icon_group_edit_alt'] = 'bewerken';
 $string['icon_group_edit_text'] = 'B';
 
 $string['groupmanager_add_group_header'] = 'Voeg een nieuwe groep toe';
-$string['groupmanager_add_group_explanation'] = '
-Hier kunt u een nieuwe groep toevoegen door gegevens van de groep en andere informatie in te voeren, met name de hoedanigheden waarin gebruikers lid kunnen worden van een groep. Zodra de groep is toegevoegd kunt u overige gegevens (toegangscontrole) invoeren, per hoedanigheid';
+$string['groupmanager_add_group_explanation'] = 'Hier kunt u een nieuwe groep toevoegen door gegevens van de groep en andere informatie in te voeren, met name de hoedanigheden waarin gebruikers lid kunnen worden van een groep. Zodra de groep is toegevoegd kunt u overige gegevens (toegangscontrole) invoeren, per hoedanigheid';
 $string['groupmanager_add_group_name_label'] = '~Naam';
 $string['groupmanager_add_group_name_title'] = 'Voer de (korte) naam van de groep in (moet uniek zijn)';
 $string['groupmanager_add_group_fullname_label'] = '~Beschrijving';
@@ -751,8 +748,7 @@ $string['icon_user_edit_text'] = 'B';
 
 
 $string['usermanager_add_user_header'] = 'Nieuwe gebruiker toevoegen';
-$string['usermanager_add_user_explanation'] = '
-Hier kunt u een nieuw gebruikersaccount toevoegen door de onderstaande informatie in te voeren. Nadat het gebruikersaccount is aangemaakt kunt u overige informatie invoeren (bijv. toegangscontrole) voor dit account';
+$string['usermanager_add_user_explanation'] = 'Hier kunt u een nieuw gebruikersaccount toevoegen door de onderstaande informatie in te voeren. Nadat het gebruikersaccount is aangemaakt kunt u overige informatie invoeren (bijv. toegangscontrole) voor dit account';
 
 $string['usermanager_add_username_label'] = '~Naam';
 $string['usermanager_add_username_title'] = 'Geef hier de loginnaam van het nieuwe gebruikersaccount op (moet uniek zijn)';
@@ -856,22 +852,19 @@ $string['usermanager_user_groups_add'] = 'Groepslidmaatschap toevoegen';
 $string['usermanager_user_groups_add_title'] = 'Klik hier om een nieuw groepslidmaatschap toe te voegen voor deze gebruiker';
 $string['usermanager_user_groups'] = '{GROUP} ({GROUP_FULL_NAME}) / {CAPACITY}';
 
-$string['icon_membership_delete'] = 'Be&euml;indig dit groepslidmaatschap';
+$string['icon_membership_delete'] = 'Beëindig dit groepslidmaatschap';
 $string['icon_membership_delete_alt'] = 'wissen';
 $string['icon_membership_delete_text'] = 'W';
 
 $string['usermanager_user_groupadd_header'] = 'Groepslidmaatschap toevoegen aan gebruikersaccount {USERNAME} ({FULL_NAME})';
-$string['usermanager_user_groupadd_explanation'] = '
-Kies uit onderstaande lijst de gewenste groep en hoedanigheid en druk op [Opslaan] om de gebruiker {FULL_NAME} ({USERNAME}) toe te voegen aan de gekozen groep.';
+$string['usermanager_user_groupadd_explanation'] = 'Kies uit onderstaande lijst de gewenste groep en hoedanigheid en druk op [Opslaan] om de gebruiker {FULL_NAME} ({USERNAME}) toe te voegen aan de gekozen groep.';
 
 $string['usermanager_user_groupadd_groupcapacity_label'] = '~Nieuwe groep/hoedanigheid';
 $string['usermanager_user_groupadd_groupcapacity_title'] = 'Kies een groep/hoedanigheid-combinatie uit te lijst';
 $string['usermanager_user_groupadd_groupcapacity_none_available'] = '-- Geen groepen beschikbaar --';
 
-$string['usermanager_delete_usergroup_success'] = 'Groepslidmaatschap {GROUP} ({GROUP_FULL_NAME}) / {CAPACITY} met succes be&euml;indigd';
-$string['usermanager_delete_usergroup_failure'] = 'Er waren problemen bij het be&euml;indigen van groepslidmaatschap {GROUP} ({GROUP_FULL_NAME}) / {CAPACITY}';
-
-
+$string['usermanager_delete_usergroup_success'] = 'Groepslidmaatschap {GROUP} ({GROUP_FULL_NAME}) / {CAPACITY} met succes beëindigd';
+$string['usermanager_delete_usergroup_failure'] = 'Er waren problemen bij het beëindigen van groepslidmaatschap {GROUP} ({GROUP_FULL_NAME}) / {CAPACITY}';
 
 $string['usermanager_intranet_header'] = 'Toegang tot intranet: {USERNAME} ({FULL_NAME})';
 $string['usermanager_intranet_explanation'] = 'Kies de rollen voor toegang tot het intranet die u wilt toewijzen aan deze gebruiker ({FULL_NAME}) en druk op [Opslaan] om de gegevens op te slaan.';
@@ -908,9 +901,8 @@ $string['filemanager_add_file_title'] = 'Gebruik deze link om 1 of meer bestande
 $string['filemanager_add_directory'] = 'Map toevoegen';
 $string['filemanager_add_directory_title'] = 'Gebruik deze link om een submap te maken';
 
-$string['filemanager_parent'] = 'E&eacute;n niveau omhoog';
+$string['filemanager_parent'] = 'Eén niveau omhoog';
 $string['filemanager_parent_title'] = 'Gebruik deze link om naar de bovenliggende map te navigeren';
-
 
 $string['invalid_path'] = 'Ongeldig pad \'{PATH}\'';
 
@@ -942,6 +934,8 @@ $string['filemanager_add_subdirectory_failure'] = 'Fout: toevoegen submap \'{DIR
 
 $string['icon_open_directory_alt'] = 'open map';
 $string['icon_open_directory_text'] = '+';
+$string['icon_open_parent_directory_alt'] = 'open bovenliggende map';
+$string['icon_open_parent_directory_text'] = '+';
 
 $string['filemanager_nothing_to_delete'] = 'Waarshuwing: geen bestanden om te wissen opgegeven';
 $string['filemanager_success_delete_file'] = 'Bestand \'{FILENAME}\' gewist';
@@ -965,8 +959,7 @@ $string['filemanager_add_file_title'] = 'Geef de naam van het bestand op of gebr
 $string['filemanager_add_files_label'] = 'Bestandsnaam ({INDEX})';
 $string['filemanager_add_files_title'] = 'Geef de naam van het bestand op of gebruik de knop om te bladeren';
 
-$string['filemanager_add_files_upload_size_error'] = '{FIELD}: fout {ERROR} bij het uploaden van bestand \'{FILENAME}\'; 
-de maximaal toegestane bestandsgrootte is {MAX_FILE_SIZE} bytes, de maximaal toegestane uploadgrootte is {POST_MAX_SIZE} bytes';
+$string['filemanager_add_files_upload_size_error'] = '{FIELD}: fout {ERROR} bij het uploaden van bestand \'{FILENAME}\'; de maximaal toegestane bestandsgrootte is {MAX_FILE_SIZE} bytes, de maximaal toegestane uploadgrootte is {POST_MAX_SIZE} bytes';
 $string['filemanager_add_files_upload_error'] = '{FIELD}: fout {ERROR} bij het uploaden; bestand \'{FILENAME}\' overgeslagen';
 $string['filemanager_add_files_virus_found'] = '{FIELD}: virus(sen) gevonden; bestand \'{FILENAME}\' overgeslagen';
 $string['filemanager_add_files_virusscan_failed'] = '{FIELD}: fout {ERROR} bij het scannen op virussen; bestand \'{FILENAME}\' overgeslagen';
@@ -1078,10 +1071,7 @@ $string['translatetool_domain_grouping_themes'] = 'Themas';
 $string['translatetool_domain_grouping_install'] = 'Installatie';
 
 $string['translatetool_edit_language_domain_header'] = 'Vertaling voor {LANGUAGE_NAME} ({LANGUAGE_KEY}) - {FULL_DOMAIN}';
-$string['translatetool_edit_language_domain_explanation'] = '
-Hier kunt u de vertalingen wijzigen. Merk op dat codes als &lt;P&gt; en {VALUE} ongewijzigd overgenomen moeten worden in de vertaling aangezien deze codes noodzakelijk zijn voor de goede werking van het programma.';
-
-
+$string['translatetool_edit_language_domain_explanation'] = 'Hier kunt u de vertalingen wijzigen. Merk op dat codes als &lt;P&gt; en {VALUE} ongewijzigd overgenomen moeten worden in de vertaling aangezien deze codes noodzakelijk zijn voor de goede werking van het programma.';
 $string['translatetool_edit_language_domain_explanation'] = 'Hier kunt u vertalingen bewerken. Merk op dat codes als {EXAMPLE_HTML} en {EXAMPLE_VARIABLE} letterlijk overgenomen moeten worden, d.w.z. niet vertaald moeten worden. Deze codes zijn noodzakelijk voor de goede werking van het programma.
 <p>Merk tevens op dat de tilde wordt gebruikt om de zogenaamde sneltoets aan te geven. Voorbeeld: als in het Engelse origineel gerefereerd wordt aan het invoerveld <strong>{EXAMPLE_TILDE}File</strong>, dan is het mogelijk om dat veld te selecteren met [Alt-F] of [Cmnd-F]. De Duitse vertaling van datzelfde invoerveld zou <strong>{EXAMPLE_TILDE}Datei</strong> kunnen zijn, met sneltoets [Alt-D] of [Cmnd-D]. Het is echter essentieel dat de sneltoetsen uniek zijn per dialoog. Als u, als vertaler, de letter D al gebruikt hebtvoor een ander veld zou uw Duitse vertaling bijvoorbeeld <strong>Dat{EXAMPLE_TILDE}ei</strong> kunnen worden, met sneltoets [Alt-E] of [Cmnd-E].
 <p>Kort samengevat: het is aan u, de vertaler, om de sneltoetsen aan te wijzen door het plaatsen van tildes.';
@@ -1135,13 +1125,13 @@ $string['update_core_success'] = 'Basissysteem met succes opgewaardeerd naar ver
 $string['update_core_error'] = 'Fout bij het opwaarderen van het basissysteem naar versie {VERSION}';
 $string['update_core_warnning_core_goes_first'] = 'Waarschuwing: het basissysteem moet eerst opgewaardeerd worden';
 $string['update_subsystem_languages'] = 'Talen';
-$string['update_subsystem_language_success'] = 'Taal {LANGUAGE} succesvol opgewaardeerd/ge&iuml;nstalleerd';
+$string['update_subsystem_language_success'] = 'Taal {LANGUAGE} met succes opgewaardeerd/geïnstalleerd';
 $string['update_subsystem_language_error'] = 'Fout bij het opwaarderen/installeren van taal {LANGUAGE}';
 $string['update_subsystem_modules'] = 'Modules';
-$string['update_subsystem_module_success'] = 'Module {MODULE} met succes opgewaardeerd/ge&iuml;nstalleerd';
+$string['update_subsystem_module_success'] = 'Module {MODULE} met succes opgewaardeerd/geïnstalleerd';
 $string['update_subsystem_module_error'] = 'Fout bij het opwaarderen/installeren van module {MODULE}';
 $string['update_subsystem_themes'] = 'Thema\'s';
-$string['update_subsystem_theme_success'] = 'Thema {THEME} met succes opgewaardeerd/ge&iuml;nstalleerd';
+$string['update_subsystem_theme_success'] = 'Thema {THEME} met succes opgewaardeerd/geïnstalleerd';
 $string['update_subsystem_theme_error'] = 'Fout bij het opwaarderen/installeren van thema {THEME}';
 $string['update_status_ok'] = 'OK';
 $string['update_status_error'] = 'FOUT';

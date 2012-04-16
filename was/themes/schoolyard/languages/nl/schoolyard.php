@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wastheme_schoolyard
- * @version $Id: schoolyard.php,v 1.1 2011/06/07 18:25:02 pfokker Exp $
+ * @version $Id: schoolyard.php,v 1.2 2012/04/16 11:13:49 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -36,7 +36,7 @@ $string['jumpmenu_area'] = 'Kies gebied';
 $string['jumpmenu_area_title'] = 'Kies een gebied en druk op [Ga]';
 
 $string['lastupdated'] = '---<br>laatst bijgewerkt: {UPDATE_YEAR}-{UPDATE_MONTH}-{UPDATE_DAY}';
-$string['copyright'] = '&copy;{COPYRIGHT_YEAR} {SITENAME}';
+$string['copyright'] = '©{COPYRIGHT_YEAR} {SITENAME}';
 $string['logout_username'] = '{USERNAME} afmelden';
 $string['logout_username_title'] = 'sessie voor {FULL_NAME} afsluiten';
 $string['print'] = 'print';
