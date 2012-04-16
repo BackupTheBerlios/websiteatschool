@@ -26,7 +26,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: main_admin.php,v 1.12 2012/04/15 15:32:53 pfokker Exp $
+ * @version $Id: main_admin.php,v 1.13 2012/04/16 10:17:18 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1821,18 +1821,19 @@ class AdminSkin {
         case 'textonly':
             $this->text_only = TRUE;
             $this->stylesheets[] = $CFG->progwww_short.'/styles/admin_base.css';
-            $this->stylesheets[] = $CFG->progwww_short.'/styles/admin_high_visibility.css';
+            $this->stylesheets[] = $CFG->progwww_short.'/styles/admin_textonly.css';
             break;
 
         case 'braille':
             $this->text_only = TRUE;
             $this->text_icons = TRUE;
             $this->stylesheets[] = $CFG->progwww_short.'/styles/admin_base.css';
-            $this->stylesheets[] = $CFG->progwww_short.'/styles/admin_high_visibility.css';
+            $this->stylesheets[] = $CFG->progwww_short.'/styles/admin_braille.css';
             break;
 
         default:
             logger(sprintf("%s.%s(): weird: unknown skin '%s'",__CLASS__,__FUNCTION__,$name));
+            $this->stylesheets[] = $CFG->progwww_short.'/styles/admin_base.css';
             $this->name = 'base';
             break;
         }

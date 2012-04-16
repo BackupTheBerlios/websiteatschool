@@ -54,7 +54,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: updatelib.php,v 1.20 2012/04/15 09:32:12 pfokker Exp $
+ * @version $Id: updatelib.php,v 1.21 2012/04/16 10:17:18 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1822,7 +1822,8 @@ function update_remove_obsolete_files(&$output) {
         '/lib/modulelib.php'      => '0.90.3 / 2011093000',
         '/lib/area.class.php'     => '0.90.3 / 2011093000',
         '/lib/module.class.php'   => '0.90.3 / 2011093000',
-        '/lib/graphics/blank.gif' => '0.90.4 / 2012040600'
+        '/graphics/blank16.gif'             => '0.90.4 / 2012040600',
+        '/styles/admin_high_visibility.css' => '0.90.4 / 2012040600'
         );
 
     $retval = TRUE; // assume success
