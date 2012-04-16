@@ -47,7 +47,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: admin_base.css,v 1.5 2012/04/15 15:27:58 pfokker Exp $
+ * @version $Id: admin_base.css,v 1.6 2012/04/16 08:38:54 pfokker Exp $
  */
 
 body {
@@ -168,7 +168,6 @@ div {
   text-decoration: underline;
   color: #F00;
 }
-
 #messages {
   clear: both;
   background-color: #FFFF00;
@@ -177,6 +176,7 @@ div {
 #messages h2 {
   margin-top: 0px;
   margin-bottom: 0px;
+  display: none;
 }
 
 #menu {

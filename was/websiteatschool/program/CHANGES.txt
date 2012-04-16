@@ -1,6 +1,10 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.117 2012/04/15 15:32:53 pfokker Exp $
+$Id: CHANGES.txt,v 1.118 2012/04/16 08:38:54 pfokker Exp $
 -------------------------------------------------------------------------------
+
+2012-04-16
+- minor adjustments in the skins: we now only display the phrase
+  'Messages' in the textonly and braille skin.
 
 2012-04-15
 - more support for skins in area manager, translate tool, group
