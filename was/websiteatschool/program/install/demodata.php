@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasinstall
- * @version $Id: demodata.php,v 1.11 2012/03/31 15:18:54 pfokker Exp $
+ * @version $Id: demodata.php,v 1.12 2012/04/16 16:16:13 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -177,7 +177,7 @@ function demodata_areas(&$messages,&$config,&$tr) {
 
     // 0 -- setup essential information
     if (($record = db_select_single_record('themes','theme_id',array('name' => 'frugal'))) === FALSE) {
-        $messages[] = $tr['error'].db_errormessage();
+        $messages[] = $tr['error'].' '.db_errormessage();
         $retval = FALSE;
         $theme_id = 1; // lucky guess
     } else {
@@ -254,12 +254,12 @@ function demodata_areas(&$messages,&$config,&$tr) {
         if (@mkdir($fullpath,0700)) {
             @touch($fullpath.'/index.html'); // try to "protect" directory
         } else {
-            $messages[] = $tr['error']."mkdir('$fullpath')";
+            $messages[] = $tr['error']." mkdir('$fullpath')";
             $retval = FALSE;
         }
 
         if (($area_id = db_insert_into_and_get_id('areas',$fields,'area_id')) === FALSE) {
-            $messages[] = $tr['error'].db_errormessage();
+            $messages[] = $tr['error'].' '.db_errormessage();
             $retval = FALSE;
         }
         $area_id = intval($area_id);
@@ -274,7 +274,7 @@ function demodata_areas(&$messages,&$config,&$tr) {
                         $DB->prefix,'themes_areas_properties',intval($area_id),
                         $DB->prefix,'themes_properties',intval($theme_id));
         if ($DB->exec($sql) === FALSE) {
-            $messages[] = $tr['error'].db_errormessage();
+            $messages[] = $tr['error'].' '.db_errormessage();
             $retval = FALSE;
         }
     }
@@ -379,11 +379,11 @@ function demodata_users_groups(&$messages,&$config,&$tr) {
         if (@mkdir($fullpath,0700)) {
             @touch($fullpath.'/index.html');
         } else {
-            $messages[] = $tr['error']."mkdir('$fullpath')";
+            $messages[] = $tr['error']." mkdir('$fullpath')";
             $retval = FALSE;
         }
         if (($group_id = db_insert_into_and_get_id('groups',$fields,'group_id')) === FALSE) {
-            $messages[] = $tr['error'].db_errormessage();
+            $messages[] = $tr['error'].' '.db_errormessage();
             $retval = FALSE;
         }
         $groups[$group]['group_id'] = intval($group_id);
@@ -413,7 +413,7 @@ function demodata_users_groups(&$messages,&$config,&$tr) {
         );
     foreach ($acls as $acl => $fields) {
         if (($acl_id = db_insert_into_and_get_id('acls',$fields,'acl_id')) === FALSE) {
-            $messages[] = $tr['error'].db_errormessage();
+            $messages[] = $tr['error'].' '.db_errormessage();
             $retval = FALSE;
         }
         $acls[$acl]['acl_id'] = intval($acl_id);
@@ -424,7 +424,7 @@ function demodata_users_groups(&$messages,&$config,&$tr) {
         'area_id' => $config['demo_areas']['private']['area_id'],
         'permissions_intranet' => 1);
     if (db_insert_into('acls_areas',$fields) === FALSE) {
-        $messages[] = $tr['error'].db_errormessage();
+        $messages[] = $tr['error'].' '.db_errormessage();
         $retval = FALSE;
     }
 
@@ -468,7 +468,7 @@ function demodata_users_groups(&$messages,&$config,&$tr) {
         );
     foreach ($groups_capacities as $fields) {
         if (db_insert_into('groups_capacities',$fields) === FALSE) {
-            $messages[] = $tr['error'].db_errormessage();
+            $messages[] = $tr['error'].' '.db_errormessage();
             $retval = FALSE;
         }
     }
@@ -529,7 +529,7 @@ function demodata_users_groups(&$messages,&$config,&$tr) {
         $fields['path'] = utf8_strtolower($wizard->sanitise_filename($fields['username']));
         $fields['editor'] = 'ckeditor';
         if (($user_id = db_insert_into_and_get_id('users',$fields,'user_id')) === FALSE) {
-            $messages[] = $tr['error'].db_errormessage();
+            $messages[] = $tr['error'].' '.db_errormessage();
             $retval = FALSE;
         }
         $fields['user_id'] = intval($user_id);
@@ -541,7 +541,7 @@ function demodata_users_groups(&$messages,&$config,&$tr) {
         if (@mkdir($fullpath,0700)) {
             @touch($fullpath.'/index.html');
         } else {
-            $messages[] = $tr['error']."mkdir('$fullpath')";
+            $messages[] = $tr['error']." mkdir('$fullpath')";
             $retval = FALSE;
         }
     }
@@ -607,7 +607,7 @@ function demodata_users_groups(&$messages,&$config,&$tr) {
         );
     foreach ($users_groups_capacities as $fields) {
         if (db_insert_into('users_groups_capacities',$fields) === FALSE) {
-            $messages[] = $tr['error'].db_errormessage();
+            $messages[] = $tr['error'].' '.db_errormessage();
             $retval = FALSE;
         }
     }
@@ -640,7 +640,7 @@ function demodata_sections_pages(&$messages,&$config,&$tr) {
     $keyfield = 'name';
     if (($records = db_select_all_records($table,$fields,$where,$order,$keyfield)) === FALSE) {
         // if we cannot determine the module_id's there is no point to stay here and 'pollute' the database with nonsense
-        $messages[] = $tr['error'].db_errormessage();
+        $messages[] = $tr['error'].' '.db_errormessage();
         return FALSE;
     }
     $htmlpage_id = intval($records['htmlpage']['module_id']);
@@ -902,7 +902,7 @@ function demodata_sections_pages(&$messages,&$config,&$tr) {
             $fields['parent_id'] = $nodes[$fields['parent_id']]['node_id'];
         }
         if (($node_id = db_insert_into_and_get_id('nodes',$fields,'node_id')) === FALSE) {
-            $messages[] = $tr['error'].db_errormessage();
+            $messages[] = $tr['error'].' '.db_errormessage();
             $retval = FALSE;
         }
         $node_id = intval($node_id);
@@ -910,7 +910,7 @@ function demodata_sections_pages(&$messages,&$config,&$tr) {
         if ($fields['parent_id'] == 0) { // parent points to self, adjust the 0 in the database
             $fields['parent_id'] = $node_id;
             if (db_update('nodes',array('parent_id' => $node_id),array('node_id' => $node_id)) === FALSE) {
-                $messages[] = $tr['error'].db_errormessage();
+                $messages[] = $tr['error'].' '.db_errormessage();
                 $retval = FALSE;
             }
         }
@@ -929,7 +929,7 @@ function demodata_sections_pages(&$messages,&$config,&$tr) {
                     'mtime' => $now,
                     'muser_id' => $user_id);
                 if (db_insert_into('htmlpages',$htmlpage_fields) === FALSE) {
-                    $messages[] = $tr['error'].db_errormessage();
+                    $messages[] = $tr['error'].' '.db_errormessage();
                     $retval = FALSE;
                 }
                 break;
@@ -944,7 +944,7 @@ function demodata_sections_pages(&$messages,&$config,&$tr) {
                     'mtime' => $now,
                     'muser_id' => $user_id);
                 if (db_insert_into('sitemaps',$sitemap_fields) === FALSE) {
-                    $messages[] = $tr['error'].db_errormessage();
+                    $messages[] = $tr['error'].' '.db_errormessage();
                     $retval = FALSE;
                 }
                 break;
@@ -973,7 +973,7 @@ function demodata_sections_pages(&$messages,&$config,&$tr) {
         );
     foreach($theme_updates as $theme_update) {
         if (db_update('themes_areas_properties',$theme_update['fields'],$theme_update['where']) === FALSE) {
-            $messages[] = $tr['error'].db_errormessage();
+            $messages[] = $tr['error'].' '.db_errormessage();
             $retval = FALSE;
         }
     }
@@ -1027,7 +1027,7 @@ function demodata_alerts(&$messages,&$config,&$tr) {
         );
     foreach($alerts as $alert => $fields) {
         if (($alert_id = db_insert_into_and_get_id('alerts',$fields,'alert_id')) === FALSE) {
-            $messages[] = $tr['error'].db_errormessage();
+            $messages[] = $tr['error'].' '.db_errormessage();
             $retval = FALSE;
         }
         $alerts[$alert]['alert_id'] = intval($alert_id);
@@ -1046,7 +1046,7 @@ function demodata_alerts(&$messages,&$config,&$tr) {
         );
     foreach($alerts_areas_nodes as $fields) {
         if (db_insert_into('alerts_areas_nodes',$fields) === FALSE) {
-            $messages[] = $tr['error'].db_errormessage();
+            $messages[] = $tr['error'].' '.db_errormessage();
             $retval = FALSE;
         }
     }
