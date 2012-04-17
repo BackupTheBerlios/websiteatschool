@@ -54,7 +54,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: updatelib.php,v 1.21 2012/04/16 10:17:18 pfokker Exp $
+ * @version $Id: updatelib.php,v 1.22 2012/04/17 15:24:03 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -900,7 +900,7 @@ function update_core(&$output) {
     if (!update_core_2011020100($output)) { return; }
     if (!update_core_2011051100($output)) { return; }
     if (!update_core_2011093000($output)) { return; }
-    if (!update_core_2012040600($output)) { return; }
+    if (!update_core_2012041900($output)) { return; }
     // if (!update_core_2012mmdd00($output)) { return; }
     // ...
 
@@ -1822,8 +1822,8 @@ function update_remove_obsolete_files(&$output) {
         '/lib/modulelib.php'      => '0.90.3 / 2011093000',
         '/lib/area.class.php'     => '0.90.3 / 2011093000',
         '/lib/module.class.php'   => '0.90.3 / 2011093000',
-        '/graphics/blank16.gif'             => '0.90.4 / 2012040600',
-        '/styles/admin_high_visibility.css' => '0.90.4 / 2012040600'
+        '/graphics/blank16.gif'             => '0.90.4 / 2012041900',
+        '/styles/admin_high_visibility.css' => '0.90.4 / 2012041900'
         );
 
     $retval = TRUE; // assume success
@@ -1845,17 +1845,17 @@ function update_remove_obsolete_files(&$output) {
 } // update_remove_obsolete_files()
 
 
-/** perform actual update to version 2012040600
+/** perform actual update to version 2012041900
  *
- * Changes between 2011093000 and 2012040600:
+ * Changes between 2011093000 and 2012041900:
  *  - addition of the ckeditor-option in the site configuration table
  *
  * @param object &$output collects the html output
  * @return bool TRUE on success, FALSE otherwise
  */
-function update_core_2012040600(&$output) {
+function update_core_2012041900(&$output) {
     global $CFG,$DB;
-    $version = 2012040600;
+    $version = 2012041900;
     if ($CFG->version >= $version) {
         return TRUE;
     }
@@ -1947,6 +1947,6 @@ function update_core_2012040600(&$output) {
     // 4 -- If all is well, we update the version number in the database AND in $CFG->version
     //
     return update_core_version($output,$version);
-} // update_core_2012040600()
+} // update_core_2012041900()
 
 ?>

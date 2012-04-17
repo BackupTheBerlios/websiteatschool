@@ -57,12 +57,12 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: version.php,v 1.10 2012/04/06 18:47:25 pfokker Exp $
+ * @version $Id: version.php,v 1.11 2012/04/17 15:24:03 pfokker Exp $
  */
 
 
 /** The internal version number, like 2008012873 or 2008020100 (31 bits will work until the year 2147) */
-define('WAS_VERSION',2012040600);
+define('WAS_VERSION',2012041900);
 
 
 /** The external version number, like 1.0 or 1.0.0 */
@@ -70,7 +70,7 @@ define('WAS_RELEASE','0.90.3');
 
 
 /** Date of distribution file generation in ISO 8601 format: yyyy-mm-dd OR yyyy-mm-ddThh:mm:ss+0000 */
-define('WAS_RELEASE_DATE','2012-04-06');
+define('WAS_RELEASE_DATE','2012-04-19');
 
 
 /** A boolean flag indicating this is either the original (TRUE) or a modified (FALSE) version of Website@School */

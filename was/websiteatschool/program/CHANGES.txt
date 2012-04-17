@@ -1,5 +1,5 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.121 2012/04/17 15:20:29 pfokker Exp $
+$Id: CHANGES.txt,v 1.122 2012/04/17 15:24:03 pfokker Exp $
 -------------------------------------------------------------------------------
 
 2012-04-17
@@ -8,6 +8,8 @@ $Id: CHANGES.txt,v 1.121 2012/04/17 15:20:29 pfokker Exp $
 - additional languages: ar, da, fa, hu, pt
 - more translations for: de, zh
 - manifest updated for en and nl language
+- preparations for the upcoming new release:
+  bumped internal version to 2012041900
  
 2012-04-16
 - minor adjustments in the skins: we now only display the phrase
