@@ -21,14 +21,14 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wastheme_schoolyard
- * @version $Id: schoolyard.php,v 1.2 2012/04/16 11:13:49 pfokker Exp $
+ * @version $Id: schoolyard.php,v 1.3 2012/04/17 14:33:20 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
 $string['title'] = 'Schoolyard Theme';
 $string['description'] = 'A simple inverted-L type of theme';
 $string['translatetool_title'] = 'Schoolyard';
-$string['translatetool_description'] = 'This file contrains translations for the Schoolyard Theme';
+$string['translatetool_description'] = 'This file contains translations for the Schoolyard Theme';
 
 $string['you_are_here'] = 'You are here:';
 $string['alt_logo'] = 'image of logo';

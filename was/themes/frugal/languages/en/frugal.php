@@ -21,14 +21,14 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wastheme_frugal
- * @version $Id: frugal.php,v 1.2 2011/02/03 14:04:01 pfokker Exp $
+ * @version $Id: frugal.php,v 1.3 2012/04/17 14:33:20 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
 $string['title'] = 'Frugal Theme';
 $string['description'] = 'This theme is the most basic theme';
 $string['translatetool_title'] = 'Frugal';
-$string['translatetool_description'] = 'This file contrains translations for the Frugal theme';
+$string['translatetool_description'] = 'This file contains translations for the Frugal theme';
 
 $string['you_are_here'] = 'You are here:';
 $string['alt_logo'] = 'image of logo';
