@@ -22,7 +22,7 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: admin_braille.css,v 1.1 2012/04/16 10:17:18 pfokker Exp $
+ * @version $Id: admin_braille.css,v 1.2 2012/04/17 14:31:43 pfokker Exp $
  */
 #page a.dimmed:link,
 #page a.dimmed:visited {
@@ -51,9 +51,6 @@
 #quicktop a {
   display: inline;
   margin-left: 20px;
-}
-#navigation ul {
-  clear: top;
 }
 #navigation li {
   margin-right: 20px;
