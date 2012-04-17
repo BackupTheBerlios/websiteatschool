@@ -1,6 +1,6 @@
 <?php
 # This file is part of Website@School, a Content Management System especially designed for schools.
-# Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker <peter@berestijn.nl>
+# Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam <info@websiteatschool.eu>
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU Affero General Public License version 3 as published by
@@ -15,28 +15,28 @@
 # You should have received a copy of the License Agreement for Website@School
 # along with this program. If not, see http://websiteatschool.eu/license.html
 
-/** /program/languages/nl/nl_manifest.php - description of the Dutch translation
+/** /program/languages/pt/pt_manifest.php - description of the Portugese translation
  *
- * This file defines the Dutch language package ('nl'). 
+ * This file defines the Portugese language package ('pt'). 
  * This file is used when this package is installed.
  *
- * @author Peter Fokker <peter@berestijn.nl>
- * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
+ * @author Rita Valente Ribeiro da Silva <translators@websiteatschool.eu>
+ * @copyright Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam <info@websiteatschool.eu>
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
- * @package waslang_nl
- * @version $Id: nl_manifest.php,v 1.7 2012/04/17 15:20:13 pfokker Exp $
+ * @package waslang_pt
+ * @version $Id: pt_manifest.php,v 1.1 2012/04/17 15:20:14 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
-$manifests['nl'] = array(
-    'language_key'        => 'nl',
-    'language_name'       => 'Nederlands',
-    'parent_language_key' => '',
-    'description'         => 'This is the Dutch translation based on Website@School release 0.90.4',
-    'author'              => 'Peter Fokker',
-    'version'             => 2012041900,
-    'release'             => '0.90.4',
-    'release_date'        => '2012-04-19',
+$manifests['pt'] = array(
+    'language_key'        => 'pt',
+    'language_name'       => 'Português',
+    'parent_language_key' => 'es',
+    'description'         => 'This is the Portugese translation based on Website@School release 0.90.3',
+    'author'              => 'Rita Valente Ribeiro da Silva',
+    'version'             => 2012041700,
+    'release'             => '0.90.3',
+    'release_date'        => '2012-04-17',
     'is_core'             => FALSE
    );
 

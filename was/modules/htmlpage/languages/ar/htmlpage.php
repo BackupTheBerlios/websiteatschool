@@ -1,6 +1,6 @@
 <?php
 # This file is part of Website@School, a Content Management System especially designed for schools.
-# Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker <peter@berestijn.nl>
+# Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU Affero General Public License version 3 as published by
@@ -15,29 +15,20 @@
 # You should have received a copy of the License Agreement for Website@School
 # along with this program. If not, see http://websiteatschool.eu/license.html
 
-/** /program/languages/nl/nl_manifest.php - description of the Dutch translation
+/** /program/modules/htmlpage/languages/ar/htmlpage.php
  *
- * This file defines the Dutch language package ('nl'). 
- * This file is used when this package is installed.
+ * Language: ar (العربية)
+ * Release:  0.90.3 / 2012041700 (2012-04-17)
  *
- * @author Peter Fokker <peter@berestijn.nl>
- * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
+ * @author Said Taki <translators@websiteatschool.eu>
+ * @copyright Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
- * @package waslang_nl
- * @version $Id: nl_manifest.php,v 1.7 2012/04/17 15:20:13 pfokker Exp $
+ * @package waslang_ar
+ * @version $Id: htmlpage.php,v 1.1 2012/04/17 15:20:14 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
-
-$manifests['nl'] = array(
-    'language_key'        => 'nl',
-    'language_name'       => 'Nederlands',
-    'parent_language_key' => '',
-    'description'         => 'This is the Dutch translation based on Website@School release 0.90.4',
-    'author'              => 'Peter Fokker',
-    'version'             => 2012041900,
-    'release'             => '0.90.4',
-    'release_date'        => '2012-04-19',
-    'is_core'             => FALSE
-   );
-
+$string['title'] = 'صفحة هوتميل في الخام';
+$string['description'] = 'هده الوحدة تتعامل مع صفحات هوتميل عادي، من دون أجراس أو صفارات';
+$string['translatetool_title'] = 'صفحة هوتميل';
+$string['translatetool_description'] = 'هذا الملف يحتوي على ترجمات للوحدة في صفحات هوتميل عادي';
 ?>
