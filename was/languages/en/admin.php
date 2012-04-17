@@ -37,7 +37,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: admin.php,v 1.20 2012/04/15 09:32:09 pfokker Exp $
+ * @version $Id: admin.php,v 1.21 2012/04/17 14:35:23 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1232,7 +1232,7 @@ $string['logview_message'] = 'Message';
 
 $comment['update_header'] = 'Here are the prompts dealing with the automatic update routine(s)';
 $string['update_header'] = 'Update Manager';
-$string['update_intro'] = 'This is the update manager. Below is an overview of the current internal en external versions of the core system and the various subsystems. If there is a discrepancy between the two versions, you can perform the update by following the link \'[Update]\' or perform the installation of the subsystem by following the link \'[Install]\' in the last column';
+$string['update_intro'] = 'This is the update manager. Below is an overview of the current internal and external versions of the core system and the various subsystems. If there is a discrepancy between the two versions, you can perform the update by following the link \'[Update]\' or perform the installation of the subsystem by following the link \'[Install]\' in the last column';
 $string['update_version_database'] = 'Internal';
 $string['update_version_manifest'] = 'Version';
 $string['update_release_date_manifest'] = 'Date';
