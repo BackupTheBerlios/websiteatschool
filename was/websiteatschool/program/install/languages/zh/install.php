@@ -1,6 +1,6 @@
 <?php
 # This file is part of Website@School, a Content Management System especially designed for schools.
-# Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
+# Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU Affero General Public License version 3 as published by
@@ -18,13 +18,13 @@
 /** /program/install/languages/zh/install.php
  *
  * Language: zh (中文)
- * Release:  0.90.2 / 2011092900 (2011-09-29)
+ * Release:  0.90.3 / 2012041700 (2012-04-17)
  *
  * @author Liu Jing Fang <translators@websiteatschool.eu>
- * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam
+ * @copyright Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_zh
- * @version $Id: install.php,v 1.3 2011/09/29 19:01:14 pfokker Exp $
+ * @version $Id: install.php,v 1.4 2012/04/17 14:52:18 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = '安装';
@@ -73,7 +73,7 @@ $string['dialog_database_explanation'] = '请在以下部分输入您的数据�
 $string['db_type_label'] = '类型';
 $string['db_type_help'] = '选择可用的数据库类型之一';
 $string['db_type_option_mysql'] = 'MySQL';
-$string['db_server_label'] = '服务商 ';
+$string['db_server_label'] = '服务商';
 $string['db_server_help'] = '这是数据库服务商的地址，通常<strong>本地户主</strong>.其他例子：</strong>mysql.example.org</strong>或者<strong>example.dbserver.provider.net:3306</strong>.';
 $string['db_username_label'] = '用户名';
 $string['db_username_help'] = '需要一个有效的用户名/密码-结合以链接到数据库服务商。请不要使用数据库服务商的根账户而使用一个略低级别的，例如<strong>wasuser</strong> or <strong>example_wwwa</strong>.';
@@ -166,7 +166,7 @@ $string['dialog_download'] = '下载config.php';
 $string['dialog_download_title'] = '下载config.php到您的电脑';
 $string['dialog_unknown'] = '未知';
 $string['error_already_installed'] = '错误：网页@学校已经安装';
-$string['error_wrong_version'] = '错误：错误的版本号。您是否在安装过程中下载了一个新版本？ ';
+$string['error_wrong_version'] = '错误：错误的版本号。您是否在安装过程中下载了一个新版本？';
 $string['error_fatal'] = '严重错误{ERROR}：请联系<{EMAIL}> 获取帮助';
 $string['error_php_obsolete'] = '错误：PHP的版本过旧';
 $string['error_php_too_old'] = '错误：PHP ({VERSION}) 的版本过旧：至少使用版本{MIN_VERSION}';

@@ -1,6 +1,6 @@
 <?php
 # This file is part of Website@School, a Content Management System especially designed for schools.
-# Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
+# Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU Affero General Public License version 3 as published by
@@ -18,13 +18,13 @@
 /** /program/languages/tr/loginlib.php
  *
  * Language: tr (Türkçe)
- * Release:  0.90.2 / 2011092900 (2011-09-29)
+ * Release:  0.90.3 / 2012041700 (2012-04-17)
  *
  * @author Ülkü Gaga <translators@websiteatschool.eu>
- * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam
+ * @copyright Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_tr
- * @version $Id: loginlib.php,v 1.1 2011/09/29 19:19:22 pfokker Exp $
+ * @version $Id: loginlib.php,v 1.2 2012/04/17 14:52:09 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = 'Oturum aç';
@@ -43,8 +43,8 @@ $string['change_password_confirmation_subject'] = 'Şifreyiniz başarılı bir �
 $string['contact_webmaster_for_new_password'] = 'Şifreyinizi değiştirmek için lütfen webmasterla  irtibata geçiniz.';
 $string['do_you_want_to_try_forgot_password_procedure'] = 'Geçersiz bilgi. \'Şifremi unuttum\' yöntemini uygulamak istermisiniz?';
 $string['email_address'] = 'E-Posta adresi';
-$string['failure_sending_laissez_passer_mail'] = 'E-posta tekkullanımlık kodu gönderirken hata veriyor. Lütfen tekrar deneyiniz. Eğer aynı sorun devam ediyorsa webmasterla  irtibata geçiniz. ';
-$string['failure_sending_temporary_password'] = 'E-posta geçici şifreyi gönderirken hata veriyor. Lütfen tekrar deneyiniz. Eğer aynı sorun devam ediyorsa webmasterla  irtibata geçiniz. ';
+$string['failure_sending_laissez_passer_mail'] = 'E-posta tekkullanımlık kodu gönderirken hata veriyor. Lütfen tekrar deneyiniz. Eğer aynı sorun devam ediyorsa webmasterla  irtibata geçiniz.';
+$string['failure_sending_temporary_password'] = 'E-posta geçici şifreyi gönderirken hata veriyor. Lütfen tekrar deneyiniz. Eğer aynı sorun devam ediyorsa webmasterla  irtibata geçiniz.';
 $string['forgot_password'] = 'Şifrenizi mi unuttunuz?';
 $string['forgotten_password_mailmessage1'] = 'Buradan geçici şifre üretebilmek için gerekli olan tekkullanımlık kodu talep edebilirsiniz. Bağlantı adresini Web tarayıcısındaki URL/Adres Çubuğuna kopyalayın ve [Enter] a basin 
 
@@ -110,7 +110,7 @@ $string['request_bypass'] = 'Geçiçi şifre talebiniz';
 $string['request_laissez_passer'] = 'Oturum açabilmek için tekkullanımlık kod talebiniz';
 $string['see_mail_for_further_instructions'] = 'Lütfen daha fazla talimat için E-Postanıza bakınız.';
 $string['see_mail_for_new_temporary_password'] = 'Lütfen yeni geçiçi şifreniz için E-Postanıza bakınız.';
-$string['too_many_change_password_attempts'] = 'Çok fazla başarısız şifre değiştirme girişiminde bulundunuz. ';
+$string['too_many_change_password_attempts'] = 'Çok fazla başarısız şifre değiştirme girişiminde bulundunuz.';
 $string['too_many_login_attempts'] = 'Çok fazla başarısız oturum açma girişiminde bulundunuz..';
 $string['username'] = 'Kullanıcı adı';
 $string['your_forgotten_password_subject1'] = 'Konu: tekkullanımlık oturum açma kodu talebiniz';

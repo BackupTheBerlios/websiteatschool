@@ -1,6 +1,6 @@
 <?php
 # This file is part of Website@School, a Content Management System especially designed for schools.
-# Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
+# Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU Affero General Public License version 3 as published by
@@ -18,13 +18,13 @@
 /** /program/languages/zh/admin.php
  *
  * Language: zh (中文)
- * Release:  0.90.2 / 2011092900 (2011-09-29)
+ * Release:  0.90.3 / 2012041700 (2012-04-17)
  *
  * @author Liu Jing Fang <translators@websiteatschool.eu>
- * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam
+ * @copyright Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_zh
- * @version $Id: admin.php,v 1.3 2012/04/15 09:32:11 pfokker Exp $
+ * @version $Id: admin.php,v 1.4 2012/04/17 14:52:09 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = '管理';
@@ -69,6 +69,8 @@ $string['no_access_statistics'] = '您的账户进入统计的通道被屏蔽';
 $string['no_access_tools'] = '您的账户进入工具的通道被屏蔽';
 $string['no_access_help'] = '您的账户进入帮助的通道被屏蔽';
 $string['access_denied'] = '通道被拒绝';
+$string['no_access_admin_php'] = '您的帐户不可以登录网页@学校。跟随以下链接之一以继续：';
+$string['view_login_dialog'] = '登入';
 $string['url'] = 'URL';
 $string['public_area'] = '公共区域';
 $string['private_area'] = '被保护区域';
@@ -86,7 +88,7 @@ $string['expired'] = '过期';
 $string['icon_delete'] = '删除此结点';
 $string['icon_delete_access_denied'] = '您没有权限删除此结点';
 $string['icon_delete_alt'] = '删除图标';
-$string['icon_delete_text'] = '删 ';
+$string['icon_delete_text'] = '删';
 $string['icon_edit'] = '编辑此结点';
 $string['icon_edit_access_denied'] = '您没有权限编辑此结点';
 $string['icon_edit_alt'] = '图标编辑';
@@ -269,7 +271,7 @@ $string['section_deleted'] = '从区域 {AREA}中删除:区域{NODE_FULL_NAME}';
 $string['errors_deleting_childeren'] = '从区域{NODE_FULL_NAME}中删除页面/部件的错误数: {COUNT}';
 $string['error_editing_node_content'] = '编辑页面成分的错误 {NODE_FULL_NAME}';
 $string['page_content_edited'] = '(区域 {AREA}) 更改的页面内容: {NODE_FULL_NAME}';
-$string['configurationmanager_intro'] = '该为配置管理员。请在目录中选择一项任务。 ';
+$string['configurationmanager_intro'] = '该为配置管理员。请在目录中选择一项任务。';
 $string['configurationmanager_header'] = '配置管理员';
 $string['menu_areas'] = '区域';
 $string['menu_areas_title'] = '浏览，添加，编辑或删除区域';
@@ -303,6 +305,7 @@ $string['area_delete_private_title'] = '{AREA_FULL_NAME} (隐私区域 {AREA})';
 $string['invalid_area'] = '无效区域 {AREA}';
 $string['error_deleting_area'] = '删除区域失败 {AREA} ({AREA_FULL_NAME})';
 $string['error_deleting_area_not_empty'] = '无法删除区域 {AREA} ({AREA_FULL_NAME}): 必须为空(剩余的页面/部件数目: {NODES})';
+$string['error_deleting_area_dir_not_empty'] = ' \'{AREA_FULL_NAME}\'区的数据文件夹还未空。请先删除文件和文件夹';
 $string['area_deleted'] = '区域{AREA} ({AREA_FULL_NAME})被删除';
 $string['delete_an_area_header'] = '确定删除区域 {AREA_FULL_NAME}';
 $string['delete_area_explanation'] = '您将删除以下区域:';
@@ -321,14 +324,14 @@ $string['areamanager_add_area_theme_id_label'] = '~主题';
 $string['areamanager_add_area_theme_id_title'] = '为此区域选择主题';
 $string['errors_saving_data'] = '保存更改存在问题. 错误数: {ERRORS}';
 $string['success_saving_data'] = '成功将更改保存于数据库';
-$string['areamanager_edit_theme_header'] = '为区域 {AREA}设置主题 \'{THEME_NAME}\' ';
+$string['areamanager_edit_theme_header'] = '为区域 {AREA}设置主题 \'{THEME_NAME}\'';
 $string['areamanager_edit_theme_explanation'] = '在此您可以为区域 {AREA} 设置主题{THEME_NAME} ({AREA_FULL_NAME}).<br> 您可以在此更改的属性尽适用于此区域本身，例如，每个区域可以为某个特殊的区域组合和主题拥有一套独特的属性';
 $string['areamanager_menu_edit'] = '基本属性';
 $string['areamanager_menu_edit_title'] = '编辑基本区域属性';
 $string['areamanager_menu_edit_theme'] = '主题配置';
 $string['areamanager_menu_edit_theme_title'] = '为此区域设置主题';
 $string['areamanager_menu_reset_theme'] = '重设主题';
-$string['areamanager_menu_reset_theme_title'] = '为此区域重设主题配置 ';
+$string['areamanager_menu_reset_theme_title'] = '为此区域重设主题配置';
 $string['areamanager_edit_area_header'] = '编辑此区域的基本属性';
 $string['areamanager_edit_area_explanation'] = '在此处您可以编辑一个区域的基本属性。注意可以将一个隐私区域更改为公共区域或反之的是<b>不是 </b>';
 $string['areamanager_edit_area_title_label'] = '~名称';
@@ -344,7 +347,7 @@ $string['areamanager_edit_area_path_title'] = '此文件夹中包含此区域的
 $string['areamanager_edit_area_metadata_label'] = '~超大数值';
 $string['areamanager_edit_area_metadata_title'] = '此信息被加入到每一页的HTML标题头中';
 $string['areamanager_edit_area_sort_order_label'] = '分类 ~顺序';
-$string['areamanager_edit_area_sort_order_title'] = '区域根据此数字决定的顺序被展示 ';
+$string['areamanager_edit_area_sort_order_title'] = '区域根据此数字决定的顺序被展示';
 $string['areamanager_edit_area_theme_id_label'] = '~主题';
 $string['areamanager_edit_area_theme_id_title'] = '为此区域选择主题';
 $string['areamanager_save_area_success'] = '成功在此区域中保存变更{AREA} ({AREA_FULL_NAME})';
@@ -405,6 +408,9 @@ $string['site_config_filemanager_images_label'] = '被认为是图像的扩展�
 $string['site_config_filemanager_images_title'] = '只有拥有以下这些扩展名之一的文件可以在从FCK编辑器中浏览图像时被选择';
 $string['site_config_filemanager_flash_label'] = '被认为是flash文件的扩展名列表（逗号-界定）';
 $string['site_config_filemanager_flash_title'] = '只有拥有以下这些扩展名之一的文件可以在从FCK编辑器中浏览flash文件时被选择';
+$string['site_config_pagemanager_at_end_label'] = '';
+$string['site_config_pagemanager_at_end_title'] = '勾画此方格以在（次级）部分的尾部放置新增页面和部件';
+$string['site_config_pagemanager_at_end_option'] = '在尾部添加页面/部件';
 $string['area_theme_reset'] = '主题的属性 {THEME_NAME} 在区域{AREA} 中被设为默认({AREA_FULL_NAME})';
 $string['error_area_theme_reset'] = '在区域{AREA}中为主题 {THEME_NAME}重设属性存在问题({AREA_FULL_NAME})';
 $string['reset_theme_area_header'] = '为区域{AREA}重设主题 {THEME_NAME}属性 ({AREA_FULL_NAME})';
@@ -468,6 +474,9 @@ $string['groupmanager_delete_group_group'] = '{GROUP_FULL_NAME} ({GROUP})';
 $string['groupmanager_delete_group_capacity'] = '{CAPACITY}: {COUNT}';
 $string['groupmanager_delete_group_success'] = '成功删除组 {GROUP} ({GROUP_FULL_NAME})';
 $string['groupmanager_delete_group_failure'] = '删除组时存在错误{GROUP} ({GROUP_FULL_NAME})';
+$string['usermanager_delete_group_dir_not_empty'] = ' {GROUP_FULL_NAME}\' ({GROUP}) 组的数据文件夹未空。请先删除文件或文件夹。';
+$string['usermanager_delete_group_not_self'] = '您不可以删除 \'{GROUP_FULL_NAME}\' ({GROUP})组因为您作为\'{CAPACITY}\'和这个组相关联。您必须取消您和组的关联才可以删除它。';
+$string['usermanager_delete_group_capacity_not_self'] = '{FIELD}: 您不能从‘{GROUP_FULL_NAME}\' ({GROUP}’中删除\'{CAPACITY}\'容量因为您已那个容量与这个组关联。您必须删除您自己与这个组/容量的关联才能删除它。';
 $string['groupmanager_capacity_overview_header'] = '预览: {GROUP} - {CAPACITY}';
 $string['groupmanager_capacity_overview_explanation'] = '这是与这个组相关的所有用户账户的预览({GROUP_FULL_NAME}) 和职能({CAPACITY})';
 $string['groupmanager_capacity_overview_no_members'] = '目前没有与这个组相联系的用户账户 ({GROUP_FULL_NAME}) 和职能 ({CAPACITY})';
@@ -580,7 +589,7 @@ $string['usermanager_add_user_fullname_label'] = '~全部名称';
 $string['usermanager_add_user_fullname_title'] = '请输入新用户的全部名称';
 $string['usermanager_add_user_password1_label'] = '~密码';
 $string['usermanager_add_user_password1_title'] = '最小需求: 字数: {MIN_LENGTH}, 数字: {MIN_DIGIT}, 小写字母: {MIN_LOWER}, 大写字母: {MIN_UPPER}';
-$string['usermanager_add_user_password2_label'] = '确定 密～码 ';
+$string['usermanager_add_user_password2_label'] = '确定 密～码';
 $string['usermanager_add_user_password2_title'] = '最小需求: 字数: {MIN_LENGTH}, 数字: {MIN_DIGIT}, 小写字母: {MIN_LOWER}, 大写字母: {MIN_UPPER}';
 $string['usermanager_add_user_email_label'] = '~电子邮件';
 $string['usermanager_add_user_email_title'] = '请输入新用户的电子邮件地址';
@@ -595,6 +604,8 @@ $string['usermanager_delete_user_breadcrumb'] = '删除';
 $string['usermanager_delete_user_user'] = '{FULL_NAME} ({USERNAME})';
 $string['usermanager_delete_user_success'] = '成功删除用户{USERNAME} ({FULL_NAME})';
 $string['usermanager_delete_user_failure'] = '删除用户是没有出现错误 {USERNAME} ({FULL_NAME})';
+$string['usermanager_delete_user_dir_not_empty'] = '{FULL_NAME} ({USERNAME}) 的数据文件夹还未空。请先删除文件和文件夹。';
+$string['usermanager_delete_user_not_self'] = '您不可以删除您自己的帐户';
 $string['menu_user_basic'] = '基本';
 $string['menu_user_basic_title'] = '编辑用户账户的基本属性';
 $string['menu_user_advanced'] = '高级';
@@ -627,9 +638,6 @@ $string['usermanager_edit_user_redirect_label'] = '~重导 (登出后去哪里)'
 $string['usermanager_edit_user_redirect_title'] = '输入一个登出后去往的网页链接（空白意味着默认区域）';
 $string['usermanager_edit_user_language_label'] = '~语言';
 $string['usermanager_edit_user_language_title'] = '为此用户选择优先语言';
-$string['usermanager_edit_user_high_visibility_label'] = '允许文字分界面';
-$string['usermanager_edit_user_high_visibility_title'] = '勾画此方格以使该用户处于高显身度';
-$string['usermanager_edit_user_high_visibility_check'] = '~高显身度';
 $string['usermanager_edit_user_editor_label'] = '~编辑';
 $string['usermanager_edit_user_editor_title'] = '为此用户选择偏好的编辑/文字处理器';
 $string['usermanager_edit_user_path_label'] = '~数据文件夹(路径名不能被更改)';
@@ -643,13 +651,13 @@ $string['pagination_next'] = '下一步';
 $string['pagination_all'] = '全部';
 $string['pagination_more_left'] = '&lt;';
 $string['pagination_more_right'] = '&gt;';
-$string['pagination_count_of_total'] = '{TOTAL}]之中的[{FIRST}-{LAST} ';
+$string['pagination_count_of_total'] = '{TOTAL}]之中的[{FIRST}-{LAST}';
 $string['usermanager_user_groups_header'] = '成员 {USERNAME} ({FULL_NAME})';
 $string['usermanager_user_groups_explanation'] = '在这里您可以添加和删除用户 {FULL_NAME}的族成员 ({USERNAME}).';
 $string['usermanager_user_groups_add'] = '添加一个组成员';
 $string['usermanager_user_groups_add_title'] = '点击此处以对此用户账户增添一个新组成员';
 $string['usermanager_user_groups'] = '{GROUP} ({GROUP_FULL_NAME}) / {CAPACITY}';
-$string['icon_membership_delete'] = '删除此组成员 ';
+$string['icon_membership_delete'] = '删除此组成员';
 $string['icon_membership_delete_alt'] = '删除图标';
 $string['icon_membership_delete_text'] = '删';
 $string['usermanager_user_groupadd_header'] = '为用户{USERNAME}增添一个组成员 ({FULL_NAME})';
@@ -765,12 +773,12 @@ $string['filemanager_virus_mailmessage2'] = '在扫描文件{PATH} ({FILENAME})�
 祝好,
 
 您的自动网络管理员';
-$string['filemanager_add_files_success'] = '成功添加文件 \'{FILENAME}\' 作为文件夹  \'{PATH}\'的\'{TARGET}\'  ';
-$string['filemanager_add_files_error'] = '错误添加文件 \'{FILENAME}\' 作为文件夹  \'{PATH}\'的\'{TARGET}\'  ';
+$string['filemanager_add_files_success'] = '成功添加文件 \'{FILENAME}\' 作为文件夹  \'{PATH}\'的\'{TARGET}\'';
+$string['filemanager_add_files_error'] = '错误添加文件 \'{FILENAME}\' 作为文件夹  \'{PATH}\'的\'{TARGET}\'';
 $string['filemanager_add_files_results'] = '文件已添加: {SAVECOUNT},文件被忽略: {SKIPCOUNT}';
 $string['filemanager_add_files_filetype_mismatch'] = '错误:文件名(\'{FILENAME}\')和文件类型 (\'{FILETYPE}\') 不必配; 文件被跳过. 重命名文件 (e.g. to \'{TARGET}\') 并重试。';
 $string['filemanager_add_files_filetype_banned'] = '错误：文件 \'{FILENAME}\' 和文件类型 \'{FILETYPE}\' 不被允许; 文件被跳过';
-$string['filemanager_add_files_forbidden_name'] = '错误添减文件 \'{FILENAME}\' 作为文件夹\'{PATH}\'的\'{TARGET}\': 名称不被认可。请为文件重命名并重试。 ';
+$string['filemanager_add_files_forbidden_name'] = '错误添减文件 \'{FILENAME}\' 作为文件夹\'{PATH}\'的\'{TARGET}\': 名称不被认可。请为文件重命名并重试。';
 $string['filemanager_title_thumb_file'] = '{FILENAME} (大小(像素): {SIZE}, 更改: {DATIM})';
 $string['filemanager_title_thumb_image'] = '{FILENAME} (维度: {WIDTH}x{HEIGHT}, 大小(像素): {SIZE}, 更改: {DATIM})';
 $string['tools_intro'] = '在这里您可以找到各种工具。
@@ -865,7 +873,7 @@ $string['logview_priority'] = '优先权';
 $string['logview_message'] = '信息';
 $string['update_header'] = '更新管理者';
 $string['update_intro'] = '这是更新管理。以下是当前内部和外部版本的核心系统和多种次级系统的概览。如果两版本中存在出路，您可以通过点击‘[更新]\'链接或者通过以下最后一栏中的\'[安装]\'链接来安装次级系统以实现更新';
-$string['update_version_database'] = '内部 ';
+$string['update_version_database'] = '内部';
 $string['update_version_manifest'] = '版本';
 $string['update_release_date_manifest'] = '日期';
 $string['update_release_manifest'] = '公布';
@@ -888,4 +896,7 @@ $string['update_status_error'] = '错误';
 $string['update_status_update'] = '更新';
 $string['update_status_install'] = '安装';
 $string['update_version_database_too_old'] = '内部版本{VERSION} 过旧; 您必须重新安装并/或手动更新。';
+$string['update_field_value_too_long'] = '表格\'{TABLE}\'场地\'{FIELD}\'：内容长于{LENGTH}字数：\'{CONTENT}\'';
+$string['update_please_correct_field_value_manually'] = '需要手动缩短的场地数（在网页@学校之外的）是{ERRORS}';
+$string['update_warning_obsolete_file'] = '警告：文件‘{FILENAME}\'已过时（自从{VERSION}版本）并可以安全删除';
 ?>

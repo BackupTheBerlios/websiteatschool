@@ -1,6 +1,6 @@
 <?php
 # This file is part of Website@School, a Content Management System especially designed for schools.
-# Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
+# Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU Affero General Public License version 3 as published by
@@ -18,17 +18,17 @@
 /** /program/languages/es/loginlib.php
  *
  * Language: es (Español)
- * Release:  0.90.3 / 2011093000 (2011-09-30)
+ * Release:  0.90.3 / 2012041700 (2012-04-17)
  *
  * @author Anouk Coumans <translators@websiteatschool.eu>
- * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam
+ * @copyright Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_es
- * @version $Id: loginlib.php,v 1.4 2011/09/30 13:22:51 pfokker Exp $
+ * @version $Id: loginlib.php,v 1.5 2012/04/17 14:52:07 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = 'iniciar sesión';
-$string['translatetool_description'] = 'Este archivo contiene las traducciónes tratando de iniciar /cerrar sesión. ';
+$string['translatetool_description'] = 'Este archivo contiene las traducciónes tratando de iniciar /cerrar sesión.';
 $string['access_denied'] = 'Acceso denegado';
 $string['change_password'] = 'Cambiar contraseña';
 $string['change_password_confirmation_message'] = 'Su contraseña ha sido cambiado.
@@ -82,7 +82,7 @@ La solicitud para el envio de esta contraseña temporaria ha sido recibido desde
 Su administrador del web automatico
 ';
 $string['home_page'] = ' Início';
-$string['invalid_credentials_please_retry'] = 'Credenciales inválidas, por favor intenta nuevamente. ';
+$string['invalid_credentials_please_retry'] = 'Credenciales inválidas, por favor intenta nuevamente.';
 $string['invalid_laissez_passer_please_retry'] = 'Códico-único inválido, por favor intenta nuevamente.';
 $string['invalid_new_passwords'] = 'Su nuevo contraseña no es acceptable. Possibles causas:
 la primera contraseña no era iguál a la segunda contraseña;
@@ -91,19 +91,19 @@ no habían suficiente letras minúsculas (minimal {MIN_LOWER}),
 mayúsculas (minimal {MIN_UPPER}) o cifras (minimal {MIN_DIGIT})       en su nueva contraseña.
 o su nueva contraseña era la misma que su vieja contraseña.
 por favor intenta de crear una contraseña buena y nueva y intenta nuevamente.';
-$string['invalid_username_email_please_retry'] = 'Nombre de usuario y dirección electrónico invalido, por favor intentar de nuevamente ';
-$string['laissez_passer'] = 'Código-único ';
-$string['login'] = 'Iniciar sesión ';
+$string['invalid_username_email_please_retry'] = 'Nombre de usuario y dirección electrónico invalido, por favor intentar de nuevamente';
+$string['laissez_passer'] = 'Código-único';
+$string['login'] = 'Iniciar sesión';
 $string['logout_forced'] = 'Usted es forzado cerrar la sesión';
 $string['logout_successful'] = 'Usted ha cerrado la sesión con éxito';
-$string['message_box'] = 'Casilla de mensajes. ';
-$string['must_change_password'] = 'Usted tiene que cambiar su contraseña ahora.  ';
+$string['message_box'] = 'Casilla de mensajes.';
+$string['must_change_password'] = 'Usted tiene que cambiar su contraseña ahora.';
 $string['new_password1'] = 'Contraseña nueva';
 $string['new_password2'] = 'Confirma contraseña nueva';
 $string['OK'] = 'OK';
 $string['password'] = 'Contraseña';
-$string['password_changed'] = 'Su contraseña ha sido cambiado con éxito. ';
-$string['please_enter_new_password_twice'] = 'Por favor entrar su nombre de usuario y contraseña y también entra su nueva contrseña dos veces y hacer clic en el botton ';
+$string['password_changed'] = 'Su contraseña ha sido cambiado con éxito.';
+$string['please_enter_new_password_twice'] = 'Por favor entrar su nombre de usuario y contraseña y también entra su nueva contrseña dos veces y hacer clic en el botton';
 $string['please_enter_username_email'] = 'Entrar su nombre de usuario y dirección de correo electrónico y hacer clic en el botton';
 $string['please_enter_username_laissez_passer'] = 'Por favor entrar su nombre usuario y código-único y hacer clic en el botton';
 $string['please_enter_username_password'] = 'Por favor entrar su nombre de usuario y contraseña y hacer clic en el botton';
@@ -113,7 +113,7 @@ $string['see_mail_for_further_instructions'] = 'Por favor ver su correo electró
 $string['see_mail_for_new_temporary_password'] = 'Por favor ver su correo electronico para su nueva contraseña temporáneo';
 $string['too_many_change_password_attempts'] = 'Demasiados intentos para cambiar la contraseña';
 $string['too_many_login_attempts'] = 'Demasiados intentos para inicíar sesión';
-$string['username'] = 'Nombre usuarío ';
+$string['username'] = 'Nombre usuarío';
 $string['your_forgotten_password_subject1'] = 'Referente: Petición de código-único';
 $string['your_forgotten_password_subject2'] = 'Referente: Petición de contraseña temporaria';
 ?>

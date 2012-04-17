@@ -1,6 +1,6 @@
 <?php
 # This file is part of Website@School, a Content Management System especially designed for schools.
-# Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam <info@websiteatschool.eu>
+# Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam <info@websiteatschool.eu>
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU Affero General Public License version 3 as published by
@@ -21,10 +21,10 @@
  * This file is used when this package is installed.
  *
  * @author Anouk Coumans, Hanna Tulleken, Margot Molier <translators@websiteatschool.eu>
- * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam <info@websiteatschool.eu>
+ * @copyright Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam <info@websiteatschool.eu>
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_es
- * @version $Id: es_manifest.php,v 1.4 2011/09/30 13:22:51 pfokker Exp $
+ * @version $Id: es_manifest.php,v 1.5 2012/04/17 14:52:07 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -34,9 +34,9 @@ $manifests['es'] = array(
     'parent_language_key' => 'en',
     'description'         => 'This is the Spanish translation based on Website@School release 0.90.3',
     'author'              => 'Anouk Coumans, Hanna Tulleken, Margot Molier',
-    'version'             => 2011093000,
+    'version'             => 2012041700,
     'release'             => '0.90.3',
-    'release_date'        => '2011-09-30',
+    'release_date'        => '2012-04-17',
     'is_core'             => FALSE
    );
 

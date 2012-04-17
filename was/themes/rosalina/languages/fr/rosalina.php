@@ -1,6 +1,6 @@
 <?php
 # This file is part of Website@School, a Content Management System especially designed for schools.
-# Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
+# Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU Affero General Public License version 3 as published by
@@ -18,26 +18,26 @@
 /** /program/themes/rosalina/languages/fr/rosalina.php
  *
  * Language: fr (Français)
- * Release:  0.90.2 / 2011092900 (2011-09-29)
+ * Release:  0.90.3 / 2012041700 (2012-04-17)
  *
  * @author Jean Peyratout <translators@websiteatschool.eu> <jean.peyratout@abul.org>
- * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam
+ * @copyright Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_fr
- * @version $Id: rosalina.php,v 1.2 2012/03/12 06:56:13 pfokker Exp $
+ * @version $Id: rosalina.php,v 1.3 2012/04/17 14:52:15 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['title'] = 'Thème Rosalina';
 $string['description'] = 'Ce thème a des menus animés ("HV Menu", basé sur Javascript)';
 $string['translatetool_title'] = 'Rosalina';
-$string['translatetool_description'] = 'Ce fichier contient les traductions du thème Rosalina. ';
+$string['translatetool_description'] = 'Ce fichier contient les traductions du thème Rosalina.';
 $string['you_are_here'] = 'Vous êtes ici :';
 $string['alt_logo'] = 'Image du logo';
 $string['jumpmenu_area'] = 'Choisir une zone';
 $string['jumpmenu_area_title'] = 'Choisir une zone et cliquer sur [Allons-y]';
 $string['jumpmenu_areas'] = 'Zones';
 $string['lastupdated'] = 'dernière mise à jour : {UPDATE_DAY}-{UPDATE_MONTH}-{UPDATE_YEAR}';
-$string['copyright'] = '&copy;{COPYRIGHT_YEAR} {SITENAME}';
+$string['copyright'] = '©{COPYRIGHT_YEAR} {SITENAME}';
 $string['quicktop_section_id_label'] = 'Section Liens rapides en haut';
 $string['quicktop_section_id_title'] = 'Nombre de section(s) contenant des liens en haut de chaque page (0 pour aucune)';
 $string['quickbottom_section_id_label'] = 'Section Liens rapides en bas';
@@ -49,7 +49,7 @@ $string['logo_image_label'] = 'Logo';
 $string['logo_image_title'] = 'URL du fichier de l\'image de logo';
 $string['logo_height_label'] = 'Hauteur du logo';
 $string['logo_height_title'] = 'Hauteur du logo en pixels';
-$string['logo_width_label'] = 'Largeur du logo ';
+$string['logo_width_label'] = 'Largeur du logo';
 $string['logo_width_title'] = 'Largeur du logo  en pixels';
 $string['stylesheet_label'] = 'Feuille de style statique';
 $string['stylesheet_title'] = 'URL de la feuille de style statique (vide pour aucune)';
@@ -145,11 +145,11 @@ $string['hvmenu_StartTop_label'] = 'Menu offset X';
 $string['hvmenu_StartTop_title'] = 'Menu offset coordonnées X (pixels)';
 $string['hvmenu_StartLeft_label'] = 'Menu offset Y';
 $string['hvmenu_StartLeft_title'] = 'Menu offset coordonnées Y (pixels)';
-$string['hvmenu_LeftPaddng_label'] = 'Remplissage gauche ';
+$string['hvmenu_LeftPaddng_label'] = 'Remplissage gauche';
 $string['hvmenu_LeftPaddng_title'] = 'Remplissage gauche  (pixels)';
 $string['hvmenu_TopPaddng_label'] = 'Remplissage haut';
 $string['hvmenu_TopPaddng_title'] = 'Remplissage haut (pixels)';
-$string['hvmenu_FirstLineHorizontal_label'] = 'Menu horizontal ';
+$string['hvmenu_FirstLineHorizontal_label'] = 'Menu horizontal';
 $string['hvmenu_FirstLineHorizontal_option'] = 'Début par un menu horizontal de niveau supérieur';
 $string['hvmenu_FirstLineHorizontal_title'] = 'Cocher la case pour un menu horizontal de niveau supérieur, décocher pour  un menu vertical';
 $string['hvmenu_DissapearDelay_label'] = 'Temporisation';
@@ -185,7 +185,7 @@ $string['hvmenu_MenuFramesVertical_title'] = 'Cocher la case pour utiliser les c
 $string['hvmenu_TakeOverBgColor_label'] = 'Couleur d\'arrière-plan du cadre';
 $string['hvmenu_TakeOverBgColor_option'] = 'Le cadre de menu adopte la couleur d\'arrière-plan du cadre d\'items de sous-menu';
 $string['hvmenu_TakeOverBgColor_title'] = 'Cocher la case pour adopter la couleur d\'arrière-plan';
-$string['hvmenu_FirstLineFrame_label'] = 'Cadre de niveau supérieur ';
+$string['hvmenu_FirstLineFrame_label'] = 'Cadre de niveau supérieur';
 $string['hvmenu_FirstLineFrame_title'] = 'Nom du cadre de niveau supérieur (utiliser \'self\' si aucun cadre n\'est utilisé)';
 $string['hvmenu_SecLineFrame_label'] = 'Cadre de sous-menu';
 $string['hvmenu_SecLineFrame_title'] = 'Nom du cadre de sous-menu (utiliser \'self\' si aucun cadre n\'est utilisé)';
@@ -195,7 +195,7 @@ $string['hvmenu_TargetLoc_label'] = 'ID Cible';
 $string['hvmenu_TargetLoc_title'] = 'Nom de l\'élément utilisé pour le positionnement relatif';
 $string['hvmenu_HideTop_label'] = 'Masquer le menu de niveau supérieur';
 $string['hvmenu_HideTop_option'] = 'Masquer le menu de niveau supérieur lors du chargement d\'un nouveau contenu';
-$string['hvmenu_HideTop_title'] = 'Cocher la case pour masquer le menu de niveau supérieur lors du chargement d\'une nouvelle page. ';
+$string['hvmenu_HideTop_title'] = 'Cocher la case pour masquer le menu de niveau supérieur lors du chargement d\'une nouvelle page.';
 $string['hvmenu_WebMasterCheck_label'] = 'Vérification Webmestre';
 $string['hvmenu_WebMasterCheck_option'] = 'Vérifier l\'arborescence des menus';
 $string['hvmenu_WebMasterCheck_title'] = 'Cette option est utilisée pour vérifier l\'intégrité des menus lors du développement.';

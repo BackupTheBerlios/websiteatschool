@@ -1,6 +1,6 @@
 <?php
 # This file is part of Website@School, a Content Management System especially designed for schools.
-# Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
+# Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU Affero General Public License version 3 as published by
@@ -18,25 +18,25 @@
 /** /program/themes/schoolyard/languages/fr/schoolyard.php
  *
  * Language: fr (Français)
- * Release:  0.90.2 / 2011092900 (2011-09-29)
+ * Release:  0.90.3 / 2012041700 (2012-04-17)
  *
  * @author Jean Peyratout <translators@websiteatschool.eu> <jean.peyratout@abul.org>
- * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam
+ * @copyright Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_fr
- * @version $Id: schoolyard.php,v 1.1 2011/09/29 19:06:20 pfokker Exp $
+ * @version $Id: schoolyard.php,v 1.2 2012/04/17 14:52:15 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['title'] = 'Thème Schoolyard';
 $string['description'] = 'Un thème simple en L inversé';
 $string['translatetool_title'] = 'Schoolyard';
 $string['translatetool_description'] = 'Ce fichier contient les traductions du thème Schoolyard';
-$string['you_are_here'] = 'Vous êtes ici : ';
+$string['you_are_here'] = 'Vous êtes ici :';
 $string['alt_logo'] = 'image du logo';
 $string['jumpmenu_area'] = 'Choisissez une zone';
 $string['jumpmenu_area_title'] = 'Choisissez une zone et appuyez sur [Allons-y]';
 $string['lastupdated'] = '---<br />dernière mise à jour : {UPDATE_DAY}-{UPDATE_MONTH}-{UPDATE_YEAR}';
-$string['copyright'] = '&copy;{COPYRIGHT_YEAR} {SITENAME}';
+$string['copyright'] = '©{COPYRIGHT_YEAR} {SITENAME}';
 $string['logout_username'] = 'déconnexion {USERNAME}';
 $string['logout_username_title'] = 'fin de session pour {FULL_NAME}';
 $string['print'] = 'imprimer';

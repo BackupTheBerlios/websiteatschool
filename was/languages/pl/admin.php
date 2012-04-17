@@ -1,6 +1,6 @@
 <?php
 # This file is part of Website@School, a Content Management System especially designed for schools.
-# Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
+# Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU Affero General Public License version 3 as published by
@@ -18,19 +18,19 @@
 /** /program/languages/pl/admin.php
  *
  * Language: pl (Polski)
- * Release:  0.90.2 / 2011092900 (2011-09-29)
+ * Release:  0.90.3 / 2012041700 (2012-04-17)
  *
  * @author Waldemar Pankiw <translators@websiteatschool.eu>
- * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam
+ * @copyright Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_pl
- * @version $Id: admin.php,v 1.2 2012/04/15 09:32:10 pfokker Exp $
+ * @version $Id: admin.php,v 1.3 2012/04/17 14:52:08 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = 'Administracja';
 $string['translatetool_description'] = 'Ten plik zawiera tłumaczenia zwrotów używanych w administracji systemu CMS';
 $string['generated_in'] = 'utworzony w dniu {DATE} w {QUERIES} zapytaniach i {SECONDS} sekundach';
-$string['logo_websiteatschool'] = 'logo Website@School&reg;';
+$string['logo_websiteatschool'] = 'logo Website@School®';
 $string['end_this_session'] = 'zakończ sesję, wyloguj użytkownika';
 $string['logout_username'] = 'wyloguj {USERNAME}';
 $string['view_public_area'] = 'strefa ogólnego dostępu';
@@ -40,19 +40,19 @@ $string['version_x_y_z'] = 'wersja {VERSION}';
 $string['login_user_success'] = 'Użytkownik zalogowany:  {USERNAME}';
 $string['job_access_denied'] = 'Nie posiadasz uprawnień żeby wykonać tę akcję; odmówiono dostępu';
 $string['task_access_denied'] = 'Nie posiadasz uprawnień żeby wykonać tę czynność; odmówiono dostępu';
-$string['unknown_job'] = 'Nie rozpoznano  polecenia "{JOB}" ';
+$string['unknown_job'] = 'Nie rozpoznano  polecenia "{JOB}"';
 $string['name_startcenter'] = 'start';
 $string['name_pagemanager'] = 'strony';
 $string['name_filemanager'] = 'pliki';
-$string['name_modulemanager'] = 'moduły ';
+$string['name_modulemanager'] = 'moduły';
 $string['name_accountmanager'] = 'konta';
 $string['name_configurationmanager'] = 'konfiguracja';
 $string['name_statistics'] = 'statystyka';
 $string['name_tools'] = 'narzędzia';
 $string['name_help'] = 'pomoc';
-$string['description_startcenter'] = 'Start Website@School ';
+$string['description_startcenter'] = 'Start Website@School';
 $string['description_pagemanager'] = 'Administrator Strony';
-$string['description_filemanager'] = 'Administrator Plików ';
+$string['description_filemanager'] = 'Administrator Plików';
 $string['description_modulemanager'] = 'Administrator Modułu';
 $string['description_accountmanager'] = 'Administrator Konta';
 $string['description_configurationmanager'] = 'Administrator Konfiguracji';
@@ -69,6 +69,8 @@ $string['no_access_statistics'] = 'Dostęp do Statystyki został zablokowany dla
 $string['no_access_tools'] = 'Dostęp do Narzędzi został zablokowany dla twojego konta';
 $string['no_access_help'] = 'Dostęp do Pomocy został zablokowany dla twojego konta';
 $string['access_denied'] = 'Odmówiono dostępu';
+$string['no_access_admin_php'] = 'Access to Website@School has been disabled for your account. Follow one of the links below to continue:';
+$string['view_login_dialog'] = 'login';
 $string['url'] = 'URL';
 $string['public_area'] = 'Strefa ogólnego dostępu';
 $string['private_area'] = 'Strefa chroniona';
@@ -155,7 +157,7 @@ $string['task_node_add_access_denied'] = 'Nie posiadasz niezbędnych uprawnień,
 $string['add_a_page_header'] = 'Dodaj stronę';
 $string['add_a_section_header'] = 'Dodaj sekcję';
 $string['add_section_explanation'] = 'Tu możesz dodać nową sekcję podając tytuł sekcji i inne informacje. Po dodaniu sekcji możesz dodać strony i podsekcje do nowej sekcji.';
-$string['add_page_explanation'] = 'Tu możesz dodać nową stronę podając nazwę strony, moduł strony i inne informacje. ';
+$string['add_page_explanation'] = 'Tu możesz dodać nową stronę podając nazwę strony, moduł strony i inne informacje.';
 $string['add_node_linktext'] = '~Nazwa';
 $string['add_node_linktext_title'] = 'Podaj krótką nazwę (używaną w nawigacji)';
 $string['add_node_title'] = 'Op~is strony/sekcji';
@@ -303,6 +305,7 @@ $string['area_delete_private_title'] = '{AREA_FULL_NAME} (strefa prywatna {AREA}
 $string['invalid_area'] = 'Nieważna strefa {AREA}';
 $string['error_deleting_area'] = 'Błąd przy usuwaniu strefy {AREA} ({AREA_FULL_NAME})';
 $string['error_deleting_area_not_empty'] = 'Nie może usunąć strefy {AREA} ({AREA_FULL_NAME}): powinna być pusta. (ilość pozostałych stron/sekcji: {NODES})';
+$string['error_deleting_area_dir_not_empty'] = 'Katalog danych strefy \'{AREA_FULL_NAME}\' ({AREA}) nie jest zupełnie opróżniony. Proszę najpierw usunąć wszystkie pliki i podkatalogi.';
 $string['area_deleted'] = 'Strefa {AREA} ({AREA_FULL_NAME}) usunięta';
 $string['delete_an_area_header'] = 'Potwierdź usunięcie strefy {AREA_FULL_NAME}';
 $string['delete_area_explanation'] = 'Usuwasz następującą strefę:';
@@ -335,7 +338,7 @@ $string['areamanager_edit_area_title_label'] = '~Nazwa';
 $string['areamanager_edit_area_title_title'] = 'Nazwa tej strefy';
 $string['areamanager_edit_area_is_active_label'] = 'Strefa aktywna';
 $string['areamanager_edit_area_is_active_title'] = 'Zaznacz pole, żeby uaktywnić strefę';
-$string['areamanager_edit_area_is_active_check'] = 'Zaznacz tę strefę jako a~ktywną  ';
+$string['areamanager_edit_area_is_active_check'] = 'Zaznacz tę strefę jako a~ktywną';
 $string['areamanager_edit_area_is_private_label'] = 'Strefa prywatna';
 $string['areamanager_edit_area_is_private_title'] = 'Jeśli pole jest zaznaczone to strefa ta jest prywatna';
 $string['areamanager_edit_area_is_private_check'] = 'Zaznacz tę strefę jako p~rywatą (operacja nieodwracalna)';
@@ -364,7 +367,7 @@ $string['site_config_session_expiry_title'] = 'To jest maksymalny czas trwania s
 $string['site_config_login_max_failures_label'] = 'Dopuszczalna liczba prób zalogowania (domyślnie 10)';
 $string['site_config_login_max_failures_title'] = 'Po tej ilości nieudanych zalogowań w przedziale czasowym użytkownik wchodzi na czarną listę';
 $string['site_config_login_failures_interval_label'] = 'Przedział czasu, w którym są liczone nieudane zalogowania (minuty, domyślnie 12)';
-$string['site_config_login_failures_interval_title'] = 'Tylko nieudane zalogowania w tym przedziale czasowym są liczone ';
+$string['site_config_login_failures_interval_title'] = 'Tylko nieudane zalogowania w tym przedziale czasowym są liczone';
 $string['site_config_login_bypass_interval_label'] = 'Czas ważności hasła tymczasowego (minuty, domyślnie 30)';
 $string['site_config_login_bypass_interval_title'] = 'Hasło tymczasowe ważne jest tylko przez ten czas';
 $string['site_config_login_blacklist_interval_label'] = 'Czas pobytu na czarnej liście (minuty, domyślnie 8)';
@@ -390,7 +393,7 @@ $string['site_config_editor_plain_title'] = 'Prosty edytor zwykłego tekstu';
 $string['site_config_friendly_url_label'] = '';
 $string['site_config_friendly_url_title'] = 'Zaznacz pole, żeby utworzyć URL łatwy do nawigacji';
 $string['site_config_friendly_url_option'] = 'Używaj łatwych URL';
-$string['site_config_clamscan_path_label'] = 'Całkowita ścieżka do skanera wirusów ClamAV ';
+$string['site_config_clamscan_path_label'] = 'Całkowita ścieżka do skanera wirusów ClamAV';
 $string['site_config_clamscan_path_title'] = 'Zostaw puste pole jeśli skaner wirusów ClamAV jest niedostępny';
 $string['site_config_clamscan_mandatory_label'] = '';
 $string['site_config_clamscan_mandatory_title'] = 'Zaznacz pole, żeby przymusowo  kontrolować wirusy przy nagrywaniu plików';
@@ -405,6 +408,9 @@ $string['site_config_filemanager_images_label'] = 'Lista rozszerzeń rozpoznawal
 $string['site_config_filemanager_images_title'] = 'Przeglądając obrazy w edytorze FCK będzie można wybierać pliki tylko z tymi rozszerzeniami';
 $string['site_config_filemanager_flash_label'] = 'Lista rozszerzeń rozpoznawalnych jako pliki flash (oddzielone przecinkami)';
 $string['site_config_filemanager_flash_title'] = 'Przeglądając pliki flash w edytorze FCK będzie można wybierać pliki tylko z tymi rozszerzeniami';
+$string['site_config_pagemanager_at_end_label'] = '';
+$string['site_config_pagemanager_at_end_title'] = 'Zaznacz pole żeby usytuować nowo dodane strony i sekcje na końcu (pod)sekcji';
+$string['site_config_pagemanager_at_end_option'] = 'Dodal nowe strony/sekcje na końcu.';
 $string['area_theme_reset'] = 'Przywrócone domyślne właściwości wyglądu {THEME_NAME} dla strefy {AREA} ({AREA_FULL_NAME})';
 $string['error_area_theme_reset'] = 'Problemy z przywróceniem domyślnych właściwości wyglądu {THEME_NAME} w strefie {AREA} ({AREA_FULL_NAME})';
 $string['reset_theme_area_header'] = 'Przywróć domyślne właściwości wyglądu {THEME_NAME} dla strefy {AREA} ({AREA_FULL_NAME})';
@@ -468,8 +474,11 @@ $string['groupmanager_delete_group_group'] = '{GROUP_FULL_NAME} ({GROUP})';
 $string['groupmanager_delete_group_capacity'] = '{CAPACITY}: {COUNT}';
 $string['groupmanager_delete_group_success'] = 'Poprawnie usunięto grupę {GROUP} ({GROUP_FULL_NAME})';
 $string['groupmanager_delete_group_failure'] = 'Błąd w usunięciu grupy {GROUP} ({GROUP_FULL_NAME})';
+$string['usermanager_delete_group_dir_not_empty'] = 'Katalog danych grupy \'{GROUP_FULL_NAME}\' ({GROUP}) nie jest zupełnie opróżniony. Proszę najpierw usunąć wszystkie pliki i katalogi.';
+$string['usermanager_delete_group_not_self'] = 'Nie możesz usunąć grupy \'{GROUP_FULL_NAME}\' ({GROUP}) ponieważ jesteś z tą grupą powiązany przez \'{CAPACITY}\'. Musisz najpierw usunąć to powiąanie zanim usuniesz grupę.';
+$string['usermanager_delete_group_capacity_not_self'] = '{FIELD}: Nie możesz usunąć kompetencji \'{CAPACITY}\' z \'{GROUP_FULL_NAME}\' ({GROUP}) ponieważ jesteś z tą grupą powiązany wtej kompetencji.. Musisz najpierw usunąć to powiązanie zanim usuniesz tę kompetencję.';
 $string['groupmanager_capacity_overview_header'] = 'Wykaz: {GROUP} - {CAPACITY}';
-$string['groupmanager_capacity_overview_explanation'] = 'To jest wykaz wszystkich kont użytkowniklów w grupie ';
+$string['groupmanager_capacity_overview_explanation'] = 'To jest wykaz wszystkich kont użytkowniklów w grupie';
 $string['groupmanager_capacity_overview_no_members'] = 'Obecnie nie ma kont użytkowników w tej grupie';
 $string['groupmanager_group_menu_edit'] = 'Właściwści podstawowe';
 $string['groupmanager_group_menu_edit_title'] = 'Redaguj właściwości podstawowe grupy';
@@ -498,13 +507,13 @@ $string['acl_role_unknown'] = 'nieznana';
 $string['acl_role_pagemanager_contentmaster_option'] = 'Administrator treści';
 $string['acl_role_pagemanager_contentmaster_title'] = 'Tylko treść strony może zostać zmieniona';
 $string['acl_role_pagemanager_pagemaster_option'] = 'Administrator strony';
-$string['acl_role_pagemanager_pagemaster_title'] = 'Właściwości i treść strony mogą zostać zmienione ';
+$string['acl_role_pagemanager_pagemaster_title'] = 'Właściwości i treść strony mogą zostać zmienione';
 $string['acl_role_pagemanager_sectionmaster_option'] = 'Administrator sekcji';
 $string['acl_role_pagemanager_sectionmaster_title'] = 'Właściwości sekcji mogą zostać zmienione, można dodać subsekcje i strony';
 $string['acl_role_pagemanager_areamaster_option'] = 'Administrator strefy';
 $string['acl_role_pagemanager_areamaster_title'] = 'Właściwości strefy mogą zostać zmienione, można dodać sekcje i strony';
 $string['acl_role_pagemanager_sitemaster_option'] = 'Administrator witryny';
-$string['acl_role_pagemanager_sitemaster_title'] = 'Właściwości witryny mogą zostać zmienione, można dodać strefy, sekcje i strony ';
+$string['acl_role_pagemanager_sitemaster_title'] = 'Właściwości witryny mogą zostać zmienione, można dodać strefy, sekcje i strony';
 $string['acl_all_areas_label'] = 'Wszystkie obecne i przyszłe strefy';
 $string['acl_all_private_areas_label'] = 'Wszystkie obecne i przyszłe strefy prywatne';
 $string['acl_area_label'] = 'Strefa {AREA}: {AREA_FULL_NAME}';
@@ -595,6 +604,8 @@ $string['usermanager_delete_user_breadcrumb'] = 'usuń';
 $string['usermanager_delete_user_user'] = '{FULL_NAME} ({USERNAME})';
 $string['usermanager_delete_user_success'] = 'Użytkownika usunięto poprawnie {USERNAME} ({FULL_NAME})';
 $string['usermanager_delete_user_failure'] = 'Błędy przy usuwaniu użytkownika {USERNAME} ({FULL_NAME})';
+$string['usermanager_delete_user_dir_not_empty'] = 'Katalog danych użytkownika {FULL_NAME} ({USERNAME}) nie jest cłkowicie opróżniony. Proszę najpierw usunąć wszystkie pliki i podkatalogi.';
+$string['usermanager_delete_user_not_self'] = 'Nie możesz usunąć własnego konta.';
 $string['menu_user_basic'] = 'Podstawowe';
 $string['menu_user_basic_title'] = 'Zmień właściwości podstawowe konta użytkownika';
 $string['menu_user_advanced'] = 'Zaawansowane';
@@ -627,9 +638,6 @@ $string['usermanager_edit_user_redirect_label'] = 'Skie~rowanie (gdzie iść po 
 $string['usermanager_edit_user_redirect_title'] = 'Podaj docelowy URL po wylogowaniu (brak znaczy strefa domyślna)';
 $string['usermanager_edit_user_language_label'] = '~Język';
 $string['usermanager_edit_user_language_title'] = 'Wybierz pierwszy język dla tego użytkownika';
-$string['usermanager_edit_user_high_visibility_label'] = 'Włącz interfejs tekstowy';
-$string['usermanager_edit_user_high_visibility_title'] = 'Zaznacz pole, żeby wączyć pełną widoczność dla tego yżytkownika';
-$string['usermanager_edit_user_high_visibility_check'] = 'Pełna ~widoczność';
 $string['usermanager_edit_user_editor_label'] = '~Edytor';
 $string['usermanager_edit_user_editor_title'] = 'Wybierz pierwszy edytor/przetwarzacz tekstu dla tego użytkownika';
 $string['usermanager_edit_user_path_label'] = 'Katalog ~danych (ścieżki nie można zmienić)';
@@ -705,7 +713,7 @@ $string['filemanager_sort_asc'] = 'Sortuj kolumnę w porządku rosnącym';
 $string['filemanager_sort_desc'] = 'Sortuj kolumnę w porządku malejącym';
 $string['filemanager_select_file_entries'] = 'Wybierz wszystkie pliki';
 $string['filemanager_select_file_entries_title'] = 'Zaznacz pole, żeby wybrać wszystkie pliki';
-$string['filemanager_add_subdirectory_header'] = 'Utwórz podkatalog ';
+$string['filemanager_add_subdirectory_header'] = 'Utwórz podkatalog';
 $string['filemanager_add_subdirectory_explanation'] = 'Tutaj możesz dodać nowy podkatalog. W nazwie katalogu mogą wystepować tylko litery, cyfry, kropki, myślniki i (pojedyncze) znaki podkreślenia. Inne znaki takie, jak ukośniki, dwukropki i małpy są niedopuszczalne i zostaną zastąpione podkreśleniem lub zupełnie usunięte.';
 $string['filemanager_add_subdirectory_label'] = 'Nazwa ~katalogu';
 $string['filemanager_add_subdirectory_title'] = 'Podaj nazwę nowego katalogu';
@@ -805,7 +813,7 @@ $string['translatetool_language_is_active_label'] = 'Aktywny';
 $string['translatetool_language_is_active_title'] = 'Zaznacz pole, żeby uaktywnić język';
 $string['translatetool_language_is_active_check'] = 'Zaznacz język jako a~ktywny';
 $string['translatetool_language_parent_label'] = 'Język w~yższy';
-$string['translatetool_language_parent_title'] = 'Wybierz język służący jako podstawa dla nowych tłumaczeń ';
+$string['translatetool_language_parent_title'] = 'Wybierz język służący jako podstawa dla nowych tłumaczeń';
 $string['translatetool_language_key_label'] = 'Kod ~języka (ISO 639)';
 $string['translatetool_language_key_title'] = 'Podaj 2 lub 3 literowy kod języka (małe litery)';
 $string['translatetool_parent_language_none_option'] = '(żaden)';
@@ -835,7 +843,7 @@ $string['translatetool_notes_title'] = 'W tym miejscu możesz umieścić uwagi o
 $string['translatetool_submit_label'] = 'Poniższe pola służą do dostarczenia tłumaczenia do projektu Website@School.
 <p>W polu \'Uwagi tłumacza\' możesz umieścić informacje o tłumaczeniu; pole to stanie się przedmiotem wiadomości e-mail.';
 $string['translatetool_submit_check'] = 'Dostarcz tłumaczenie';
-$string['translatetool_submit_title'] = 'Zaznacz pole, żeby dostarczyć tłumaczenie do projektu Website@School ';
+$string['translatetool_submit_title'] = 'Zaznacz pole, żeby dostarczyć tłumaczenie do projektu Website@School';
 $string['translatetool_no_changes_to_save'] = 'Nie trzeba zapisywać zmian w {LANGUAGE_NAME} ({LANGUAGE_KEY}) - {FULL_DOMAIN}';
 $string['translatetool_translation_save_success'] = 'Poprawnie zapisano zmiany - {LANGUAGE_NAME} ({LANGUAGE_KEY}) - {FULL_DOMAIN}';
 $string['translatetool_translation_save_failure'] = 'Błąd przy zapisywaniu zmian - {LANGUAGE_NAME} ({LANGUAGE_KEY}) - {FULL_DOMAIN}';
@@ -857,7 +865,7 @@ $string['logview_user_id'] = 'Użytkownik';
 $string['logview_priority'] = 'Priorytet';
 $string['logview_message'] = 'Wiadomość';
 $string['update_header'] = 'Administrator Aktualizacji';
-$string['update_intro'] = 'To jest administrator aktualizacji. Poniżej znajduje się wykaz obecnej wersji wewnętzrnej i zewnętzrnej sedna systemu i różnych podsystemów. Jeśli wersja wewnetzrna różni się od wewnętrznej, możesz dokonać aktualizacji używając linki \'[Aktualizacja]\' lub wykonać instalację systemu używając linki \'[Instalacja]\' w ostatniej kolumnie. ';
+$string['update_intro'] = 'To jest administrator aktualizacji. Poniżej znajduje się wykaz obecnej wersji wewnętzrnej i zewnętzrnej sedna systemu i różnych podsystemów. Jeśli wersja wewnetzrna różni się od wewnętrznej, możesz dokonać aktualizacji używając linki \'[Aktualizacja]\' lub wykonać instalację systemu używając linki \'[Instalacja]\' w ostatniej kolumnie.';
 $string['update_version_database'] = 'Wewnętrzna';
 $string['update_version_manifest'] = 'Wersja';
 $string['update_release_date_manifest'] = 'Data';
@@ -881,4 +889,7 @@ $string['update_status_error'] = 'BŁĄD';
 $string['update_status_update'] = 'Aktualizacja';
 $string['update_status_install'] = 'Instalacja';
 $string['update_version_database_too_old'] = 'Wersja wewnętrzna {VERSION} jest przestarzała; musisz ponownie zainstalować i/lub zaktualizować ręcznie.';
+$string['update_field_value_too_long'] = 'Tabela \'{TABLE}\' pole \'{FIELD}\': zawartość jest dłuższa niż  {LENGTH} znaków: \'{CONTENT}\'.';
+$string['update_please_correct_field_value_manually'] = 'Ilość pól, którą trzeba zmniejszyć ręcznie (poza Websie@School) wynosi {ERRORS}';
+$string['update_warning_obsolete_file'] = 'Uwaga: plik \'{FILENAME}\' jest zbędny (od wersji {VERSION}) i można go bezpiecznie usunąć.';
 ?>

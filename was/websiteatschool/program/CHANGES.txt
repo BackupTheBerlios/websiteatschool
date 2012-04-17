@@ -1,7 +1,11 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.119 2012/04/16 10:17:18 pfokker Exp $
+$Id: CHANGES.txt,v 1.120 2012/04/17 14:52:16 pfokker Exp $
 -------------------------------------------------------------------------------
 
+2012-04-17
+- minor tweaks and typos
+- translation updates for de, es, fr, pl, tr and zh
+ 
 2012-04-16
 - minor adjustments in the skins: we now only display the phrase
   'Messages' in the braille skin.

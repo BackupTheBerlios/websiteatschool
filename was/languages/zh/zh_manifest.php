@@ -1,6 +1,6 @@
 <?php
 # This file is part of Website@School, a Content Management System especially designed for schools.
-# Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam <info@websiteatschool.eu>
+# Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam <info@websiteatschool.eu>
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU Affero General Public License version 3 as published by
@@ -21,10 +21,10 @@
  * This file is used when this package is installed.
  *
  * @author Liu Jing Fang <translators@websiteatschool.eu>
- * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam <info@websiteatschool.eu>
+ * @copyright Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam <info@websiteatschool.eu>
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_zh
- * @version $Id: zh_manifest.php,v 1.2 2011/09/29 19:01:14 pfokker Exp $
+ * @version $Id: zh_manifest.php,v 1.3 2012/04/17 14:52:10 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -32,11 +32,11 @@ $manifests['zh'] = array(
     'language_key'        => 'zh',
     'language_name'       => "\xE4\xB8\xAD\xE6\x96\x87",
     'parent_language_key' => 'en',
-    'description'         => 'This is the Chinese translation based on Website@School release 0.90.2',
+    'description'         => 'This is the Chinese translation based on Website@School release 0.90.3',
     'author'              => 'Liu Jing Fang',
-    'version'             => 2011092900,
-    'release'             => '0.90.2',
-    'release_date'        => '2011-09-29',
+    'version'             => 2012041700,
+    'release'             => '0.90.3',
+    'release_date'        => '2012-04-17',
     'is_core'             => FALSE
    );
 

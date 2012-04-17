@@ -1,6 +1,6 @@
 <?php
 # This file is part of Website@School, a Content Management System especially designed for schools.
-# Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
+# Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU Affero General Public License version 3 as published by
@@ -18,13 +18,13 @@
 /** /program/modules/sitemap/languages/fr/sitemap.php
  *
  * Language: fr (Français)
- * Release:  0.90.2 / 2011092900 (2011-09-29)
+ * Release:  0.90.3 / 2012041700 (2012-04-17)
  *
  * @author Jean Peyratout <translators@websiteatschool.eu> <jean.peyratout@abul.org>
- * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam
+ * @copyright Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_fr
- * @version $Id: sitemap.php,v 1.1 2011/09/29 19:06:20 pfokker Exp $
+ * @version $Id: sitemap.php,v 1.2 2012/04/17 14:52:12 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['title'] = 'Plan du site';
@@ -34,7 +34,7 @@ $string['translatetool_description'] = 'Ce fichier contient les traductions du m
 $string['sitemap_content_header'] = 'Configuration du plan du site';
 $string['sitemap_content_explanation'] = 'Vous pouvez configurer ici le plan du site. Vous pouvez ajouter un en-tête ou une introduction au plan du site. 
 Vous pouvez aussi modifier la profondeur du plan du site. 
-Utilisez l\'un des options suivantes : \'zone\' pour un simple plan des zones, \'restreint\' pour un plan des zones suivi d\'une liste de liens vers les zones disponibles, ou \'complet\' pour une vue complète de toutes les zones. ';
+Utilisez l\'un des options suivantes : \'zone\' pour un simple plan des zones, \'restreint\' pour un plan des zones suivi d\'une liste de liens vers les zones disponibles, ou \'complet\' pour une vue complète de toutes les zones.';
 $string['header_label'] = 'En-tête';
 $string['header_title'] = 'En-tête du plan du site';
 $string['introduction_label'] = '~Introduction';

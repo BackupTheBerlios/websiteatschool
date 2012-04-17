@@ -1,6 +1,6 @@
 <?php
 # This file is part of Website@School, a Content Management System especially designed for schools.
-# Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
+# Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU Affero General Public License version 3 as published by
@@ -18,13 +18,13 @@
 /** /program/languages/zh/loginlib.php
  *
  * Language: zh (中文)
- * Release:  0.90.2 / 2011092900 (2011-09-29)
+ * Release:  0.90.3 / 2012041700 (2012-04-17)
  *
  * @author Liu Jing Fang <translators@websiteatschool.eu>
- * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam
+ * @copyright Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_zh
- * @version $Id: loginlib.php,v 1.2 2011/09/29 19:01:14 pfokker Exp $
+ * @version $Id: loginlib.php,v 1.3 2012/04/17 14:52:09 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = '登入';
@@ -40,7 +40,7 @@ $string['change_password_confirmation_message'] = '密码已更改
 您的自动网络管理员';
 $string['change_password_confirmation_subject'] = '密码已被成功更改';
 $string['contact_webmaster_for_new_password'] = '更改密码请与网站管理员联系';
-$string['do_you_want_to_try_forgot_password_procedure'] = '无效资质。你是否想尝试“忘记密码”程序？  ';
+$string['do_you_want_to_try_forgot_password_procedure'] = '无效资质。你是否想尝试“忘记密码”程序？';
 $string['email_address'] = '电子邮箱地址';
 $string['failure_sending_laissez_passer_mail'] = '使用一次性编码发送电子邮件失败。请重试或与网络管理员联系。';
 $string['failure_sending_temporary_password'] = '使用临时密码发送电子邮件失败。请重试或与网络管理员联系。';

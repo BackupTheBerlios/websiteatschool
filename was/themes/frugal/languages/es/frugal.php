@@ -1,6 +1,6 @@
 <?php
 # This file is part of Website@School, a Content Management System especially designed for schools.
-# Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
+# Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU Affero General Public License version 3 as published by
@@ -18,13 +18,13 @@
 /** /program/themes/frugal/languages/es/frugal.php
  *
  * Language: es (Español)
- * Release:  0.90.3 / 2011093000 (2011-09-30)
+ * Release:  0.90.3 / 2012041700 (2012-04-17)
  *
  * @author Margot Molier <translators@websiteatschool.eu>
- * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam
+ * @copyright Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_es
- * @version $Id: frugal.php,v 1.4 2011/09/30 13:22:51 pfokker Exp $
+ * @version $Id: frugal.php,v 1.5 2012/04/17 14:52:13 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['title'] = 'Tema frugal';
@@ -36,7 +36,7 @@ $string['alt_logo'] = 'imagen del logo';
 $string['jumpmenu_area'] = 'Seleccionar una área';
 $string['jumpmenu_area_title'] = 'Seleccionar una área y hacer clic aquí [Go]';
 $string['quicktop_section_id_label'] = 'Sección de vínculos rápidos  ~encima';
-$string['quicktop_section_id_title'] = 'Número de sección conteniendo vínculos encima de cada página (0 para ninguno)   ';
+$string['quicktop_section_id_title'] = 'Número de sección conteniendo vínculos encima de cada página (0 para ninguno)';
 $string['quickbottom_section_id_label'] = 'Sección de vínculos rápidos a~bajo';
 $string['quickbottom_section_id_title'] = 'Números de sección conteniendo vínculos en la parte abajo de cada página (0 para ninguno)';
 $string['logo_image_label'] = '~Logo';
@@ -56,7 +56,7 @@ $string['style_usage_static_title'] = 'Verificar la casilla para incluir la hoja
 $string['style_label'] = ' Estilo e~xtra en nivel de área';
 $string['style_title'] = 'Área-amplia adicional de información de estilo';
 $string['style_usage_area_label'] = 'Uso de estilo extra (área)';
-$string['style_usage_area_option'] = 'Usar estilo extra en nivel ~área ';
+$string['style_usage_area_option'] = 'Usar estilo extra en nivel ~área';
 $string['style_usage_area_title'] = 'Esto aplica la información de estilo del \'Estilo extra\' aquí encima';
 $string['style_usage_node_label'] = 'Uso estilo extra (nodo)';
 $string['style_usage_node_option'] = 'Dejar que no~do nivele información estilo (\'Bazar Estilo Estilo\')';

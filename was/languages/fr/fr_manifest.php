@@ -1,6 +1,6 @@
 <?php
 # This file is part of Website@School, a Content Management System especially designed for schools.
-# Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam <info@websiteatschool.eu>
+# Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam <info@websiteatschool.eu>
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU Affero General Public License version 3 as published by
@@ -21,10 +21,10 @@
  * This file is used when this package is installed.
  *
  * @author Jean Peyratout <translators@websiteatschool.eu> <jean.peyratout@abul.org>
- * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam <info@websiteatschool.eu>
+ * @copyright Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam <info@websiteatschool.eu>
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_fr
- * @version $Id: fr_manifest.php,v 1.2 2011/09/29 19:06:20 pfokker Exp $
+ * @version $Id: fr_manifest.php,v 1.3 2012/04/17 14:52:08 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -32,12 +32,12 @@ $manifests['fr'] = array(
     'language_key'        => 'fr',
     'language_name'       => 'Français',
     'parent_language_key' => '',
-    'description'         => 'This is the French translation based on Website@School release 0.90.2',
+    'description'         => 'This is the French translation based on Website@School release 0.90.3',
     'author'              => 'Jean Peyratout',
     'author_email'        => 'jean.peyratout@abul.org',
-    'version'             => 2011092900,
-    'release'             => '0.90.2',
-    'release_date'        => '2011-09-29',
+    'version'             => 2012041700,
+    'release'             => '0.90.3',
+    'release_date'        => '2012-04-17',
     'is_core'             => FALSE
    );
 

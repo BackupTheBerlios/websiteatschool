@@ -1,6 +1,6 @@
 <?php
 # This file is part of Website@School, a Content Management System especially designed for schools.
-# Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
+# Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU Affero General Public License version 3 as published by
@@ -18,13 +18,13 @@
 /** /program/themes/schoolyard/languages/es/schoolyard.php
  *
  * Language: es (Español)
- * Release:  0.90.3 / 2011093000 (2011-09-30)
+ * Release:  0.90.3 / 2012041700 (2012-04-17)
  *
  * @author Anouk Coumans <translators@websiteatschool.eu>
- * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam
+ * @copyright Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_es
- * @version $Id: schoolyard.php,v 1.2 2011/09/30 13:22:51 pfokker Exp $
+ * @version $Id: schoolyard.php,v 1.3 2012/04/17 14:52:15 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['title'] = 'Tema del patio de la escuela';
@@ -36,14 +36,14 @@ $string['alt_logo'] = 'imagen del logo';
 $string['jumpmenu_area'] = 'Seleccionar área';
 $string['jumpmenu_area_title'] = 'Seleccionar área y hacer clic en [Ir]';
 $string['lastupdated'] = '---<br>última actualización: {UPDATE_YEAR}-{UPDATE_MONTH}-{UPDATE_DAY}';
-$string['copyright'] = '&copy;{COPYRIGHT_YEAR} {SITENAME}';
+$string['copyright'] = '©{COPYRIGHT_YEAR} {SITENAME}';
 $string['logout_username'] = 'Cerrar sesión {USERNAME}';
 $string['logout_username_title'] = 'cerrar la sesión para {FULL_NAME}';
 $string['print'] = 'imprimir';
 $string['print_title'] = 'versión para imprimir de esta página';
-$string['quicktop_section_id_label'] = 'Sección ~superiór de enlaces rápidos ';
+$string['quicktop_section_id_label'] = 'Sección ~superiór de enlaces rápidos';
 $string['quicktop_section_id_title'] = 'Cantidad de sección que contiene los enlaces en la parte súperior de cada página (0 para ninguno)';
-$string['quickbottom_section_id_label'] = 'Sección ~abajo de enlaces rápidos ';
+$string['quickbottom_section_id_label'] = 'Sección ~abajo de enlaces rápidos';
 $string['quickbottom_section_id_title'] = 'Cantidad de sección que contiene los enlaces en la parte ~abajo de cada página (0 para ninguno)';
 $string['logo_image_label'] = '~Logo';
 $string['logo_image_title'] = 'URL del logo archivo de imagen';

@@ -1,6 +1,6 @@
 <?php
 # This file is part of Website@School, a Content Management System especially designed for schools.
-# Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
+# Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU Affero General Public License version 3 as published by
@@ -18,13 +18,13 @@
 /** /program/install/languages/es/demodata.php
  *
  * Language: es (Español)
- * Release:  0.90.3 / 2011093000 (2011-09-30)
+ * Release:  0.90.3 / 2012041700 (2012-04-17)
  *
  * @author Anouk Coumans & Hanna Tulleken <translators@websiteatschool.eu>
- * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam
+ * @copyright Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_es
- * @version $Id: demodata.php,v 1.4 2011/09/30 13:22:52 pfokker Exp $
+ * @version $Id: demodata.php,v 1.5 2012/04/17 14:52:16 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = 'Datos de demo';
@@ -74,7 +74,7 @@ $string['search_title'] = 'Aquí usted puede buscar en nuestro sitio';
 $string['search_link_text'] = 'Buscar';
 $string['searchbox_title'] = 'Buscar en nuestro sitio';
 $string['searchbox_link_text'] = 'Buscar';
-$string['sitemap_title'] = 'Descripción del sitio ';
+$string['sitemap_title'] = 'Descripción del sitio';
 $string['sitemap_link_text'] = 'Mapa de sitio';
 $string['mypage_title'] = 'Abrir/cerrar sesión y menú rápido';
 $string['mypage_link_text'] = 'MiPágina';
@@ -248,8 +248,8 @@ Contraseña:<br>
 ';
 $string['sitemap_content'] = 'Reservado para el  módulo de la mapa de sitio';
 $string['about_content'] = 'Aquí viene alguna información sobre la escuela';
-$string['contact_content'] = 'Reservado para el  módulo de correo ';
-$string['disclaimer_content'] = 'Aquí viene el texto de la negación ';
+$string['contact_content'] = 'Reservado para el  módulo de correo';
+$string['disclaimer_content'] = 'Aquí viene el texto de la negación';
 $string['login_content'] = '<h2>Inicio</h2>
 (<em>En el fondo reservado para el módulo MiPágina</em>)
 <p>

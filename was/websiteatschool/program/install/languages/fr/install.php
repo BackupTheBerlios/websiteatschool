@@ -1,6 +1,6 @@
 <?php
 # This file is part of Website@School, a Content Management System especially designed for schools.
-# Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
+# Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU Affero General Public License version 3 as published by
@@ -18,13 +18,13 @@
 /** /program/install/languages/fr/install.php
  *
  * Language: fr (Français)
- * Release:  0.90.2 / 2011092900 (2011-09-29)
+ * Release:  0.90.3 / 2012041700 (2012-04-17)
  *
  * @author Jean Peyratout <translators@websiteatschool.eu> <jean.peyratout@abul.org>
- * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam
+ * @copyright Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_fr
- * @version $Id: install.php,v 1.3 2011/09/29 19:06:20 pfokker Exp $
+ * @version $Id: install.php,v 1.4 2012/04/17 14:52:17 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = 'Installation';
@@ -53,7 +53,7 @@ $string['dialog_language_title'] = 'Choisir la langue d\'installation';
 $string['dialog_language_explanation'] = 'Choisir la langue à utiliser durant la procédure d\'installation';
 $string['language_label'] = 'Langue';
 $string['language_help'] = '';
-$string['dialog_installtype'] = 'Type d\'installation ';
+$string['dialog_installtype'] = 'Type d\'installation';
 $string['dialog_installtype_title'] = 'Choisir entre installation standard ou personnalisée';
 $string['dialog_installtype_explanation'] = 'Choisir le scénario d\'installation dans la liste ci-dessous';
 $string['installtype_label'] = 'Scénario d\'installation';
@@ -140,7 +140,7 @@ $string['compatibility_autostart_session_fail'] = 'Le démarrage automatique de 
 $string['compatibility_file_uploads_label'] = 'Téléversement de fichiers';
 $string['compatibility_file_uploads_fail'] = 'Le téléversement de fichiers est sur \'Off\'. Merci de le basculer sur \'On\' dans le fichier php.ini';
 $string['compatibility_database_label'] = 'Serveur de base de données';
-$string['compatibility_clamscan_label'] = 'Antivirus Clamscan ';
+$string['compatibility_clamscan_label'] = 'Antivirus Clamscan';
 $string['compatibility_clamscan_not_available'] = '(non disponible)';
 $string['compatibility_gd_support_label'] = 'Support GD';
 $string['compatibility_gd_support_none'] = 'GD n\'est pas supporté';
@@ -160,7 +160,7 @@ $string['dialog_finish_explanation_1'] = 'L\'installation de Website@School {VER
 $string['dialog_finish_check_for_updates'] = 'Si vous le souhaitez, vous pouvez suivre le llien ci-dessous pour vérifier les éventuelles mises à jour (le lien s\'ouvre dans une nouvelle fenêtre).';
 $string['dialog_finish_check_for_updates_anchor'] = 'Vérifier les mises à jour de Website@School.';
 $string['dialog_finish_check_for_updates_title'] = 'Vérifier le statut de votre version de Website@School';
-$string['jump_label'] = 'Aller à ';
+$string['jump_label'] = 'Aller à';
 $string['jump_help'] = 'Choisir où vous voulez aller après avoir pressé le bouton [OK] ci-dessous.';
 $string['dialog_download'] = 'Télécharger le fichier config.php';
 $string['dialog_download_title'] = 'Télécharger le fichier config.php sur votre ordinateur';

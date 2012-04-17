@@ -1,6 +1,6 @@
 <?php
 # This file is part of Website@School, a Content Management System especially designed for schools.
-# Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
+# Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU Affero General Public License version 3 as published by
@@ -18,20 +18,20 @@
 /** /program/themes/frugal/languages/fr/frugal.php
  *
  * Language: fr (Français)
- * Release:  0.90.2 / 2011092900 (2011-09-29)
+ * Release:  0.90.3 / 2012041700 (2012-04-17)
  *
  * @author Jean Peyratout <translators@websiteatschool.eu> <jean.peyratout@abul.org>
- * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam
+ * @copyright Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_fr
- * @version $Id: frugal.php,v 1.2 2011/09/29 19:06:20 pfokker Exp $
+ * @version $Id: frugal.php,v 1.3 2012/04/17 14:52:13 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['title'] = 'Thème Frugal';
 $string['description'] = 'Ce thème est le thème le plus basique';
 $string['translatetool_title'] = 'Frugal';
 $string['translatetool_description'] = 'Ce fichier contient les traductions pour le thème Frugal';
-$string['you_are_here'] = 'Vous êtes ici : ';
+$string['you_are_here'] = 'Vous êtes ici :';
 $string['alt_logo'] = 'image du logo';
 $string['jumpmenu_area'] = 'Choisir une zone';
 $string['jumpmenu_area_title'] = 'Choisir une zone puis presser [Allons-y ! (Go !)]';
@@ -41,7 +41,7 @@ $string['quickbottom_section_id_label'] = 'Section Liens rapides en ~bas';
 $string['quickbottom_section_id_title'] = 'Nombre de section(s) contenant des liens en bas de chaque page (0 pour aucune)';
 $string['logo_image_label'] = '~Logo';
 $string['logo_image_title'] = 'URL du fichier de l\'image de logo';
-$string['logo_height_label'] = '~Hauteur logo ';
+$string['logo_height_label'] = '~Hauteur logo';
 $string['logo_height_title'] = 'Hauteur du logo en pixels';
 $string['logo_width_label'] = '~Largeur logo';
 $string['logo_width_title'] = 'Largeur du logo en pixels';

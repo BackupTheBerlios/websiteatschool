@@ -1,6 +1,6 @@
 <?php
 # This file is part of Website@School, a Content Management System especially designed for schools.
-# Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
+# Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU Affero General Public License version 3 as published by
@@ -18,28 +18,28 @@
 /** /program/modules/sitemap/languages/es/sitemap.php
  *
  * Language: es (Español)
- * Release:  0.90.3 / 2011093000 (2011-09-30)
+ * Release:  0.90.3 / 2012041700 (2012-04-17)
  *
  * @author Anouk Coumans <translators@websiteatschool.eu>
- * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam
+ * @copyright Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_es
- * @version $Id: sitemap.php,v 1.2 2011/09/30 13:22:51 pfokker Exp $
+ * @version $Id: sitemap.php,v 1.3 2012/04/17 14:52:12 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
-$string['title'] = 'Mapa del sitio ';
-$string['description'] = 'Este módulo muestra un pequeño, un mediano o un grande mapa del sitio ';
-$string['translatetool_title'] = 'Mapa del sitio  ';
-$string['translatetool_description'] = 'Este archivo contiene traducciones para el módulo Mapa del sitio  ';
-$string['sitemap_content_header'] = 'Configuración del mapa del sitio  ';
+$string['title'] = 'Mapa del sitio';
+$string['description'] = 'Este módulo muestra un pequeño, un mediano o un grande mapa del sitio';
+$string['translatetool_title'] = 'Mapa del sitio';
+$string['translatetool_description'] = 'Este archivo contiene traducciones para el módulo Mapa del sitio';
+$string['sitemap_content_header'] = 'Configuración del mapa del sitio';
 $string['sitemap_content_explanation'] = 'Aquí usted puede configurar el mapa del sitio. Se puede añadir un título opcional y una introducción opcional al mapa del sitio.
 Tambien se puede cambiar el alcance del mapa del sitio.
-Usar una de las siguientes opciones: \'área\' para un mapa simple, \'limitado\' para un mapa de área seguido por una lista de enlaces para áreas disponibles, o \'completo\' para una completa descripción de todas las áreas.  ';
+Usar una de las siguientes opciones: \'área\' para un mapa simple, \'limitado\' para un mapa de área seguido por una lista de enlaces para áreas disponibles, o \'completo\' para una completa descripción de todas las áreas.';
 $string['header_label'] = '~Título';
-$string['header_title'] = 'Título para el mapa del sitio ';
+$string['header_title'] = 'Título para el mapa del sitio';
 $string['introduction_label'] = '~Introducción';
-$string['introduction_title'] = 'Texto de introducción para este mapa del sitio ';
-$string['scope_label'] = 'Seleccionar el alcance del mapa del sitio ';
+$string['introduction_title'] = 'Texto de introducción para este mapa del sitio';
+$string['scope_label'] = 'Seleccionar el alcance del mapa del sitio';
 $string['scope_title'] = 'Seleccionar una de las opciones para configurar el alcance del mapa del sitio';
 $string['scope_small_label'] = '~Área';
 $string['scope_small_title'] = 'Mapa del área simple';

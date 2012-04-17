@@ -1,6 +1,6 @@
 <?php
 # This file is part of Website@School, a Content Management System especially designed for schools.
-# Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
+# Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU Affero General Public License version 3 as published by
@@ -18,19 +18,19 @@
 /** /program/languages/fr/admin.php
  *
  * Language: fr (Français)
- * Release:  0.90.2 / 2011092900 (2011-09-29)
+ * Release:  0.90.3 / 2012041700 (2012-04-17)
  *
  * @author Jean Peyratout <translators@websiteatschool.eu> <jean.peyratout@abul.org>
- * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam
+ * @copyright Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_fr
- * @version $Id: admin.php,v 1.3 2012/04/15 09:32:10 pfokker Exp $
+ * @version $Id: admin.php,v 1.4 2012/04/17 14:52:07 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = 'Administration';
 $string['translatetool_description'] = 'Ce fichier contient les traductions de l\'interface d\'administration du système de gestion de contenu.';
 $string['generated_in'] = 'généré le {DATE} en {QUERIES} requêtes et {SECONDS} secondes';
-$string['logo_websiteatschool'] = 'logo Website@School&reg;';
+$string['logo_websiteatschool'] = 'logo Website@School®';
 $string['end_this_session'] = 'ferme cette session et déconnecte l\'utilisateur';
 $string['logout_username'] = 'déconnexion {USERNAME}';
 $string['view_public_area'] = 'zone publique';
@@ -141,26 +141,26 @@ $string['set_view_maximal_title'] = 'vue de l\'arbre déplié (toutes les sectio
 $string['access_denied_preview'] = 'Vous n\'avez pas les droits nécessaires pour prévisualiser cette page. Merci de fermer cette fenêtre et retourner au Gestionnaire de Pages';
 $string['invalid_node'] = 'Nœud {NODE} invalide';
 $string['task_set_default_access_denied'] = 'Vous n\'avez pas les droits nécessaires pour définir ce  nœud {NODE} comme nœud par défaut (home)';
-$string['startcenter_welcome'] = 'Bienvenue ';
+$string['startcenter_welcome'] = 'Bienvenue';
 $string['startcenter_welcome_text'] = 'Ceci est la page d\'accueil du système de gestion de site Website@School. Ici, vous pouvez gérer votre site Web.';
 $string['click_here_for_documentation'] = 'Cliquer ici pour voir la documentation';
 $string['icon_documentation'] = 'icone livre';
 $string['click_to_send_mail_to_us'] = 'Cliquer ici pour nous envoyer un courriel';
 $string['icon_sendmail'] = 'icone enveloppe';
-$string['please_send_us_mail'] = 'Dès que votre site d\'école est opérationnel, merci de nous envoyer un courriel avec son URL (adresse Web). Cliquez sur l\'icone pour envoyer ce courriel ou écrivez à <strong>{MAILTO}</strong>. Merci beaucoup, au nom de l\'équipe Website@School ! ';
+$string['please_send_us_mail'] = 'Dès que votre site d\'école est opérationnel, merci de nous envoyer un courriel avec son URL (adresse Web). Cliquez sur l\'icone pour envoyer ce courriel ou écrivez à <strong>{MAILTO}</strong>. Merci beaucoup, au nom de l\'équipe Website@School !';
 $string['view_documentation'] = 'Cliquez sur l\'icone pour voir la documentation (s\'ouvre dans une nouvelle fenêtre).';
 $string['icon_information'] = 'icone information';
 $string['check_new_version'] = 'Cliquez sur l\'icone pour vérifier s\'il existe une nouvelle version (votre version est la {VERSION}).';
 $string['task_node_add_access_denied'] = 'Vous n\'avez pas les droits nécessaires pour ajouter un nœud à cette zone';
 $string['add_a_page_header'] = 'Ajouter une page';
 $string['add_a_section_header'] = 'Ajouter une section';
-$string['add_section_explanation'] = 'Ajouter une nouvelle section en saisissant le titre de la section et d\'autres informations. Une fois la section ajoutée, vous pourrez ajouter des pages et des sous-sections à la nouvelle section. ';
+$string['add_section_explanation'] = 'Ajouter une nouvelle section en saisissant le titre de la section et d\'autres informations. Une fois la section ajoutée, vous pourrez ajouter des pages et des sous-sections à la nouvelle section.';
 $string['add_page_explanation'] = 'Ajouter une nouvelle page en saisissant le titre de la page, le module de page et d\'autres informations.';
 $string['add_node_linktext'] = '~Nom';
 $string['add_node_linktext_title'] = 'Choisir un nom court (utilisé pour la navigation)';
 $string['add_node_title'] = '~Description de la page / de la section';
 $string['add_node_title_title'] = 'Saisir la description de la page / de la section';
-$string['add_node_parent_section'] = 'Section ~Parent ';
+$string['add_node_parent_section'] = 'Section ~Parent';
 $string['add_node_parent_section_title'] = 'Choisir la section dans laquelle la nouvelle page/section sera ajoutée';
 $string['add_node_module'] = '~Module';
 $string['add_node_module_title'] = 'Choisir un module adapté pour cette page';
@@ -264,12 +264,12 @@ $string['delete_page_explanation'] = 'Vous êtes sur le point d\'effacer la page
 $string['delete_section_explanation'] = 'Vous êtes sur le point d\'effacer la section suivante et toutes les pages et sections que cette section contient  :';
 $string['delete_are_you_sure'] = 'Êtes-vous sûr(e) ?';
 $string['error_deleting_node'] = 'Erreur lors de l\'effacement de la page/section {NODE_FULL_NAME} de la zone {AREA}';
-$string['page_deleted'] = 'Page {NODE_FULL_NAME} effacée de la zone {AREA} ';
-$string['section_deleted'] = 'Section {NODE_FULL_NAME} effacée de la zone {AREA} ';
+$string['page_deleted'] = 'Page {NODE_FULL_NAME} effacée de la zone {AREA}';
+$string['section_deleted'] = 'Section {NODE_FULL_NAME} effacée de la zone {AREA}';
 $string['errors_deleting_childeren'] = 'Nombre d\'erreurs lors de l\'effacement des pages/sections de la section {NODE_FULL_NAME} : {COUNT}';
 $string['error_editing_node_content'] = 'Erreur lors de l\'édition du contenu de la page {NODE_FULL_NAME}';
 $string['page_content_edited'] = '(Zone {AREA}) Contenu modifié dans la page : {NODE_FULL_NAME}';
-$string['configurationmanager_intro'] = 'Ceci est le Gestionnaire de Configuration. Merci de choisir une tâche dans le menu. ';
+$string['configurationmanager_intro'] = 'Ceci est le Gestionnaire de Configuration. Merci de choisir une tâche dans le menu.';
 $string['configurationmanager_header'] = 'Gestionnaire de Configuration';
 $string['menu_areas'] = 'Zones';
 $string['menu_areas_title'] = 'Voir, ajouter, modifier ou effacer des zones';
@@ -305,7 +305,7 @@ $string['error_deleting_area'] = 'Erreur lors de l\'effacement de la zone {AREA}
 $string['error_deleting_area_not_empty'] = 'Effacement de la zone {AREA} ({AREA_FULL_NAME}) impossible : elle doit être vide (nombre de pages/sections restantes : {NODES})';
 $string['area_deleted'] = 'Zone {AREA} ({AREA_FULL_NAME}) effacée';
 $string['delete_an_area_header'] = 'Confirmer l\'effacement de la zone {AREA_FULL_NAME}';
-$string['delete_area_explanation'] = 'Vous êtes sur le point d\'effacer la zone suivante : ';
+$string['delete_area_explanation'] = 'Vous êtes sur le point d\'effacer la zone suivante :';
 $string['task_area_add_access_denied'] = 'Vous n\'avez pas les droits nécessaires pour ajouter une zone au site';
 $string['task_set_default_area_access_denied'] = 'Vous n\'avez pas les droits nécessaires pour faire de la zone {AREA} la zone par défaut';
 $string['areamanager_add_area_header'] = 'Ajouter une zone';
@@ -325,7 +325,7 @@ $string['areamanager_edit_theme_header'] = 'Configurer le thème \'{THEME_NAME}\
 $string['areamanager_edit_theme_explanation'] = 'Vous pouvez ici configurer le thème {THEME_NAME} pour la zone {AREA} ({AREA_FULL_NAME}).<br/>Les propriétés que vous pouvez modifier ici ne s\'appliquent qu\'à cette zone. Ainsi chaque zone peut posséder une combinaison particulière.';
 $string['areamanager_menu_edit'] = 'Propriétés de base';
 $string['areamanager_menu_edit_title'] = 'Éditer les propriétés de base';
-$string['areamanager_menu_edit_theme'] = 'Configuration du thème ';
+$string['areamanager_menu_edit_theme'] = 'Configuration du thème';
 $string['areamanager_menu_edit_theme_title'] = 'Configurer le thème pour cette zone';
 $string['areamanager_menu_reset_theme'] = 'Réinitialiser le thème';
 $string['areamanager_menu_reset_theme_title'] = 'Réinitialise la configuration du thème pour cette zone aux valeurs par défaut';
@@ -350,9 +350,9 @@ $string['areamanager_edit_area_theme_id_title'] = 'Choisir le thème pour cette 
 $string['areamanager_save_area_success'] = 'Enregistrement réussi des changements dans la zone {AREA} ({AREA_FULL_NAME})';
 $string['areamanager_save_area_failure'] = 'Il y a eu des problèmes lors de l\'enregistrement des changements dans la zone  {AREA} ({AREA_FULL_NAME})';
 $string['areamanager_savenew_area_success'] = 'Ajout avec succès de la nouvelle zone {AREA} ({AREA_FULL_NAME})';
-$string['areamanager_savenew_area_failure'] = 'Il y a eu des problèmes lors de l\'enregistrement de la nouvelle zone ';
+$string['areamanager_savenew_area_failure'] = 'Il y a eu des problèmes lors de l\'enregistrement de la nouvelle zone';
 $string['site_config_header'] = 'Configuration du site';
-$string['site_config_explanation'] = 'Vous pouvez modifier ici les paramètres globaux du site dans son intégralité. ';
+$string['site_config_explanation'] = 'Vous pouvez modifier ici les paramètres globaux du site dans son intégralité.';
 $string['site_config_version_label'] = 'Numéro de version interne (ne pas modifier)';
 $string['site_config_version_title'] = 'Numéro de version interne';
 $string['site_config_salt_label'] = 'Code de sécurité';
@@ -411,7 +411,7 @@ $string['reset_theme_area_header'] = 'Réglage des propriétés du thème {THEME
 $string['reset_theme_area_explanation'] = 'Vous êtes sur le point d\'écraser les propriétés actuelles du thème par les valeurs par défaut.';
 $string['reset_theme_area_are_you_sure'] = 'Êtes-vous sûr(e) de vouloir continuer ?';
 $string['accountmanager_header'] = 'Gestionnaire de Comptes';
-$string['accountmanager_intro'] = 'Gestionnaire de Comptes. Sélectionner une tâche dans le menu. ';
+$string['accountmanager_intro'] = 'Gestionnaire de Comptes. Sélectionner une tâche dans le menu.';
 $string['accountmanager_summary'] = 'Résumé';
 $string['accountmanager_users'] = 'Utilisateurs';
 $string['accountmanager_groups'] = 'Groupes';
@@ -477,7 +477,7 @@ $string['groupmanager_capacity_intranet_header'] = 'Accès intranet : {GROUP} - 
 $string['groupmanager_capacity_intranet_explanation'] = 'Choisir les rôles pour l\'accès intranet que vous souhaitez assigner à ce groupe ({GROUP_FULL_NAME}) et à ce niveau ({CAPACITY}) puis presser [Enregistrer] pour enregistrer vos modifications.';
 $string['acl_error_saving_field'] = '{FIELD} : erreur à l\'enregistrement des données';
 $string['usermanager_user_edit_title'] = 'Éditer cet utilisateur';
-$string['breadcrumb_you_are_here'] = 'Vous êtes ici : ';
+$string['breadcrumb_you_are_here'] = 'Vous êtes ici :';
 $string['breadcrumb_next'] = '>';
 $string['menu_groupcapacity_overview'] = 'Vue d\'ensemble';
 $string['menu_groupcapacity_overview_title'] = 'Affiche une vue d\'ensemble des membres de ce groupe/niveau';
@@ -613,13 +613,13 @@ $string['usermanager_edit_user_explanation'] = 'Vous pouvez éditer ici les prop
 $string['usermanager_edit_username_label'] = '~Nom';
 $string['usermanager_edit_username_title'] = 'Saisissez le nouveau nom d\'utilisateur (ce nom doit être unique)';
 $string['usermanager_edit_user_fullname_label'] = 'Nom c~omplet';
-$string['usermanager_edit_user_fullname_title'] = 'Saisissez le nom complet de l\'utilisateur ';
+$string['usermanager_edit_user_fullname_title'] = 'Saisissez le nom complet de l\'utilisateur';
 $string['usermanager_edit_user_password1_label'] = 'Mot de ~Passe';
 $string['usermanager_edit_user_password1_title'] = 'Minimum requis : caractères : {MIN_LENGTH}, chiffres : {MIN_DIGIT}, lettres minuscules : {MIN_LOWER}, lettres majuscules : {MIN_UPPER}';
 $string['usermanager_edit_user_password2_label'] = 'Confirmer le ~mot de passe';
 $string['usermanager_edit_user_password2_title'] = 'Minimum requis : caractères : {MIN_LENGTH}, chiffres : {MIN_DIGIT}, lettres minuscules : {MIN_LOWER}, lettres majuscules : {MIN_UPPER}';
 $string['usermanager_edit_user_email_label'] = 'C~ourriel';
-$string['usermanager_edit_user_email_title'] = 'Saisissez l\'adresse courriel de l\'utilisateur ';
+$string['usermanager_edit_user_email_title'] = 'Saisissez l\'adresse courriel de l\'utilisateur';
 $string['usermanager_edit_user_is_active_label'] = 'Activer l\'utilisateur';
 $string['usermanager_edit_user_is_active_title'] = 'Cocher la case pour marquer cet utilisateur comme actif';
 $string['usermanager_edit_user_is_active_check'] = 'Marquer l\'utilisateur comme ~actif';
@@ -627,9 +627,6 @@ $string['usermanager_edit_user_redirect_label'] = '~Redirection (où aller aprè
 $string['usermanager_edit_user_redirect_title'] = 'Saisir une URL où aller après la déconnexion (laisser en blanc envoie vers la zone par défaut)';
 $string['usermanager_edit_user_language_label'] = '~Langue';
 $string['usermanager_edit_user_language_title'] = 'Choisir la langue préférée pour cet utilisateur';
-$string['usermanager_edit_user_high_visibility_label'] = 'Activer l\'interface texte';
-$string['usermanager_edit_user_high_visibility_title'] = 'Cocher la case pour activer l\'option haute visibilité pour cet utilisateur';
-$string['usermanager_edit_user_high_visibility_check'] = '~Haute visibilité';
 $string['usermanager_edit_user_editor_label'] = '~Editeur';
 $string['usermanager_edit_user_editor_title'] = 'Choisir l\'éditeur / traitement de texte préféré pour cet utilisateur';
 $string['usermanager_edit_user_path_label'] = 'Répertoire de ~Données (ce chemin ne doit pas être modifié)';
@@ -777,7 +774,7 @@ $string['tools_intro'] = 'Ici vous pouvez trouver différents outils.
 <p>Avec l\'Outil Traduction vous pouvez ajouter une nouvelle langue au programme ou modifier les traductions existantes.</p>
 <p>L\'Outil Sauvegarde permet le téléchargement complet de la base de données de ce site.</p>
 <p>Voir les Logs vous permet d\'explorer les messages de log.</p>
-<p>Choisissez un outil depuis le menu.</p> ';
+<p>Choisissez un outil depuis le menu.</p>';
 $string['tools_header'] = 'Outils';
 $string['menu_translatetool'] = 'Outil Traduction';
 $string['menu_translatetool_title'] = 'Créer une nouvelle traduction ou modifier une traduction existante.';

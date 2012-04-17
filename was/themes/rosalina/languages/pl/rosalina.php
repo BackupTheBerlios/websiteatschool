@@ -1,6 +1,6 @@
 <?php
 # This file is part of Website@School, a Content Management System especially designed for schools.
-# Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
+# Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU Affero General Public License version 3 as published by
@@ -18,13 +18,13 @@
 /** /program/themes/rosalina/languages/pl/rosalina.php
  *
  * Language: pl (Polski)
- * Release:  0.90.2 / 2011092900 (2011-09-29)
+ * Release:  0.90.3 / 2012041700 (2012-04-17)
  *
  * @author Waldemar Pankiw <translators@websiteatschool.eu>
- * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam
+ * @copyright Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_pl
- * @version $Id: rosalina.php,v 1.2 2012/03/12 06:56:14 pfokker Exp $
+ * @version $Id: rosalina.php,v 1.3 2012/04/17 14:52:15 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['title'] = 'Wygląd Rosalina';
@@ -37,7 +37,7 @@ $string['jumpmenu_area'] = 'Wybierz strefę';
 $string['jumpmenu_area_title'] = 'Wybierz strefę i wciśnij [Idź]';
 $string['jumpmenu_areas'] = 'Strefy';
 $string['lastupdated'] = 'ostatnio aktualizowana: {UPDATE_YEAR}-{UPDATE_MONTH}-{UPDATE_DAY}';
-$string['copyright'] = '&copy;{COPYRIGHT_YEAR} {SITENAME}';
+$string['copyright'] = '©{COPYRIGHT_YEAR} {SITENAME}';
 $string['quicktop_section_id_label'] = 'Sekcja ze stałymi linkami u góry';
 $string['quicktop_section_id_title'] = 'Numer sekcji z linkami na górze każdej strony (0 jeśli żadna)';
 $string['quickbottom_section_id_label'] = 'Sekcja ze stałymi linkami u dołu';
@@ -138,9 +138,9 @@ $string['hvmenu_MenuVerticalCentered_bottom_option'] = 'dół';
 $string['hvmenu_MenuVerticalCentered_static_option'] = 'statyczny';
 $string['hvmenu_MenuVerticalCentered_title'] = 'Wybierz wyrównanie w pionie całego menu';
 $string['hvmenu_ChildOverlap_label'] = 'Zakładka pozioma';
-$string['hvmenu_ChildOverlap_title'] = 'Zakładka pozioma, opcje niższa/wyższa (liczba między -1,00 i +1,00)';
+$string['hvmenu_ChildOverlap_title'] = 'Zakładka pozioma, opcje niższa/wyższa (liczba między-1,oo i +1,00)';
 $string['hvmenu_ChildVerticalOverlap_label'] = 'Zakładka pionowa';
-$string['hvmenu_ChildVerticalOverlap_title'] = 'Zakładka pionowa, opcje niższa/wyższa (liczba między -1,00 i +1,00)';
+$string['hvmenu_ChildVerticalOverlap_title'] = 'Zakładka pionowa, opcje niższa/wyższa (liczba między-1,oo i +1,00)';
 $string['hvmenu_StartTop_label'] = 'Przesunięcie menu X';
 $string['hvmenu_StartTop_title'] = 'Przesunięcie menu X - koordynaty (piksele)';
 $string['hvmenu_StartLeft_label'] = 'Przesunięcie menu Y';
@@ -172,9 +172,9 @@ $string['hvmenu_KeepHilite_title'] = 'Zaznacz pole, żeby pozostawić ścieżkę
 $string['hvmenu_Arrws_label'] = 'Obrazy strzałek';
 $string['hvmenu_Arrws_title'] = 'Lista plików i rozmiarów, roździelonych przecinkiem: strzałka, szerokość, wysokość, strzałka w dół, szerokość, wysokość, strzałka w lewo, szerokość, wysokość';
 $string['menu_top_label'] = 'Granice menu głównego';
-$string['menu_top_title'] = 'Lista: min_szerokość,szer_znaku,max_szerokość,wysokość w px (domyślna: 120,8,300,20) ';
+$string['menu_top_title'] = 'Lista: min_szerokość,szer_znaku,max_szerokość,wysokość w px (domyślna: 120,8,300,20)';
 $string['menu_sub_label'] = 'Granice submenu';
-$string['menu_sub_title'] = 'Lista: min_szerokość,szer_znaku,max_szerokość,wysokość w px (domyślna: 120,8,300,20) ';
+$string['menu_sub_title'] = 'Lista: min_szerokość,szer_znaku,max_szerokość,wysokość w px (domyślna: 120,8,300,20)';
 $string['hvmenu_VerCorrect_label'] = 'Frame correction X';
 $string['hvmenu_VerCorrect_title'] = 'Multiple frame correction X-coordinate (pixels)';
 $string['hvmenu_HorCorrect_label'] = 'Frame correction Y';

@@ -1,6 +1,6 @@
 <?php
 # This file is part of Website@School, a Content Management System especially designed for schools.
-# Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
+# Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU Affero General Public License version 3 as published by
@@ -18,13 +18,13 @@
 /** /program/languages/es/was.php
  *
  * Language: es (Español)
- * Release:  0.90.3 / 2011093000 (2011-09-30)
+ * Release:  0.90.3 / 2012041700 (2012-04-17)
  *
  * @author Hanna Tulleken <translators@websiteatschool.eu>
- * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam
+ * @copyright Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_es
- * @version $Id: was.php,v 1.4 2011/09/30 13:22:51 pfokker Exp $
+ * @version $Id: was.php,v 1.5 2012/04/17 14:52:07 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = 'General';
@@ -47,7 +47,7 @@ $string['validate_invalid'] = '{FIELD}: valor inválido';
 $string['validate_invalid_datetime'] = '{FIELD}: fecha/hora inválida';
 $string['validate_not_unique'] = '{FIELD}: valor debe ser único';
 $string['validate_already_exists'] = '{FIELD}:el archivo o el directorio \'{VALUE}\' ya existe';
-$string['validate_different_passwords'] = '{FIELD1} y {FIELD2}: contraseñas no son iguales ';
+$string['validate_different_passwords'] = '{FIELD1} y {FIELD2}: contraseñas no son iguales';
 $string['validate_bad_password'] = '{FIELD}: contraseña no es aceptable; las demandas mínimas son : largo: {MIN_LENGTH}, cifras: {MIN_DIGIT}, minúsculo: {MIN_LOWER}, mayúsculo: {MIN_UPPER}';
 $string['validate_bad_filename'] = '{FIELD}: nombre de archivo no es aceptable: \'{VALUE}\'';
 $string['alerts_mail_subject'] = 'Alertas para el sitio web {SITENAME}: {ALERTS}';

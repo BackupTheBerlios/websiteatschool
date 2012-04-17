@@ -1,6 +1,6 @@
 <?php
 # This file is part of Website@School, a Content Management System especially designed for schools.
-# Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
+# Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU Affero General Public License version 3 as published by
@@ -18,46 +18,46 @@
 /** /program/themes/rosalina/languages/es/rosalina.php
  *
  * Language: es (Español)
- * Release:  0.90.3 / 2011093000 (2011-09-30)
+ * Release:  0.90.3 / 2012041700 (2012-04-17)
  *
  * @author Anouk Coumans <translators@websiteatschool.eu>
- * @copyright Copyright (C) 2008-2011 Vereniging Website At School, Amsterdam
+ * @copyright Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_es
- * @version $Id: rosalina.php,v 1.3 2012/03/12 06:56:13 pfokker Exp $
+ * @version $Id: rosalina.php,v 1.4 2012/04/17 14:52:14 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['title'] = 'Tema de Rosalina';
 $string['description'] = 'Este tema implementa el Menú HV (Javascript)';
 $string['translatetool_title'] = 'Rosalina';
-$string['translatetool_description'] = 'Este archivo contiene traducciones para el tema Rosalina ';
+$string['translatetool_description'] = 'Este archivo contiene traducciones para el tema Rosalina';
 $string['you_are_here'] = 'Usted está aquí:';
 $string['alt_logo'] = 'imagen del logo';
 $string['jumpmenu_area'] = 'Seleccionar área';
 $string['jumpmenu_area_title'] = 'Seleccionar área y hacer clic en [Ir]';
 $string['jumpmenu_areas'] = 'Áreas';
 $string['lastupdated'] = 'Última actualización: {UPDATE_YEAR}-{UPDATE_MONTH}-{UPDATE_DAY}';
-$string['copyright'] = '&copy;{COPYRIGHT_YEAR} {SITENAME}';
+$string['copyright'] = '©{COPYRIGHT_YEAR} {SITENAME}';
 $string['quicktop_section_id_label'] = ' Sección más alta de enlaces rápidos';
-$string['quicktop_section_id_title'] = 'Cantidad de secciones conteniendo enlaces en la parte más alta de cada página (0 para ninguno) ';
+$string['quicktop_section_id_title'] = 'Cantidad de secciones conteniendo enlaces en la parte más alta de cada página (0 para ninguno)';
 $string['quickbottom_section_id_label'] = ' Sección más bajo de enlaces rápidos';
 $string['quickbottom_section_id_title'] = 'Cantidad de secciones conteniendo enlaces en la parte más baja de cada página (0 para ninguno)';
 $string['show_breadcrumb_trail_label'] = 'Ruta de navegación';
 $string['show_breadcrumb_trail_title'] = 'Verificar la casilla para mostrar la ruta de navegación';
-$string['show_breadcrumb_trail_option'] = 'Mostrar la ruta de navegación ';
+$string['show_breadcrumb_trail_option'] = 'Mostrar la ruta de navegación';
 $string['logo_image_label'] = 'Logo';
 $string['logo_image_title'] = 'URL del logo del archivo del archivo de imagen';
 $string['logo_height_label'] = 'Altura del logo';
 $string['logo_height_title'] = 'Altura del logo en píxeles';
 $string['logo_width_label'] = 'Ancho del logo';
 $string['logo_width_title'] = 'Ancho del logo en píxeles';
-$string['stylesheet_label'] = 'Hoja de estilo estático ';
+$string['stylesheet_label'] = 'Hoja de estilo estático';
 $string['stylesheet_title'] = 'URL del archivo de la hoja de estilo estático (vacío para ninguno)';
-$string['style_usage_static_label'] = 'Uso de la hoja de estilo estático ';
+$string['style_usage_static_label'] = 'Uso de la hoja de estilo estático';
 $string['style_usage_static_option'] = 'Usar el archivo de la hoja de estilo estático';
 $string['style_usage_static_title'] = 'Vereficar la casilla para incluir la hoja de estilo estático en cada página';
 $string['style_label'] = 'Estilo extra en el nivel áreal';
-$string['style_title'] = 'Información adicional de estilo amplio de área ';
+$string['style_title'] = 'Información adicional de estilo amplio de área';
 $string['style_usage_area_label'] = 'Uso estilo extra (área)';
 $string['style_usage_area_option'] = 'Usar estilo extra en nivel área';
 $string['style_usage_area_title'] = 'Esto aplica la información de estilo \'estilo extra\' desde ariba';
@@ -99,7 +99,7 @@ $string['hvmenu_FontLowColor_title'] = 'Color de texto cuando el ratón no está
 $string['hvmenu_FontSubLowColor_label'] = 'Color de texto del submenú';
 $string['hvmenu_FontSubLowColor_title'] = 'Color de texto cuando el ratón no está pasando por el ítem del submenú';
 $string['hvmenu_FontHighColor_label'] = 'Color de texto activo del menú más alto';
-$string['hvmenu_FontHighColor_title'] = 'Color de texto cuando el ratón está pasando por el ítem del menú ';
+$string['hvmenu_FontHighColor_title'] = 'Color de texto cuando el ratón está pasando por el ítem del menú';
 $string['hvmenu_FontSubHighColor_label'] = 'Color de texto activo del submenú';
 $string['hvmenu_FontSubHighColor_title'] = 'Color de texto cuando el ratón está pasando por el ítem del submenú';
 $string['hvmenu_BorderColor_label'] = 'Color de borde menú superiór';
@@ -160,7 +160,7 @@ $string['hvmenu_MenuWrap_title'] = 'Verificar la casilla para permitir menú de 
 $string['hvmenu_RightToLeft_label'] = 'Derecha-a-izquierda';
 $string['hvmenu_RightToLeft_option'] = 'Permitir desplegar menú de derecha-a-izquierda';
 $string['hvmenu_RightToLeft_title'] = 'Verificar la casilla para desplegar el menú de la derecha a la izquierda';
-$string['hvmenu_UnfoldsOnClick_label'] = 'Desplegar en hacer clic ';
+$string['hvmenu_UnfoldsOnClick_label'] = 'Desplegar en hacer clic';
 $string['hvmenu_UnfoldsOnClick_option'] = 'Desplegar menú en hacer clic con el ratón';
 $string['hvmenu_UnfoldsOnClick_title'] = 'Verificar la casilla para desplegar en hacer clic con el ratón, desactivar el uso de pasar el ratón';
 $string['hvmenu_ShowArrow_label'] = 'Mostrar flechas';
@@ -199,11 +199,11 @@ $string['hvmenu_HideTop_title'] = 'Verificar la casilla para esconder el menú s
 $string['hvmenu_WebMasterCheck_label'] = 'Verificar administrador web';
 $string['hvmenu_WebMasterCheck_option'] = 'Verificar el arból menú';
 $string['hvmenu_WebMasterCheck_title'] = 'Esta opción se utiliza para comprobar la integridad de menú durante el desarrollo';
-$string['demo_logo_title'] = 'Sugerencia: las piezas del rompecabezas se puede cliquear ';
+$string['demo_logo_title'] = 'Sugerencia: las piezas del rompecabezas se puede cliquear';
 $string['demo_logo_alt'] = 'Logo de escuela';
 $string['demo_admin_php_title'] = 'Website@School (admin.php)';
 $string['demo_index_php_title'] = 'Inicio';
 $string['demo_index_php_login_title'] = 'Iniciar sesión';
 $string['demo_index_php_logout_title'] = 'Cerrar sesión';
-$string['demo_websiteatschool_eu_title'] = 'Visitar el sitio proyecto Website@School ';
+$string['demo_websiteatschool_eu_title'] = 'Visitar el sitio proyecto Website@School';
 ?>
