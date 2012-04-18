@@ -1,6 +1,9 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.122 2012/04/17 15:24:03 pfokker Exp $
+$Id: CHANGES.txt,v 1.123 2012/04/18 06:39:21 pfokker Exp $
 -------------------------------------------------------------------------------
+
+2012-04-18
+- [main_admin.php] selective number of bullets in message list
 
 2012-04-17
 - minor tweaks and typos

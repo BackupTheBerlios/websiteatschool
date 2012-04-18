@@ -26,7 +26,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: main_admin.php,v 1.13 2012/04/16 10:17:18 pfokker Exp $
+ * @version $Id: main_admin.php,v 1.14 2012/04/18 06:39:21 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -809,7 +809,7 @@ class AdminOutput {
               "    <div id=\"navigation\">\n".
                      $this->get_navigation('      ',$this->text_only).
               "    </div>\n".
-                   $this->get_div_messages('    ').
+                   $this->get_div_messages(FALSE,'    '). // FALSE=suppress bullet for single msg
               "    <div id=\"menu\">\n".
                      $this->get_menu('      ').
               "    </div>\n".
@@ -858,7 +858,7 @@ class AdminOutput {
 
               "  <div id=\"page\">\n".
 
-                   $this->get_div_messages('    ').
+                   $this->get_div_messages(TRUE,'    ').  // TRUE=show bullet even for single msg
 
               "    <div id=\"content\">\n".
                      $this->get_breadcrumbs('      ').
@@ -965,24 +965,29 @@ class AdminOutput {
      * If there is no message at all, an empty string is returned (without DIV).
      * Previously, if there was a single message, no bullet was added to the message.
      * If there were two or more messages, bullets were added.
-     * We now (april 2012) always add bullets to make this list more predictable
-     * for vision impaired users. Note that we also added an H2 with
-     * the word 'Messages' to make it even easier to identify this div.
+     * We now (april 2012) have a boolean parameter $bullets which modifies
+     * this behaviour as follows. If $bullets is TRUE, bullets are added
+     * to every message, even when there is only one. This makes this list
+     * more predictable for vision impaired users.
+     * Note that we also added an H2 with the phrase 'Messages' to make
+     * it even easier to identify this div. This phrase can be visually
+     * suppressed via a style sheet.
      *
      * Note that this routine is an exception with respect to
      * the DIV-tags: this helper routine DOES generate its own DIVs
      * whenever there is at least 1 message. This means that there
      * is no DIV at all when there are no messages.
      *
+     * @param bool $bullets if TRUE then _all_ messages get a bullet
      * @param string $m left margin for increased readability
      * @return string constructed HTML with message(s) or empty string if no messages
      */
-    function get_div_messages($m='') {
+    function get_div_messages($bullets, $m='') {
         $s = '';
         if (!empty($this->messages_inline)) {
             $s .= $m."<div id=\"messages\">\n".
                   $m."  <h2>".t('messages','admin')."</h2>\n";
-            if (sizeof($this->messages_inline) > 0) {
+            if (sizeof($this->messages_inline) > ($bullets) ? 0 : 1) {
                 $ul_start = $m."  <ul>\n";
                 $ul_stop  = $m."  </ul>\n";
                 $li       = $m."    <li>";
