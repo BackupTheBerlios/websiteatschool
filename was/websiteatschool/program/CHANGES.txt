@@ -1,10 +1,12 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.124 2012/04/18 07:57:32 pfokker Exp $
+$Id: CHANGES.txt,v 1.125 2012/04/18 09:02:02 pfokker Exp $
 -------------------------------------------------------------------------------
 
 2012-04-18
 - [main_admin.php] selective number of bullets in message list
 - bumped year in copyright messages where necessary
+- corrected a few typos in translations
+- [translatetool.class.php]: standardise on \n as EOL character
 
 2012-04-17
 - minor tweaks and typos

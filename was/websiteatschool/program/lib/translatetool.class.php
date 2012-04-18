@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: translatetool.class.php,v 1.10 2012/04/18 07:57:37 pfokker Exp $
+ * @version $Id: translatetool.class.php,v 1.11 2012/04/18 09:02:02 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -620,8 +620,12 @@ class TranslateTool {
                 continue;
             }
             $key = $item['key'];
-            if ((!isset($strings[$key])) || ($strings[$key] != $item['value'])) {
-                $diff[$key] = $item['value'];
+            # massage $value and standardise on \n as EOL
+            $value = str_replace("\r\n","\n",$item['value']);
+            $value = str_replace("\n\r","\n",$value);
+            $value = str_replace("\r","\n",$value);
+            if ((!isset($strings[$key])) || ($strings[$key] != $value)) {
+                $diff[$key] = $value;
             }
         }
         // 4B -- if the diff is non-empty, go write and maybe submit it
