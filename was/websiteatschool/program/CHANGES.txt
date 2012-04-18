@@ -1,5 +1,5 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.125 2012/04/18 09:02:02 pfokker Exp $
+$Id: CHANGES.txt,v 1.126 2012/04/18 10:09:17 pfokker Exp $
 -------------------------------------------------------------------------------
 
 2012-04-18
@@ -7,6 +7,7 @@ $Id: CHANGES.txt,v 1.125 2012/04/18 09:02:02 pfokker Exp $
 - bumped year in copyright messages where necessary
 - corrected a few typos in translations
 - [translatetool.class.php]: standardise on \n as EOL character
+- more preparations for upcoming release
 
 2012-04-17
 - minor tweaks and typos

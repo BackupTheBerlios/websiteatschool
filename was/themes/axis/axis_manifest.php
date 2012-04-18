@@ -24,7 +24,7 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wastheme_axis
- * @version $Id: axis_manifest.php,v 1.1 2012/04/12 20:57:18 pfokker Exp $
+ * @version $Id: axis_manifest.php,v 1.2 2012/04/18 10:09:16 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -34,7 +34,7 @@ $manifests['axis'] = array(
     'author' => 'Peter Fokker',
     'version' => 2012041200,
     'release' => '0.90.4',
-    'release_date' => '2012-04-12',
+    'release_date' => '2012-04-19',
     'is_core' => FALSE,
     'tabledefs' => 'NULL',
     'install_script' => 'axis_install.php',
