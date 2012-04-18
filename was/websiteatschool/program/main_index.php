@@ -1,6 +1,6 @@
 <?php
 # This file is part of Website@School, a Content Management System especially designed for schools.
-# Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker <peter@berestijn.nl>
+# Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker <peter@berestijn.nl>
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU Affero General Public License version 3 as published by
@@ -32,10 +32,10 @@
  *  - language=xx - indicates the language to use; xx is a valid language code like 'en', 'de', 'fr' or 'nl'
  *
  * @author Peter Fokker <peter@berestijn.nl>
- * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
+ * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: main_index.php,v 1.5 2011/09/21 18:54:19 pfokker Exp $
+ * @version $Id: main_index.php,v 1.6 2012/04/18 07:57:33 pfokker Exp $
  * @todo add the performance results in a HTML-comment if not CFG->debug, in sight otherwise
  */
 if (!defined('WASENTRY')) { die('no entry'); }

@@ -1,6 +1,6 @@
 <?php
 # This file is part of Website@School, a Content Management System especially designed for schools.
-# Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker <peter@berestijn.nl>
+# Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker <peter@berestijn.nl>
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU Affero General Public License version 3 as published by
@@ -18,10 +18,10 @@
 /** /program/themes/schoolyard/languages/nl/schoolyard.php - translated messages for theme (Nederlands)
  *
  * @author Peter Fokker <peter@berestijn.nl>
- * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
+ * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wastheme_schoolyard
- * @version $Id: schoolyard.php,v 1.2 2012/04/16 11:13:49 pfokker Exp $
+ * @version $Id: schoolyard.php,v 1.3 2012/04/18 07:57:31 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
