@@ -1,5 +1,5 @@
 /program/CREDITS.txt
-$Id: CREDITS.txt,v 1.4 2011/09/30 17:59:12 pfokker Exp $
+$Id: CREDITS.txt,v 1.5 2012/04/18 13:36:27 pfokker Exp $
 
 For an up to date overview of credits, please visit the
 project website at <http://websiteatschool.eu>.
@@ -17,22 +17,39 @@ Core team
 Translators
 ===========
 
+* Said Taki (Arabic).
 * Jing Fang Liu (Chinese).
+* Christian Borum Loebner - Olesen (Danish).
 * Core team (Dutch).
 * Core team (English).
+* A. Darvishi (Farsi).
 * Jean Peyratout (French).
-* David (German, under construction).
+* David (German).
+* S. Stadoll (German).
+* Fabienne Kudzielka (German).
+* Erika Swiderski (Hungarian).
+* Gergely Sipos (Hungarian).
 * Waldemar Pankiw (Polish).
+* Rita Valente Ribeiro da Silva (Portugese).
 * Anouk Coumans (Spanish).
 * Margot Molier (Spanish).
 * Hannah Tulleken (Spanish).
-* Ülkü Gaga (Turkish, under construction).
+* ÃœlkÃ¼ Gaga (Turkish, under construction).
+
+
+Translators (Website@School Manual)
+===================================
+
+* Karin Abma (Dutch, under construction).
+* Rieks van Rooijen (Dutch, under construction).
+* Jean Peyratout (French, under construction).
+* Anouk Coumans (Spanish, under construction).
 
 
 Code contributions
 ==================
 
-* Frederico Caldeira Knabben (FCKeditor, see http://ckeditor.com).
+* Frederico Caldeira Knabben (CKEditor and FCKeditor, see http://ckeditor.com).
 * Ger Versluis (HV Menu, used in the Rosalina theme).
 
 
@@ -47,20 +64,44 @@ Donations
 =========
 
 * Europees Platform voor het Onderwijs
-  (European Platform for Education)
+  (European Platform for Education).
+* Stichting KBA Nieuw West
+  (Foundation Catholic Primary Education, Amsterdam).
+* Openbare Basisschool Rosa Boekdrukker
+  (Public Primary School Rosa Boekdrukker, Amsterdam).
+* Nederlandse Vereniging voor Blinden en Slechtzienden
+  (Dutch Association for Blind and Visually Impaired).
+* Stichting Blinden-Penning
+  Foundation for activities for blind and visually impaired.
+* Stichting Mijn CO2Spoor
+  (MyCO2Track Foundation).
+* Enablement.
+* Lemstra Techniek.
+* Harm Hofstede.
+* C. van OrlÃ©.
+* Steunpunt ICT.
+* Volkshogeschool Eerbeek.
+* EURICT.
+* OMBS ZieZo.
+* John F. Kennedyschool, Breda.
+* M. Heeman.
+* Stichting EDICT.
+* RKB De Hoeksteen, Bussum.
+* Many anonymous donors.
 
 
 Testers
 =======
 
-* J.G.M. Meijer
-* Hans Wolters
+* J.G.M. Meijer.
+* Hans Wolters.
+* Stefan Schurtz.
 
 Others
 ======
 
-* Carla Alma
-* Margret Kwantes
+* Carla Alma.
+* Margret Kwantes.
 
 
 Please contact us if you feel your name should be mentioned here.
