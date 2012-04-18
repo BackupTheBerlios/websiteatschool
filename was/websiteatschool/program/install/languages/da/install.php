@@ -24,7 +24,7 @@
  * @copyright Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_da
- * @version $Id: install.php,v 1.1 2012/04/17 15:20:30 pfokker Exp $
+ * @version $Id: install.php,v 1.2 2012/04/18 08:18:36 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = 'Installere';
@@ -47,7 +47,7 @@ $string['ok_accesskey'] = 'K';
 $string['ok_title'] = 'Brug [Alt-K] eller [Cmnd-K] som en tastaturgenvej for denne kanp';
 $string['yes'] = 'Ja';
 $string['no'] = 'Nej';
-$string['language_name'] = 'Engelsk';
+$string['language_name'] = 'Dansk';
 $string['dialog_language'] = 'Sprog';
 $string['dialog_language_title'] = 'Vælg installeringssprog';
 $string['dialog_language_explanation'] = 'Vælg det sprog der skal bruges under installeringsproceduren';
