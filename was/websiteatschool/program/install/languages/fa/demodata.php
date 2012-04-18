@@ -20,11 +20,11 @@
  * Language: fa (‫فارسی)
  * Release:  0.90.3 / 2012041700 (2012-04-17)
  *
- * @author Abdullah Darvishi <translators@websiteatschool.eu>
+ * @author A. Darvishi <translators@websiteatschool.eu>
  * @copyright Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_fa
- * @version $Id: demodata.php,v 1.1 2012/04/17 15:20:31 pfokker Exp $
+ * @version $Id: demodata.php,v 1.2 2012/04/18 09:55:50 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = 'داده نمایشی';

@@ -20,11 +20,11 @@
  * Language: fa (‫فارسی)
  * Release:  0.90.3 / 2012041700 (2012-04-17)
  *
- * @author Abdullah Darvishi <translators@websiteatschool.eu>
+ * @author A. Darvishi <translators@websiteatschool.eu>
  * @copyright Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_fa
- * @version $Id: admin.php,v 1.2 2012/04/18 08:34:58 pfokker Exp $
+ * @version $Id: admin.php,v 1.3 2012/04/18 09:55:48 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = 'امور اداري';
