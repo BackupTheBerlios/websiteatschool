@@ -1,0 +1,92 @@
+/* /program/modules/snapshots/snapshots.css -- stylesheet for handling snapshots
+ *
+ * This file is part of Website@School, a Content Management System especially designed for schools.
+ * Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker <peter@berestijn.nl>
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License version 3 as published by
+ * the Free Software Foundation supplemented with the Additional Terms, as set
+ * forth in the License Agreement for Website@School (see /program/license.html).
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
+ * for more details.
+ *
+ * You should have received a copy of the License Agreement for Website@School
+ * along with this program. If not, see http://websiteatschool.eu/license.html
+ *
+ * @author Peter Fokker <peter@berestijn.nl>
+ * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
+ * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
+ * @package wasmod_snapshots
+ * @version $Id: snapshots.css,v 1.1 2012/05/30 12:47:17 pfokker Exp $
+ */
+
+.snapshots_header { }
+.snapshots_introduction { }
+.snapshot_toolbar {
+  height: 24px;
+  background: #F0F0F0;
+  padding-left: 12px;
+  margin-bottom: 5px;
+}
+.snapshot_toolbar a {
+  background: transparent;
+}
+#content .snapshot_toolbar a:hover,
+#content .snapshot_toolbar a:active {
+  background: transparent;
+}
+.snapshot_toolbar a img  {
+  margin-top: 2px;
+  border: 2px solid transparent;
+}
+.snapshot_toolbar a:hover img  {
+  border: 2px solid red;
+}
+.snapshot_status {
+  position: relative;
+  top: -4px;
+  left: 15px;
+}
+#content .thumbnail_container a:hover,
+#content .thumbnail_container a:active {
+  background: transparent;
+}
+div.thumbnail_container {
+  margin:           1em 1em 0 0;
+  border:           1px solid #000000;
+  width:            120px;
+  height:           150px;
+  float:            left;
+  text-align:       center;
+  background-color: #E0E0E0;
+}
+div.thumbnail_caption {
+  height:           25px;
+  overflow:         hidden;
+  white-space:      nowrap;
+}
+div.thumbnail_caption h4 {
+  padding:          2px;
+  margin:           2px;
+  font-weight:      normal;
+}
+div.thumbnail_image {
+  border:           none;
+}
+div.thumbnail_image img {
+  display: inline;
+  margin:           5px;
+  border:           5px solid #FFFFFF;
+}
+div.thumbnail_image a {
+  background-color: transparent;
+}
+
+div.thumbnail_image a:hover img {
+  border:           5px solid #FF0000;
+}
+
+/* eof snapshots.css */
