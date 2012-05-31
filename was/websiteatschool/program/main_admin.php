@@ -26,7 +26,7 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: main_admin.php,v 1.15 2012/04/18 07:57:33 pfokker Exp $
+ * @version $Id: main_admin.php,v 1.16 2012/05/31 11:12:41 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -987,7 +987,7 @@ class AdminOutput {
         if (!empty($this->messages_inline)) {
             $s .= $m."<div id=\"messages\">\n".
                   $m."  <h2>".t('messages','admin')."</h2>\n";
-            if (sizeof($this->messages_inline) > ($bullets) ? 0 : 1) {
+            if (sizeof($this->messages_inline) > (($bullets) ? 0 : 1)) {
                 $ul_start = $m."  <ul>\n";
                 $ul_stop  = $m."  </ul>\n";
                 $li       = $m."    <li>";

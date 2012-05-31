@@ -1,8 +1,20 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.128 2012/04/19 10:58:11 pfokker Exp $
+$Id: CHANGES.txt,v 1.129 2012/05/31 11:12:41 pfokker Exp $
 -------------------------------------------------------------------------------
 
-### Release 0.90.4 - 2011-09-30 / 2012041900 ###
+2012-05-31
+- various bugfixes:
+  . [main_admin.php] get_div_parameters() again correctly shows
+    bullets (bug introduced in 0.90.4)
+  . [waslib.php] get_friendly_parameter() now accepts parameter value '0'
+  . [waslib.php] was_node_url() correctly now conveys friendly value '0'
+  . [main_file.php] main_file() better check on tricks with /../ in path
+  . [filemanager.class.php] file_url() better encodes file url
+
+2012-05-30
+- new module: snapshots
+
+### Release 0.90.4 - 2012-04-19 / 2012041900 ###
 
 2012-04-18
 - [main_admin.php] selective number of bullets in message list

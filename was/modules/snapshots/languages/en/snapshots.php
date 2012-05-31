@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_snapshots
- * @version $Id: snapshots.php,v 1.1 2012/05/30 12:47:22 pfokker Exp $
+ * @version $Id: snapshots.php,v 1.2 2012/05/31 11:12:40 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -99,6 +99,6 @@ $string['snapshots0_link_text'] = 'Pictures';
 $string['snapshots1_title'] = 'Pictures of our latest field trip';
 $string['snapshots1_link_text'] = 'Field trip {LAST_WEEK}';
 $string['snapshots1_header'] = 'Field trip to the botanical garden ({LAST_WEEK})';
-$string['snapshots1_introduction'] = 'Here are the photos of the field trip to the botanical garden the seniors made on {LAST_WEEK}.<p>{LOREM} {IPSUM} {DOLOR}.';
+$string['snapshots1_introduction'] = 'Here are the photos of the field trip to the botanical garden the seniors made on {LAST_WEEK}.<p>{LOREM} {IPSUM} {DOLOR}';
 
 ?>

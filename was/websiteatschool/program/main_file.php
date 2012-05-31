@@ -26,7 +26,7 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: main_file.php,v 1.4 2012/04/18 07:57:33 pfokker Exp $
+ * @version $Id: main_file.php,v 1.5 2012/05/31 11:12:41 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -88,8 +88,13 @@ if (!defined('WASENTRY')) { die('no entry'); }
  *
  *  - there is no limit on downloading the currently active program code or user-defined translations of active languages
  *
- * @todo the check on '/../' is inconclusive if the $path is encoded in UTF-8: the overlong
- *       sequence 2F C0 AE 2E 2F eventually yields 2F 2E 2E 2F or '/../'. Reference: RFC3629 section 10.
+ * Note:
+ * The check on '..' in the requested filename would be inconclusive if the $path
+ * is encoded in invalid UTF-8: the overlong sequence 2F C0 AE 2E 2F eventually
+ * yields 2F 2E 2E 2F or '/../'. Reference: RFC3629 section 10. However, we use
+ * the filename processed with get_requested_filename() which already checks for
+ * utf8 validity, which rules out the trick with overlong sequences.
+ *
  * @return void file sent to the browser OR 404 not found on error
  */
 function main_file() {
@@ -150,12 +155,18 @@ function main_file() {
     }
    
     //
-    // 2 -- no. check out regular files
+    // 2 -- no source code requested. check out regular files
     //
-    $path = '/'.implode('/',$path_components); // construct clean pathname
+    $path = '/'.implode('/',$path_components);
 
+    // 2A -- always disallow attempts to escape from tree via parent directory tricks
+    if (in_array('..',$path_components)) {
+        logger(sprintf("%s(): access denied for file '%s': no tricks with '/../': return 404 Not Found",
+                       __FUNCTION__,$path),WLOG_DEBUG);
+        error_exit404($path);
+    }
 
-    // 2A -- check the 1st and 2nd component of the requested file
+    // 2B -- check the 1st and 2nd component of the requested file
     switch ($path_components[0]) {
     case 'areas':
         $area_path = (isset($path_components[1])) ? $path_components[1] : '';
@@ -174,7 +185,7 @@ function main_file() {
                             __FUNCTION__,$path,$area_id),WLOG_DEBUG);
             error_exit404($path);
         }
-        break;        
+        break;
 
     case 'users':
         $user_path = (isset($path_components[1])) ? $path_components[1] : '';
@@ -207,20 +218,12 @@ function main_file() {
         break;
     }
 
-    // 2B -- still here? 1st and 2nd components are good but are there tricks furter down the line?
+    // 2C -- still here? 1st and 2nd components are good but does the file exist?
     if (!is_file($CFG->datadir.$path)) {
         logger(sprintf("%s(): access denied for file '%s': file does not exist: return 404 Not Found",
                        __FUNCTION__,$path),WLOG_DEBUG);
         error_exit404($path);
     }
-    if (strpos($path,'/../') !== FALSE) {
-        logger(sprintf("%s(): access denied for file '%s': no tricks with '/../': return 404 Not Found",
-                       __FUNCTION__,$path),WLOG_DEBUG);
-        error_exit404($path);
-    }
-
-    
-
 
     //
     // At this point we confident that the file exists within the data directory and also that
@@ -231,8 +234,8 @@ function main_file() {
         logger(sprintf("Failed to send '%s' using filename '%s'",$path,$name));
         $retval = FALSE;
     } else {
-        logger(sprintf("Success sending '%s' using filename '%s', size = %d bytes",$path,$name,$bytes_sent));
-        $retal = TRUE;
+        logger(sprintf("Success sending '%s' using filename '%s', size = %d bytes",$path,$name,$bytes_sent),WLOG_DEBUG);
+        $retval = TRUE;
     }
 
     exit;

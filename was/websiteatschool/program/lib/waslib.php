@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: waslib.php,v 1.18 2012/04/18 07:57:37 pfokker Exp $
+ * @version $Id: waslib.php,v 1.19 2012/05/31 11:12:41 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1633,7 +1633,7 @@ function appropriate_legal_notices($text_only=FALSE, $m='') {
 
 /** massage a possibly relative URL to make it more qualified
  *
- * Here we perform same heuristics: if $url looks like it is relative,
+ * Here we perform some heuristics: if $url looks like it is relative,
  * we prepend the correct path (from $CFG) to it.
  *
  * Here a URL is considered relative when it does NOT start with a slash and it does
@@ -1793,7 +1793,9 @@ function was_node_url($node=NULL,$parameters=NULL,$bookmark='',$preview=FALSE,$q
             // 2 -- maybe proceed with other, named parameters
             if (!empty($parameters)) {
                 foreach($parameters as $k => $v) {
-                    if ((!empty($k)) && (!empty($v))) {
+                    $k = strval($k);
+                    $v = strval($v);
+                    if (($k != '') && ($v != '')) {
                         $href .= '/'.rawurlencode(strtr($k,'/?+%','____')).'/'.rawurlencode(strtr($v,'/?+%','____'));
                     }
                 }
@@ -1926,11 +1928,11 @@ function get_friendly_parameter($name,$default_value=NULL,$force=FALSE) {
                 ++$index;
             }
             while ($index < $n - 1) {
-                $key = (utf8_validate($raw_params[$index])) ? $raw_params[$index] : '';
+                $key = (utf8_validate($raw_params[$index])) ? strval($raw_params[$index]) : '';
                 ++$index;
-                $val = (utf8_validate($raw_params[$index])) ? $raw_params[$index] : '';
+                $val = (utf8_validate($raw_params[$index])) ? strval($raw_params[$index]) : '';
                 ++$index;
-                if ((!empty($key)) && (!empty($val))) {
+                if ($key != '') {
                     $parameters[$key] = $val;
                 }
             }

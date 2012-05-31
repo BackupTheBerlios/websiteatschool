@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: filemanager.class.php,v 1.10 2012/04/18 07:57:36 pfokker Exp $
+ * @version $Id: filemanager.class.php,v 1.11 2012/05/31 11:12:41 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -2524,15 +2524,22 @@ class FileManager {
      * Note that we try to make the link as short as possible,
      * eg. by omitting the http:// part if possible (see $CFG->www_short).
      *
+     * Note:
+     * If $path contains special characters such as '%' or '#' these
+     * are encoded via rawurlencode(). However, the path delimiter '/'
+     * (ascii 0x2F) is changed back to a genuine '/' to make $path
+     * look like a path.
+     *
      * @parameter string $path the name of the file including path
      * @return string ready to use URL
      */
     function file_url($path) {
         global $CFG;
+        $encoded_path = str_replace(array('%2F','%2f'),array('/','/'),rawurlencode($path));
         if ($CFG->friendly_url) {
-            $url = $CFG->www_short.'/file.php'.$path;
+            $url = $CFG->www_short.'/file.php'.$encoded_path;
         } else {
-            $url = $CFG->www_short.'/file.php?file='.$path;
+            $url = $CFG->www_short.'/file.php?file='.$encoded_path;
         }
         return $url;
     } // file_url()
