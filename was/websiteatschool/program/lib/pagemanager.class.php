@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: pagemanager.class.php,v 1.17 2012/05/31 16:58:13 pfokker Exp $
+ * @version $Id: pagemanager.class.php,v 1.18 2012/05/31 19:23:55 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -2018,12 +2018,6 @@ class PageManager {
             case 'node_link_image_height':
                 $fields['link_image_height'] = intval($item['value']);
                 break;
-            case 'node_link_target':
-                $fields['link_target'] = $item['value'];
-                break;
-            case 'node_link_href':
-                $fields['link_href'] = $item['value'];
-                break;
             case 'node_is_hidden':
                 $fields['is_hidden'] = ($item['value'] == 1) ? TRUE : FALSE;;
                 break;
@@ -2836,39 +2830,16 @@ class PageManager {
                 'label' => t('edit_node_link_image_height','admin'),
                 'title' => t('edit_node_link_image_height_title','admin'),
                 'viewonly' => $viewonly
-                )
-            );
-
-        if ($is_page) {
-            $dialogdef['node_link_target'] = array(
-                'type' => F_ALPHANUMERIC,
-                'name' => 'node_link_target',
-                'maxlength' => 240,
-                'columns' => 50,
-                'label' => t('edit_node_link_target','admin'),
-                'title' => t('edit_node_link_target_title','admin'),
-                'viewonly' => TRUE
-                );
-            $dialogdef['node_link_href'] = array(
-                'type' => F_ALPHANUMERIC,
-                'name' => 'node_link_href',
-                'maxlength' => 240,
-                'columns' => 50,
-                'label' => t('edit_node_link_href','admin'),
-                'title' => t('edit_node_link_href_title','admin'),
-                'viewonly' => TRUE
-                );
-        }
-
-        $dialogdef['node_is_hidden'] = array(
+                ),
+            'node_is_hidden' => array(
                 'type' => F_CHECKBOX,
                 'name' => 'node_is_hidden',
                 'options' => array(1 => t('edit_node_is_hidden_label','admin')),
                 'label' => t('edit_node_is_hidden','admin'),
                 'title' => t('edit_node_is_hidden_title','admin'),
                 'viewonly' => $viewonly
-                );
-        $dialogdef['node_embargo'] = array(
+                ),
+            'node_embargo' => array(
                 'type' => F_DATETIME,
                 'name' => 'node_embargo',
                 'maxlength' => 30,
@@ -2878,8 +2849,8 @@ class PageManager {
                 'label' => t('edit_node_embargo','admin'),
                 'title' => t('edit_node_embargo_title','admin'),
                 'viewonly' => $viewonly
-                );
-        $dialogdef['node_expiry'] = array(
+                ),
+            'node_expiry' => array(
                 'type' => F_DATETIME,
                 'name' => 'node_expiry',
                 'maxlength' => 30,
@@ -2889,8 +2860,8 @@ class PageManager {
                 'label' => t('edit_node_expiry','admin'),
                 'title' => t('edit_node_expiry_title','admin'),
                 'viewonly' => $viewonly
-                );
-        $dialogdef['node_style'] = array(
+                ),
+            'node_style' => array(
                 'type' => F_ALPHANUMERIC,
                 'name' => 'node_style',
                 'maxlength' => 16383, // about 16 kB
@@ -2899,9 +2870,10 @@ class PageManager {
                 'label' => t('edit_node_style_label','admin'),
                 'title' => t('edit_node_style_title','admin'),
                 'viewonly' => $viewonly
-                );
-        $dialogdef['button_save'] = dialog_buttondef(BUTTON_SAVE);
-        $dialogdef['button_cancel'] = dialog_buttondef(BUTTON_CANCEL);
+                ),
+            'button_save' => dialog_buttondef(BUTTON_SAVE),
+            'button_cancel' => dialog_buttondef(BUTTON_CANCEL)
+            );
         return $dialogdef;
     } // get_dialogdef_edit_advanced_node()
 
@@ -2958,12 +2930,6 @@ class PageManager {
                 break;
             case 'node_link_image_height':
                 $dialogdef[$name]['value'] = $record['link_image_height'];
-                break;
-            case 'node_link_target':
-                $dialogdef[$name]['value'] = $record['link_target'];
-                break;
-            case 'node_link_href':
-                $dialogdef[$name]['value'] = $record['link_href'];
                 break;
             case 'node_is_hidden':
                 $dialogdef[$name]['value'] = (db_bool_is(TRUE,$record['is_hidden'])) ? '1' : '';

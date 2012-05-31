@@ -37,7 +37,7 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: admin.php,v 1.22 2012/04/18 07:57:22 pfokker Exp $
+ * @version $Id: admin.php,v 1.23 2012/05/31 19:23:50 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -331,8 +331,6 @@ The following words/hotkeys are used.
 ~Icon pathname
 Icon ~width
 Icon hei~ght
-~Target
-~URL
 ~Hidden
 ~Embargo
 E~xpiry
@@ -357,12 +355,6 @@ $string['edit_node_link_image_width_title'] = 'Enter the width of the icon (in p
 
 $string['edit_node_link_image_height'] = 'Icon hei~ght';
 $string['edit_node_link_image_height_title'] = 'Enter the height of the icon (in pixels)';
-
-$string['edit_node_link_target'] = '~Target';
-$string['edit_node_link_target_title'] = 'Enter the target, e.g. _blank for a new window (see manual)';
-
-$string['edit_node_link_href'] = '~URL';
-$string['edit_node_link_href_title'] = 'Enter the full URL of the external webpage to link to';
 
 $string['edit_node_is_hidden'] = 'Hidden';
 $string['edit_node_is_hidden_title'] = 'Check the box to make the page/section hidden (but accessible)';

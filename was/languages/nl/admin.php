@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: admin.php,v 1.21 2012/04/18 07:57:22 pfokker Exp $
+ * @version $Id: admin.php,v 1.22 2012/05/31 19:23:50 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -280,12 +280,6 @@ $string['edit_node_link_image_width_title'] = 'Geef de breedte van het pictogram
 
 $string['edit_node_link_image_height'] = '~Hoogte';
 $string['edit_node_link_image_height_title'] = 'Geef de hoogte van het pictogram (in pixels)';
-
-$string['edit_node_link_target'] = '~Doel';
-$string['edit_node_link_target_title'] = 'Geef het doel op, bijv. _blank voor openen in nieuw venster (zie handboek)';
-
-$string['edit_node_link_href'] = '~URL';
-$string['edit_node_link_href_title'] = 'Geef de volledige URL van de externe webpagina op';
 
 $string['edit_node_is_hidden'] = 'Zichtbaarheid in navigatie';
 $string['edit_node_is_hidden_title'] = 'Een verborgen pagina/sectie is wel toegankelijk maar is onzichbaar in navigatie';

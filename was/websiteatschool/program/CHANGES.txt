@@ -1,5 +1,5 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.130 2012/05/31 16:58:13 pfokker Exp $
+$Id: CHANGES.txt,v 1.131 2012/05/31 19:23:54 pfokker Exp $
 -------------------------------------------------------------------------------
 
 2012-05-31
@@ -13,6 +13,8 @@ $Id: CHANGES.txt,v 1.130 2012/05/31 16:58:13 pfokker Exp $
 - new module: redirect
 - moved two fields (link_href and link_target) to new module redirect
   from edit advanced node properties
+- moved all translations (link_href and link_target) from admin.php
+  to redirect.php for all available languages.
 
 2012-05-30
 - new module: snapshots
