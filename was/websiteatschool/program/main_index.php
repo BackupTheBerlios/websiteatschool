@@ -35,7 +35,7 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: main_index.php,v 1.6 2012/04/18 07:57:33 pfokker Exp $
+ * @version $Id: main_index.php,v 1.7 2012/05/31 16:58:13 pfokker Exp $
  * @todo add the performance results in a HTML-comment if not CFG->debug, in sight otherwise
  */
 if (!defined('WASENTRY')) { die('no entry'); }
@@ -181,6 +181,19 @@ function main_index() {
     // - the area record from database in $area
     // - the node record from database in $tree[$node_id]['record']
     // - a flag that signals preview mode in $in_preview_mode
+
+    // We are on our way to generate a full page with content and all,
+    // but otoh we MIGHT be in the middle of a redirect, so we may have to
+    // leave without showing anything at all...
+
+    if (!empty($tree[$node_id]['record']['link_href'])) {
+        update_statistics($node_id);
+        if (isset($_SESSION)) {
+            session_write_close();
+        }
+        redirect_and_exit(htmlspecialchars($tree[$node_id]['record']['link_href']));
+        // exit; redirect_and_exit() never returns
+    }
 
     /** themelib contains the theme factory */
     require_once($CFG->progdir.'/lib/themelib.php');

@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: pagemanager.class.php,v 1.16 2012/04/18 07:57:37 pfokker Exp $
+ * @version $Id: pagemanager.class.php,v 1.17 2012/05/31 16:58:13 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -2847,7 +2847,7 @@ class PageManager {
                 'columns' => 50,
                 'label' => t('edit_node_link_target','admin'),
                 'title' => t('edit_node_link_target_title','admin'),
-                'viewonly' => $viewonly
+                'viewonly' => TRUE
                 );
             $dialogdef['node_link_href'] = array(
                 'type' => F_ALPHANUMERIC,
@@ -2856,7 +2856,7 @@ class PageManager {
                 'columns' => 50,
                 'label' => t('edit_node_link_href','admin'),
                 'title' => t('edit_node_link_href_title','admin'),
-                'viewonly' => $viewonly
+                'viewonly' => TRUE
                 );
         }
 
