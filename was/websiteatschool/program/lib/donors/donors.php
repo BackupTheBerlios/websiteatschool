@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: donors.php,v 1.2 2012/04/12 20:25:41 pfokker Exp $
+ * @version $Id: donors.php,v 1.3 2012/06/18 13:34:07 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -111,6 +111,14 @@ function show_benefactor_logo(&$output, $text_only=FALSE, $num=1, $m='') {
             'url'    => 'http://www.lemstratechniek.nl',
             'alt'    => 'Lemstra Techniek',
             'title'  => 'Lemstra Techniek - elektrische schuifdeurkozijen en elektrisch schuifdeurbeslag'
+            ),
+        array(
+            'width'  => 160,
+            'height' => 106,
+            'img'    => 'sidn.gif',
+            'url'    => 'https://www.sidn.nl',
+            'alt'    => 'SIDN',
+            'title'  => 'Foundation for Internet Domain Registration in the Netherlands'
             )
         );
     // 0 -- work to do at all?

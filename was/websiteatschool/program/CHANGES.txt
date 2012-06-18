@@ -1,6 +1,9 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.131 2012/05/31 19:23:54 pfokker Exp $
+$Id: CHANGES.txt,v 1.132 2012/06/18 13:34:07 pfokker Exp $
 -------------------------------------------------------------------------------
+
+2012-06-18
+- added SIDN to the list or donors
 
 2012-05-31
 - various bugfixes:
