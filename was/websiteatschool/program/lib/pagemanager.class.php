@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: pagemanager.class.php,v 1.18 2012/05/31 19:23:55 pfokker Exp $
+ * @version $Id: pagemanager.class.php,v 1.19 2012/06/22 13:24:16 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -2553,9 +2553,9 @@ class PageManager {
         $node_link_text = $this->tree[$node_id]['record']['link_text'];
         $node_title = $this->tree[$node_id]['record']['title'];
         if (!empty($node_link_text)) {
-            $anchor .= $node_link_text;
+            $anchor .= $node_link_text.' ('.strval($node_id).')';
         } elseif (!empty($node_title)) {
-            $anchor .= $node_title;
+            $anchor .= $node_title.' ('.strval($node_id).')';
         } else {
             $anchor .= t('node_has_no_name','admin',array('{NODE}' => strval($node_id)));
         }
