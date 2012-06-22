@@ -1,5 +1,5 @@
 /program/CREDITS.txt
-$Id: CREDITS.txt,v 1.6 2012/04/19 10:50:00 pfokker Exp $
+$Id: CREDITS.txt,v 1.7 2012/06/22 13:22:42 pfokker Exp $
 
 For an up to date overview of credits, please visit the
 project website at <http://websiteatschool.eu>.
@@ -77,6 +77,8 @@ Donations
   (MyCO2Track Foundation).
 * Enablement.
 * Lemstra Techniek.
+* Stichting Internet Domeinregistratie Nederland (SIDN)
+  (Foundation for Internet Domain Registration in the Netherlands)
 * Harm Hofstede.
 * C. van Orlé.
 * Steunpunt ICT.
