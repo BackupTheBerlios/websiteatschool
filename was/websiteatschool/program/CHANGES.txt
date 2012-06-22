@@ -1,9 +1,10 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.133 2012/06/22 14:21:53 pfokker Exp $
+$Id: CHANGES.txt,v 1.134 2012/06/22 14:42:00 pfokker Exp $
 -------------------------------------------------------------------------------
 
 2012-06-22
 - [install.php] added the site reply-to: address to the demodata interface
+- new theme: Sophia
 
 2012-06-18
 - added SIDN to the list or donors
