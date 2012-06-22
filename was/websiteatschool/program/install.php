@@ -27,7 +27,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasinstall
- * @version $Id: install.php,v 1.16 2012/04/18 07:57:33 pfokker Exp $
+ * @version $Id: install.php,v 1.17 2012/06/22 14:21:53 pfokker Exp $
  * @todo how prevent third party-access to install.php after initial install? .htaccess? !exists(../config.php)? 
  * @todo we should make sure that autosession is disabled in php.ini, otherwise was won't work
  * @todo we should make sure that register globals is off
@@ -1933,6 +1933,7 @@ class InstallWizard {
                 'progwww'         => $_SESSION['INSTALL']['cms_progwww'],
                 'datadir'         => $_SESSION['INSTALL']['cms_datadir'],
                 'title'           => $_SESSION['INSTALL']['cms_title'],
+                'replyto'         => $_SESSION['INSTALL']['cms_website_replyto_address'],
                 'user_username'   => $_SESSION['INSTALL']['user_username'],
                 'user_full_name'  => $_SESSION['INSTALL']['user_full_name'],
                 'user_email'      => $_SESSION['INSTALL']['user_email'],
