@@ -24,14 +24,14 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wastheme_sophia
- * @version $Id: sophia_manifest.php,v 1.1 2012/06/22 14:40:58 pfokker Exp $
+ * @version $Id: sophia_manifest.php,v 1.2 2012/06/23 13:59:45 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
 $manifests['sophia'] = array(
     'name' => 'sophia',
     'description' => 'This is a theme using big buttons for top level navigation',
-    'author' => 'Peter Fokker',o
+    'author' => 'Peter Fokker',
     'version' => 2012062200,
     'release' => '0.90.4',
     'release_date' => '2012-06-22',
