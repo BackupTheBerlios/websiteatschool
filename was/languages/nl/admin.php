@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: admin.php,v 1.22 2012/05/31 19:23:50 pfokker Exp $
+ * @version $Id: admin.php,v 1.23 2012/06/25 08:59:45 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -311,7 +311,7 @@ $string['page_saved'] = 'Pagina {NODE_FULL_NAME} opgeslagen';
 $string['section_saved'] = 'Sectie {NODE_FULL_NAME} opgeslagen';
 $string['node_was_edited'] = 'Pagina/sectie in gebied {AREA} gewijzigd: {NODE_FULL_NAME}';
 $string['node_was_edited_and_moved'] = 'Pagina/sectie {NODE_FULL_NAME} verplaatst van gebied {AREA} naar gebied {NEWAREA}';
-$string['error_moving_subtree'] = 'Fout bij verplaatsen {NODE_FULL_NAME} van gebied {AREA} naar gebied {NEWAREA}';
+$string['error_moving_subtree'] = 'Fout bij verplaatsen tak {NODE_FULL_NAME} van gebied {AREA} naar gebied {NEWAREA}';
 $string['success_moving_subtree'] = 'Tak {NODE_FULL_NAME} met succes verplaatst van gebied {AREA} naar gebied {NEWAREA}';
 $string['subtree_was_moved'] = 'Tak in gebied {AREA} varplaatst naar gebied {NEWAREA}: {NODE_FULL_NAME}';
 

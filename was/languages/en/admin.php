@@ -37,7 +37,7 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: admin.php,v 1.23 2012/05/31 19:23:50 pfokker Exp $
+ * @version $Id: admin.php,v 1.24 2012/06/25 08:59:44 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -585,8 +585,8 @@ $string['site_config_editor_ckeditor_option'] = 'CKEditor';
 $string['site_config_editor_ckeditor_title'] = 'JavaScript-based WYSIWYG word processor';
 $string['site_config_editor_fckeditor_option'] = 'FCKeditor';
 $string['site_config_editor_fckeditor_title'] = 'JavaScript-based WYSIWYG word processor';
-$string['site_config_editor_plain_option'] = 'Plain';
-$string['site_config_editor_plain_title'] = 'No-frills plain text editor';
+$string['site_config_editor_plain_option'] = 'Plain Editor';
+$string['site_config_editor_plain_title'] = 'Simple plain text editor';
 $string['site_config_friendly_url_label'] = '';
 $string['site_config_friendly_url_title'] = 'Check this box to generate proxy-friendly URLs in site-navigation';
 $string['site_config_friendly_url_option'] = 'Use proxy-friendly URLs';
