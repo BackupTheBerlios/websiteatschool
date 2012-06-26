@@ -42,7 +42,7 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wastheme_sophia
- * @version $Id: sophia_install.php,v 1.1 2012/06/22 14:40:58 pfokker Exp $
+ * @version $Id: sophia_install.php,v 1.2 2012/06/26 20:31:25 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -365,7 +365,7 @@ function sophia_demodata(&$messages,$theme_id,$config,$manifest) {
     $quicktop_section_id         = intval($config['demo_nodes']['quicktop']['node_id']);
     $quickbottom_section_id      = intval($config['demo_nodes']['quickbottom']['node_id']);
     $progwww                     = $config['progwww'];
-    $slogan                      = $config['title'];
+    $slogan                      = $config['demo_string']['welcome_title'];
     $area_id                     = intval($config['demo_areas']['public']['area_id']);
     $theme_id                    = intval($theme_id);
     $theme_name                  = $manifest['name'];
