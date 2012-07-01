@@ -33,7 +33,7 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_snapshots
- * @version $Id: snapshots_admin.php,v 1.1 2012/05/30 12:47:17 pfokker Exp $
+ * @version $Id: snapshots_admin.php,v 1.2 2012/07/01 18:40:14 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -269,6 +269,7 @@ function snapshots_get_dialogdef($viewonly) {
             'minlength' => 0,
             'maxlength' => 240,
             'columns' => 30,
+            'viewonly' => $viewonly,
             'label' => t('header_label','m_snapshots'),
             'title' => t('header_title','m_snapshots'),
             'value' => '',
@@ -280,6 +281,7 @@ function snapshots_get_dialogdef($viewonly) {
             'maxlength' => 32768, // arbitrary; 32 kB
             'columns' => 50,
             'rows' => 10,
+            'viewonly' => $viewonly,
             'label' => t('introduction_label','m_snapshots'),
             'title' => t('introduction_title','m_snapshots'),
             'value' => '',
@@ -290,6 +292,7 @@ function snapshots_get_dialogdef($viewonly) {
             'minlength' => 0,
             'maxlength' => 240,
             'columns' => 50,
+            'viewonly' => $viewonly,
             'label' => t('snapshots_path_label','m_snapshots'),
             'title' => t('snapshots_path_title','m_snapshots'),
             'value' => '',
