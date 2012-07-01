@@ -1,6 +1,9 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.134 2012/06/22 14:42:00 pfokker Exp $
+$Id: CHANGES.txt,v 1.135 2012/07/01 11:20:11 pfokker Exp $
 -------------------------------------------------------------------------------
+
+2012-07-01
+- new class SnapshotViewerInline added in preparation for upcoming aggregator
 
 2012-06-22
 - [install.php] added the site reply-to: address to the demodata interface

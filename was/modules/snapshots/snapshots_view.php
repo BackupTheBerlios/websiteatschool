@@ -25,13 +25,15 @@
  * </code>
  *
  * This function is called from /index.php when the node to display is connected
- * to this module.
+ * to this module. Internally all the work is done in the Snapshot class.
+ * This class is also used in the module that aggregates different nodes into
+ * a single HTML-document.
  *
  * @author Peter Fokker <peter@berestijn.nl>
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_snapshots
- * @version $Id: snapshots_view.php,v 1.1 2012/05/30 12:47:18 pfokker Exp $
+ * @version $Id: snapshots_view.php,v 1.2 2012/07/01 11:20:11 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -56,8 +58,8 @@ if (!defined('WASENTRY')) { die('no entry'); }
  * @return bool TRUE on success + output via $theme, FALSE otherwise
  */
 function snapshots_view(&$theme,$area_id,$node_id,$module) {
-    $module = new SnapshotViewer($theme,$area_id,$node_id,$module);
-    return $module->run();
+    $mod = new SnapshotViewer($theme,$area_id,$node_id,$module);
+    return $mod->run();
 } // snapshots_view()
 
 
@@ -79,26 +81,32 @@ class SnapshotViewer {
     /** @var string $domain the language domain where we get our translations from, usually 'm_<modulename>' */
     var $domain = '';
 
-    /** @var null|array $snapshots holds all snapshot information from snapshot directory or NULL if not yet set */
-    var $snapshots = NULL;
-
     /** @var string $header the (optional) title to display */
     var $header = '';
 
     /** @var string $introduction the (optional) introductory text to display */
     var $introduction = '';
 
+    /** @var int $variant 1=thumbnails, 2=first, 3=slideshow */
+    var $variant = '';
+
+    /** @var int $dimension defines the box size for variant 2 */
+    var $dimension = '';
+
     /** @var string $snapshots_path the directory containing the snapshots */
     var $snapshots_path = '';
 
-    /** @var int $variant 1=thumbnails, 2=first, 3=slideshow */
-    var $variant = '';
+    /** @var null|array $snapshots holds all snapshot information from snapshot directory or NULL if not yet set */
+    var $snapshots = NULL;
+
+    /** @var int $default_showtime is the default # of seconds between images in a slideshow */
+    var $default_showtime = 5;
 
 
     /** the constructor only stores relevant data for future use
      *
      * @param object &$theme collects the (html) output
-     * @param int $area_id identifies the area where $node_id lives
+     * @param int $area_id identifies the area where $node_id lives (currently unused)
      * @param int $node_id the node to which this module is connected
      * @param array $module the module record straight from the database
      */
@@ -121,43 +129,14 @@ class SnapshotViewer {
     function run() {
         global $CFG;
         $m = '      ';
-        //
-        // 1 -- retrieve the relevant data for this series of snapshots from database
-        //
-        $table = 'snapshots';
-        $fields = array('header','introduction','snapshots_path','variant', 'dimension');
-        $where = array('node_id' => intval($this->node_id));
-        $record = db_select_single_record($table,$fields,$where);
-        if ($record === FALSE) {
-            logger(sprintf('%s.%s(): error retrieving configuration: %s',__CLASS__,__FUNCTION__,db_errormessage()));
-            $record = array('header' => '', 'introduction' => '', 'snapshots_path' => '', 'variant' => 1, 'dimension' => 512);
-        }
-        $this->header = trim($record['header']);
-        $this->introduction = trim($record['introduction']);
-        $this->variant = intval($record['variant']);
-        $this->dimension = intval($record['dimension']);
+        // 1 -- determine the directory path and other configuration information
+        $this->get_snapshots_configuration($this->node_id);
 
-        //
-        // 1A -- sanity checks (just in case); massage pathname
-        //
-        $path = trim($record['snapshots_path']);
-        if ((!utf8_validate($path)) || (strpos('/'.$path.'/','/../') !== FALSE)) {
-            logger(sprintf("%s.%s(): invalid path '%s'; using root path",__CLASS__,__FUNCTION__,$path));
-            $path = '/'; // shouldn't happen
-        }
-        if (substr($path,0,1) != '/') { $path = '/'.$path; }
-        if (substr($path,-1) == '/') { $path = substr($path,0,-1); }
-        $this->snapshots_path = $path;
-
-        // FIXME: check permissions here to prevent leaking a private area path to anonymous visitors?
-
-        //
-        // 2 -- get a list of available files from $snapshots_path
-        //
+        // 2A -- get a list of available files from $snapshots_path
         $this->snapshots = $this->get_snapshots($this->snapshots_path);
         $snapshots_count = sizeof($this->snapshots);
 
-        // 2A -- if there are none we bail out but DO show the header+introduction
+        // 2B -- if there are none we bail out but DO show the header+introduction
         if ($snapshots_count <= 0) {
             if (!empty($this->header)) {
                 $this->theme->add_content($m.html_tag('h3',array('class' => 'snapshots_header'), $this->header));
@@ -165,25 +144,19 @@ class SnapshotViewer {
             if (!empty($this->introduction)) {
                 $this->theme->add_content($m.html_tag('div',array('class' => 'snapshots_introduction'), $this->introduction));
             }
-
-            $msg = t('no_snapshots_available','m_snapshots');
+            $msg = t('no_snapshots_available',$this->domain);
             $this->theme->add_message($msg);
             $this->theme->add_content($m.'<h3>'.$msg.'</h3>');
             return TRUE;
         }
 
-        //
-        // 3 -- get ready to do some real work
-        //
+        // 3A -- get ready to do some real work
         $stylesheet = 'program/modules/snapshots/snapshots.css';
         $this->theme->add_stylesheet($stylesheet);
+        $this->javascript_include_once('/modules/snapshots/slideshow.js');
+        $this->javascript_add_img_array();
 
-        // prepare for slideshow
-        $this->theme->add_html_header(html_tag('script',array(
-            'type' => 'text/javascript',
-            'src' =>  $CFG->progwww_short.'/modules/snapshots/slideshow.js'),''));
-        $this->add_javascript_img_array($this->theme);
-
+        // 3B -- what do they want?
         $snapshot_index = get_parameter_int('snapshot',NULL);
         if ((!is_null($snapshot_index)) && (0 < $snapshot_index) && ($snapshot_index <= $snapshots_count)) {
             $retval = $this->view_snapshot($snapshot_index);
@@ -565,12 +538,10 @@ class SnapshotViewer {
      * img[n][3] = the number of seconds to display this image
      * img[n][4] = title to add to the display (document title)
      *
-     * @param object &$theme collects the (html) output
      * @param string $m code readability
      * @return void
      */
-    function add_javascript_img_array(&$output,$m='      ') {
-        $default_showtime = 5; // seconds
+    function javascript_add_img_array($m='      ') {
         $code = array();
         $code[] = '<script type="text/javascript"><!--';
         $n = sizeof($this->snapshots);
@@ -582,7 +553,7 @@ class SnapshotViewer {
             // to sort a bunch of photos on nnn_ and use the embedded display time
             $key = $snapshot['key'];
             $matches = array();
-            $showtime = $default_showtime;
+            $showtime = $this->default_showtime;
             if (preg_match('/^[0-9]*_([0-9]*)_/',$key,$matches)) {
                 $showtime = intval($matches[1]);
                 if ((0 < $showtime) && ($showtime < 3600)) {
@@ -602,11 +573,197 @@ class SnapshotViewer {
         $code[] = sprintf("  msg[1]='%s';",str_replace('\'','\\\'',t('js_no_images',$this->domain)));
         $code[] = '//--></script>';
         foreach($code as $line) {
-            $output->add_content($m.$line);
+            $this->theme->add_content($m.$line);
         }
         return;
-    } // add_javascript_img_array()
+    } // javascript_add_img_array()
+
+
+    /** retrieve configuration data for this set of snapshots
+     *
+     * this routine fetches the configuration from the snapshots table and stores
+     * the sanitised information from the various fields in the object variables.
+     *
+     * @param int $node_id this key identifies the snapshots series
+     * @return void and information stored in object variables
+     * @todo check for information leaks (private path) here?
+     */
+    function get_snapshots_configuration($node_id) {
+        //
+        // 1 -- retrieve the relevant data for this series of snapshots from database
+        //
+        $table = 'snapshots';
+        $fields = array('header','introduction','snapshots_path','variant', 'dimension');
+        $where = array('node_id' => intval($node_id));
+        $record = db_select_single_record($table,$fields,$where);
+        if ($record === FALSE) {
+            logger(sprintf('%s.%s(): error retrieving configuration: %s',__CLASS__,__FUNCTION__,db_errormessage()));
+            $record = array('header' => '', 'introduction' => '', 'snapshots_path' => '', 'variant' => 1, 'dimension' => 512);
+        }
+        $this->header = trim($record['header']);
+        $this->introduction = trim($record['introduction']);
+        $this->variant = intval($record['variant']);
+        $this->dimension = intval($record['dimension']);
+
+        //
+        // 2 -- sanity checks (just in case); massage pathname
+        //
+        $path = trim($record['snapshots_path']);
+        if ((!utf8_validate($path)) || (strpos('/'.$path.'/','/../') !== FALSE)) {
+            logger(sprintf("%s.%s(): invalid path '%s'; using root path",__CLASS__,__FUNCTION__,$path));
+            $path = '/'; // shouldn't happen
+        }
+        if (substr($path,0,1) != '/') { $path = '/'.$path; }
+        if (substr($path,-1) == '/') { $path = substr($path,0,-1); }
+        $this->snapshots_path = $path;
+
+        // FIXME: check permissions here to prevent leaking a private area path to anonymous visitors?
+        return;
+    } // get_snapshots_configuration()
+
+
+    /** include an external javascript file once
+     *
+     * this adds an inclusion of a javascript file once in the document
+     * we are creating in $this->theme. If multiple instances of this
+     * SnapshowViewer-class exist the file is included only once.
+     *
+     * @param string $filename name of the js-file relative to /program directory
+     * @return void $filename inluded in $this->theme on the first call, otherwise nothing happens
+     */
+    function javascript_include_once($filename) {
+        static $filenames = array();
+        global $CFG;
+        if (isset($filenames[$filename])) {
+          ++$filenames[$filename];
+        } else {
+          $filenames[$filename] = 1;
+          $this->theme->add_html_header(html_tag('script',array(
+              'type' => 'text/javascript',
+              'src' =>  $CFG->progwww_short.$filename),''));
+        }
+    } // javascript_include_once()
 
 } // SnapshotViewer
-    
+
+/** this class implements methods to display snapshots
+ */
+class SnapshotViewerInline extends SnapshotViewer {
+
+    /** @var int $inline_show_width is the available width in the inline slideshow */
+    var $inline_show_width = 120;
+
+    /** @var int $inline_show_height is the available height in the inline slideshow */
+    var $inline_show_height = 120;
+
+    /** @var int $inline_show_visible_images is the number of images to show simultaneously */
+    var $inline_show_visible_images = 1;
+
+
+    /** the constructor only stores relevant data for future use
+     *
+     * @param object &$theme collects the (html) output
+     * @param int $area_id identifies the area where $node_id lives (currently unused)
+     * @param int $node_id the node to which this module is connected
+     * @param array $module the module record straight from the database
+     * @param int $width the available width for the inline slideshow
+     * @param int $height the available height for the inline slideshow
+     * @param int $visible the # of visible images in the inline slideshow
+     */
+    function SnapshotViewerInline(&$theme,$area_id,$node_id,$module,$width,$height,$visible) {
+        parent::SnapshotViewer($theme,$area_id,$node_id,$module);
+        $this->inline_show_width = $width;
+        $this->inline_show_height = $height;
+        $this->inline_show_visible_images = $visible;
+    } // SnapshotViewerInline()
+
+    /** read configuration paramerters and actually generate the inline slide show
+     *
+     * this routine decides what to do and calls the appropriate workhorse routine(s)
+     *
+     * @return bool TRUE on success, FALSE otherwise
+     * @todo check permissions (ACL) to prevent leaking a private area path to anonymous visitors?
+     */
+    function run() {
+        global $CFG;
+        $m = '      ';
+        // 1 -- determine the directory path and other configuration information
+        $this->get_snapshots_configuration($this->node_id);
+
+        // 2A -- get a list of available files from $snapshots_path
+        $this->snapshots = $this->get_snapshots($this->snapshots_path);
+        $snapshots_count = sizeof($this->snapshots);
+        if ($snapshots_count <= 0) {
+            $msg = t('no_snapshots_available',$this->domain);
+            $this->theme->add_message($msg);
+            $this->theme->add_content($m.'<h3>'.$msg.'</h3>');
+            return TRUE;
+        }
+        $this->javascript_include_once('/modules/snapshots/inlineshow.js');
+        $this->javascript_add_inline_show();
+        return TRUE;
+    } // run()
+
+
+    /** construct the necessary Jaascript-code to do the inline slideshow configuration
+     *
+     * this steps through the snapshots list and prepares the necessary javascript
+     * function calls to create and populate the inline slideshow.
+     * The following slideshow parameters are conveyed:
+     *  - the available width
+     *  - the available height
+     *  - the number of visible images
+     *
+     * The following image parameters are conveyed:
+     *  - width of the image (in pixels)
+     *  - height of the image (in pixels)
+     *  - the url of the image file (src-attribute of the img tag)
+     *  - the number of seconds to display this image
+     *  - title to add to the display (document title)
+     *
+     * @param string $m code readability
+     * @return void
+     */
+    function javascript_add_inline_show($m='      ') {
+        // sanity check
+        $w=max(16,intval($this->inline_show_width));
+        $h=max(16,intval($this->inline_show_height));
+        $n=max(1,intval($this->inline_show_visible_images));
+
+        $code = array();
+        $code[] = '<script type="text/javascript"><!--';
+        $code[] = sprintf('  var h=inline_show_create(%d,%d,%d);',$w,$h,$n);
+        $n = sizeof($this->snapshots);
+        $index = 0;
+        foreach($this->snapshots as $i => $snapshot) {
+            // see javascript_add_img_array: same trick with embedded showtime
+            $key = $snapshot['key'];
+            $matches = array();
+            $showtime = $this->default_showtime;
+            if (preg_match('/^[0-9]*_([0-9]*)_/',$key,$matches)) {
+                $showtime = intval($matches[1]);
+                if ((0 < $showtime) && ($showtime < 3600)) {
+                    $key = substr($snapshot['key'],strlen($matches[0]));
+                }
+            }
+            $title = sprintf('%d/%d - %s (%dx%d, %s)',++$index,$n,$key,
+                       $snapshot['width'],$snapshot['height'],$snapshot['human_size']);
+            $code[] = sprintf('  inline_show_add(h,%d,%d,\'%s\',%d,\'%s\');',
+                $snapshot['width'],$snapshot['height'],
+                str_replace('\'','\\\'',was_file_url($snapshot['image'])),
+                $showtime,
+                str_replace('\'','\\\'',$title));
+        }
+        // plug in the (translated) error/warning messages
+        $code[] = sprintf("  inline_show_msg[0]='%s';",str_replace('\'','\\\'',t('js_loading',$this->domain)));
+        $code[] = sprintf("  inline_show_msg[1]='%s';",str_replace('\'','\\\'',t('js_no_images',$this->domain)));
+        $code[] = '  inline_show_run(h);';
+        $code[] = '//--></script>';
+        foreach($code as $line) {
+            $this->theme->add_content($m.$line);
+        }
+        return;
+    } // javascript_add_inline_show()
+} // SnapshotViewerInline
+  
 ?>
