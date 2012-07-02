@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: waslib.php,v 1.19 2012/05/31 11:12:41 pfokker Exp $
+ * @version $Id: waslib.php,v 1.20 2012/07/02 11:19:11 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1197,7 +1197,7 @@ function is_expired($node_id,&$tree) {
  * database more than once for this.
  * Note that the returned array is keyed with area_id and is sorted by sort_order.
  * Also note that this list may include areas for which the current user has
- * no permissions whatsoever.
+ * no permissions whatsoever and also areas that are inactive.
  *
  * @param bool $forced if TRUE forces reread from database (resets the cache)
  * @return array|bool FALSE if no areas available or an array with area-records
@@ -1212,6 +1212,29 @@ function get_area_records($forced = FALSE) {
     }
     return $records;
 } // get_area_records()
+
+
+/** retrieve a list of all available module records
+ *
+ * this returns a list of active module-records or FALSE if none are are available
+ * The list is cached via a static variable so we don't have to go to the
+ * database more than once for this.
+ * Note that the returned array is keyed with module_id.
+ *
+ * @param bool $forced if TRUE forces reread from database (resets the cache)
+ * @return array|bool FALSE if no modules available or an array with module-records
+ */
+function get_module_records($forced = FALSE) {
+    static $records = NULL;
+    if (($records === NULL) || ($forced)) {
+        $tablename = 'modules';
+        $fields = '*';
+        $where = array('is_active' => TRUE);
+        $order = array('module_id');
+        $records = db_select_all_records($tablename,$fields,$where,$order,'module_id');
+    }
+    return $records;
+} // get_module_records()
 
 
 /** translate a numeric capacity code to a readable name

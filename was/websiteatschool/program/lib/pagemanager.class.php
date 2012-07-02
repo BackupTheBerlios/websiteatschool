@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: pagemanager.class.php,v 1.19 2012/06/22 13:24:16 pfokker Exp $
+ * @version $Id: pagemanager.class.php,v 1.20 2012/07/02 11:19:11 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -2600,7 +2600,7 @@ class PageManager {
     function get_dialogdef_add_node($is_page) {
         if ($is_page) {
             $default_module_id = 1; // attempt to set the default module to a plain HTML-page, probably module #1
-            $modules = $this->get_module_records();
+            $modules = get_module_records();
             foreach ($modules as $module_id => $module) {
                 if ($module['name'] == MODULE_NAME_DEFAULT) {
                     $default_module_id = $module_id;
@@ -3159,7 +3159,7 @@ class PageManager {
     function get_options_modules() {
 
         // 1 - get raw list of active modules
-        $records = $this->get_module_records();
+        $records = get_module_records();
         $options = array();
         if (($records === FALSE) || (empty($records))) {
             logger('pagemanager: weird, no active modules? must be configuration error');
@@ -3623,28 +3623,6 @@ class PageManager {
             }
         }
     } // section_is_open()
-
-
-    /** retrieve a list of all available module records
-     *
-     * this returns a list of active module-records or FALSE if none are are available
-     * The list is cached via a static variable so we don't have to go to the
-     * database more than once for this.
-     * Note that the returned array is keyed with module_id.
-     *
-     * @return array|bool FALSE if no modules available or an array with module-records
-     */
-    function get_module_records() {
-        static $records = NULL;
-        if ($records === NULL) {
-            $tablename = 'modules';
-            $fields = '*';
-            $where = array('is_active' => TRUE);
-            $order = array('module_id');
-            $records = db_select_all_records($tablename,$fields,$where,$order,'module_id');
-        }
-        return $records;
-    } // get_module_records()
 
 
     /** shorthand for constructing a readable page/section name with id, name and title
@@ -4139,7 +4117,7 @@ class PageManager {
      */
     function module_load_admin($module_id) {
         global $CFG;
-        $modules = $this->get_module_records();
+        $modules = get_module_records();
         if (!isset($modules[$module_id])) {
             logger(__FUNCTION__."(): weird: module '$module_id' is not there. Is it de-activated?");
             return FALSE;

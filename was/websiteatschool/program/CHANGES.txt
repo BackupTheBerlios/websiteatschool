@@ -1,6 +1,9 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.135 2012/07/01 11:20:11 pfokker Exp $
+$Id: CHANGES.txt,v 1.136 2012/07/02 11:19:11 pfokker Exp $
 -------------------------------------------------------------------------------
+
+2012-07-02
+- moved routine get_module_records to waslib.php
 
 2012-07-01
 - new class SnapshotViewerInline added in preparation for upcoming aggregator
