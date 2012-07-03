@@ -33,7 +33,7 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_snapshots
- * @version $Id: snapshots_view.php,v 1.2 2012/07/01 11:20:11 pfokker Exp $
+ * @version $Id: snapshots_view.php,v 1.3 2012/07/03 18:12:22 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -701,11 +701,12 @@ class SnapshotViewerInline extends SnapshotViewer {
         }
         $this->javascript_include_once('/modules/snapshots/inlineshow.js');
         $this->javascript_add_inline_show();
+        $this->noscript_add_inline_show();
         return TRUE;
     } // run()
 
 
-    /** construct the necessary Jaascript-code to do the inline slideshow configuration
+    /** construct the necessary Javascript-code to do the inline slideshow configuration
      *
      * this steps through the snapshots list and prepares the necessary javascript
      * function calls to create and populate the inline slideshow.
@@ -733,7 +734,7 @@ class SnapshotViewerInline extends SnapshotViewer {
         $code = array();
         $code[] = '<script type="text/javascript"><!--';
         $code[] = sprintf('  var h=inline_show_create(%d,%d,%d);',$w,$h,$n);
-        $n = sizeof($this->snapshots);
+        $num_snapshots = sizeof($this->snapshots);
         $index = 0;
         foreach($this->snapshots as $i => $snapshot) {
             // see javascript_add_img_array: same trick with embedded showtime
@@ -746,7 +747,7 @@ class SnapshotViewerInline extends SnapshotViewer {
                     $key = substr($snapshot['key'],strlen($matches[0]));
                 }
             }
-            $title = sprintf('%d/%d - %s (%dx%d, %s)',++$index,$n,$key,
+            $title = sprintf('%d/%d - %s (%dx%d, %s)',++$index,$num_snapshots,$key,
                        $snapshot['width'],$snapshot['height'],$snapshot['human_size']);
             $code[] = sprintf('  inline_show_add(h,%d,%d,\'%s\',%d,\'%s\');',
                 $snapshot['width'],$snapshot['height'],
@@ -764,6 +765,70 @@ class SnapshotViewerInline extends SnapshotViewer {
         }
         return;
     } // javascript_add_inline_show()
+
+
+    /** construct the necessary code to show N static images in case JavaScript is OFF
+     *
+     * this steps through the first N images of the snapshots list and prepares the
+     * necessary code to create and populate N static non-rotating img-tags,
+     * sandwiched ina noscript tag (gracefull degradation...)
+     *
+     * The following slideshow parameters are used:
+     *  - the available width
+     *  - the available height
+     *  - the number N of visible images
+     *
+     * The following parameters of the first N images are used:
+     *  - width of the image (in pixels)
+     *  - height of the image (in pixels)
+     *  - the url of the image file (src-attribute of the img tag)
+     *  - title to add to the display (document title)
+     * Notably absent:
+     *  - the number of seconds to display this image ;-)
+     *
+     * @param string $m code readability
+     * @return void
+     */
+    function noscript_add_inline_show($m='      ') {
+        // sanity check
+        $w=max(16,intval($this->inline_show_width));
+        $h=max(16,intval($this->inline_show_height));
+        $n=max(1,intval($this->inline_show_visible_images));
+        $vx = intval($w / $n);
+        $vy = $h;
+        $index = 0;
+        $this->theme->add_content($m.'<noscript>');
+        if (($num_snapshots = sizeof($this->snapshots)) == 0) {
+            $this->theme->add_content($m.'  '.t('js_no_images',$this->domain));
+        } else foreach($this->snapshots as $i => $snapshot) {
+            if (++$index > $n) {
+                break;
+            }
+            $px = $snapshot['width'];
+            $py = $snapshot['height'];
+            $r = min($px*$vy, $py*$vx);
+            $key = $snapshot['key'];
+            $matches = array();
+            $showtime = $this->default_showtime;
+            if (preg_match('/^[0-9]*_([0-9]*)_/',$key,$matches)) {
+                $showtime = intval($matches[1]);
+                if ((0 < $showtime) && ($showtime < 3600)) {
+                    $key = substr($snapshot['key'],strlen($matches[0]));
+                }
+            }
+            $attributes = array(
+                'width' => intval($r / $py),
+                'height' => intval($r / $px),
+                'title' => sprintf('%d/%d - %s (%dx%d, %s)',$index,$num_snapshots,$key,
+                                   $snapshot['width'],$snapshot['height'],$snapshot['human_size']));
+            $src = was_file_url($snapshot['image']);
+            $this->theme->add_content($m.'  '.html_img($src,$attributes));
+        }
+        $this->theme->add_content($m.'</noscript>');
+        return;
+    } // noscript_add_inline_show()
+
+
 } // SnapshotViewerInline
   
 ?>
