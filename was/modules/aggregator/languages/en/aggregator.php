@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_aggregator
- * @version $Id: aggregator.php,v 1.1 2012/07/01 18:45:40 pfokker Exp $
+ * @version $Id: aggregator.php,v 1.2 2012/07/03 20:34:36 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -84,5 +84,11 @@ $string['snapshots_showtime_label'] = '~Pause between images in seconds (snapsho
 $string['snapshots_showtime_title'] = 'The time (in seconds) before the next image is displayed';
 
 $string['invalid_node'] = '{FIELD}: invalid page/section number \'{VALUE}\'';
+
+$comment['htmlpage_more'] = 'There are distinct continuation messages for aggregated \'htmlpage\' pages (read more...) and \'snapshots\' pages (see more...). If you insist you could translate both messages with the same translation, e.g. a simple \'more...\'. It is up to you, the translator, to keep this distinction or not';
+$string['htmlpage_more'] = 'read more...';
+$string['htmlpage_more_title'] = 'Follow the link for the full story';
+$string['snapshots_more'] = 'see more...';
+$string['snapshots_more_title'] = 'Follow the link for more snapshots';
 
 ?>

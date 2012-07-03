@@ -33,7 +33,7 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_aggregator
- * @version $Id: aggregator_admin.php,v 1.1 2012/07/01 18:45:39 pfokker Exp $
+ * @version $Id: aggregator_admin.php,v 1.2 2012/07/03 20:34:35 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -231,7 +231,7 @@ error_reporting(-1);
         'introduction'       => $dialogdef['introduction']['value'],
         'node_list'          => $dialogdef['node_list']['value'],
         'items'              => intval($dialogdef['items']['value']),
-        'reverse_order'      => ($dialogdef['items']['value'] == 1) ? TRUE : FALSE,
+        'reverse_order'      => ($dialogdef['reverse_order']['value'] == 1) ? TRUE : FALSE,
         'htmlpage_length'    => intval($dialogdef['htmlpage_length']['value']),
         'snapshots_width'    => intval($dialogdef['snapshots_width']['value']),
         'snapshots_height'   => intval($dialogdef['snapshots_height']['value']),

@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_aggregator
- * @version $Id: aggregator.php,v 1.1 2012/07/01 18:45:40 pfokker Exp $
+ * @version $Id: aggregator.php,v 1.2 2012/07/03 20:34:36 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -71,4 +71,9 @@ $string['snapshots_showtime_label'] = '~Pauze tussen de afbeeldingen (kiekjes)';
 $string['snapshots_showtime_title'] = 'De tijd (in seconden) tot de volgende afbeelding zichtbaar wordt';
 
 $string['invalid_node'] = '{FIELD}: ongeldig pagina/sectienummer \'{VALUE}\'';
+$string['htmlpage_more'] = 'lees meer...';
+$string['htmlpage_more_title'] = 'Klik hier voor het hele verhaal';
+$string['snapshots_more'] = 'zie meer...';
+$string['snapshots_more_title'] = 'Klik hier voor meer kiekjes';
+
 ?>

@@ -1,9 +1,10 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.137 2012/07/03 18:12:22 pfokker Exp $
+$Id: CHANGES.txt,v 1.138 2012/07/03 20:34:36 pfokker Exp $
 -------------------------------------------------------------------------------
 
 2012-07-03
 - noscript-addition to SnapshotViewerInline (graceful degradation)
+- new module: aggregator (but still without demodata)
 
 2012-07-02
 - moved routine get_module_records to waslib.php
