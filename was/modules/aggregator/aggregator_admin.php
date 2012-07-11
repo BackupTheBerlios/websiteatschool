@@ -33,7 +33,7 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_aggregator
- * @version $Id: aggregator_admin.php,v 1.2 2012/07/03 20:34:35 pfokker Exp $
+ * @version $Id: aggregator_admin.php,v 1.3 2012/07/11 20:41:57 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -192,9 +192,6 @@ function aggregator_show_edit(&$output,$area_id,$node_id,$module,$viewonly,$edit
  */
 function aggregator_save(&$output,$area_id,$node_id,$module,$viewonly,&$edit_again) {
     global $USER;
-global $CFG;
-$CFG->debug=TRUE;
-error_reporting(-1);
 
     // 1 -- bail out if cancelled or viewonly
     if ((isset($_POST['button_cancel'])) || ($viewonly)) {
