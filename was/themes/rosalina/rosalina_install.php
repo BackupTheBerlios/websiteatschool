@@ -43,7 +43,7 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wastheme_rosalina
- * @version $Id: rosalina_install.php,v 1.2 2012/04/18 07:57:29 pfokker Exp $
+ * @version $Id: rosalina_install.php,v 1.3 2012/10/18 08:37:20 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -262,7 +262,7 @@ function rosalina_demodata(&$messages,$theme_id,$config,$manifest) {
 
     // Hotspot 2 - the gray jigsaw piece leads to login/logout (index.php)
     $hotspot_2 = implode(';',array('poly', '0,1,37,38,5,70,0,70',
-                                   $www.'/index,php?login=1',  $string['demo_index_php_login_title'],
+                                   $www.'/index.php?login=1',  $string['demo_index_php_login_title'],
                                    $www.'/index.php?logout=1', $string['demo_index_php_logout_title']));
 
     // Hotspot 3 - the red jigsaw piece leads to the websiteatschool project website in a new window
