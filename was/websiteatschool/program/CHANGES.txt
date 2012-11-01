@@ -1,6 +1,9 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.138 2012/07/03 20:34:36 pfokker Exp $
+$Id: CHANGES.txt,v 1.139 2012/11/01 09:06:11 pfokker Exp $
 -------------------------------------------------------------------------------
+
+2012-11-01
+- new theme: Cornelia
 
 2012-07-03
 - noscript-addition to SnapshotViewerInline (graceful degradation)
