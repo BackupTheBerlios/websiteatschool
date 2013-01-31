@@ -37,7 +37,7 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: admin.php,v 1.24 2012/06/25 08:59:44 pfokker Exp $
+ * @version $Id: admin.php,v 1.25 2013/01/31 10:50:01 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -499,7 +499,7 @@ $string['errors_saving_data'] = 'There were problems saving the changes. Errorco
 $string['success_saving_data'] =  'Success saving changes to the database';
 
 $string['areamanager_edit_theme_header'] = 'Configure theme \'{THEME_NAME}\' for area {AREA}';
-$string['areamanager_edit_theme_explanation'] = 'Here you can configure the theme {THEME_NAME} for area {AREA} ({AREA_FULL_NAME}).<br>The properties you can change here only apply to a this particular area, i.e. every area can have a unique set of properties for a particular combination of area and theme.';
+$string['areamanager_edit_theme_explanation'] = 'Here you can configure the theme {THEME_NAME} for area {AREA} ({AREA_FULL_NAME}).<br>The properties you can change here only apply to this particular area, i.e. every area can have a unique set of properties for a particular combination of area and theme.';
 
 
 $string['areamanager_menu_edit'] = 'Basic properties';
