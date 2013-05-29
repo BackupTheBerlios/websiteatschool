@@ -1,6 +1,6 @@
 <?php
 # This file is part of Website@School, a Content Management System especially designed for schools.
-# Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker <peter@berestijn.nl>
+# Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker <peter@berestijn.nl>
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU Affero General Public License version 3 as published by
@@ -28,10 +28,10 @@
  * The actual work is done in the function {@link show_manual()} below.
  *
  * @author Peter Fokker <peter@berestijn.nl>
- * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
+ * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: manual.php,v 1.7 2012/04/18 07:57:33 pfokker Exp $
+ * @version $Id: manual.php,v 1.8 2013/05/29 15:17:40 pfokker Exp $
  */
 
 /** Valid entry points define WASENTRY; prevents direct access to include()'s.  */
@@ -70,6 +70,7 @@ $TOPICS = array(
         'finish'           => 'install.html#h2.9'
         ),
     'logview'              => 'tools.html#h5',
+    'modulemanager'        => 'modulemanager.html',
     'pagemanager'          => 'pagemanager.html',
     'translatetool'        => 'tools.html#h3',
     'tools'                => 'tools.html',

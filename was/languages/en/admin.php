@@ -37,7 +37,7 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: admin.php,v 1.25 2013/01/31 10:50:01 pfokker Exp $
+ * @version $Id: admin.php,v 1.26 2013/05/29 15:17:39 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1255,5 +1255,11 @@ $string['update_warning_obsolete_file'] = 'Warning: the file \'{FILENAME}\' is o
 $string['donors'] = 'Donors';
 $string['function_not_yet_implemented'] = 'Function not yet implemented';
 $string['messages'] = 'Messages';
+
+$comment['modulemanager_intro'] = 'Start of translations for the module manager';
+$string['modulemanager_intro'] = 'This is the Module Manager. Please select a module from the menu';
+$string['modulemanager_header'] = 'Module Manager';
+$string['modulemanager_no_modules'] = '(no modules found)';
+
 
 ?>

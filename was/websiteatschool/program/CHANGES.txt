@@ -1,6 +1,9 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.139 2012/11/01 09:06:11 pfokker Exp $
+$Id: CHANGES.txt,v 1.140 2013/05/29 15:17:39 pfokker Exp $
 -------------------------------------------------------------------------------
+2013-05-29
+- added helptopic 'modulemanager' [manual.php]
+- implemented module manager [modulemanagerlib.php]
 
 2012-11-01
 - new theme: Cornelia

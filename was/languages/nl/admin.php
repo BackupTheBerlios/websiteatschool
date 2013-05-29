@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: admin.php,v 1.23 2012/06/25 08:59:45 pfokker Exp $
+ * @version $Id: admin.php,v 1.24 2013/05/29 15:17:39 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1139,5 +1139,9 @@ $string['update_warning_obsolete_file'] = 'Waarschuwing: het bestand \'{FILENAME
 $string['donors'] = 'Donateurs';
 $string['function_not_yet_implemented'] = 'Functie nog niet geïmplementeerd';
 $string['messages'] = 'Meldingen';
+
+$string['modulemanager_intro'] = 'Dit is Modulebeheer. Kies een module uit het menu.';
+$string['modulemanager_header'] = 'Modulebeheer';
+$string['modulemanager_no_modules'] = '(geen modules)';
 
 ?>
