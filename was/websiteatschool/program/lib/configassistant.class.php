@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: configassistant.class.php,v 1.5 2012/04/18 07:57:35 pfokker Exp $
+ * @version $Id: configassistant.class.php,v 1.6 2013/05/29 15:16:55 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -294,7 +294,7 @@ class ConfigAssistant {
      * @param string $keyfield the field that uniquely identifies the configuration parameters
      * @param string $prefix is prepended for every translation/language key and the also dialog item name
      * @param string $domain the language domain where to look for translations (default: 'admin')
-     * @param mixed $where a whereclause (without 'WHERE') or an array with contions
+     * @param mixed $where a whereclause (without 'WHERE') or an array with conditions
      * @param array $dialogdef_hidden additional fields for inclusion in dialog definition
      * @return void object setup and data buffered in object
      */
