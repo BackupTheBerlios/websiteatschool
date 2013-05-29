@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_sitemap
- * @version $Id: sitemap.php,v 1.3 2012/04/18 07:57:27 pfokker Exp $
+ * @version $Id: sitemap.php,v 1.4 2013/05/29 15:25:26 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -40,7 +40,7 @@ Select the scope of the sitemap
 [ ] ~Full
 [~Save] [~Cancel]
 
-Please make sure your translation has a conparable set of hotkeys (indicated via the tildes \'~\').';
+Please make sure your translation has a comparable set of hotkeys (indicated via the tildes \'~\').';
 
 $string['sitemap_content_header'] = 'Sitemap configuration';
 $string['sitemap_content_explanation'] = 'Here you can configure the sitemap. You can add an optional

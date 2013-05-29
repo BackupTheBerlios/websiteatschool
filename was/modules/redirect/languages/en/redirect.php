@@ -1,6 +1,6 @@
 <?php
 # This file is part of Website@School, a Content Management System especially designed for schools.
-# Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker <peter@berestijn.nl>
+# Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker <peter@berestijn.nl>
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU Affero General Public License version 3 as published by
@@ -18,10 +18,10 @@
 /** /program/modules/redirect/languages/en/redirect.php - translated messages for module (English)
  *
  * @author Peter Fokker <peter@berestijn.nl>
- * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
+ * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_redirect
- * @version $Id: redirect.php,v 1.1 2012/05/31 16:58:12 pfokker Exp $
+ * @version $Id: redirect.php,v 1.2 2013/05/29 15:25:26 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -36,7 +36,7 @@ $comment['redirect_content_header'] = 'Here is the redirect configuration dialog
 ~Target
 [~Save] [~Cancel]
 
-Please make sure your translation has a conparable set of hotkeys (indicated via the tildes \'~\').';
+Please make sure your translation has a comparable set of hotkeys (indicated via the tildes \'~\').';
 
 $string['redirect_content_header'] = 'Redirect configuration';
 $string['redirect_content_explanation'] = 'Here you can configure the page redirection. Enter the URL of the (external) web page where you want the current page to redirect to. Optionally you can add a link target, e.g. use \'_blank\' to open the (external) web page in a new window.';
