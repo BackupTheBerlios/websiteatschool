@@ -1,6 +1,9 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.140 2013/05/29 15:17:39 pfokker Exp $
+$Id: CHANGES.txt,v 1.141 2013/05/30 15:38:21 pfokker Exp $
 -------------------------------------------------------------------------------
+2013-05-30
+- added preliminary version of crew module
+
 2013-05-29
 - added helptopic 'modulemanager' [manual.php]
 - implemented module manager [modulemanagerlib.php]
