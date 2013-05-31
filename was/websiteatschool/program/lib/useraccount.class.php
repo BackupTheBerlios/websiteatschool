@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: useraccount.class.php,v 1.6 2012/04/18 07:57:37 pfokker Exp $
+ * @version $Id: useraccount.class.php,v 1.7 2013/05/31 14:30:46 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -181,12 +181,12 @@ define('ACL_ROLE_PAGEMANAGER_SITEMASTER',   ACL_ROLE_PAGEMANAGER_AREAMASTER |
  * 
  *  - has_site_permissions()
  *  - has_area_permissions()
- *  - has_node_parmissions()
- *  - has_job_permissions()
- *  - has_intranet_permissions()
+ *  - has_node_permissions()
  *  - has_module_site_permissions()
  *  - has_module_area_permissions()
- *  - has_module_node_parmissions()
+ *  - has_module_node_permissions()
+ *  - has_job_permissions()
+ *  - has_intranet_permissions()
  * 
  * Example: in order to determine wheter a user has access to the
  * intranet in area #2, the following could be used:
@@ -265,7 +265,7 @@ class Useraccount {
     /** @var string $language_key */
     var $language_key = '';
 
-    /** @var string $path directory that holds the personal data files relative to "{$CFG->datadir}/users/" */
+    /** @var string $path directory holding personal data files relative to "{$CFG->datadir}/users/" */
     var $path = '';
 
     /** @var int $acl_id identifies the main acl for this user */
@@ -274,31 +274,31 @@ class Useraccount {
     /** @var array $related_acls holds acl_id -> groupname/capacity pairs related to this user */
     var $related_acls = array();
 
-    /** @var array $acls contains the highest-level (site level) permissions, cached from table acls */
+    /** @var array $acls caches site-level permissions, keyed by [$field] */
     var $acls = array('permissions_jobs'     => ACL_ROLE_NONE,
                       'permissions_intranet' => ACL_ROLE_NONE,
                       'permissions_modules'  => ACL_ROLE_NONE,
                       'permissions_nodes'    => ACL_ROLE_NONE);
 
-    /** @var null|array $acls_areas holds area-level permissions, cached from acls_areas */
+    /** @var null|array $acls_areas caches area-level permissions, keyed by [$area_id][$field] */
     var $acls_areas = NULL;
 
-    /** @var null|array $acls_nodes holds node-level permissions, cached from acls_nodes */
+    /** @var null|array $acls_nodes caches node-level permissions, keyed by [$node_id][$field] */
     var $acls_nodes = NULL;
 
-    /** @var null|array $acls_modules holds site-level permissions for modules, cached from acls_modules */
+    /** @var null|array $acls_modules site-level modules permissions, keyed by [$module_id] */
     var $acls_modules = NULL;
 
-    /** @var null|array $acls_modules_areas holds area-level permissions for modules, cached from acls_modules_areas */
+    /** @var null|array $acls_modules_areas area-level modules permissions, by [$module_id][$area_id] */
     var $acls_modules_areas = NULL;
 
-    /** @var null|array $acls_modules_nodes holds node-level permissions for modules, cached from acls_modules_nodes */
+    /** @var null|array $acls_modules_nodes node-level modules permissions, by [$module_id][$node_id]*/
     var $acls_modules_nodes = NULL;
 
     /** @var array $properties */
     var $properties = array();
 
-    /** @var string $editor the preferred editor for this user (empty implies system default from $CFG->editor) */
+    /** @var string $editor the user's preferred editor (empty means system default from $CFG->editor) */
     var $editor = '';
 
     /** @var string $skin the preferred skin for this user */
@@ -333,7 +333,7 @@ class Useraccount {
         }
         // Now try to fetch data for this user from database
         $fields = '*';
-        $record = db_select_single_record('users',$fields,array('user_id' => $user_id, 'is_active' => TRUE));
+        $record = db_select_single_record('users',$fields,array('user_id'=>$user_id, 'is_active'=>TRUE));
         if ($record === FALSE) {
             logger('useraccount: cannot find record for user_id \''.$user_id.'\'',WLOG_INFO,$user_id);
             return FALSE;
@@ -372,13 +372,14 @@ class Useraccount {
         $records = db_select_all_records($tablename,$fields,$where,$order);
         if ($records !== FALSE) {
             $properties = array();
-            foreach($records as $record) {
-                $properties[$record['section']][$record['name']] = convert_to_type($record['type'],$record['value']);
+            foreach($records as $rec) {
+                $properties[$rec['section']][$rec['name']] = convert_to_type($rec['type'],$rec['value']);
             }
             $this->properties = $properties;
         }
     return TRUE;
-    }
+    } // Useraccount()
+
 
     /** determine user's permissions for the site-level
      *
@@ -405,7 +406,7 @@ class Useraccount {
      * this looks at the area-level permissions for manipulating nodes
      * and areas. However, we first look at the site-level permissions.
      * If those already satisfy the request, we return immediately.
-     * If not, the permissions are fetched from the table acls_areas of
+     * If not, the permissions are fetched from the table acls_areas or
      * from the cached data. We only fetch the data if it is really
      * necessary.
      *
@@ -422,11 +423,11 @@ class Useraccount {
             return TRUE;
         }
         if (is_null($this->acls_areas)) { // not cached yet, go fetch
-            $this->acls_areas = $this->fetch_acls_from_table('acls_areas',$this->where_acl_id());
+            $this->acls_areas = $this->fetch_acls_from_table('acls_areas');
         }
         $area_id = intval($area_id);
-        if (isset($this->acls_areas[$field][$area_id])) {
-            if (($this->acls_areas[$field][$area_id] & $mask) != 0) {
+        if (isset($this->acls_areas[$area_id][$field])) {
+            if (($this->acls_areas[$area_id][$field] & $mask) != 0) {
                 return TRUE;
             }
         }
@@ -441,6 +442,7 @@ class Useraccount {
      * @param int $node_id which node to test
      * @param string $field name of permissions to check (default 'permissions_nodes')
      * @return bool TRUE if at least one permission in $mask is granted, FALSE otherwise
+     * @todo FixMe: we need to take the parent nodes into account too!
      */
     function has_node_permissions($mask,$area_id,$node_id,$field='permissions_nodes') {
         if ($this->user_id == 0) { // just a passerby gets no privileges
@@ -450,16 +452,113 @@ class Useraccount {
             return TRUE;
         }
         if (is_null($this->acls_nodes)) { // not cached yet, go fetch
-            $this->acls_nodes = $this->fetch_acls_from_table('acls_nodes',$this->where_acl_id());
+            $this->acls_nodes = $this->fetch_acls_from_table('acls_nodes');
         }
         $node_id = intval($node_id);
-        if (isset($this->acls_nodes[$field][$node_id])) {
-            if (($this->acls_nodes[$field][$node_id] & $mask) != 0) {
+        if (isset($this->acls_nodes[$node_id][$field])) {
+            if (($this->acls_nodes[$node_id][$field] & $mask) != 0) {
                 return TRUE;
             }
         }
         return FALSE;
     } // has_node_permissions()
+
+
+    /** determine user's permissions for a module at the site-level
+     *
+     * this looks at the site-level permissions for manipulating
+     * mdules. The permissions are cached from the table acls_modules.
+     *
+     * @param int $mask bitmap of OR'ed permissions to test for
+     * @param int  $module_id identifies the module we are considering
+     * @return bool TRUE if at least one permission in $mask is granted, FALSE otherwise
+     */
+    function has_module_site_permissions($mask,$module_id) {
+        if ($this->user_id == 0) { // just a passerby gets no privileges
+            return FALSE;
+        }
+        if (($this->acls['permissions_modules'] & $mask) != 0) {
+            return TRUE;
+        }
+        if (is_null($this->acls_modules)) { // not cached yet, go fetch
+            $this->acls_modules = $this->fetch_acls_from_table('acls_modules');
+        }
+        $module_id = intval($module_id);
+        if (isset($this->acls_modules[$module_id])) {
+            if (($this->acls_modules[$module_id] & $mask) != 0) {
+                return TRUE;
+            }
+        }
+        return FALSE;
+    } // has_module_site_permissions()
+
+
+    /** determine user's permissions for a module at the area level
+     *
+     * this looks at the area-level permissions for manipulating nodes
+     * and areas. However, we first look at the site-level permissions.
+     * If those already satisfy the request, we return immediately.
+     * If not, the permissions are fetched from the table acls_modules_areas
+     * or from the cached data. We only fetch the data if it is really
+     * necessary.
+     *
+     * @param int $mask bitmap of OR'ed permissions to test for
+     * @param int module_id identifies the module we are considering
+     * @param int $area_id which area to test
+     * @return bool TRUE if at least one permission in $mask is granted, FALSE otherwise
+     */
+    function has_module_area_permissions($mask,$module_id,$area_id) {
+        if ($this->user_id == 0) { // just a passerby gets no privileges
+            return FALSE;
+        }
+        if (($this->has_module_site_permissions($mask,$module_id)) ||
+            ($this->has_area_permissions($mask,$area_id,'permissions_modules'))) {
+            return TRUE;
+        }
+        if (is_null($this->acls_modules_areas)) { // not cached yet, go fetch
+            $this->acls_modules_areas = $this->fetch_acls_from_table('acls_modules_areas');
+        }
+        $module_id = intval($module_id);
+        $area_id = intval($area_id);
+        if (isset($this->acls_areas[$module_id][$area_id])) {
+            if (($this->acls_areas[$module_id][$area_id] & $mask) != 0) {
+                return TRUE;
+            }
+        }
+        return FALSE;
+    } // has_module_area_permissions()
+
+
+    /**  determine user's permissions for a module at the node level
+     *
+     * @param int $mask bitmap of OR'ed permissions to test for
+     * @param int module_id identifies the module we are considering
+     * @param int $area_id which area to test
+     * @param int $node_id which node to test
+     * @return bool TRUE if at least one permission in $mask is granted, FALSE otherwise
+     * @todo FixMe: we need to take the parent nodes into account too!
+     */
+    function has_module_node_permissions($mask,$module_id,$area_id,$node_id) {
+        if ($this->user_id == 0) { // just a passerby gets no privileges
+            return FALSE;
+        }
+        if (($this->has_module_area_permissions($mask,$module_id,$area_id)) || 
+            ($this->has_node_permissions($mask,$area_id,$node_id,'permissions_modules'))) {
+            return TRUE;
+        }
+        if (is_null($this->acls_modules_nodes)) { // not cached yet, go fetch
+            $this->acls_modules_nodes = $this->fetch_acls_from_table('acls_modules_nodes');
+        }
+        $module_id = intval($module_id);
+        $node_id = intval($node_id);
+        if (isset($this->acls_nodes[$module_id][$node_id])) {
+            if (($this->acls_nodes[$module_id][$node_id] & $mask) != 0) {
+                return TRUE;
+            }
+        }
+        return FALSE;
+    } // has_module_node_permissions()
+
 
     /** determine user's permissions for a job
      *
@@ -571,41 +670,74 @@ class Useraccount {
     /** retrieve acl-data from table into a sparse array
      *
      * @param string $table name of the table which holds the acls
-     * @param string $where a ready-to-use whereclause that selects the relevant acls based on acl_id
      * @return array zero or more elements with permissions
      */
-    function fetch_acls_from_table($table,$where) {
+    function fetch_acls_from_table($table) {
+        $where = $this->where_acl_id();
         $a = array();
         switch ($table) {
         case 'acls_areas':
             $fields = array('permissions_intranet','permissions_modules','permissions_nodes');
-            $keyfield = 'area_id';
+            $keys = array('area_id');
             break;
 
         case 'acls_nodes':
             $fields = array('permissions_modules','permissions_nodes');
-            $keyfield = 'node_id';
+            $keys = array('node_id');
+            break;
+
+        case 'acls_modules':
+            $fields = array('permissions_modules');
+            $key = array('module_id');
+            break;
+
+        case 'acls_modules_areas':
+            $fields = array('permissions_modules');
+            $keys = array('module_id','area_id');
+            break;
+
+        case 'acls_modules_nodes':
+            $fields = array('permissions_modules');
+            $keys = array('module_id','node_id');
             break;
 
         default:
-            logger("fetch_acls_from_table(): unknown table '$table'; cannot retrieve acls");
+            logger(sprintf("%s(): unknown table '%s'; cannot retrieve acls",__FUNCTION__,$table));
             return array(); // empty array equates to: no access
             break;
         }
-        $records = db_select_all_records($table,array_merge($fields,array($keyfield)),$where);
+        $records = db_select_all_records($table,'*',$where);
         if ($records === FALSE) {
-            logger("fetch_acls_from_table(): error retrieving acls from '$table': ".db_error());
+            logger(sprintf("%s(): cannot get acls from '%s'; %s'",__FUNCTION__,$table,db_errormessage()));
             return array(); // empty array equates to: no access
         }
-        foreach ($records as $record) {
-            $index = $record[$keyfield];
-            foreach($fields as $field) {
-                if (($value = intval($record[$field])) != 0) {
-                    if (isset($a[$field][$index])) {
-                        $a[$field][$index] |= $value;
-                    } else {
-                        $a[$field][$index] = $value;
+        if (sizeof($keys) == 1) {
+            $key = $keys[0];
+            if (sizeof($fields) > 1) { // acls_areas, acls_nodes
+                foreach($records as $record) {
+                    $k = intval($record[$key]);
+                    foreach ($fields as $f) {
+                        if (($v = intval($record[$f])) != 0) {
+                            $a[$k][$f] = (isset($a[$k][$f])) ? $a[$k][$f] | $v : $v;
+                        }
                     }
+                }
+            } else { // acls_modules
+                $field = $fields[0];
+                foreach($records as $record) {
+                    $k = intval($record[$key]);
+                    if (($v = intval($record[$field])) != 0) {
+                        $a[$k] = (isset($a[$k])) ? $a[$k] | $v : $v;
+                    }
+                }
+            }
+        } else { // acls_modules_areas, acls_modules_nodes
+            $field = $fields[0];
+            foreach($records as $record) {
+                if (($v = intval($record[$field])) != 0) {
+                    $k0 = intval($record[$keys[0]]);
+                    $k1 = intval($record[$keys[1]]);
+                    $a[$k0][$k1] = (isset($a[$k0][$k1])) ? $a[$k0][$k1] | $v : $v;
                 }
             }
         }

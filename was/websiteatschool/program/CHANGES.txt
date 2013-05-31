@@ -1,6 +1,12 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.141 2013/05/30 15:38:21 pfokker Exp $
+$Id: CHANGES.txt,v 1.142 2013/05/31 14:30:46 pfokker Exp $
 -------------------------------------------------------------------------------
+2013-05=31
+- typos in crew module
+- simplified the intro text for crew in module manager
+- added a few has_module_*() permission functions [useraccount.class.php]
+- rearranged internal structure of cached ACLs in Useraccount
+
 2013-05-30
 - added preliminary version of crew module
 
