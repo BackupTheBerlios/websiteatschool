@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: useraccount.class.php,v 1.8 2013/05/31 15:21:46 pfokker Exp $
+ * @version $Id: useraccount.class.php,v 1.9 2013/06/02 12:34:55 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -688,7 +688,7 @@ class Useraccount {
 
         case 'acls_modules':
             $fields = array('permissions_modules');
-            $key = array('module_id');
+            $keys = array('module_id');
             break;
 
         case 'acls_modules_areas':
