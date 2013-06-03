@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: was.php,v 1.3 2012/04/18 07:57:22 pfokker Exp $
+ * @version $Id: was.php,v 1.4 2013/06/03 10:42:59 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -38,6 +38,7 @@ $string['button_delete'] = '~Delete';
 $string['button_yes'] = '~Yes';
 $string['button_no'] = '~No';
 $string['button_go'] = '~Go';
+$string['button_edit'] = '~Edit';
 $string['hotkey_for_button'] = 'Use Alt-{HOTKEY} or Cmnd-{HOTKEY} as a keyboard shortcut for this button';
 
 $string['validate_too_short'] = '{FIELD}: string is too short (minimum = {MIN})';

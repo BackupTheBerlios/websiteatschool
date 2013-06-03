@@ -22,7 +22,7 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: admin_lowvision.css,v 1.1 2012/04/15 15:30:18 pfokker Exp $
+ * @version $Id: admin_lowvision.css,v 1.2 2013/06/03 10:43:00 pfokker Exp $
  */
 body {
   background-color: #00C;
@@ -127,7 +127,8 @@ input.button_cancel,
 input.button_delete,
 input.button_previous,
 input.button_next,
-input.button_ok {
+input.button_ok,
+input.button_edit {
   background-color: #003;
 }
 #content tr.header {

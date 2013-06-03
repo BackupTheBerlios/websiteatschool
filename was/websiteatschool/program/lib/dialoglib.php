@@ -180,7 +180,7 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: dialoglib.php,v 1.6 2012/04/18 07:57:35 pfokker Exp $
+ * @version $Id: dialoglib.php,v 1.7 2013/06/03 10:43:00 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -208,6 +208,7 @@ define('BUTTON_DELETE','delete');
 define('BUTTON_YES','yes');
 define('BUTTON_NO','no');
 define('BUTTON_GO','go');
+define('BUTTON_EDIT','edit');
 
 
 /** construct a generic form with a dialog
@@ -1311,6 +1312,11 @@ function dialog_buttondef($button_type,$value='',$title='') {
         $button['name'] = 'button_go';
         $button['class'] = 'button_go';
         $button['value'] = t('button_go');
+        break;
+    case BUTTON_EDIT:
+        $button['name'] = 'button_edit';
+        $button['class'] = 'button_edit';
+        $button['value'] = t('button_edit');
         break;
     default:
         $button['name'] = 'button_ok';
