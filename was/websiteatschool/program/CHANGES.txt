@@ -1,10 +1,11 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.145 2013/06/03 12:16:33 pfokker Exp $
+$Id: CHANGES.txt,v 1.146 2013/06/03 16:14:24 pfokker Exp $
 -------------------------------------------------------------------------------
 2013-06-03
 - added missing html_tag_close() [htmllib.php]
 - added new standard button Edit [dialoglib.php and style/transalation files]
 - new utility function hmac() according to RFC2104 [waslib.php]
+- added Dutch translation for CREW-odule
 
 2013-05=31
 - typos in crew module
