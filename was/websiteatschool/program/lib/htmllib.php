@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: htmllib.php,v 1.4 2012/04/18 07:57:36 pfokker Exp $
+ * @version $Id: htmllib.php,v 1.5 2013/06/03 08:53:03 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -138,6 +138,16 @@ function html_tag($tag='',$attributes=NULL,$content=NULL) {
     }
     return $s;
 } // html_tag()
+
+
+/** companion of html_tag: close the tag
+ *
+ * @param string $tag is the HTML-tag to close, e.g. 'span' or 'script'
+ * @return string ready to use HTML close tag
+ */
+function html_tag_close($tag='') {
+    return '</'.$tag.'>';
+} // html_tag_close()
 
 
 /** convert an array of name-value pairs to a string
