@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: waslib.php,v 1.20 2012/07/02 11:19:11 pfokker Exp $
+ * @version $Id: waslib.php,v 1.21 2013/06/03 12:16:33 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -2073,5 +2073,36 @@ function userdir_delete($path) {
     }
     return $retval;
 } // userdir_delete()
+
+
+/** calculate hmac according to RFC2104 (February 1997)
+ *
+ * Note: strings $opad and $ipad are created by simply copying $key
+ * The contents are not important because we overwrite the contents
+ * in the loop anyway.
+ *
+ * @param string $key (shared) secret key
+ * @param string $message
+ * @param bool $raw TRUE return binary hmac, FALSE hexadecimal 
+ * @param function $hash either sha1 (default) or md5
+ * @return string hashed message authentication code of $message
+ */
+function hmac($key, $message, $raw=FALSE, $hash="sha1") {
+    $bs = 64;
+    if (($n = strlen($key)) > $bs) {
+        $n = strlen($key=pack('H*', $hash($key)));
+    }
+    if ($n < $bs) {
+        $key .= str_repeat(chr(0), $bs-$n);
+    }
+    $opad = $ipad = $key; // quickly create strings of length $bs 
+    for ($i=0; $i < $bs; ++$i) {
+        $c = ord($key[$i]);
+        $opad[$i] = chr(0x5C ^ $c);
+        $ipad[$i] = chr(0x36 ^ $c);
+    }
+    $hmac = $hash($opad.pack('H*', $hash($ipad.$message)));
+    return ($raw) ? pack('H*',$hmac) : $hmac;
+} /* hmac() */
 
 ?>
