@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_crew
- * @version $Id: crew.php,v 1.2 2013/06/03 16:14:24 pfokker Exp $
+ * @version $Id: crew.php,v 1.3 2013/06/04 09:56:15 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -67,7 +67,6 @@ $string['config_location_title'] = 'This URL must point to a CREW/Websocket serv
 $string['config_secret_label'] = 'Secret ~key';
 $string['config_secret_title'] = 'This shared secret code must match with the CREW/Websocket server';
 
-
 $comment['crew_content_header'] = 'Here is the configuration dialog:
 
 ~Header
@@ -106,9 +105,10 @@ $string['crew_acl_role_readonly_title'] = 'Permission to read the document';
 $string['crew_acl_role_readwrite_option'] = 'Read and edit';
 $string['crew_acl_role_readwrite_title'] = 'Permission to read and edit the document';
 
-
 $string['crew_view_access_denied'] = 'Sorry, you currently have no permissions to view this page';
 $string['last_updated_by'] = 'Last updated: {DATIM} by {FULL_NAME} ({USERNAME})';
+$string['error_retrieving_workshop_data'] = 'Error: cannot retrieve workshop data';
+$string['error_saving_workshop_data'] = 'Error: cannot save workshop data';
 
 $string['skin_label'] = 'Skin';
 $string['skin_title'] = 'Please select a skin to use for this session';
@@ -161,6 +161,7 @@ $string['crew_js_error_relocate'] = 'INTERNAL ERROR: relocate parameters n={N} a
 $string['crew_js_error_patchcount'] = 'INTERNAL ERROR: less than {N} patch parameters: {COUNT} ({DATA})';
 $string['crew_js_error_context'] = 'INTERNAL ERROR: context {N} missing: {OLD} {NEW}';
 $string['crew_js_error_usercount'] = 'INTERNAL ERROR: patch n={N} and users={USERS}';
+$string['crew_js_error_document_size'] = 'ERROR: document is too large ({LENGTH} characters), maximum is {LIMIT}';
 
 
 

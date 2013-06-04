@@ -1,0 +1,191 @@
+/** /program/modules/crew/crew_by.css - styling a la Mondrian (black+yellow) for CREW popup
+ *
+ * This file is part of Website@School, a Content Management System especially designed for schools.
+ * Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker <peter@berestijn.nl>
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License version 3 as published by
+ * the Free Software Foundation supplemented with the Additional Terms, as set
+ * forth in the License Agreement for Website@School (see /program/license.html).
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
+ * for more details.
+ *
+ * You should have received a copy of the License Agreement for Website@School
+ * along with this program. If not, see http://websiteatschool.eu/license.html
+ *
+ * Document structure:
+ *
+ * body
+ *   divCrewContainer0
+ *     divCrewContainer1
+ *       divCrewEdit
+ *       divCrewMembers
+ *       btnCrewSave
+ *       btnCrewSaveEdit
+ *       btnCrewCancel
+ *       btnCrewRefresh
+ *     divCrewContainer2
+ *       txtCrewMessage
+ *       btnCrewSound
+ *       btnCrewMessage
+ *       divCrewMessages
+ *
+ * @author Peter Fokker <peter@berestijn.nl>
+ * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
+ * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
+ * @package wasmod_crew
+ * @version $Id: crew_by.css,v 1.1 2013/06/04 09:56:13 pfokker Exp $
+ */
+/*
+ * general
+ */
+body {
+  color: #FFFF00;
+  background-color: #000000;
+}
+div {
+  border: 0px solid transparent;
+  font-family: "Bitstream Vera Sans mono", "monospace";
+}
+/*
+ * workshop screen (popup)
+ *
+ * Document structure:
+ *
+ * body
+ *   divCrewContainer0
+ *     divCrewContainer1
+ *       divCrewEdit
+ *       divCrewMembers
+ *       btnCrewSave
+ *       btnCrewSaveEdit
+ *       btnCrewCancel
+ *       btnCrewRefresh
+ *     divCrewContainer2
+ *       txtCrewMessage
+ *       btnCrewSound
+ *       btnCrewMessage
+ *       divCrewMessages
+ */
+#divCrewContainer0 {
+  width: 1024px;
+  height: 768px;
+  margin: 0 auto;
+}
+#divCrewContainer1 {
+  width: 1024px;
+  height: 512px;
+}
+#divCrewEdit {
+  width: 800px;
+  height: 512px;
+  float: left;
+  background-color: #333333;
+  overflow: auto;
+  font-family: monospace;
+  font-size: 1.9em;
+}
+#divCrewMembers {
+  width: 200px;
+  height: 390px;
+  float: right;
+  background-color: #333333;
+  overflow: auto;
+}
+#divCrewMembers p {
+  margin: 7px 3px;
+  font-size: 1.3em;
+}
+#divCrewMembers h3 {
+  margin: 0px 3px 10px;
+  font-size: 1.3em;
+}
+#btnCrewSave,
+#btnCrewSaveEdit,
+#btnCrewCancel,
+#btnCrewRefresh {
+  display: block;
+  width: 200px;
+  height: 30px;
+  float: right;
+  margin-right: 0px;
+  color: #FFFF00;
+  background-color: #666666;
+  font-weight: bold;
+}
+#divCrewContainer2 {
+  border-top: 1px black solid;
+  margin-top: 5px;
+  padding-top: 5px;
+  clear: both;
+}
+#txtCrewMessage {
+  height: 40px;
+  width: 800px;
+  color: #FFFF00;
+  background-color: #333333;
+  font-size: 2em;
+}
+#btnCrewMessage {
+  width: 154px;
+  height: 45px;
+  float: right;
+  margin-right: 0px;
+  margin-top: 0px;
+  color: #FFFF00;
+  background-color: #666666;
+  font-weight: bold;
+}
+#btnCrewSound {
+  width:  45px;
+  height: 45px;
+  float: right;
+  margin-right: 0px;
+  margin-top: 0px;
+  margin-left: 1px;
+  color: #FFFF00;
+  background-color: #666666;
+  font-weight: bold;
+}
+.soundon {
+  background-image: url('soundon44.png');
+}
+.soundoff {
+  background-image: url('soundoff44.png');
+}
+#divCrewMessages {
+  height: 2121px;
+  background-color: #333333;
+  font-size: 2em;
+  overflow: auto;
+  margin-top: 10px;
+}
+#divCrewMessages p {
+  margin: 0px;
+  font-family: "Bitstream Vera Sans mono", "monospace";
+}
+
+/* color to log error messages */
+.error { color: #FF0000; }
+
+/* foreground colors A,...,Z */
+.A, .G, .M, .S, .Y { background-color: #0000FF; }
+.B, .H, .N, .T, .Z { background-color: #FF0000; }
+.C, .I, .O, .U     { background-color: #AA5555; }
+.D, .J, .P, .V     { background-color: #55AA00; }
+.E, .K, .Q, .W     { background-color: #FF00AA; }
+.F, .L, .R, .X     { background-color: #00AAAA; }
+
+/* background colors AB,...,ZB */
+.AB, .GB, .MB, .SB, .YB { background-color: #0000FF; color: #FFFFFF; }
+.BB, .HB, .NB, .TB, .ZB { background-color: #FF0000; color: #FFFFFF; }
+.CB, .IB, .OB, .UB      { background-color: #AA5555; color: #FFFFFF; }
+.DB, .JB, .PB, .VB      { background-color: #55AA00; color: #FFFFFF; }
+.EB, .KB, .QB, .WB      { background-color: #FF00AA; color: #FFFFFF; }
+.FB, .LB, .RB, .XB      { background-color: #00AAAA; color: #FFFFFF; }
+
+
+/* eof crew_by.css */

@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_crew
- * @version $Id: crew.php,v 1.1 2013/06/03 16:14:24 pfokker Exp $
+ * @version $Id: crew.php,v 1.2 2013/06/04 09:56:15 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -29,7 +29,6 @@ $string['title'] = 'Werkplaats (CREW)';
 $string['description'] = 'Een editor waarmee gezamenlijk op afstand documenten gemaakt kunnen worden';
 $string['translatetool_title'] = 'Werkplaats (CREW)';
 $string['translatetool_description'] = 'Dit bestand bevat de vertalingen bij de Werkplaats (CREW)-module';
-
 $string['config_header'] = 'Werkplaats (CREW)-module configuratie';
 $string['config_explanation'] = 'Hier kunt u de Werkplaats (CREW)-module (Engels:
 Collaborative Remote Editor Workshop) configureren.
@@ -43,13 +42,11 @@ $string['config_location_label'] = '~Locatie';
 $string['config_location_title'] = 'Deze URL moet wijzen naar een CREW/Websocket-server (zie handboek)';
 $string['config_secret_label'] = '~Geheime sleutel';
 $string['config_secret_title'] = 'Deze gedeelde geheime code moet overeenstemmen met die van de CREW/Websocket-server';
-
 $string['crew_content_header'] = 'Werkplaats (CREW) configuratie';
 $string['crew_content_explanation'] = 'Hier kunt u de werkplaats configureren. U kunt een optionele titel en een optionele introductietekst toevoegen aan de werkplaats-pagina. U kunt ook de zichbaarheid van de werkplaats-pagina instellen. Gebruik daarvoor een van de volgende opties:
 \'wereld\' om het document aan anonieme bezoekers te tonen,
 \'gebruikers\' om het document aan ingelogde gebruikers te tonen of
 \'individueel\' om toegang te geven aan geslecteerde gebruikers uit onderstaande lijst'; 
-
 $string['header_label'] = '~Titel';
 $string['header_title'] = 'Titel voor de werkplaats';
 $string['introduction_label'] = '~Introductie';
@@ -62,15 +59,14 @@ $string['visibility_all_label'] = '~Gebruikers';
 $string['visibility_all_title'] = 'Toon document aan ingelogde ingelogde gebruikers';
 $string['visibility_workers_label'] = '~Individueel';
 $string['visibility_workers_title'] = 'Toon document alleen aan geselecteerde individuen';
-
 $string['crew_acl_role_readonly_option'] = 'Lezen';
 $string['crew_acl_role_readonly_title'] = 'Permissie om het document te lezen';
 $string['crew_acl_role_readwrite_option'] = 'Lezen en bewerken';
 $string['crew_acl_role_readwrite_title'] = 'Permissie om het document te lezen en te bewerken';
-
 $string['crew_view_access_denied'] = 'Sorry, u hebt momenteel onvoldoende permissies om deze pagina te bekijken';
 $string['last_updated_by'] = 'Laatst bijgewerkt: {DATIM} door {FULL_NAME} ({USERNAME})';
-
+$string['error_retrieving_workshop_data'] = 'Fout: kan geen werkplaatsgegevens uit de database halen';
+$string['error_saving_workshop_data'] = 'Fout: kan werkplaatsgegevens niet opslaan in database';
 $string['skin_label'] = 'Weergave';
 $string['skin_title'] = 'Selecteer de weergave voor deze sessie';
 $string['skin_standard_option'] = 'Basis';
@@ -81,9 +77,7 @@ $string['skin_rb_option'] = 'Rood Grijs Blauw';
 $string['skin_rb_title'] = 'Interface met primaire kleuren';
 $string['skin_by_option'] = 'Mondriaan';
 $string['skin_by_title'] = 'Zwart met geel';
-
 $string['crew_requires_js_and_ws'] = 'Sorry, deze module vereist JavaScript en het WebSocket-protocol';
-
 $string['crew_button_save'] = 'Opslaan';
 $string['crew_button_save_title'] = 'Sla de tekst op en eindig de sessie';
 $string['crew_button_saveedit'] = "Opslaan+Bewerken";
@@ -117,6 +111,7 @@ $string['crew_js_error_relocate'] = 'INTERNE FOUT: verplaatsingparameters n={N} 
 $string['crew_js_error_patchcount'] = 'INTERNE FOUT: minder dan {N} patch parameters: {COUNT} ({DATA})';
 $string['crew_js_error_context'] = 'INTERNE FOUT: context {N} ontbreekt: {OLD} {NEW}';
 $string['crew_js_error_usercount'] = 'INTERNE FOUT: patch n={N} en gebruikers={USERS}';
+$string['crew_js_error_document_size'] = 'FOUT: document is te groot ({LENGTH} tekens), maximum is {LIMIT}';
 
 
 ?>

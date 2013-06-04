@@ -1,0 +1,58 @@
+/** /program/modules/crew/crew_view.css - stylesheet for CREW main (visitor) page
+ *
+ * This file is part of Website@School, a Content Management System especially designed for schools.
+ * Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker <peter@berestijn.nl>
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License version 3 as published by
+ * the Free Software Foundation supplemented with the Additional Terms, as set
+ * forth in the License Agreement for Website@School (see /program/license.html).
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
+ * for more details.
+ *
+ * You should have received a copy of the License Agreement for Website@School
+ * along with this program. If not, see http://websiteatschool.eu/license.html
+ *
+ * @author Peter Fokker <peter@berestijn.nl>
+ * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
+ * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
+ * @package wasmod_crew
+ * @version $Id: crew_view.css,v 1.1 2013/06/04 09:56:14 pfokker Exp $
+ */
+/*
+ * page layout:
+ * <h2>
+ * <div introduction>
+ * <div document>
+ * <div last_updated_by>
+ * <div start_edit>
+ *   <label>
+ *   <select>
+ *   <input submit>
+ */
+.crew_header { } 
+.crew_introduction { }
+.crew_document {
+  margin-top: 0.7em;
+  padding: 0.5em;
+  border: 2px solid #7F7F7F;
+  font-family: "Bitstream Vera Sans mono", "DejaVu Sans Mono", "monospace";
+  font-size: 1.1em;
+  color:  #000000;
+  background-color: #FFFFFF;
+}
+.crew_datim {
+  font-size: 0.9em;
+}
+#crew_start_edit {
+  font-size: 0.9em;
+}
+#crew_start_edit label { }
+#crew_start_edit select { }
+#crew_start_edit input {
+  font-weight: bold;
+}
+/* eof crew_view.css */

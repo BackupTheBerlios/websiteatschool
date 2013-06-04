@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_crew
- * @version $Id: crew_tabledefs.php,v 1.1 2013/05/30 15:38:21 pfokker Exp $
+ * @version $Id: crew_tabledefs.php,v 1.2 2013/06/04 09:56:15 pfokker Exp $
  */
 $tabledefs['workshops'] = array(
     'name' => 'workshops',
@@ -50,12 +50,12 @@ $tabledefs['workshops'] = array(
             'type' => 'int',
             'default' => 0,
             'notnull' => TRUE,
-            'comment' => 'visibility of the document: 0=workers, 1=accountholders, 2=world'
+            'comment' => 'visibility of the document: 0=indiviual workers, 1=authenticated, 2=world'
             ),
         array(
             'name' => 'document',
             'type' => 'longtext',
-            'comment' => 'contains the plain text document created in the workshop'
+            'comment' => 'the plain text document (max. 64 kB) created in the workshop'
             ),
         array(
             'name' => 'ctime',

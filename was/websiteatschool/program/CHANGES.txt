@@ -1,6 +1,10 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.146 2013/06/03 16:14:24 pfokker Exp $
+$Id: CHANGES.txt,v 1.147 2013/06/04 09:56:16 pfokker Exp $
 -------------------------------------------------------------------------------
+2013-06-04
+- added an (arbitrary) limit on document size: 65536 characters [crew_view.php]
+- done with a preliminary version of CREW module (but no websocket server yet)
+
 2013-06-03
 - added missing html_tag_close() [htmllib.php]
 - added new standard button Edit [dialoglib.php and style/transalation files]

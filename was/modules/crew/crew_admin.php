@@ -33,7 +33,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_crew
- * @version $Id: crew_admin.php,v 1.1 2013/05/30 15:38:20 pfokker Exp $
+ * @version $Id: crew_admin.php,v 1.2 2013/06/04 09:56:13 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -41,6 +41,7 @@ define('CREW_PERMISSION_READ', 1);
 define('CREW_PERMISSION_WRITE',2);
 define('CREW_ACL_ROLE_READONLY', CREW_PERMISSION_READ);
 define('CREW_ACL_ROLE_READWRITE',CREW_PERMISSION_READ | CREW_PERMISSION_WRITE);
+
 
 /** disconnect this module from a node
  *
@@ -123,8 +124,8 @@ function crew_connect(&$output,$area_id,$node_id,$module) {
  * <code>
  * $output->add_content($content): add $content to the content area
  * $output->add_message($message): add $message to the message area (feedback to the user)
- * $output->add_popup_bottom($message): make $message popup in the browser after loading the page (uses javascript)
- * $output->add_popup_top($message): make $message popup in the browser before loading the page (uses javascript)
+ * $output->add_popup_bottom($message): make $message popup in the browser after loading the page (uses JS)
+ * $output->add_popup_top($message): make $message popup in the browser before loading the page (uses JS)
  * </code>
  * 
  * @param object &$output collects the html output (if any)
@@ -284,6 +285,7 @@ function crew_save(&$output,$area_id,$node_id,$module,$viewonly,&$edit_again) {
         $acl_id = intval($item['acl_id']);
         $value = intval($item['value']);
         $old_value = intval($item['old_value']);
+        $dbretval = TRUE; // assume success
         if ($value != 0) {
             if (is_null($item['old_value'])) { // need to add a new record
                 $fields['permissions_modules'] = $value;
@@ -478,7 +480,8 @@ function crew_get_dialogdef(&$output,$viewonly,$module_id,$area_id,$node_id,$use
     // any node that is an ancestor of node_id (acls_modules_nodes) OR this specific
     // node for a user that is NOT an acquaintance (ie. who is not in the temp table).
     // Note that we don't check the ancestors (parents) when node happens to be at
-    // the top level within the area, ie. when parent is 0. Pfew, complicated...
+    // the top level within the area, ie. when parent is 0. We also peek inside
+    // 'acls_areas' and 'acls_nodes'. Pfew, complicated...
     // All these OTHER accounts cannot be manipulated by $USER because all accounts
     // would then be in the temp table, so there.
     // Since there may be more records for the same user (or rather acl_id), we need
@@ -496,9 +499,14 @@ function crew_get_dialogdef(&$output,$viewonly,$module_id,$area_id,$node_id,$use
                     'FROM %susers u INNER JOIN %sacls_modules_nodes amn USING (acl_id) '.
                     'WHERE amn.permissions_modules <> 0 AND amn.module_id = %d AND amn.node_id IN (%s)',
                      $DB->prefix, $DB->prefix, $module_id, join(',',$ancestors)).
+            ' UNION '.
+            sprintf('SELECT u.acl_id, u.username, u.full_name, an.permissions_modules  '.
+                    'FROM %susers u INNER JOIN %sacls_nodes an USING (acl_id) '.
+                    'WHERE an.permissions_modules <> 0 AND amn.node_id IN (%s)',
+                     $DB->prefix, $DB->prefix, join(',',$ancestors)).
             ' UNION ';
     $sql .= sprintf('SELECT u.acl_id, u.username, u.full_name, a.permissions_modules '.
-                    'FROM %susers u INNER JOIN %sacls a USING (acl_id)'.
+                    'FROM %susers u INNER JOIN %sacls a USING (acl_id) '.
                     'WHERE a.permissions_modules <> 0',
                      $DB->prefix, $DB->prefix).
             ' UNION '.
@@ -507,10 +515,20 @@ function crew_get_dialogdef(&$output,$viewonly,$module_id,$area_id,$node_id,$use
                     'WHERE am.permissions_modules <> 0 AND am.module_id = %d',
                      $DB->prefix, $DB->prefix, $module_id).
             ' UNION '.
+            sprintf('SELECT u.acl_id, u.username, u.full_name, aa.permissions_modules  '.
+                    'FROM %susers u INNER JOIN %sacls_areas aa USING (acl_id) '.
+                    'WHERE aa.permissions_modules <> 0 AND aa.area_id = %d',
+                     $DB->prefix, $DB->prefix, $area_id).
+            ' UNION '.
             sprintf('SELECT u.acl_id, u.username, u.full_name, ama.permissions_modules  '.
                     'FROM %susers u INNER JOIN %sacls_modules_areas ama USING (acl_id) '.
                     'WHERE ama.permissions_modules <> 0 AND ama.module_id = %d AND ama.area_id = %d',
                      $DB->prefix, $DB->prefix, $module_id, $area_id).
+            ' UNION '.
+            sprintf('SELECT u.acl_id, u.username, u.full_name, an.permissions_modules  '.
+                    'FROM %susers u INNER JOIN %sacls_nodes an USING (acl_id) '.
+                    'WHERE an.permissions_modules <> 0 AND an.node_id = %d',
+                     $DB->prefix, $DB->prefix, $node_id).
             ' UNION '.
             sprintf('SELECT u.acl_id, u.username, u.full_name, amn.permissions_modules  '.
                     'FROM %susers u INNER JOIN %sacls_modules_nodes amn USING (acl_id) '.
@@ -519,7 +537,6 @@ function crew_get_dialogdef(&$output,$viewonly,$module_id,$area_id,$node_id,$use
                         'AND tmp.acl_id IS NULL ',
                      $DB->prefix, $DB->prefix, $DB->prefix, $module_id, $node_id).
             'ORDER BY full_name, acl_id';
-
     if (($result = $DB->query($sql)) === FALSE) {
         logger(sprintf('%s(): error retrieving other account names: %s',__FUNCTION__,db_errormessage()));
         $output->add_message(t('error_retrieving_data','admin'));

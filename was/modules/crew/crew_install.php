@@ -42,7 +42,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_crew
- * @version $Id: crew_install.php,v 1.1 2013/05/30 15:38:20 pfokker Exp $
+ * @version $Id: crew_install.php,v 1.2 2013/06/04 09:56:14 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -156,7 +156,9 @@ function crew_uninstall(&$messages,$module_id) {
 
 /** add demonstration data to the system
  *
- * this routine is a no-op for now. This should be fixed (FixMe).
+ * this routine is a no-op for now. This might be fixed, eventually.
+ * However, the setup of this routine is so complex that it is not
+ * feasible at this time (June 2013) to make the demodata work.
  *
  * This routine is retained here as an example and also because a routine
  * by this name should exist (even if it does nothing).
