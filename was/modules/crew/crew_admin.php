@@ -33,7 +33,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_crew
- * @version $Id: crew_admin.php,v 1.2 2013/06/04 09:56:13 pfokker Exp $
+ * @version $Id: crew_admin.php,v 1.3 2013/06/05 15:25:49 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -502,7 +502,7 @@ function crew_get_dialogdef(&$output,$viewonly,$module_id,$area_id,$node_id,$use
             ' UNION '.
             sprintf('SELECT u.acl_id, u.username, u.full_name, an.permissions_modules  '.
                     'FROM %susers u INNER JOIN %sacls_nodes an USING (acl_id) '.
-                    'WHERE an.permissions_modules <> 0 AND amn.node_id IN (%s)',
+                    'WHERE an.permissions_modules <> 0 AND an.node_id IN (%s)',
                      $DB->prefix, $DB->prefix, join(',',$ancestors)).
             ' UNION ';
     $sql .= sprintf('SELECT u.acl_id, u.username, u.full_name, a.permissions_modules '.
