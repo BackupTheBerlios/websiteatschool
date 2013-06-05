@@ -31,7 +31,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_crew
- * @version $Id: crew_view.php,v 1.2 2013/06/04 09:56:14 pfokker Exp $
+ * @version $Id: crew_view.php,v 1.3 2013/06/05 11:52:21 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -434,7 +434,7 @@ function crew_view_show_edit(&$theme,$module_id,$first=FALSE) {
     $sig = hmac($hmac_key,$hmac_msg);
     $progcrew = $CFG->progwww_short.'/modules/crew';
     $css = $progcrew.'/'.$skin;
-    if (($CFG->debug) || (!file_exist($CFG->progdir.'/modules/crew/crew.min.js'))) {
+    if (($CFG->debug) || (!file_exists($CFG->progdir.'/modules/crew/crew.min.js'))) {
         $js = $progcrew.'/crew.js';
     } else {
         $js = $progcrew.'/crew.min.js';
