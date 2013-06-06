@@ -22,13 +22,13 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_crew
- * @version $Id: crew.js,v 1.1 2013/06/04 09:56:13 pfokker Exp $
+ * @version $Id: crew.js,v 1.2 2013/06/06 13:51:34 pfokker Exp $
  */
 var crew='CREW';
 var crewName='Cooperative Remote Educational Workshop';
 var crewVersion='0.90.4';
 var crewDate='2013-06-04';
-var crewId='$Id: crew.js,v 1.1 2013/06/04 09:56:13 pfokker Exp $';
+var crewId='$Id: crew.js,v 1.2 2013/06/06 13:51:34 pfokker Exp $';
 
 var w;			// reference to this window's opener
 
@@ -160,7 +160,15 @@ function onClose(e) {
   var r={'{CODE}':e.code||'???','{REASON}':e.reason||'????'};
   var s=str((e.wasClean)?3:4,r);
   var color=(e.wasClean)?'@':'error';
-  logger(hhmm()+s); // 'DISCONNECTED (clean|unclean): code={CODE} reason={REASON}
+  if (e.code==1008) { // server closed with error: Unauthorised or workers>WMAX or shops>SMAX
+    btnSave.disabled=true;
+    btnSaveEdit.disabled=true;
+    btnRefresh.disabled=true;
+    btnMessage.disabled=true;
+    txtMessage.disabled=true;
+    color='error';
+  }
+  logger(hhmm()+s,color); // 'DISCONNECTED (clean|unclean): code={CODE} reason={REASON}
 } // onClose()
 
 function onMessage(msg) {
