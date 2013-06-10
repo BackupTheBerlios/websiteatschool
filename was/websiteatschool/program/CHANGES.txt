@@ -1,8 +1,9 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.149 2013/06/10 09:20:27 pfokker Exp $
+$Id: CHANGES.txt,v 1.150 2013/06/10 09:55:15 pfokker Exp $
 -------------------------------------------------------------------------------
 2013-06-10
 - fixed a few typos in the CREW module
+- corrected the message color in Theme Frugal [base.css]
 
 2013-06-06
 - added support for maximum # of shops and # of workers/shop via error

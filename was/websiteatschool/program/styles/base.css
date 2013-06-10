@@ -45,7 +45,7 @@
  * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: base.css,v 1.4 2012/04/18 07:57:38 pfokker Exp $
+ * @version $Id: base.css,v 1.5 2013/06/10 09:55:15 pfokker Exp $
  * @todo there is an issue with the display of the tree: the graphics don't work yet and
  *       maybe we should have a different distinction in current pages/sections,e.g.
  *       "currentpage page level0" instead of "current page level0"...
@@ -231,7 +231,7 @@ img {
 }
 
 #messages {
-  background-color: #FCC;
+  background-color: #FF0;
   clear: both;
 }
 
