@@ -21,12 +21,12 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_crew
- * @version $Id: crew.php,v 1.3 2013/06/04 09:56:15 pfokker Exp $
+ * @version $Id: crew.php,v 1.4 2013/06/10 09:20:26 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
 $comment['title'] = 'Note to translators:
-The original full name of this module  (\'Collaborative Remote Editor Workshop\')
+The original full name of this module  (\'Collaborative Remote Educational Workshop\')
 is shortened to \'CREW\'. However, since this is much too long a name we
 use the phrase \'Workshop (CREW)\' to refer to the module. If you are translating
 the name of the module it may be best to translate the \'Workshop\' part and simply
@@ -36,12 +36,12 @@ once or twice to explain this acronym. Example: in Dutch a workshop is called
 In the config_explanation below (number 6) you could add something like this:
 
 \'Hier kunt u de module Werkplaats (CREW) (Engels:
-Collaborative Remote Editor Workshop) configureren\'
+Collaborative Remote Educational Workshop) configureren\'
 
 to make the reader aware of the meaning of the acronym CREW.';
 
 $string['title'] = 'Workshop (CREW)';
-$string['description'] = 'This module provides Collaborative Remote Editor Workshop';
+$string['description'] = 'This module provides Collaborative Remote Educational Workshop';
 $string['translatetool_title'] = 'Workshop (CREW)';
 $string['translatetool_description'] = 'This file contains translations for the Workshop (CREW) module';
 
@@ -55,7 +55,7 @@ Secret ~key
 Please make sure your translation has a comparable set of hotkeys (indicated via the tildes \'~\').';
 $string['config_header'] = 'Workshop (CREW) module configuration';
 $string['config_explanation'] = 'Here you can configure the Workshop (CREW) module
-(CREW=Collaborative Remote Editor Workshop). The
+(CREW=Collaborative Remote Educational Workshop). The
 parameters below need to be set correctly otherwise
 it is not possible to use this module to create or
 edit documents using a workshop page. Please consult

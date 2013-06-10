@@ -16,19 +16,19 @@
  * along with this program. If not, see http://websiteatschool.eu/license.html
  */
 
-/** /program/modules/crew/crew.js - tools for cooperative remote editor workshop
+/** /program/modules/crew/crew.js - tools for Cooperative Remote Educational Workshop
  *
  * @author Peter Fokker <peter@berestijn.nl>
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_crew
- * @version $Id: crew.js,v 1.2 2013/06/06 13:51:34 pfokker Exp $
+ * @version $Id: crew.js,v 1.3 2013/06/10 09:20:26 pfokker Exp $
  */
 var crew='CREW';
 var crewName='Cooperative Remote Educational Workshop';
 var crewVersion='0.90.4';
 var crewDate='2013-06-04';
-var crewId='$Id: crew.js,v 1.2 2013/06/06 13:51:34 pfokker Exp $';
+var crewId='$Id: crew.js,v 1.3 2013/06/10 09:20:26 pfokker Exp $';
 
 var w;			// reference to this window's opener
 

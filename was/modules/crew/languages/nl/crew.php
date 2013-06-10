@@ -21,17 +21,17 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_crew
- * @version $Id: crew.php,v 1.2 2013/06/04 09:56:15 pfokker Exp $
+ * @version $Id: crew.php,v 1.3 2013/06/10 09:20:26 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
 $string['title'] = 'Werkplaats (CREW)';
-$string['description'] = 'Een editor waarmee gezamenlijk op afstand documenten gemaakt kunnen worden';
+$string['description'] = 'Een educatief gereedschap waarmee gezamenlijk op afstand documenten gemaakt kunnen worden';
 $string['translatetool_title'] = 'Werkplaats (CREW)';
 $string['translatetool_description'] = 'Dit bestand bevat de vertalingen bij de Werkplaats (CREW)-module';
 $string['config_header'] = 'Werkplaats (CREW)-module configuratie';
 $string['config_explanation'] = 'Hier kunt u de Werkplaats (CREW)-module (Engels:
-Collaborative Remote Editor Workshop) configureren.
+Collaborative Remote Educational Workshop) configureren.
 Onderstaande parameters moeten correct worden ingevuld
 omdat de module anders niet zal werken en niet gebruikt
 kan worden om documenten te maken via een werkplaats-pagina.
