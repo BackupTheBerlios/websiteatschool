@@ -27,7 +27,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasinstall
- * @version $Id: install.php,v 1.17 2012/06/22 14:21:53 pfokker Exp $
+ * @version $Id: install.php,v 1.18 2013/06/11 11:42:28 pfokker Exp $
  * @todo how prevent third party-access to install.php after initial install? .htaccess? !exists(../config.php)? 
  * @todo we should make sure that autosession is disabled in php.ini, otherwise was won't work
  * @todo we should make sure that register globals is off
@@ -2832,7 +2832,7 @@ class InstallWizard {
         }
         $license = substr($license_html,$n1,$length); // '<body>' and '</body>' were plain ASCII so substr() is OK here
         $md5sum = md5(str_replace(array("\r","\n","\t"," "),'',strip_tags($license)));
-        if (utf8_strtolower($md5sum) != 'f37fc1f7633156ef8d7f08d25d900ddc') {
+        if (utf8_strtolower($md5sum) != '7376f71a6ec471fe0e1617bbec841fcb') {
             return 23;
         }
         if (($md5sum = md5_file('graphics/waslogo-567x142.png')) === FALSE) {
