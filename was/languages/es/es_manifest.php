@@ -1,6 +1,6 @@
 <?php
 # This file is part of Website@School, a Content Management System especially designed for schools.
-# Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam <info@websiteatschool.eu>
+# Copyright (C) 2008-2013 Vereniging Website At School, Amsterdam <info@websiteatschool.eu>
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU Affero General Public License version 3 as published by
@@ -21,10 +21,10 @@
  * This file is used when this package is installed.
  *
  * @author Anouk Coumans, Hanna Tulleken, Margot Molier <translators@websiteatschool.eu>
- * @copyright Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam <info@websiteatschool.eu>
+ * @copyright Copyright (C) 2008-2013 Vereniging Website At School, Amsterdam <info@websiteatschool.eu>
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_es
- * @version $Id: es_manifest.php,v 1.5 2012/04/17 14:52:07 pfokker Exp $
+ * @version $Id: es_manifest.php,v 1.6 2013/06/11 11:25:11 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 

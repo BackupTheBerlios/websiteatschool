@@ -1,6 +1,6 @@
 <?php
 # This file is part of Website@School, a Content Management System especially designed for schools.
-# Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
+# Copyright (C) 2008-2013 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU Affero General Public License version 3 as published by
@@ -21,10 +21,10 @@
  * Release:  0.90.3 / 2012041700 (2012-04-17)
  *
  * @author Ülkü Gaga <translators@websiteatschool.eu>
- * @copyright Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam
+ * @copyright Copyright (C) 2008-2013 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_redirect
- * @version $Id: redirect.php,v 1.1 2012/05/31 19:23:54 pfokker Exp $
+ * @version $Id: redirect.php,v 1.2 2013/06/11 11:25:29 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['title'] = 'Redirect';

@@ -1,6 +1,6 @@
 /* 
  * This file is part of Website@School, a Content Management System especially designed for schools.
- * Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker <peter@berestijn.nl>
+ * Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker <peter@berestijn.nl>
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by
@@ -36,10 +36,10 @@
  * already created.
  *
  * @author Peter Fokker <peter@berestijn.nl>
- * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
+ * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_snapshots
- * @version $Id: slideshow.js,v 1.1 2012/05/30 12:47:17 pfokker Exp $
+ * @version $Id: slideshow.js,v 1.2 2013/06/11 11:25:35 pfokker Exp $
  */
 var img=new Array(); // contains image definitions (see above for syntax)
 var hwnd=null;       // handle to the _blank pop-up window we create

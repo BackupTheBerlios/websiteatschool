@@ -1,6 +1,6 @@
 <?php
 # This file is part of Website@School, a Content Management System especially designed for schools.
-# Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker <peter@berestijn.nl>
+# Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker <peter@berestijn.nl>
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU Affero General Public License version 3 as published by
@@ -18,10 +18,10 @@
 /** /program/themes/axis/axis.class.php - implements the Axis Theme
  *
  * @author Peter Fokker <peter@berestijn.nl>
- * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
+ * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wastheme_axis
- * @version $Id: axis.class.php,v 1.1 2012/04/12 20:57:18 pfokker Exp $
+ * @version $Id: axis.class.php,v 1.2 2013/06/11 11:25:37 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 

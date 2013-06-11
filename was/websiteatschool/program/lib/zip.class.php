@@ -1,6 +1,6 @@
 <?php
 # This file is part of Website@School, a Content Management System especially designed for schools.
-# Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker <peter@berestijn.nl>
+# Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker <peter@berestijn.nl>
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU Affero General Public License version 3 as published by
@@ -20,10 +20,10 @@
  * This file implements class Zip which allows for creating ZIP-archives on the fly
  *
  * @author Peter Fokker <peter@berestijn.nl>
- * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
+ * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: zip.class.php,v 1.3 2012/04/18 07:57:38 pfokker Exp $
+ * @version $Id: zip.class.php,v 1.4 2013/06/11 11:26:07 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -121,7 +121,7 @@ define('ZIP_TYPE_BUFFER','buffer');
  * $zip_archive = '';
  * $data = "This is example-data that ends up in file QUUX.TXT";
  * $zip = new Zip;
- * $zip->OpenBuffer($zip_archive);
+ * $zip->OpenZipbuffer($zip_archive);
  * $zip->AddData($data,'QUUX.TXT');
  * $zip->CloseZip();
  * </pre>

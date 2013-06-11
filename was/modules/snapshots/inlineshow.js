@@ -1,6 +1,6 @@
 /* 
  * This file is part of Website@School, a Content Management System especially designed for schools.
- * Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker <peter@berestijn.nl>
+ * Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker <peter@berestijn.nl>
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by
@@ -49,10 +49,10 @@
  * the value of h, making it unique between instances of inline slideshows.
  *
  * @author Peter Fokker <peter@berestijn.nl>
- * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
+ * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_snapshots
- * @version $Id: inlineshow.js,v 1.2 2012/07/01 12:16:01 pfokker Exp $
+ * @version $Id: inlineshow.js,v 1.3 2013/06/11 11:25:35 pfokker Exp $
  */
 
 /*

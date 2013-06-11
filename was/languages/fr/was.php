@@ -1,6 +1,6 @@
 <?php
 # This file is part of Website@School, a Content Management System especially designed for schools.
-# Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
+# Copyright (C) 2008-2013 Vereniging Website At School, Amsterdam, <info@websiteatschool.eu>
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU Affero General Public License version 3 as published by
@@ -21,10 +21,10 @@
  * Release:  0.90.3 / 2012041700 (2012-04-17)
  *
  * @author Jean Peyratout <translators@websiteatschool.eu> <jean.peyratout@abul.org>
- * @copyright Copyright (C) 2008-2012 Vereniging Website At School, Amsterdam
+ * @copyright Copyright (C) 2008-2013 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_fr
- * @version $Id: was.php,v 1.3 2012/04/17 14:52:08 pfokker Exp $
+ * @version $Id: was.php,v 1.4 2013/06/11 11:25:12 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = 'Général';

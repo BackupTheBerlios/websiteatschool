@@ -1,6 +1,6 @@
 #!/bin/bash
 # This file is part of Website@School, a Content Management System especially designed for schools.
-# Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker <peter@berestijn.nl>
+# Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker <peter@berestijn.nl>
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU Affero General Public License version 3 as published by
@@ -19,7 +19,7 @@
 #
 # Peter Fokker -- 2011-01-12
 #
-# $Id: langdiff.sh,v 1.4 2012/04/18 07:57:21 pfokker Exp $
+# $Id: langdiff.sh,v 1.5 2013/06/11 11:25:08 pfokker Exp $
 #
 # This script performs the following actions.
 # - the Website@Schoolversion of date "$1 23:59" is extracted from cvs

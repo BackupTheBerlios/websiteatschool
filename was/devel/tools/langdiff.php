@@ -1,6 +1,6 @@
 <?php
 # This file is part of Website@School, a Content Management System especially designed for schools.
-# Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker <peter@berestijn.nl>
+# Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker <peter@berestijn.nl>
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU Affero General Public License version 3 as published by
@@ -18,7 +18,7 @@
 # langdiff.php -- quick and dirty diff between old and current English language files
 # Peter Fokker -- 2011-01-12
 #
-# $Id: langdiff.php,v 1.6 2012/04/18 07:57:21 pfokker Exp $
+# $Id: langdiff.php,v 1.7 2013/06/11 11:25:08 pfokker Exp $
 #
 # See also langdiff.sh
 #

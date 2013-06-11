@@ -4,7 +4,7 @@
  * Re-implementation for Website@School: Peter Fokker, <peter@berestijn.nl> (June 2011)
  *
  * This file is part of Website@School, a Content Management System especially designed for schools.
- * Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker <peter@berestijn.nl>
+ * Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker <peter@berestijn.nl>
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by
@@ -19,7 +19,7 @@
  * You should have received a copy of the License Agreement for Website@School
  * along with this file. If not, see http://websiteatschool.eu/license.html
  *
- * $Id: print.css,v 1.3 2012/04/18 07:57:30 pfokker Exp $
+ * $Id: print.css,v 1.4 2013/06/11 11:25:51 pfokker Exp $
  */
 #page {
   border-width:		2px 2px 2px 2px;

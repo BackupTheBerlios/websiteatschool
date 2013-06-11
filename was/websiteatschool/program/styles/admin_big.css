@@ -1,7 +1,7 @@
 /** /program/styles/admin_big.css - additional stylesheet for the 'big' skin
  *
  * This file is part of Website@School, a Content Management System especially designed for schools.
- * Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker <peter@berestijn.nl>
+ * Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker <peter@berestijn.nl>
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by
@@ -19,10 +19,10 @@
  * This is the additional style sheet used in the 'big' skin.
  *
  * @author Peter Fokker <peter@berestijn.nl>
- * @copyright Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker
+ * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: admin_big.css,v 1.1 2012/04/15 15:30:18 pfokker Exp $
+ * @version $Id: admin_big.css,v 1.2 2013/06/11 11:26:08 pfokker Exp $
  */
 #header {
   height: 90px;

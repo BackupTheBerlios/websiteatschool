@@ -1,6 +1,6 @@
 #!/bin/bash
 # This file is part of Website@School, a Content Management System especially designed for schools.
-# Copyright (C) 2008-2012 Ingenieursbureau PSD/Peter Fokker <peter@berestijn.nl>
+# Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker <peter@berestijn.nl>
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU Affero General Public License version 3 as published by
@@ -18,7 +18,7 @@
 # makedoc.sh -- quick and dirty generator of documentation (without metafiles README/INSTALL/CHANGES)
 # Peter Fokker -- 2008-01-31
 #
-# $Id: makedoc.sh,v 1.3 2012/04/18 07:57:21 pfokker Exp $
+# $Id: makedoc.sh,v 1.4 2013/06/11 11:25:08 pfokker Exp $
 
 # Use an explicit path if phpdoc cannot be found via your $PATH
 PHPDOC="phpdoc"

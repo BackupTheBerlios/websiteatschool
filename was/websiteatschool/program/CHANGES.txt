@@ -1,6 +1,9 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.150 2013/06/10 09:55:15 pfokker Exp $
+$Id: CHANGES.txt,v 1.151 2013/06/11 11:25:57 pfokker Exp $
 -------------------------------------------------------------------------------
+2013-06-11
+- bumped year in copyright messages where necessary
+
 2013-06-10
 - fixed a few typos in the CREW module
 - corrected the message color in Theme Frugal [base.css]
