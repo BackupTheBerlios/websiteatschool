@@ -19,7 +19,10 @@
 #
 # Peter Fokker -- 2008-01-31
 #
-# $Id: makedist.sh,v 1.4 2013/06/11 11:25:08 pfokker Exp $
+# $Id: makedist.sh,v 1.5 2013/06/11 15:15:57 pfokker Exp $
+#
+# History:
+# 2013-06-11/PF: added support for CREW-module
 #
 # Usage:
 #
@@ -30,7 +33,7 @@
 #  -m mod | --module mod export only CVS-module 'mod'
 #  -p     | --partial    generate only the 'distribution' files (opposite of --full)
 #  -r     | --release    generate an official release using the appropriate tag in CVS
-#  -s     | --snapshot   generate a snapshot version using the latest version in CVS (opposite of --release)
+#  -s     | --snapshot   generate snapshot version using the latest version in CVS (opposite of --release)
 #  distversion           either a version number like v.r.p (for --release) or another identifier,
 #                        e.g. a date yyyymmdd (for --snapshot).
 #
@@ -61,7 +64,8 @@
 #
 # Scenario 2: create an official version 0.90.0 (distribution and developer files w/ documentation)
 # makedist.sh --full --release 0.90.0
-# Result: 5 files: websiteatschool-devel-yyyymmdd.{zip,tar.gz} and websiteatschool-yyyymmdd.{zip,tar.gz,md5sums.txt}
+# Result: 5 files: websiteatschool-devel-yyyymmdd.{zip,tar.gz} and
+#                  websiteatschool-yyyymmdd.{zip,tar.gz,md5sums.txt}
 #
 # Scenario 3: create a quick snapshot of the current Spanish (es) translation
 # makedist.sh --partial --snapshot yyyymmdd --module was/languages/es
@@ -242,6 +246,19 @@ for d in addons languages manuals modules themes; do
   fi
 done
 
+# prepare a .ZIP-file containing the CREW-server (added 2013-06-11)
+tmlog "creating a compilation of the crew server files"
+cd websiteatschool/program/modules/crew/server
+mkdir -p -m 0755 graphics
+cp -a ../../../graphics/waslogo-567x142.png graphics/
+cp -a ../../../lib/utf8lib.php .
+cp -a ../../../lib/zip.class.php .
+cp -a ../../../lib/license.html .
+cp -a ../../../lib/about.html .
+zip -9 -r ../crewserver.zip *
+unzip -v ../crewserver.zip
+cd ../../../../..
+
 # maybe plugin a quasi-version number in version.php when generating a (daily) snapshot
 if [ -f websiteatschool/program/version.php ]; then
   cd websiteatschool/program
@@ -278,7 +295,7 @@ if [ -d devel -a "$ARG_FULL" == "full" ]; then
   done
 
   # generate docs (also from meta-files)
-  # sleep 20; tmlog "DEBUG:" \
+  sleep 20; tmlog "DEBUG:" \
   "$PHPDOC" \
   -q \
   -d "${SOURCEDIR}" \
@@ -325,6 +342,10 @@ if [ -d websiteatschool ]; then
 fi
 # Get rid of 'hidden' .cvsignore etc.
 find . -type f -name \.\* -exec rm '{}' ';'
+
+# Get rid of devel version of CREW-server but keep the .ZIP (added 2013-06-11)
+rm -r program/modules/crew/server/
+ls -l program/modules/crew/crewserver.zip
 
 FILENAME="${PACKAGENAME}-${ARG_VERSION}"
 tmlog "generating installation package '${PACKAGENAME}-${ARG_VERSION}.tar.gz'"
