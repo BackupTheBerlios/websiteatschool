@@ -19,7 +19,7 @@
 #
 # Peter Fokker -- 2008-01-31
 #
-# $Id: makedist.sh,v 1.5 2013/06/11 15:15:57 pfokker Exp $
+# $Id: makedist.sh,v 1.6 2013/06/11 15:43:42 pfokker Exp $
 #
 # History:
 # 2013-06-11/PF: added support for CREW-module
@@ -253,8 +253,8 @@ mkdir -p -m 0755 graphics
 cp -a ../../../graphics/waslogo-567x142.png graphics/
 cp -a ../../../lib/utf8lib.php .
 cp -a ../../../lib/zip.class.php .
-cp -a ../../../lib/license.html .
-cp -a ../../../lib/about.html .
+cp -a ../../../license.html .
+cp -a ../../../about.html .
 zip -9 -r ../crewserver.zip *
 unzip -v ../crewserver.zip
 cd ../../../../..
@@ -295,7 +295,7 @@ if [ -d devel -a "$ARG_FULL" == "full" ]; then
   done
 
   # generate docs (also from meta-files)
-  sleep 20; tmlog "DEBUG:" \
+  # sleep 20; tmlog "DEBUG:" \
   "$PHPDOC" \
   -q \
   -d "${SOURCEDIR}" \
