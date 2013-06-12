@@ -16,11 +16,11 @@
 # You should have received a copy of the License Agreement for Website@School
 # along with this program. If not, see http://websiteatschool.eu/license.html
 #
-# $Id: crewserver.php,v 1.1 2013/06/11 15:15:57 pfokker Exp $
+# $Id: crewserver.php,v 1.2 2013/06/12 13:06:35 pfokker Exp $
 #
 (PHP_SAPI==='cli') or die('access denied');
 define('CREW_SERVER_VERSION','0.90.5');
-define('CREW_SERVER_DATE','2013-06-11');
+define('CREW_SERVER_DATE','2013-06-12');
 define('CREW_SERVER_NAME','CREW-server');
 initialise();
 main();
@@ -554,7 +554,7 @@ class CrewClient {
     if (is_null($headers['request_uri'])) {
       logger("$sockname: no request_uri specified");
       $status_code = 400;
-    } elseif (utf8_strtolower($headers['request_uri']) == '/crewserver/program') {
+    } elseif (strncasecmp($headers['request_uri'],'/crewserver/program',19) == 0) {
       logger("$sockname: request for server source code");
       $status_code = 200;
     }
@@ -1256,17 +1256,17 @@ function agplv3_compliance() {
   $zip = new Zip;
   $zip->OpenZipbuffer($src);
   foreach($paths as $path) {
-    $zip->AddFile($path,basename($path));
+    $zip->AddFile($path,'crewserver/'.basename($path));
   }
   $files = array(basename(WASENTRY,'.php').'-example.conf',
                  'readme.txt','about.html','license.html','graphics/waslogo-567x142.png');
   foreach($files as $file) {
     $path = dirname(WASENTRY).'/'.$file;
     if (file_exists($path)) {
-      $zip->AddFile($path, $file);
+      $zip->AddFile($path, 'crewserver/'.$file);
     } else {
       $data = sprintf("File '%s' was not found\n",$file);
-      $zip->AddData($data, $file);
+      $zip->AddData($data, 'crewserver/'.$file);
     }
   }
   $zip->CloseZip();

@@ -1,4 +1,4 @@
-Date: 2013-06-11
+Date: 2013-06-12
 Auth: Peter Fokker <peter@berestijn.nl>
 File: readme.txt
 Subj: Notes for CREW-server
@@ -10,32 +10,33 @@ Download and install
 You can install the crewserver as follows:
 
 1. Download the crewserver.zip file from your own Website@School website,
-   e.g. from http://www.yourserver.edu/program/modules/crew/crewserver.zip
+   e.g. from http://www.yourserver.org/program/modules/crew/crewserver.zip
 
-2. Find a quiet place to unzip this file, perhaps in the subdirectory
-   crewserver in your $HOME directory, e.g. like this:
+2. Find a quiet place to unzip this file, perhaps your $HOME directory.
+   Note that the file crewserver.zip unpacks into a subdirectory called
+   crewserver
 
    $ cd  $HOME
-   $ mkdir  crewserver
-   $ cd  crewserver
    $ unzip  /path/to/crewserver.zip
 
-   At this point you have all relevant files together in this subdirectory.
+   At this point you have all relevant files together in the directory
+   $HOME/crewserver/.
 
    NOTE:
    Do NOT unpack this .ZIP-file in a directory that is accessible from the
    outside world and certainly not under the webserver's document root or the
    CMS Root Folder (where admin.php and index.php live).
 
-3. Create crewserver.conf in this same directory, i.e. in the same directory
-   where crewserver.php resides. If you want you can use the
-   example-configuration file as guidance and/or documentation.
-
-   $ cp  crewserver-example.conf  crewserver.conf
-
+3. Create crewserver.conf in the directory that was created while unzipping,
+   i.e. in the same directory where crewserver.php resides. If you want you
+   can use the example-configuration file as guidance and/or documentation.
    You can now edit crewserver.conf with your favourite editor. At the very
    least you MUST add an origin-line with the details for your server
    environment.
+
+   $ cd  crewserver/
+   $ cp  crewserver-example.conf  crewserver.conf
+   $ $EDITOR  crewserver.conf
 
 4. If you are concerned about the confidentiality of the shared keys in your
    crewserver.conf, you can minimise the permissions to say 0600 or even 0400
@@ -87,8 +88,8 @@ Alternatively you can script your session:
   $ script logfile.log
   $ ./crewserver.php
 
-If you want to run crewserver.php in the background while keeping an eye on
-the log use this:
+If you want to run crewserver.php in the background while keeping an eye
+on the log use this:
 
   $ ./crewserver.php >logfile.log 2>&1 &
   $ tail -f logfile.log
@@ -103,13 +104,17 @@ Note that the crewserver.php file is configured to use the php command line
 interpreter located in /usr/bin/php. If php is located elsewhere on your
 machine, you need to adjust the first line in crewserver.php accordingly.
 
+If you use the crewserver on a non-standard port (like the proposed port 8008
+in the example configuration) you may need to adjust your firewall too before
+the server can be used.
+
 
 Source code
 ===========
 
 The source code of the crewserver program is served by the crewserver program
 itself if you know where to look. If you point your browser at
-http://yourserver.edu:8008/crewserver/program you receive a .ZIP-file with the
+http://yourserver.org:8008/crewserver/program you receive a .ZIP-file with the
 code, in compliance with the GNU AGPLv3+Additional Terms (see about.html and
 license.html). Note that this works best if you leave all supporting files
 (about.html, crewserver-example.conf, etc.) exactly where you unpacked them in
@@ -120,7 +125,7 @@ made available to the outside world via this mechanism.
 More information
 ================
 
-Please refer to the fabulous manual that documents CREW for more information.
+Please refer to the manual that documents CREW for more information.
 
 
 [eof readme.txt]

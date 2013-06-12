@@ -1,6 +1,9 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.152 2013/06/11 15:15:58 pfokker Exp $
+$Id: CHANGES.txt,v 1.153 2013/06/12 13:06:35 pfokker Exp $
 -------------------------------------------------------------------------------
+2013-06-12
+- tweaks in the CREW module
+
 2013-06-11
 - bumped year in copyright messages where necessary
 - added special code to make a downloadable crewserver.zip

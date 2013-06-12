@@ -19,7 +19,7 @@
 #
 # Peter Fokker -- 2008-01-31
 #
-# $Id: makedist.sh,v 1.6 2013/06/11 15:43:42 pfokker Exp $
+# $Id: makedist.sh,v 1.7 2013/06/12 13:06:34 pfokker Exp $
 #
 # History:
 # 2013-06-11/PF: added support for CREW-module
@@ -255,9 +255,12 @@ cp -a ../../../lib/utf8lib.php .
 cp -a ../../../lib/zip.class.php .
 cp -a ../../../license.html .
 cp -a ../../../about.html .
-zip -9 -r ../crewserver.zip *
-unzip -v ../crewserver.zip
-cd ../../../../..
+cd ..
+mv server/ crewserver/
+zip -9 -r crewserver.zip crewserver/
+mv crewserver/ server/
+unzip -v crewserver.zip
+cd ../../../..
 
 # maybe plugin a quasi-version number in version.php when generating a (daily) snapshot
 if [ -f websiteatschool/program/version.php ]; then
