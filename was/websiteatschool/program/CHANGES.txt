@@ -1,13 +1,17 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.153 2013/06/12 13:06:35 pfokker Exp $
+$Id: CHANGES.txt,v 1.154 2013/06/12 14:00:24 pfokker Exp $
 -------------------------------------------------------------------------------
 2013-06-12
 - tweaks in the CREW module
+- added a tool to generate minimised javascript code [devel/tools/minjs.php]
+- added code to create crew.min.js in crew module [devel/tools/makedist.sh]
+- crewserver.zip unpacks in a subdir automatically [devel/tools/makedist.sh]
+- the 'running code download' also unpacks in subdir [crewserver.php]
 
 2013-06-11
 - bumped year in copyright messages where necessary
 - added special code to make a downloadable crewserver.zip
-  in /program/modules/crew/crewserver.zip [makedist.sh]
+  in /program/modules/crew/crewserver.zip [devel/tools/makedist.sh]
 
 2013-06-10
 - fixed a few typos in the CREW module

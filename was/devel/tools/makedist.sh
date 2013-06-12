@@ -19,7 +19,7 @@
 #
 # Peter Fokker -- 2008-01-31
 #
-# $Id: makedist.sh,v 1.7 2013/06/12 13:06:34 pfokker Exp $
+# $Id: makedist.sh,v 1.8 2013/06/12 14:00:23 pfokker Exp $
 #
 # History:
 # 2013-06-11/PF: added support for CREW-module
@@ -125,6 +125,8 @@ defaults: $PROG --full --snapshot --module was
 # 0 -- setup essentials
 #
 PROG="$(basename "$0")"
+FULLPROG="$(readlink -f "$0")"
+PROGDIR="$(dirname "$FULLPROG")"
 PHPDOC="phpdoc"         # if necessary add an explicit path to the executable
 TARGETDIRECTORY="$(pwd)"
 
@@ -260,6 +262,10 @@ mv server/ crewserver/
 zip -9 -r crewserver.zip crewserver/
 mv crewserver/ server/
 unzip -v crewserver.zip
+tmlog "constructing a minimised version of crew.js"
+echo '// see crew.js for full copyright information' >crew.min.js
+"$PROGDIR/minjs.php" <crew.js >>crew.min.js
+ls -l crew.js crew.min.js
 cd ../../../..
 
 # maybe plugin a quasi-version number in version.php when generating a (daily) snapshot
