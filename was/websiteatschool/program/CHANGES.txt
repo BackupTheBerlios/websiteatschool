@@ -1,6 +1,9 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.154 2013/06/12 14:00:24 pfokker Exp $
+$Id: CHANGES.txt,v 1.155 2013/06/13 15:38:36 pfokker Exp $
 -------------------------------------------------------------------------------
+2013-06-13
+- minor tweaks in crew readme.txt
+
 2013-06-12
 - tweaks in the CREW module
 - added a tool to generate minimised javascript code [devel/tools/minjs.php]

@@ -4,6 +4,7 @@ File: readme.txt
 Subj: Notes for CREW-server
 Vers: 0.90.5
 
+
 Download and install
 ====================
 
@@ -30,13 +31,13 @@ You can install the crewserver as follows:
 3. Create crewserver.conf in the directory that was created while unzipping,
    i.e. in the same directory where crewserver.php resides. If you want you
    can use the example-configuration file as guidance and/or documentation.
-   You can now edit crewserver.conf with your favourite editor. At the very
-   least you MUST add an origin-line with the details for your server
-   environment.
 
    $ cd  crewserver/
    $ cp  crewserver-example.conf  crewserver.conf
-   $ $EDITOR  crewserver.conf
+
+   You can now edit crewserver.conf with your favourite editor. At the very
+   least you MUST add an origin-line with the details for your server
+   environment.
 
 4. If you are concerned about the confidentiality of the shared keys in your
    crewserver.conf, you can minimise the permissions to say 0600 or even 0400
@@ -66,13 +67,20 @@ You can now run the server as follows.
    the crewserver directory if you did not already do that in the previous
    step and executing the main program:
 
-   $ cd $HOME/crewserver
-   $ ./crewserver.php
+   $ cd  $HOME/crewserver
+   $ ./crewserver.php  &
 
-   The server will start and depending on the configuration settings a few
-   messages will be written to either syslog or stderr. If the server does
-   not start you may have to change the path to the PHP-interpreter on the
-   first line of crewserver.php (see below).
+   The server will start in the background and -- with the default
+   configuration -- a few messages will be written to the system's 
+   log ('syslog'). You can check to see if the server is running by
+   checking the entries in the system logfiles, e.g. /var/log/messages.
+
+   NOTE:
+   If you have configured the server to write logmessages to stderr,
+   the messages will be written your screen.
+
+   If the server does not start you may have to change the path to the
+   PHP-interpreter on the first line of crewserver.php (see below).
 
 
 Notes and troubleshooting
@@ -126,6 +134,5 @@ More information
 ================
 
 Please refer to the manual that documents CREW for more information.
-
 
 [eof readme.txt]
