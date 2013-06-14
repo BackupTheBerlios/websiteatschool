@@ -1,5 +1,5 @@
 /program/CREDITS.txt
-$Id: CREDITS.txt,v 1.7 2012/06/22 13:22:42 pfokker Exp $
+$Id: CREDITS.txt,v 1.8 2013/06/14 20:11:31 pfokker Exp $
 
 For an up to date overview of credits, please visit the
 project website at <http://websiteatschool.eu>.
@@ -19,21 +19,28 @@ Translators
 
 * Said Taki (Arabic).
 * Jing Fang Liu (Chinese).
+* Danny Yen (Chinese).
 * Christian Borum Loebner - Olesen (Danish).
 * Core team (Dutch).
 * Core team (English).
 * A. Darvishi (Farsi).
+* Laura Råman (Finnish).
 * Jean Peyratout (French).
+* Marjolaine Audoux (French).
 * David (German).
 * S. Stadoll (German).
 * Fabienne Kudzielka (German).
+* Claudia Göhnert (German).
+* Iakovos Christoforidis (Greek).
 * Erika Swiderski (Hungarian).
 * Gergely Sipos (Hungarian).
 * Waldemar Pankiw (Polish).
 * Rita Valente Ribeiro da Silva (Portugese).
+* Anastassia Blechko (Russian).
 * Anouk Coumans (Spanish).
 * Margot Molier (Spanish).
 * Hannah Tulleken (Spanish).
+* Hansje Cozijnsen (Swedish).
 * Ülkü Gaga (Turkish, under construction).
 
 
