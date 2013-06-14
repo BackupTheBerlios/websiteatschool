@@ -20,11 +20,11 @@
  * This file defines the French language package ('fr'). 
  * This file is used when this package is installed.
  *
- * @author Jean Peyratout <translators@websiteatschool.eu> <jean.peyratout@abul.org>
+ * @author Jean Peyratout <jean.peyratout@abul.org> Marjolaine Audoux <translators@websiteatschool.eu>
  * @copyright Copyright (C) 2008-2013 Vereniging Website At School, Amsterdam <info@websiteatschool.eu>
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_fr
- * @version $Id: fr_manifest.php,v 1.4 2013/06/11 11:25:12 pfokker Exp $
+ * @version $Id: fr_manifest.php,v 1.5 2013/06/14 19:59:55 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -32,12 +32,12 @@ $manifests['fr'] = array(
     'language_key'        => 'fr',
     'language_name'       => 'Français',
     'parent_language_key' => '',
-    'description'         => 'This is the French translation based on Website@School release 0.90.3',
-    'author'              => 'Jean Peyratout',
+    'description'         => 'This is the French translation based on Website@School release 0.90.4',
+    'author'              => 'Jean Peyratout, Marjolaine Audoux',
     'author_email'        => 'jean.peyratout@abul.org',
-    'version'             => 2012041700,
-    'release'             => '0.90.3',
-    'release_date'        => '2012-04-17',
+    'version'             => 2013061400,
+    'release'             => '0.90.4',
+    'release_date'        => '2013-06-14',
     'is_core'             => FALSE
    );
 

@@ -18,13 +18,13 @@
 /** /program/languages/pl/admin.php
  *
  * Language: pl (Polski)
- * Release:  0.90.3 / 2012041700 (2012-04-17)
+ * Release:  0.90.4 / 2013061400 (2013-06-14)
  *
  * @author Waldemar Pankiw <translators@websiteatschool.eu>
  * @copyright Copyright (C) 2008-2013 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_pl
- * @version $Id: admin.php,v 1.4 2013/06/11 11:25:14 pfokker Exp $
+ * @version $Id: admin.php,v 1.5 2013/06/14 19:59:56 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = 'Administracja';
@@ -227,10 +227,6 @@ $string['edit_node_link_image_width'] = 'Sze~rokość ikony';
 $string['edit_node_link_image_width_title'] = 'Podaj szerokość ikony (ilość pikseli)';
 $string['edit_node_link_image_height'] = 'Wy~sokość ikony';
 $string['edit_node_link_image_height_title'] = 'Podaj wysokość ikony (ilość pikseli)';
-$string['edit_node_link_target'] = '~Okno';
-$string['edit_node_link_target_title'] = 'Podaj rodzaj okna, n.p. _blank dla nowego okna (patrz podręcznik)';
-$string['edit_node_link_href'] = 'UR~L';
-$string['edit_node_link_href_title'] = 'Podaj pełny URL zewnętrznej witryny w lince do niej';
 $string['edit_node_is_hidden'] = 'Ukryta';
 $string['edit_node_is_hidden_title'] = 'Zaznacz pole, żeby strona/sekcja została ukryta (lecz dostępna)';
 $string['edit_node_is_hidden_label'] = 'U~kryj stronę/sekcję';

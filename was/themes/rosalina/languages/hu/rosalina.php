@@ -18,13 +18,13 @@
 /** /program/themes/rosalina/languages/hu/rosalina.php
  *
  * Language: hu (Magyar)
- * Release:  0.90.3 / 2012041700 (2012-04-17)
+ * Release:  0.90.4 / 2013061400 (2013-06-14)
  *
  * @author Gergely Sipos, Erika Swiderski <translators@websiteatschool.eu>
  * @copyright Copyright (C) 2008-2013 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_hu
- * @version $Id: rosalina.php,v 1.2 2013/06/11 11:25:49 pfokker Exp $
+ * @version $Id: rosalina.php,v 1.3 2013/06/14 20:00:21 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['title'] = 'Rosalina Téma';
@@ -138,9 +138,9 @@ $string['hvmenu_MenuVerticalCentered_bottom_option'] = 'alsó';
 $string['hvmenu_MenuVerticalCentered_static_option'] = 'statikus';
 $string['hvmenu_MenuVerticalCentered_title'] = 'Válassza ki a teljes menü függőleges elhelyezését';
 $string['hvmenu_ChildOverlap_label'] = 'Vízszintes átfedés';
-$string['hvmenu_ChildOverlap_title'] = 'Vízszintes átfedés gyerek/szülő (-1.00 és +1.00 közötti szám)';
+$string['hvmenu_ChildOverlap_title'] = 'Vízszintes átfedés gyerek/szülő (egy -1.00 és +1.00 közötti szám)';
 $string['hvmenu_ChildVerticalOverlap_label'] = 'Függőleges átfedés';
-$string['hvmenu_ChildVerticalOverlap_title'] = 'Függőleges átfedés gyerek/szülő (-1.00 és +1.00 közötti szám)';
+$string['hvmenu_ChildVerticalOverlap_title'] = 'Függőleges átfedés gyerek/szülő (egy -1.00 és +1.00 közötti szám)';
 $string['hvmenu_StartTop_label'] = 'Menü eltolás X';
 $string['hvmenu_StartTop_title'] = 'Menü eltolás X-koordináta (pixelben)';
 $string['hvmenu_StartLeft_label'] = 'Menü eltolás Y';

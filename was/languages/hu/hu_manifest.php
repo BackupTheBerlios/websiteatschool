@@ -24,7 +24,7 @@
  * @copyright Copyright (C) 2008-2013 Vereniging Website At School, Amsterdam <info@websiteatschool.eu>
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_hu
- * @version $Id: hu_manifest.php,v 1.2 2013/06/11 11:25:13 pfokker Exp $
+ * @version $Id: hu_manifest.php,v 1.3 2013/06/14 19:59:55 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -32,11 +32,11 @@ $manifests['hu'] = array(
     'language_key'        => 'hu',
     'language_name'       => 'Magyar',
     'parent_language_key' => 'en',
-    'description'         => 'This is the Hungarian translation based on Website@School release 0.90.3',
+    'description'         => 'This is the Hungarian translation based on Website@School release 0.90.4',
     'author'              => 'Erika Swiderski, Gergely Sipos',
-    'version'             => 2012041700,
-    'release'             => '0.90.3',
-    'release_date'        => '2012-04-17',
+    'version'             => 2013061400,
+    'release'             => '0.90.4',
+    'release_date'        => '2013-06-14',
     'is_core'             => FALSE
    );
 

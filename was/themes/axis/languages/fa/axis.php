@@ -18,25 +18,25 @@
 /** /program/themes/axis/languages/fa/axis.php
  *
  * Language: fa (‫فارسی)
- * Release:  0.90.3 / 2012041700 (2012-04-17)
+ * Release:  0.90.4 / 2013061400 (2013-06-14)
  *
  * @author A. Darvishi <translators@websiteatschool.eu>
  * @copyright Copyright (C) 2008-2013 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_fa
- * @version $Id: axis.php,v 1.3 2013/06/11 11:25:39 pfokker Exp $
+ * @version $Id: axis.php,v 1.4 2013/06/14 20:00:11 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
-$string['title'] = 'Axis Theme';
-$string['description'] = 'A simple theme with a vertical hierarchical menu';
-$string['translatetool_title'] = 'Axis';
-$string['translatetool_description'] = 'This file contains translations for the Axis Theme';
-$string['copyright'] = '©{COPYRIGHT_YEAR} {SITENAME}';
-$string['logout_username'] = '{USERNAME} خروج از سیستم';
-$string['logout_username_title'] = 'پايان جلسه برای  {FULL_NAME}';
+$string['title'] = 'موضوع محور';
+$string['description'] = 'A موضوع ساده ای با یک منوی عمودی سلسله مراتبی';
+$string['translatetool_title'] = 'محور c';
+$string['translatetool_description'] = 'این فایل حاوی ترجمه ها براى اين موضوع محور';
+$string['copyright'] = ' ©{COPYRIGHT_YEAR} {SITENAME}';
+$string['logout_username'] = ' {USERNAME} خروج از سیستم';
+$string['logout_username_title'] = ' {FULL_NAME}  پايان جلسه برای';
 $string['print'] = 'چاپ';
 $string['print_title'] = 'نظریه این صفحه';
-$string['stylesheet_label'] = 'ylesheet چطوری~ایستا';
+$string['stylesheet_label'] = 'ملحفه سبک ایستا';
 $string['stylesheet_title'] = 'آدرس کامل از اين مرزبندي فایل استاتیک (خالی) براى هيچ كس';
 $string['stylesheet_print_label'] = 'چاپ اطلاعات نسخه سبك~';
 $string['stylesheet_print_title'] = 'آدرس کامل از اين مرزبندي فایل برای چاپ نسخه (خالی) براى هيچ يك';

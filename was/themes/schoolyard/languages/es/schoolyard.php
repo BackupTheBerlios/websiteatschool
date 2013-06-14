@@ -18,24 +18,24 @@
 /** /program/themes/schoolyard/languages/es/schoolyard.php
  *
  * Language: es (Español)
- * Release:  0.90.3 / 2012041700 (2012-04-17)
+ * Release:  0.90.4 / 2013061400 (2013-06-14)
  *
  * @author Anouk Coumans <translators@websiteatschool.eu>
  * @copyright Copyright (C) 2008-2013 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_es
- * @version $Id: schoolyard.php,v 1.4 2013/06/11 11:25:53 pfokker Exp $
+ * @version $Id: schoolyard.php,v 1.5 2013/06/14 20:00:24 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
-$string['title'] = 'Tema del patio de la escuela';
+$string['title'] = 'Tema del Schoolyard';
 $string['description'] = 'Un simple tipo invertida-L del tema';
-$string['translatetool_title'] = 'Patio de la escuela';
-$string['translatetool_description'] = 'Este archivo contiene traducciones para el Tema del Patio de la escuela';
+$string['translatetool_title'] = 'Schoolyard';
+$string['translatetool_description'] = 'Este archivo contiene traducciones para el Tema Schoolyard';
 $string['you_are_here'] = 'Usted está aquí:';
 $string['alt_logo'] = 'imagen del logo';
 $string['jumpmenu_area'] = 'Seleccionar área';
 $string['jumpmenu_area_title'] = 'Seleccionar área y hacer clic en [Ir]';
-$string['lastupdated'] = '---<br>última actualización: {UPDATE_YEAR}-{UPDATE_MONTH}-{UPDATE_DAY}';
+$string['lastupdated'] = '---<br> última actualización: {UPDATE_YEAR}-{UPDATE_MONTH}-{UPDATE_DAY}';
 $string['copyright'] = '©{COPYRIGHT_YEAR} {SITENAME}';
 $string['logout_username'] = 'Cerrar sesión {USERNAME}';
 $string['logout_username_title'] = 'cerrar la sesión para {FULL_NAME}';

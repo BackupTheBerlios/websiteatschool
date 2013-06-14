@@ -24,7 +24,7 @@
  * @copyright Copyright (C) 2008-2013 Vereniging Website At School, Amsterdam <info@websiteatschool.eu>
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_tr
- * @version $Id: tr_manifest.php,v 1.3 2013/06/11 11:25:16 pfokker Exp $
+ * @version $Id: tr_manifest.php,v 1.4 2013/06/14 19:59:59 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -32,11 +32,11 @@ $manifests['tr'] = array(
     'language_key'        => 'tr',
     'language_name'       => 'Türkçe',
     'parent_language_key' => 'nl',
-    'description'         => 'This is the Turkish translation based on Website@School release 0.90.3',
+    'description'         => 'This is the Turkish translation based on Website@School release 0.90.4',
     'author'              => 'Ülkü Gaga',
-    'version'             => 2012041700,
-    'release'             => '0.90.3',
-    'release_date'        => '2012-04-17',
+    'version'             => 2013061400,
+    'release'             => '0.90.4',
+    'release_date'        => '2013-06-14',
     'is_core'             => FALSE
    );
 

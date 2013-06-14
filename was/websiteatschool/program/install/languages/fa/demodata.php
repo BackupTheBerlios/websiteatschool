@@ -18,13 +18,13 @@
 /** /program/install/languages/fa/demodata.php
  *
  * Language: fa (‫فارسی)
- * Release:  0.90.3 / 2012041700 (2012-04-17)
+ * Release:  0.90.4 / 2013061400 (2013-06-14)
  *
  * @author A. Darvishi <translators@websiteatschool.eu>
  * @copyright Copyright (C) 2008-2013 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_fa
- * @version $Id: demodata.php,v 1.3 2013/06/11 11:26:01 pfokker Exp $
+ * @version $Id: demodata.php,v 1.4 2013/06/14 20:00:30 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = 'داده نمایشی';
@@ -57,7 +57,7 @@ $string['schoolinfo_link_text'] = 'اطلاعات مدرسه';
 $string['aboutus_title'] = 'اطلاعات در مورد مدرسه';
 $string['aboutus_link_text'] = 'درباره ما';
 $string['schoolterms_title'] = 'شرایط و مدرسه تعطيل بانك به {schoolyear}';
-$string['schoolterms_link_text'] = '{مدرسه سال }';
+$string['schoolterms_link_text'] = '{مدرسه سال } {SCHOOLYEAR}';
 $string['news_title'] = 'متولی این بخش خبری سااله و';
 $string['news_link_text'] = 'اخبار';
 $string['latestnews_title'] = 'ضافی! اضافی! همه در مورد آن را بخوانید!';
@@ -96,8 +96,8 @@ $string['meetings_title'] = 'اين بخش برگزار می شود نشست ن�
 $string['meetings_link_text'] = 'جلسات';
 $string['roster_title'] = 'اين ديدار برنامه';
 $string['roster_link_text'] = 'فهرست';
-$string['minutes_title'] = 'ديدار دقیقه{مدرسه سال }';
-$string['minutes_link_text'] = 'دقيقه {مدرسه سال }';
+$string['minutes_title'] = '({SCHOOLYEAR})  ديدار دقیقه';
+$string['minutes_link_text'] = '{SCHOOLYEAR}  دقيقه';
 $string['minutes1_title'] = 'از دقيقه اول ديدار';
 $string['minutes1_link_text'] = 'Zomer';
 $string['minutes2_title'] = 'دقیقه از جلسه دوم';
@@ -108,78 +108,28 @@ $string['minutes4_title'] = 'دقیقه از جلسه چهارم';
 $string['minutes4_link_text'] = 'بهار';
 $string['downloads_title'] = 'چشم پوشى از يك فهرست و لینک دانلود';
 $string['downloads_link_text'] = 'دانلود';
-$string['welcome_content'] = 'در اين تمثيل استقبال اوليه وب سايت مدرسه. <br درگرينويل لطفاً با استفاده از آن برای پیمایش یا استفاده از منوی mypage پرش. <p درگرينويل lorem} {dolor درگرينويل بشناس} <p} {بنشینید} 
-<p>{LOREM} {IPSUM}
-<p>{DOLOR} {SIT}
+$string['welcome_content'] = 'در اين تمثيل استقبال اوليه وب سايت مدرسه. <br درگرينويل لطفاً با استفاده از آن برای پیمایش یا استفاده از صفحه پرش من منو.
+ <p>
+{LOREM} {IPSUM}
+<p>
+{DOLOR} {SIT}
 ';
-$string['aboutus_content'] = 'Openbare Basisschool Exemplum<br>
-1, Rock Bottom street<br>
-Gummersbach<br>
-Directeur: Amelia Cackle';
-$string['schoolterms1_content'] = '<h2>Jaarplanning en vakanties voor {LAST_SCHOOLYEAR}</h2>
-Periode 1: september - oktober<br>
-Periode 2: november - december<br>
-Kerstvakantie: laatste week van december<br>
-Periode 3: januari - februari<br>
-Periode 4: maart - april<br>
-Voorjaarvakantie: tweede week van april<br>
-Periode 5: april - mei<br>
-Periode 6: juni - juli<br>
-Zomervakantie: augustus<br>
-';
-$string['schoolterms2_content'] = '<h2>Jaarplanning en vakanties voor {THIS_SCHOOLYEAR}</h2>
-Periode 1: september - oktober<br>
-Periode 2: november - december<br>
-Kerstvakantie: laatste week van december + eerste week januari<br>
-Periode 3: januari - februari<br>
-Periode 4: maart - april<br>
-Voorjaarvakantie: derde week van april<br>
-Periode 5: april - mei<br>
-Periode 6: juni - juli<br>
-Zomervakantie: augustus<br>
-';
-$string['schoolterms3_content'] = '<h2>Voorlopige jaarplanning en vakanties voor {NEXT_SCHOOLYEAR}</h2>
-Periode 1: september - oktober<br>
-Periode 2: november - december<br>
-Kerstvakantie: laatste twee weken van december<br>
-Periode 3: januari - februari<br>
-Periode 4: maart - april<br>
-Voorjaarvakantie: tweede week van april<br>
-Periode 5: april - mei<br>
-Periode 6: juni - juli<br>
-Zomervakantie: augustus<br>
-<br>
-Let op! Dit is een <em>voorlopige</em> planning.
-';
+$string['aboutus_content'] = 'تمثيل هاي اوليه مدرسه br درگرينويل 1، پايين ترين قسمت خيابان گرگان br درگرينويل gummersbach< br درگرينويل اصلي امليا يك مرتبه ساكت شدند. 
+Principal: Amelia Cackle';
+$string['schoolterms1_content'] = '<h2از ديدگاه مكتب و ضوابط بانك براي تعطيلات last_schoolyear} { < /h2> مدت 1 : سپتامبر - octoberterm 2: نوامبر - decemberwinter تعطيلات: هفته گذشته از decemberterm 3: ژانويه - مارس februaryterm 4: - aprilspring شکستن: هفته دوم ماه آوريل از aprilterm 5: - mayterm 6 : ژوئن - julysummer تعطيلات: اوت< br درگرينويل';
+$string['schoolterms2_content'] = '<h2از ديدگاه مكتب و ضوابط بانك براي تعطيلات this_schoolyear} { < /h2> مدت 1 : سپتامبر - octoberterm 2: نوامبر - decemberwinter تعطيلات هفته گذشته: از هفته اول دسامبر januaryterm 3: februaryterm 4 ژانويه - مارس: - aprilspring شکستن : سومين هفته از ماه آوريل - mayterm aprilterm 5: 6: ژوئن - julysummer< br درگرينويل اوت: تعطيلات عيد';
+$string['schoolterms3_content'] = '<h2از ديدگاه اوليه مدرسه و ضوابط بانك براي تعطيلات next_ schoolyear {} < /h2> مدت 1 : سپتامبر - octoberterm 2: نوامبر - decemberwinter تعطيلات: دو هفته گذشته از decemberterm 3: ژانويه - مارس februaryterm 4: - aprilspring شکستن: هفته دوم ماه آوريل از aprilterm 5: - mayterm 6 : ژوئن - روز تعطيل julysummer: augustnote: اين يك <انهارا هاي درماني اوليه< /درگرينويل نتایج.';
 $string['latestnews_content'] = '<strong>{TODAY}</strong><br>
 ما خوشحال هستيم كه اين وب سايت جديد به اطلاع شما قابل استفاده است.';
-$string['latestnewsletter_content'] = '<h2>Nieuwsbrief 5 ({TODAY})</h2>
-<h3>Inhoud</h3>
-<ul>
-<li>Van de directie
-<li>Nieuwe leerkracht
-<li>Planen voor {THIS_SCHOOLYEAR}
-</ul>
-<h3>Van de directie</h3>
-{LOREM} {IPSUM}
-<p>{DOLOR} {SIT}
-<p>Amelia Cackle
-<h3>Nieuwe leerkracht</h3>
-We zijn blij u te kunnen melden dat aan het
-begin van het schooljaar {NEXT_SCHOOLYEAR}
-juf Mary Astell de kleutergroepen onder haar
-hoede zal gaan nemen.
-<h3>Plannen voor {THIS_SCHOOLYEAR}</h3>
-{SIT} {DOLOR} {IPSUM} {LOREM}
-';
+$string['latestnewsletter_content'] = 'از ديدگاه خبرنامه (5 <h2 {امروزه} ) < /h2> <h3/h3> از ديدگاه فهرست مطالب ، جلد كتاب با موضوع اهل بيت(درگرينويل < > <لي هاي درماني از عمده واژه <لي لي <معلم جديد برنامه هاي درماني به {this_ schoolyear} < /h3 > <درگرينويل جلد كتاب با موضوع اهل بيت(از ديدگاه اصلي< /h3> {lorem} {بشناس} {dolor درگرينويل <p} {بنشینید} <p درگرينويل آمليا <h3او آموزگار جديد يك مرتبه ساكت شدند< /h3> ما خوشحال اند اعلام مي كنند كه در شروع schoolyear schoolyear} {next_ خانم مري astell مواظب ما از جوانترين شاگردان. <h3از ديدگاه برنامه خود را برای {this_schoolyear} < /h3> {بنشینید} {dolor} {بشناس} {lorem}';
 $string['oldnews_content'] = '<strong>{YESTERDAY}</strong><br>{LOREM}<p>
 <strong>{LAST_WEEK}</strong><br>{IPSUM}<p>
 <strong>{MONTHS_AGO_1}</strong><br>{DOLOR}<p>
 <strong>{MONTHS_AGO_2}</strong><br>{SIT}
 ';
-$string['oldnewsletters_content'] = '<a href="#"><h2>Nieuwsbrief 4 ({MONTHS_AGO_1})</h2></a>
+$string['oldnewsletters_content'] = '<a href="#"><h2>Newsletter خبرنامه 4  ({MONTHS_AGO_1})</h2></a>
 <ul><li>Van de directie<li>Activiteitenagenda<li>Wist u dat...?</ul>
-<a href="#"><h2>Nieuwsbrief 3 ({MONTHS_AGO_2})</h2></a>
+<a href="#"><h2> 3خبرنام  ({MONTHS_AGO_2})</h2></a>
 <ul><li>Van de directie<li>Activiteitenagenda<li>Kunst-in-de-klas bij de onderbouw</ul>
 <a href="#"><h2>Nieuwsbrief 2 ({MONTHS_AGO_3})</h2></a>
 <ul><li>Van de directie<li>Activiteitenagenda<li>Excursie voor de bovenbouw</ul>
@@ -187,61 +137,18 @@ $string['oldnewsletters_content'] = '<a href="#"><h2>Nieuwsbrief 4 ({MONTHS_AGO_
 <ul><li>Van de directie<li>Activiteitenagenda<li>Wist u dat...?</ul>
 ';
 $string['searchbox_content'] = 'محل قرارگرفتن به ماژول جستجو';
-$string['mypage_content'] = 'Eigenlijk gereservereerd voor de mijnpagina-module.<p>
-<p>
-Handige links:
-<ul>
-<li><a href="{INDEX_URL}">index.php</a>
-<li><a href="{ADMIN_URL}">admin.php</a>
-<li><a href="{MANUAL_URL}" target="_blank">Website@School Manual</a> (opent in een nieuw venster)
-<li><a href="{WEBSITEATSCHOOL_URL}">Website@School Website</a>
-</ul>
-<form method="POST" action="{INDEX_URL}?login=1" name="loginform">
-Gebruikersnaam:<br>
-<input type="text" name="login_username" value="" size="25" maxlength="80" class="textfield">
-<p>
-Wachtwoord:<br>
-<input type="password" name="login_password" value="" size="25" maxlength="80" class="passwordfield" autocomplete="off">
-<p>
-<input type="submit" name="button" value="OK" class="button">
-</form>
-<p>
-<a href="{INDEX_URL}?logout=1"><strong>Afmelden</strong></a>
-';
+$string['mypage_content'] = 'واقعا برای یک محل قرارگرفتن mypage ماژول. < > <p p درگرينويل درگرينويل پيوند با ساير تارنماها مفيد: جلد كتاب با موضوع اهل بيت(درگرينويل < > < > <يك واژه هایی چون href آدرس کامل} {index_ \' از ديدگاه شاخص. php< /یک درگرينويل <لي واژه <یک href برای {admin_}\' آدرس کامل از ديدگاه admin. php< /یک درگرينويل <لي واژه <يك href manual_ \' {\' آدرس کامل} هدف \'_blank" از ديدگاه سايت مدرسه@ دستی< /یک درگرينويل (باز می شود در یك پنجره جدید) <لي واژه <يك href websiteatschool_ \' {\' آدرس کامل} از ديدگاه سايت@ وب سايت مدرسه< /یک درگرينويل < /جلد كتاب با موضوع اهل بيت(درگرينويل <شكل شيوه "پست" - {index_ اقدام آدرس کامل}؟  ورود به سیستم نام \' 1\' loginform" > نام کاربری: <نوع ورودی \'متن\' login_ نام کاربری به نام "ارزش " اندازه \'25 \'80 \' \' maxlength طبقه متوسط - textfield" > <p درگرينويل اسم رمز: <نوع ورودی "رمز عبور" رمز عبور با نام \'login_ ارزش " اندازه \'25 \'80 \' \' maxlength طبقه متوسط - passwordfield autocomplete\' \'خاموش" > <p درگرينويل <نوع ورودی "ارائه" نام "دکمه \'تایید\' ارزش "طبقه متوسط" دکمه "> < /فرم <p درگرينويل درگرينويل <يك href آدرس کامل - {index_}؟  1- خروج از سیستم خروج از سیستم< > < /قوی قوی واژه واژه < /یک درگرينويل';
 $string['sitemap_content'] = 'محل قرارگرفتن اين مجموعه نقشه سايت';
 $string['about_content'] = 'در اینجا برخی از اطلاعات در مورد مدرسه می آيد.';
 $string['contact_content'] = 'محل قرارگرفتن در مجموعه پست';
 $string['disclaimer_content'] = 'در اينجا مى آيد متن اين سلب مسئولیت زیر ذکر شده باشد.';
-$string['login_content'] = '<h2>Login</h2>
-(<em>Eigenlijk gereserveerd voor de mijnpagina-module</em>)
-<p>
-<form method="POST" action="{INDEX_URL}?login=1" name="loginform">
-Gebruikersnaam:<br>
-<input type="text" name="login_username" value="" size="25" maxlength="80" class="textfield">
-<p>
-Wachtwoord:<br>
-<input type="password" name="login_password" value="" size="25" maxlength="80" class="passwordfield" autocomplete="off">
-<p>
-<input type="submit" name="button" value="OK" class="button">
-</form>
-';
+$string['login_content'] = '<h2/h2> از ديدگاه هاي ورود به سیستم (واژه <انها در واقع از یک محل قرارگرفتن به مدول mypage< /کم کم متوجه شدم هاي درماني ) < > <p درگرينويل شكل شيوه "پست" اقدام \' {index_ آدرس کامل}؟  ورود به سیستم نام \' 1\' loginform" > نام کاربری: <نوع ورودی \'متن\' login_ نام کاربری به نام "ارزش " اندازه \'25 \'80 \' \' maxlength طبقه متوسط - textfield" > <p درگرينويل اسم رمز: <نوع ورودی "رمز عبور" رمز عبور با نام \'login_ ارزش " اندازه \'25 \'80 \' \' maxlength طبقه متوسط - passwordfield autocomplete\' \'خاموش" > <p درگرينويل <نوع ورودی "ارائه" نام "دکمه \'تایید\' ارزش "طبقه متوسط" دکمه" > < /شكل درگرينويل';
 $string['intranet_content'] = 'در اين تمثيل (خوش آمدید  Intranet.<p>{LOREM} {DOLOR}<p>{IPSUM} {SIT}';
-$string['roster_content'] = '<h2>Vergaderschema {THIS_SCHOOLYEAR}</h2>
-Zomervergadering: laatste vrijdag in augustus, aanvang 15:00 uur<br>
-Najaarsvergadering: tweede vrijdag in november, aanvang 15:00 uur<br>
-Wintervergadering: tweede vrijdag in februari, aanvang 15:00 uur<br>
-Voorjaarsvergadering: eerste vrijdag in juni, <strong>aanvang 09:00 uur</strong> (en niet 15:00 uur)<br>
-';
+$string['roster_content'] = '<h2 {this_schoolyear بالايي از ديدگاه نشست} > < /h2> تابستان جلسه: روز جمعه گذشته از ماه اوت، ساعت 3، پاييز br درگرينويل نشست: روز جمعه دوم ماه نوامبر، 3 ساعت جلسه زمستان< br درگرينويل: روز جمعه دوم فوريه، ساعت 3، بهار br درگرينويل نشست: اولين روز جمعه از ماه ژوئن، <قوی هستم ، دانشكده هاي درماني 9/درگرينويل قوی (و نه 3 ساعت درگرينويل) <br';
 $string['minutes1_content'] = '<h2> دقيقه از اين ديدار تابستان {LAST_SCHOOLYEAR}</h2> {LOREM} {IPSUM} {DOLOR} {SIT}';
 $string['minutes2_content'] = '<h2> دقيقه قبل از سقوط نشست {LAST_SCHOOLYEAR}</h2> {IPSUM} {LOREM} {DOLOR} {SIT}';
 $string['minutes3_content'] = '<h2> دقیقه از جلسه زمستان  {LAST_SCHOOLYEAR}</h2> {LOREM} {DOLOR} {IPSUM} {SIT}';
 $string['minutes4_content'] = '<h2> دقیقه بهار در اين ديدار  {LAST_SCHOOLYEAR}</h2> {LOREM} {IPSUM} {SIT} {DOLOR}';
 $string['minutes5_content'] = '<h2> دقيقه از اين ديدار تابستان {THIS_SCHOOLYEAR}</h2> {DOLOR} {LOREM} {SIT} {IPSUM}';
-$string['downloads_content'] = '<h2>Handig gereedschappen voor leerkrachten</h2>
-<ul>
-<li><a target="_blank" href="http://www.openoffice.org">OpenOffice.org (tekstverwerker, rekenblad, etc.)</a>
-<li><a target="_blank" href="http://www.mozilla.com">Firefox (webbrowser)</a>
-<li><a target="_blank" href="{MANUAL_URL}">Website@School Handboek</a>
-</ul>
-';
+$string['downloads_content'] = 'چشم پوشى از ديدگاه <h2/h2 ابزار براي معلمان ، جلد كتاب با موضوع اهل بيت(درگرينويل <> < > <لي هاي درماني يك هدف \'_blank\' href ( \'http://www.openoffice.org\'>openoffice.org wordprocessor، spreadsheet و غيره ) < / > <لي يك درگرينويل واژه <يك هدف \'_blank\' href برای http://www.mozilla.com\'>firefox (webbrowser) < /یک درگرينويل <لي واژه <يك هدف \'_blank\' href برای {manual_url}- از ديدگاه سايت مدرسه@دستی< /یک درگرينويل';
 ?>

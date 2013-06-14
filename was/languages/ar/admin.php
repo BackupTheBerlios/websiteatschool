@@ -18,13 +18,13 @@
 /** /program/languages/ar/admin.php
  *
  * Language: ar (العربية)
- * Release:  0.90.3 / 2012041700 (2012-04-17)
+ * Release:  0.90.4 / 2013061400 (2013-06-14)
  *
  * @author Said Taki <translators@websiteatschool.eu>
  * @copyright Copyright (C) 2008-2013 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_ar
- * @version $Id: admin.php,v 1.2 2013/06/11 11:25:08 pfokker Exp $
+ * @version $Id: admin.php,v 1.3 2013/06/14 19:59:50 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = 'الا دارة';
@@ -227,10 +227,6 @@ $string['edit_node_link_image_width'] = 'عرض رمز ~';
 $string['edit_node_link_image_width_title'] = 'أدخل عرض على أيقونة (بالبكسل';
 $string['edit_node_link_image_height'] = '~ أيقونة ارتفاع';
 $string['edit_node_link_image_height_title'] = 'أدخل ارتفاع الرمز (بالبكسل';
-$string['edit_node_link_target'] = '~ الهدف';
-$string['edit_node_link_target_title'] = 'دخول الهدف، على سبيل المثال. فارغة_للنافذة جديدة (انظر الدليل)';
-$string['edit_node_link_href'] = '~URL';
-$string['edit_node_link_href_title'] = 'أدخل عنوان الكامل لصفحة على شبكة الإنترنت لربط خارجيURLأدخل عنوان';
 $string['edit_node_is_hidden'] = 'مخفي';
 $string['edit_node_is_hidden_title'] = 'ضع علامة في المربع لإخفاء صفحة / قسم (ولكن ستبقى متوفرة)';
 $string['edit_node_is_hidden_label'] = 'اخفاء ~ الصفحة / القسم';

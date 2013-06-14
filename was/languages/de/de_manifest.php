@@ -20,11 +20,11 @@
  * This file defines the German language package ('de'). 
  * This file is used when this package is installed.
  *
- * @author DavidP, S. Stadoll, Fabienne Kudzielka <translators@websiteatschool.eu>
+ * @author DavidP, S. Stadoll, Fabienne Kudzielka, Claudia Göhnert <translators@websiteatschool.eu>
  * @copyright Copyright (C) 2008-2013 Vereniging Website At School, Amsterdam <info@websiteatschool.eu>
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_de
- * @version $Id: de_manifest.php,v 1.3 2013/06/11 11:25:10 pfokker Exp $
+ * @version $Id: de_manifest.php,v 1.4 2013/06/14 19:59:51 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -32,11 +32,11 @@ $manifests['de'] = array(
     'language_key'        => 'de',
     'language_name'       => 'Deutsch',
     'parent_language_key' => '',
-    'description'         => 'This is the German translation based on Website@School release 0.90.3',
-    'author'              => 'DavidP, S. Stadoll, Fabienne Kudzielka',
-    'version'             => 2012041700,
-    'release'             => '0.90.3',
-    'release_date'        => '2012-04-17',
+    'description'         => 'This is the German translation based on Website@School release 0.90.4',
+    'author'              => 'DavidP, S. Stadoll, Fabienne Kudzielka, Claudia Göhnert',
+    'version'             => 2013061400,
+    'release'             => '0.90.4',
+    'release_date'        => '2013-06-14',
     'is_core'             => FALSE
    );
 

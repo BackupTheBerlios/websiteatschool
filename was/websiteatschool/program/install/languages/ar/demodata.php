@@ -18,13 +18,13 @@
 /** /program/install/languages/ar/demodata.php
  *
  * Language: ar (العربية)
- * Release:  0.90.3 / 2012041700 (2012-04-17)
+ * Release:  0.90.4 / 2013061400 (2013-06-14)
  *
  * @author Said Taki <translators@websiteatschool.eu>
  * @copyright Copyright (C) 2008-2013 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_ar
- * @version $Id: demodata.php,v 1.2 2013/06/11 11:25:59 pfokker Exp $
+ * @version $Id: demodata.php,v 1.3 2013/06/14 20:00:28 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = 'مظاهرة قاعدة بيانات';
@@ -37,7 +37,7 @@ $string['full_name_team'] = 'جميع الموظفين';
 $string['groupname_seniors'] = 'كبير';
 $string['full_name_seniors'] = 'طلاب المدارس المتوسطة';
 $string['groupname_juniors'] = 'مبتدئ';
-$string['full_name_juniors'] = '   Cm2 فيCP طلاب الصف';
+$string['full_name_juniors'] = '    4-1 طلاب الصف';
 $string['public_area_title'] = 'المدرسة الابتدائية سبيل المثال';
 $string['private_area_title'] = 'مثال إنترانت';
 $string['extra_area_title'] = 'غير النشطة سبيل المثال';

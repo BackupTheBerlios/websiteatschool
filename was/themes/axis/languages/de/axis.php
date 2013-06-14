@@ -18,37 +18,37 @@
 /** /program/themes/axis/languages/de/axis.php
  *
  * Language: de (Deutsch)
- * Release:  0.90.3 / 2012041700 (2012-04-17)
+ * Release:  0.90.4 / 2013061400 (2013-06-14)
  *
- * @author Fabienne Kudzielka <translators@websiteatschool.eu>
+ * @author Claudia Göhnert <translators@websiteatschool.eu>
  * @copyright Copyright (C) 2008-2013 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_de
- * @version $Id: axis.php,v 1.2 2013/06/11 11:25:38 pfokker Exp $
+ * @version $Id: axis.php,v 1.3 2013/06/14 20:00:10 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
-$string['title'] = 'Axis Theme';
-$string['description'] = 'A simple theme with a vertical hierarchical menu';
+$string['title'] = 'Axis Thema';
+$string['description'] = 'Ein einfaches Thema mit  vertikal-hierachisch aufgebautem  Menu';
 $string['translatetool_title'] = 'Axis';
-$string['translatetool_description'] = 'This file contains translations for the Axis Theme';
+$string['translatetool_description'] = 'Diese Datei beinhaltet Übersetzungen des Axis Themas';
 $string['copyright'] = '©{COPYRIGHT_YEAR} {SITENAME}';
 $string['logout_username'] = 'Abmelden {USERNAME}';
 $string['logout_username_title'] = 'Sitzung beenden für {FULL_NAME}';
 $string['print'] = 'Drucken';
 $string['print_title'] = 'Druckerfreundliche Version dieser Seite';
-$string['stylesheet_label'] = 'Statisches St~ylesheet';
-$string['stylesheet_title'] = 'URL der statischen Stylesheet Datei  (leer für keine)';
-$string['stylesheet_print_label'] = '~Druckerfreundliches Stylesheet';
-$string['stylesheet_print_title'] = 'URL der Stylesheet Datei für Druckversion (leer für keine)';
-$string['style_usage_static_label'] = 'Gebrauch Statische Stylesheet';
-$string['style_usage_static_option'] = 'Be~nutze statische Stylesheet Datei';
-$string['style_usage_static_title'] = 'Klicken Sie das Kästchen an um das statische Stylesheet auf jeder Seite aufzunehmen';
-$string['style_label'] = 'E~xtra Style auf area level';
-$string['style_title'] = 'Zusätzliche flächendeckende Style Information';
-$string['style_usage_area_label'] = 'Extra Style Gebrauch (area)';
-$string['style_usage_area_option'] = 'Benutze den extra Style auf ~area level';
-$string['style_usage_area_title'] = 'Dies gilt für die Style Information von \'Extra style\' oberhalb';
-$string['style_usage_node_label'] = 'Extra Style Gebrauch (Knopf)';
-$string['style_usage_node_option'] = 'Erlaube ~Knopf Style Information (\'Bazaar Style Style\')';
-$string['style_usage_node_title'] = 'Dies erlaubt \'Bazaar Style Style\': ein anderer Style für jede Seite/jeden Abschnitt';
+$string['stylesheet_label'] = 'Beständige La~yout-Datei';
+$string['stylesheet_title'] = 'URL der beständigen Layout-Datei  (leer lassen falls keine)';
+$string['stylesheet_print_label'] = '~Druckerfreundliche Layout-Datei';
+$string['stylesheet_print_title'] = 'URL der Layout- Datei für Druckversion (leer lassen falls keine)';
+$string['style_usage_static_label'] = 'Gebrauch einer beständigen Layout-Datei';
+$string['style_usage_static_option'] = 'Be~nutze beständige Layout- Datei';
+$string['style_usage_static_title'] = 'Klicken Sie das Eingabefeld an, um die beständige Layout-Datei auf jeder Seite aufzunehmen';
+$string['style_label'] = 'E~xtra Stilvorlage auf Bereichsebene';
+$string['style_title'] = 'Zusätzliche, flächendeckende Stilvorlageninformation';
+$string['style_usage_area_label'] = 'Gebrauch von extra Stilvorlage (Bereich)';
+$string['style_usage_area_option'] = 'Benutze die extra Stilvorlage auf ~Bereichsebene';
+$string['style_usage_area_title'] = 'Dies gilt für die Stilvorlageninformation der  \'Extra Stilvorlage\' oberhalb';
+$string['style_usage_node_label'] = 'Gebrauch von extra Stilvorlage (Knotenpunkt)';
+$string['style_usage_node_option'] = 'Erlaubt ~Knotenpunkt-Stilvorlageninformation (\'Bazaar Stilvorlage\')';
+$string['style_usage_node_title'] = ' \'Bazaar Stilvorlage\' erlaubt:: Jeweils eine  anderere Stilvorlage für jede Seite/Abschnitt  auszuwählen';
 ?>

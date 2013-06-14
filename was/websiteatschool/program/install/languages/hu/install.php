@@ -18,13 +18,13 @@
 /** /program/install/languages/hu/install.php
  *
  * Language: hu (Magyar)
- * Release:  0.90.3 / 2012041700 (2012-04-17)
+ * Release:  0.90.4 / 2013061400 (2013-06-14)
  *
  * @author Erika Swiderski, Gergely Sipos <translators@websiteatschool.eu>
  * @copyright Copyright (C) 2008-2013 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_hu
- * @version $Id: install.php,v 1.2 2013/06/11 11:26:02 pfokker Exp $
+ * @version $Id: install.php,v 1.3 2013/06/14 20:00:31 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = 'Telepítés';

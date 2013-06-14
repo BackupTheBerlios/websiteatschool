@@ -24,7 +24,7 @@
  * @copyright Copyright (C) 2008-2013 Vereniging Website At School, Amsterdam <info@websiteatschool.eu>
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_ar
- * @version $Id: ar_manifest.php,v 1.2 2013/06/11 11:25:08 pfokker Exp $
+ * @version $Id: ar_manifest.php,v 1.3 2013/06/14 19:59:50 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -32,11 +32,11 @@ $manifests['ar'] = array(
     'language_key'        => 'ar',
     'language_name'       => "\xD8\xA7\xD9\x84\xD8\xB9\xD8\xB1\xD8\xA8\xD9\x8A\xD8\xA9",
     'parent_language_key' => 'fr',
-    'description'         => 'This is the Arabic translation based on Website@School release 0.90.3',
+    'description'         => 'This is the Arabic translation based on Website@School release 0.90.4',
     'author'              => 'Said Taki',
-    'version'             => 2012041700,
-    'release'             => '0.90.3',
-    'release_date'        => '2012-04-17',
+    'version'             => 2013061400,
+    'release'             => '0.90.4',
+    'release_date'        => '2013-06-14',
     'is_core'             => FALSE
    );
 

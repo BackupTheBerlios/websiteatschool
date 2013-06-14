@@ -18,13 +18,13 @@
 /** /program/themes/rosalina/languages/fa/rosalina.php
  *
  * Language: fa (‫فارسی)
- * Release:  0.90.3 / 2012041700 (2012-04-17)
+ * Release:  0.90.4 / 2013061400 (2013-06-14)
  *
  * @author A. Darvishi <translators@websiteatschool.eu>
  * @copyright Copyright (C) 2008-2013 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_fa
- * @version $Id: rosalina.php,v 1.3 2013/06/11 11:25:49 pfokker Exp $
+ * @version $Id: rosalina.php,v 1.4 2013/06/14 20:00:20 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['title'] = 'تم rosalina';
@@ -37,7 +37,7 @@ $string['jumpmenu_area'] = 'ناحیه را انتخاب کنید';
 $string['jumpmenu_area_title'] = ' و در قسمت مطبوعات [ادامه] را انتخاب کنید';
 $string['jumpmenu_areas'] = 'مناطق';
 $string['lastupdated'] = 'آخرین به روزآوری: {update_year} - {update_month} - {update_day}';
-$string['copyright'] = '" کارآموزی copyright_year} { {sitename}';
+$string['copyright'] = '©{COPYRIGHT_YEAR} {SITENAME}';
 $string['quicktop_section_id_label'] = 'quicklinks بخش بالا';
 $string['quicktop_section_id_title'] = 'تعداد بخش حاوی لینک در بالای هر صفحه (0 برای هیچ کدام)';
 $string['quickbottom_section_id_label'] = 'quicklinks بخش پایین';

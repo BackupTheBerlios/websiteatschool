@@ -18,13 +18,13 @@
 /** /program/languages/es/was.php
  *
  * Language: es (Español)
- * Release:  0.90.3 / 2012041700 (2012-04-17)
+ * Release:  0.90.4 / 2013061400 (2013-06-14)
  *
  * @author Hanna Tulleken <translators@websiteatschool.eu>
  * @copyright Copyright (C) 2008-2013 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_es
- * @version $Id: was.php,v 1.6 2013/06/11 11:25:11 pfokker Exp $
+ * @version $Id: was.php,v 1.7 2013/06/14 19:59:53 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = 'General';

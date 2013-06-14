@@ -18,25 +18,25 @@
 /** /program/themes/schoolyard/languages/zh/schoolyard.php
  *
  * Language: zh (中文)
- * Release:  0.90.3 / 2012041700 (2012-04-17)
+ * Release:  0.90.4 / 2013061400 (2013-06-14)
  *
  * @author Liu Jing Fang <translators@websiteatschool.eu>
  * @copyright Copyright (C) 2008-2013 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_zh
- * @version $Id: schoolyard.php,v 1.2 2013/06/11 11:25:55 pfokker Exp $
+ * @version $Id: schoolyard.php,v 1.3 2013/06/14 20:00:27 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['title'] = '学校场地主题';
 $string['description'] = '一个简单的反向L型主题';
 $string['translatetool_title'] = '学校场地';
-$string['translatetool_description'] = '此文件包含对学校场地主题的翻译';
+$string['translatetool_description'] = '此文件包含對學校場地主題的翻譯';
 $string['you_are_here'] = '您在此：';
 $string['alt_logo'] = '图标图像';
 $string['jumpmenu_area'] = '选择一个区域';
 $string['jumpmenu_area_title'] = '选择一个区域并按[开始]';
 $string['lastupdated'] = '---<br>最近一次更新: {UPDATE_YEAR}-{UPDATE_MONTH}-{UPDATE_DAY}';
-$string['copyright'] = '&复制;{COPYRIGHT_YEAR} {SITENAME}';
+$string['copyright'] = '©{版權所有年度} {SITENAME}';
 $string['logout_username'] = '登出 {USERNAME}';
 $string['logout_username_title'] = '结束 {FULL_NAME}部分';
 $string['print'] = '打印';

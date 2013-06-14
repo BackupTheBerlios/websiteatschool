@@ -18,19 +18,19 @@
 /** /program/themes/axis/languages/fr/axis.php
  *
  * Language: fr (Français)
- * Release:  0.90.3 / 2012041700 (2012-04-17)
+ * Release:  0.90.4 / 2013061400 (2013-06-14)
  *
- * @author Jean Peyratout <translators@websiteatschool.eu> <jean.peyratout@abul.org>
+ * @author Marjolaine Audoux <translators@websiteatschool.eu> <jean.peyratout@abul.org>
  * @copyright Copyright (C) 2008-2013 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_fr
- * @version $Id: axis.php,v 1.2 2013/06/11 11:25:39 pfokker Exp $
+ * @version $Id: axis.php,v 1.3 2013/06/14 20:00:12 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
-$string['title'] = 'Axis Theme';
-$string['description'] = 'A simple theme with a vertical hierarchical menu';
+$string['title'] = 'Thème Axis';
+$string['description'] = 'Un thème simple avec menu hiérarchique vertical';
 $string['translatetool_title'] = 'Axis';
-$string['translatetool_description'] = 'This file contains translations for the Axis Theme';
+$string['translatetool_description'] = 'Ce dossier contient des traductions pour le thème Axis';
 $string['copyright'] = '©{COPYRIGHT_YEAR} {SITENAME}';
 $string['logout_username'] = 'déconnexion {USERNAME}';
 $string['logout_username_title'] = 'fin de session pour {FULL_NAME}';
@@ -49,6 +49,6 @@ $string['style_usage_area_label'] = 'Utilisation du style Extra (zone)';
 $string['style_usage_area_option'] = 'Utiliser le style extr~a au niveau de la zone';
 $string['style_usage_area_title'] = 'Ceci applique l\'information de style du style \'Extra\' ci-dessus';
 $string['style_usage_node_label'] = 'Utilisation du style Extra (nœud)';
-$string['style_usage_node_option'] = 'Autoriser l\'information de style au niveau du ~nœud (\'Style Bazar\')';
-$string['style_usage_node_title'] = 'Ceci autorise le \'Style Bazar\' : un style différent pour chaque page ou section';
+$string['style_usage_node_option'] = 'Autoriser l\'information de style au niveau du ~nœud (\'Bazaar Style Style\')';
+$string['style_usage_node_title'] = 'Ceci autorise le \'Bazaar Style Style\' : un style différent pour chaque page/section';
 ?>

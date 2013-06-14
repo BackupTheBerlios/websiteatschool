@@ -18,13 +18,13 @@
 /** /program/languages/fa/was.php
  *
  * Language: fa (‫فارسی)
- * Release:  0.90.3 / 2012041700 (2012-04-17)
+ * Release:  0.90.4 / 2013061400 (2013-06-14)
  *
  * @author Dirk Schouten <translators@websiteatschool.eu>
  * @copyright Copyright (C) 2008-2013 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_fa
- * @version $Id: was.php,v 1.2 2013/06/11 11:25:11 pfokker Exp $
+ * @version $Id: was.php,v 1.3 2013/06/14 19:59:53 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = 'عمومي';
@@ -40,10 +40,10 @@ $string['button_no'] = 'خير ~';
 $string['button_go'] = 'رفتن  ~';
 $string['hotkey_for_button'] = 'استفاده Alt- {HOTKEY}    يا فرمان  - {HOTKEY} کليد هاي فوري';
 $string['validate_too_short'] = 'رشته ‌ درازا كوتاه  :{FIELD}    ( حداقل = {MIN}';
-$string['validate_too_long'] = '{FIELD}: رشته زياد درازا ( حداکثر  {MAX}=حداکثر';
-$string['validate_too_small'] = '{FIELD} : مقدار بيش از حد   کم است {MIN}= حداقل )';
-$string['validate_too_large'] = '(FIELD} :  قدر بيش از حد زياد زرگ  (mحد اکثر = {MAX})';
-$string['validate_invalid'] = 'ا{FIELD} : رزش نامعتبر l';
+$string['validate_too_long'] = '{FIELD}: رشته زياد درازا ( حداکثر  (maximum = {MAX})';
+$string['validate_too_small'] = '{FIELD} : مقدار بيش از حد   کم است (minimum = {MIN})';
+$string['validate_too_large'] = '(FIELD} :  قدر بيش از حد زياد زرگ  (maximum = {MAX})';
+$string['validate_invalid'] = '{FIELD} : رزش نامعتبر l';
 $string['validate_invalid_datetime'] = ' {FIELD} :تاريخ و زمان نامعتبر';
 $string['validate_not_unique'] = '  {FIELD} : بايد مقدار منحصر به فرد';
 $string['validate_already_exists'] = '{FIELD} فایل یا پوشه  {VALUE} وجود دارد';
@@ -54,7 +54,7 @@ $string['alerts_mail_subject'] = 'اعلام خطربه،سياست انتخاب
 $string['alerts_processed'] = 'شماره اماده باش فراورده: {ALERTS}';
 $string['problem_with_module'] = ' مدول انجا مسئله است:{MODULE}درون صفحه  {NODE}.  بيان كردن اين موضوع لطفا به مدير سايت ? سپاس گزارم  .';
 $string['capacity_name_unknown'] = ' ناشناخته {CAPACITY})';
-$string['capacity_name_0'] = 'نه -- Geen --';
+$string['capacity_name_0'] = '- هیچی -';
 $string['capacity_name_1'] = 'دانش اموز';
 $string['capacity_name_2'] = 'اموزگار';
 $string['capacity_name_3'] = 'اصل';

@@ -18,13 +18,13 @@
 /** /program/languages/pt/admin.php
  *
  * Language: pt (Português)
- * Release:  0.90.3 / 2012041700 (2012-04-17)
+ * Release:  0.90.4 / 2013061400 (2013-06-14)
  *
  * @author Rita Valente Ribeiro da Silva <translators@websiteatschool.eu>
  * @copyright Copyright (C) 2008-2013 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_pt
- * @version $Id: admin.php,v 1.2 2013/06/11 11:25:14 pfokker Exp $
+ * @version $Id: admin.php,v 1.3 2013/06/14 19:59:56 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = 'Administração';
@@ -227,10 +227,6 @@ $string['edit_node_link_image_width'] = '~Largura do ícone';
 $string['edit_node_link_image_width_title'] = 'Inserir largura do ícone (em pixés)';
 $string['edit_node_link_image_height'] = 'Al~tura do ícone';
 $string['edit_node_link_image_height_title'] = 'Inserir altura do ícone (em pixés)';
-$string['edit_node_link_target'] = '~Objetivo';
-$string['edit_node_link_target_title'] = 'Inserir objetivo, ex.: _nova janela vazia (ver manual)';
-$string['edit_node_link_href'] = '~URL';
-$string['edit_node_link_href_title'] = 'Inserir URL completo da página externa para interligar a';
 $string['edit_node_is_hidden'] = 'Escondido';
 $string['edit_node_is_hidden_title'] = 'Verificar caixa de seleção para permitir esconder a página/secção (mas acessível)';
 $string['edit_node_is_hidden_label'] = '~Esconder a página/secção';

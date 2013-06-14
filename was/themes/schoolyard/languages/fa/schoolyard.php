@@ -18,13 +18,13 @@
 /** /program/themes/schoolyard/languages/fa/schoolyard.php
  *
  * Language: fa (‫فارسی)
- * Release:  0.90.3 / 2012041700 (2012-04-17)
+ * Release:  0.90.4 / 2013061400 (2013-06-14)
  *
  * @author A. Darvishi <translators@websiteatschool.eu>
  * @copyright Copyright (C) 2008-2013 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_fa
- * @version $Id: schoolyard.php,v 1.3 2013/06/11 11:25:53 pfokker Exp $
+ * @version $Id: schoolyard.php,v 1.4 2013/06/14 20:00:24 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['title'] = 'حياط مدرسه تم';

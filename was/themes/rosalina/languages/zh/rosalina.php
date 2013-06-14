@@ -18,13 +18,13 @@
 /** /program/themes/rosalina/languages/zh/rosalina.php
  *
  * Language: zh (中文)
- * Release:  0.90.3 / 2012041700 (2012-04-17)
+ * Release:  0.90.4 / 2013061400 (2013-06-14)
  *
  * @author Liu Jing Fang <translators@websiteatschool.eu>
  * @copyright Copyright (C) 2008-2013 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_zh
- * @version $Id: rosalina.php,v 1.2 2013/06/11 11:25:50 pfokker Exp $
+ * @version $Id: rosalina.php,v 1.3 2013/06/14 20:00:22 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['title'] = '罗塞利纳主题';
@@ -138,9 +138,9 @@ $string['hvmenu_MenuVerticalCentered_bottom_option'] = '底部';
 $string['hvmenu_MenuVerticalCentered_static_option'] = '静态';
 $string['hvmenu_MenuVerticalCentered_title'] = '选择整个菜单的竖直方向排成直线';
 $string['hvmenu_ChildOverlap_label'] = '水平方向重叠';
-$string['hvmenu_ChildOverlap_title'] = '水平方向重叠的孩子/家长（一个数值在-1.00 和 +1.00之间）';
+$string['hvmenu_ChildOverlap_title'] = '水平方向重叠的 孩子/家长（一个数值在-1.00 和 +1.00之间）';
 $string['hvmenu_ChildVerticalOverlap_label'] = '竖直方向重叠';
-$string['hvmenu_ChildVerticalOverlap_title'] = '竖直方向重叠的孩子/家长 (一个数值在 -1.00 和 +1.00之间)';
+$string['hvmenu_ChildVerticalOverlap_title'] = '竖直方向重叠的 孩子/家长 (一个数值在 -1.00 和 +1.00之间)';
 $string['hvmenu_StartTop_label'] = '菜单抵消X';
 $string['hvmenu_StartTop_title'] = '菜单抵消 X-轴 (像素)';
 $string['hvmenu_StartLeft_label'] = '菜单抵消Y';

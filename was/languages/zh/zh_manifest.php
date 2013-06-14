@@ -20,11 +20,11 @@
  * This file defines the Chinese language package ('zh'). 
  * This file is used when this package is installed.
  *
- * @author Liu Jing Fang <translators@websiteatschool.eu>
+ * @author Liu Jing Fang, Danny Yen <translators@websiteatschool.eu>
  * @copyright Copyright (C) 2008-2013 Vereniging Website At School, Amsterdam <info@websiteatschool.eu>
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_zh
- * @version $Id: zh_manifest.php,v 1.4 2013/06/11 11:25:16 pfokker Exp $
+ * @version $Id: zh_manifest.php,v 1.5 2013/06/14 20:00:00 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -32,11 +32,11 @@ $manifests['zh'] = array(
     'language_key'        => 'zh',
     'language_name'       => "\xE4\xB8\xAD\xE6\x96\x87",
     'parent_language_key' => 'en',
-    'description'         => 'This is the Chinese translation based on Website@School release 0.90.3',
-    'author'              => 'Liu Jing Fang',
-    'version'             => 2012041700,
-    'release'             => '0.90.3',
-    'release_date'        => '2012-04-17',
+    'description'         => 'This is the Chinese translation based on Website@School release 0.90.4',
+    'author'              => 'Liu Jing Fang, Danny Yen',
+    'version'             => 2013061400,
+    'release'             => '0.90.4',
+    'release_date'        => '2013-06-14',
     'is_core'             => FALSE
    );
 

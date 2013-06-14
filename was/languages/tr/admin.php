@@ -18,13 +18,13 @@
 /** /program/languages/tr/admin.php
  *
  * Language: tr (Türkçe)
- * Release:  0.90.3 / 2012041700 (2012-04-17)
+ * Release:  0.90.4 / 2013061400 (2013-06-14)
  *
  * @author Ülkü Gaga <translators@websiteatschool.eu>
  * @copyright Copyright (C) 2008-2013 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_tr
- * @version $Id: admin.php,v 1.4 2013/06/11 11:25:15 pfokker Exp $
+ * @version $Id: admin.php,v 1.5 2013/06/14 19:59:59 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = 'Yönetim';
@@ -227,10 +227,6 @@ $string['edit_node_link_image_width'] = 'S~imge genişliği';
 $string['edit_node_link_image_width_title'] = 'Simgenin genişliğini (piksel cinsinden) girin.';
 $string['edit_node_link_image_height'] = 'Si~mge yüksekliği';
 $string['edit_node_link_image_height_title'] = 'Simgenin yüksekliğini (piksel cinsinden) girin.';
-$string['edit_node_link_target'] = 'A~maç';
-$string['edit_node_link_target_title'] = 'Hedefi girin, örneğin   yeni bir pencere için _boşluk (kılavuza bakın)';
-$string['edit_node_link_href'] = '~URL';
-$string['edit_node_link_href_title'] = 'Harici bir bağlantı için web sayfasının tam URL\'ini girin';
 $string['edit_node_is_hidden'] = 'Gizli';
 $string['edit_node_is_hidden_title'] = 'Sayfa / bölümü gizleyebilmek için işaret kutusunu işaretleyin (ama erişilebilir)';
 $string['edit_node_is_hidden_label'] = 'Sa~yfa / bölümü gizle';

@@ -18,24 +18,24 @@
 /** /program/themes/axis/languages/es/axis.php
  *
  * Language: es (Español)
- * Release:  0.90.3 / 2012041700 (2012-04-17)
+ * Release:  0.90.4 / 2013061400 (2013-06-14)
  *
  * @author Anouk Coumans <translators@websiteatschool.eu>
  * @copyright Copyright (C) 2008-2013 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_es
- * @version $Id: axis.php,v 1.2 2013/06/11 11:25:39 pfokker Exp $
+ * @version $Id: axis.php,v 1.3 2013/06/14 20:00:11 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
-$string['title'] = 'Axis Theme';
-$string['description'] = 'A simple theme with a vertical hierarchical menu';
+$string['title'] = 'Tema Axis';
+$string['description'] = 'Un tema simple con un menú jerárquico vertical';
 $string['translatetool_title'] = 'Axis';
-$string['translatetool_description'] = 'This file contains translations for the Axis Theme';
-$string['copyright'] = '©{COPYRIGHT_YEAR} {SITENAME}';
-$string['logout_username'] = 'Cerrar sesión {USERNAME}';
-$string['logout_username_title'] = 'cerrar la sesión para {FULL_NAME}';
+$string['translatetool_description'] = 'Este archivo contiene traducciones para el Tema Axis';
+$string['copyright'] = '©{DERECHOS DE AUTOR_AÑO} {NOMBRE DEL SITIO}';
+$string['logout_username'] = 'Cerrar sesión {NOMBRE DE USUARIO}';
+$string['logout_username_title'] = 'cerrar la sesión para {NOMBRE_COMPLETO}';
 $string['print'] = 'imprimir';
-$string['print_title'] = 'versión para imprimir de esta página';
+$string['print_title'] = 'versión para imprimir esta página';
 $string['stylesheet_label'] = 'Hoja de es~tilo estático';
 $string['stylesheet_title'] = 'URL del archivo de la hoja de estilo estático (vacío para ninguno)';
 $string['stylesheet_print_label'] = 'hoja de estilo para ~imprimir';

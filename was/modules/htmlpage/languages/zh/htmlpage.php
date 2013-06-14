@@ -18,13 +18,13 @@
 /** /program/modules/htmlpage/languages/zh/htmlpage.php
  *
  * Language: zh (中文)
- * Release:  0.90.3 / 2012041700 (2012-04-17)
+ * Release:  0.90.4 / 2013061400 (2013-06-14)
  *
  * @author Liu Jing Fang <translators@websiteatschool.eu>
  * @copyright Copyright (C) 2008-2013 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_zh
- * @version $Id: htmlpage.php,v 1.4 2013/06/11 11:25:24 pfokker Exp $
+ * @version $Id: htmlpage.php,v 1.5 2013/06/14 20:00:05 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['title'] = '普通HTML页面';

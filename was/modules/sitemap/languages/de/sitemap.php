@@ -18,38 +18,34 @@
 /** /program/modules/sitemap/languages/de/sitemap.php
  *
  * Language: de (Deutsch)
- * Release:  0.90.3 / 2012041700 (2012-04-17)
+ * Release:  0.90.4 / 2013061400 (2013-06-14)
  *
- * @author Fabienne Kudzielka <translators@websiteatschool.eu>
+ * @author Claudia Göhnert <translators@websiteatschool.eu>
  * @copyright Copyright (C) 2008-2013 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_de
- * @version $Id: sitemap.php,v 1.2 2013/06/11 11:25:32 pfokker Exp $
+ * @version $Id: sitemap.php,v 1.3 2013/06/14 20:00:06 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
-$string['title'] = 'Sitemappe';
-$string['description'] = 'This module shows a small, medium or large sitemap';
+$string['title'] = 'Sitemap';
+$string['description'] = 'Dieses Modul zeigt eine kleine, mittlere oder grosse Sitemap an';
 $string['translatetool_title'] = 'Sitemap';
-$string['translatetool_description'] = 'This file contains translations for the Sitemap-module';
-$string['sitemap_content_header'] = 'Sitemap configuration';
-$string['sitemap_content_explanation'] = 'Here you can configure the sitemap. You can add an optional
-header and an optional introduction to the sitemap.
-You can also change the scope of the sitemap.
-Use one of the following options: \'area\' for
-a simple area map, \'limited\' for an area map
-followed by a list of links to available areas,
-or \'full\' for a complete overview of all areas.';
-$string['header_label'] = '~Header';
-$string['header_title'] = 'Header for the sitemap';
-$string['introduction_label'] = '~Introduction';
-$string['introduction_title'] = 'Introduction text for the sitemap';
-$string['scope_label'] = 'Select the scope of the sitemap';
-$string['scope_title'] = 'Select one of the options to set the scope of the sitemap';
-$string['scope_small_label'] = '~Area';
-$string['scope_small_title'] = 'Simple area map';
-$string['scope_medium_label'] = '~Limited';
-$string['scope_medium_title'] = 'Area map followed by list of available areas';
-$string['scope_large_label'] = '~Full';
-$string['scope_large_title'] = 'Full overview of all available areas';
-$string['sitemap_available_areas'] = 'Available areas';
+$string['translatetool_description'] = 'Diese Datei beinhaltet Übersetzungen für die Sitemap-Module';
+$string['sitemap_content_header'] = 'Sitemap Konfiguration';
+$string['sitemap_content_explanation'] = 'Hier können Sie die Sitemap konfigurieren. Sie können eine Kopfzeile und optional eine Einleitung zufugen.
+Sie können ebenfalls den Umfang der Sitemap veränderen.
+Wählen Sie aus den folgenden Optionen:\'Bereich\' für eine einfache Bereichs-Sitemap, \'limitiert\' für eine Bereichs-Sitemap, die eine eingeschränkte Liste von Links beinhaltet oder \'komplett\', die einen Gesamtüberblick aller Bereiche beinhaltet.';
+$string['header_label'] = '~Kopfzeile';
+$string['header_title'] = 'Kopfzeile der Sitemap';
+$string['introduction_label'] = '~Einleitung';
+$string['introduction_title'] = 'Einleitungstext für die Sitemap';
+$string['scope_label'] = 'Legen Sie den Umfang der Sitemap fest';
+$string['scope_title'] = 'Wählen Sie eine der Optionen aus, um den Umfang der Sitemap festzulegen';
+$string['scope_small_label'] = '~Bereich';
+$string['scope_small_title'] = 'Einfache Sitemap';
+$string['scope_medium_label'] = '~Limitiert';
+$string['scope_medium_title'] = 'Bereichs-Sitemap mit Liste der verfügbaren Bereiche';
+$string['scope_large_label'] = '~Komplett';
+$string['scope_large_title'] = 'Gesamtüberblick aller verfügbaren Bereiche';
+$string['sitemap_available_areas'] = 'Verfügbare Bereiche';
 ?>

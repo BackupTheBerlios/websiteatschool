@@ -18,13 +18,13 @@
 /** /program/install/languages/de/demodata.php
  *
  * Language: de (Deutsch)
- * Release:  0.90.3 / 2012041700 (2012-04-17)
+ * Release:  0.90.4 / 2013061400 (2013-06-14)
  *
  * @author Fabienne Kudzielka <translators@websiteatschool.eu>
  * @copyright Copyright (C) 2008-2013 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_de
- * @version $Id: demodata.php,v 1.2 2013/06/11 11:26:00 pfokker Exp $
+ * @version $Id: demodata.php,v 1.3 2013/06/14 20:00:28 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = 'Demodaten';
@@ -44,7 +44,7 @@ $string['extra_area_title'] = 'Exemplum Inaktiv';
 $string['public_area_path'] = 'exemplum';
 $string['private_area_path'] = 'Intranet';
 $string['extra_area_path'] = 'inaktiv';
-$string['alerts_initial_load'] = 'Anfängliche Installation der Demodaten, inklusiv dieser Mitteilung.';
+$string['alerts_initial_load'] = 'Anfängliche Installation der Demodaten, inklusiv dieser Test-Mitteilung.';
 $string['alerts_every_1440_minutes'] = 'Sie werden maximal eine Benachrichtigung enthalten in 1440 Minuten (1 Tag).';
 $string['alerts_every_60_minutes'] = 'Sie werden maximal eine Benachrichtigung enthalten in 60 Minuten (1 Stunde).';
 $string['alerts_email_address'] = 'Benachrichtigung werden per E-mail geschickt an diese Adresse geschickt:';
@@ -116,38 +116,38 @@ Benützen Sie bitten das Menu zum Navigieren oder benützen Sie das MyPage Jump 
 $string['aboutus_content'] = 'Exemplum Grundschule<br>
 1, Rock Bottom Strasse<br>
 Gummersbach<br>
-Direktor: Amelia Cackle';
-$string['schoolterms1_content'] = '<h2>Schulsemester und Schulferien für {LAST_SCHOOLYEAR}</h2>
-Semester 1: September - Oktober<br>
-Semester 2: November - Dezember<br>
+Rektor: Amelia Cackle';
+$string['schoolterms1_content'] = '<h2>Schuljahre und Schulferien für {LAST_SCHOOLYEAR}</h2>
+Term 1: September - Oktober<br>
+Term 2: November - Dezember<br>
 Winterferien: letzte Dezemberwoche<br>
-Semester 3: Januar - Februar<br>
-Semester 4: März - April<br>
+Term 3: Januar - Februar<br>
+Term 4: März - April<br>
 Frühlingsferien: zweite Aprilwoche<br>
-Semester 5: April - Mai<br>
-Semester 6: Juni - Juli<br>
+Term 5: April - Mai<br>
+Term 6: Juni - Juli<br>
 Sommerferien: August<br>
 ';
-$string['schoolterms2_content'] = '<h2>Schulsemester und Schulferien für {THIS_SCHOOLYEAR}</h2>
-Semester 1: September - Oktober<br>
-Semester 2: November - Dezember<br>
+$string['schoolterms2_content'] = '<h2>Schuljahre und Schulferien für {THIS_SCHOOLYEAR}</h2>
+Term 1: September - Oktober<br>
+Term 2: November - Dezember<br>
 Winterferien: letzte Dezemberwoche + erste Januarwoche<br>
-Semester 3: Januar - Februar<br>
-Semester 4: März - April<br>
+Term 3: Januar - Februar<br>
+Term 4: März - April<br>
 Frühlingsferien: dritte Aprilwoche<br>
-Semester 5: April - Mai<br>
-Semester 6: Juni - Juli<br>
+Term 5: April - Mai<br>
+Term 6: Juni - Juli<br>
 Sommerferien: August<br>
 ';
-$string['schoolterms3_content'] = '<h2>Vorläufige Schulsemester und Schulferien für {NEXT_SCHOOLYEAR}</h2>
-Semester 1: September - Oktober<br>
-Semester 2: November - Dezember<br>
+$string['schoolterms3_content'] = '<h2>Vorläufige Schuljahre und Schulferien für {NEXT_SCHOOLYEAR}</h2>
+Term 1: September - Oktober<br>
+Term 2: November - Dezember<br>
 Winterferien: die letzten zwei Dezemberwochen<br>
-Semester 3: Januari - Februari<br>
-Semester 4: März - April<br>
+Term 3: Januari - Februari<br>
+Term 4: März - April<br>
 Frühlingsferien: zweite Aprilwoche<br>
-Semester 5: April - Mai<br>
-Semester 6: Juni - Juli<br>
+Term 5: April - Mai<br>
+Term 6: Juni - Juli<br>
 Sommerferien: August<br>
 <br>
 Beachte: dies ist ein <em>vorläufiges</em> Schema.
@@ -157,11 +157,11 @@ Wir freuen uns, Ihnen mitzuteilen, dass die neue Website jetzt in Betrieb ist.';
 $string['latestnewsletter_content'] = '<h2>Rundschreiben 5 ({TODAY})</h2>
 <h3>Inhalt</h3>
 <ul>
-<li>Von der Direktion
+<li>Von der Rektorin
 <li>Neue Lehrerin
 <li>Pläne für {THIS_SCHOOLYEAR}
 </ul>
-<h3>Von der Direktion</h3>
+<h3>Von der Rektorin</h3>
 {LOREM} {IPSUM}
 <p>{DOLOR} {SIT}
 <p>Amelia Cackle
@@ -176,13 +176,13 @@ $string['oldnews_content'] = '<strong>{YESTERDAY}</strong><br>{LOREM}<p>
 <strong>{MONTHS_AGO_2}</strong><br>{SIT}
 ';
 $string['oldnewsletters_content'] = '<a href="#"><h2>Rundschreiben 4 ({MONTHS_AGO_1})</h2></a>
-<ul><li>Von der Direktion<li>Bevorstehende Evenemente<li>Wussten Sie, dass...?</ul>
+<ul><li>Von der Rektorin<li>Bevorstehende Ereignisse<li>Wussten Sie schon, dass...?</ul>
 <a href="#"><h2>Rundschreiben 3 ({MONTHS_AGO_2})</h2></a>
-<ul><li>Von der Direktion<li>Bevorstehende Evenemente<li>Kunstunterricht für die Grundschule</ul>
+<ul><li>Von der Rektorin<li>Bevorstehende Ereignisse<li>Kunstunterricht für die Grundschule</ul>
 <a href="#"><h2>Newsletter 2 ({MONTHS_AGO_3})</h2></a>
-<ul><li>Von der Direktion<li>Bevorstehende Evenemente<li>Exkursion für die Primarstufe 1</ul>
+<ul><li>Von der REktorin<li>Bevorstehende Ereignisse<li>Exkursion für die Primarstufe 1</ul>
 <a href="#"><h2>Rundschreiben 1 ({MONTHS_AGO_4})</h2></a>
-<ul><li>Von der Direktion<li>Bevorstehende Evenemente<li>Wussten Sie, dass...?</ul>
+<ul><li>Von der Rektorin<li>Bevorstehende Ereignisse<li>Wussten Sie schon, dass...?</ul>
 ';
 $string['searchbox_content'] = 'Platzhalter für das Such-Modul';
 $string['mypage_content'] = 'Ein Platzhalter für das Mypage-Modul.<p>
@@ -230,11 +230,11 @@ Herbstsitzung: zweiter Freitag in November, 15 Uhr<br>
 Wintersitzung: zweiter Freitag in Februar, 15 Uhr<br>
 Frühlingssitzung: erster Freitag in Juni, <strong>9 Uhr</strong> (nicht um 15 Uhr)<br>
 ';
-$string['minutes1_content'] = '<h2>Protokoll der Sommersitzung {LAST_SCHOOLYEAR}</h2> {LOREM} {IPSUM} {DOLOR} {SIT}';
-$string['minutes2_content'] = '<h2>Protokoll der Herbstsitzung {LAST_SCHOOLYEAR}</h2> {IPSUM} {LOREM} {DOLOR} {SIT}';
-$string['minutes3_content'] = '<h2>Protokoll der Wintersitzung {LAST_SCHOOLYEAR}</h2> {LOREM} {DOLOR} {IPSUM} {SIT}';
-$string['minutes4_content'] = '<h2>Protokoll der Frühlingssitzung {LAST_SCHOOLYEAR}</h2> {LOREM} {IPSUM} {SIT} {DOLOR}';
-$string['minutes5_content'] = '<h2>Protokoll der Sommersitzung {THIS_SCHOOLYEAR}</h2> {DOLOR} {LOREM} {SIT} {IPSUM}';
+$string['minutes1_content'] = '<h2>Protokoll der Sommerlehrerkonferenz {LAST_SCHOOLYEAR}</h2> {LOREM} {IPSUM} {DOLOR} {SIT}';
+$string['minutes2_content'] = '<h2>Protokoll der Herbstlehrerkonferenz {LAST_SCHOOLYEAR}</h2> {IPSUM} {LOREM} {DOLOR} {SIT}';
+$string['minutes3_content'] = '<h2>Protokoll der Winterlehrerekonferenz {LAST_SCHOOLYEAR}</h2> {LOREM} {DOLOR} {IPSUM} {SIT}';
+$string['minutes4_content'] = '<h2>Protokoll der Frühlingslehererkonferenz {LAST_SCHOOLYEAR}</h2> {LOREM} {IPSUM} {SIT} {DOLOR}';
+$string['minutes5_content'] = '<h2>Protokoll der Sommerlehrerkonferenz {THIS_SCHOOLYEAR}</h2> {DOLOR} {LOREM} {SIT} {IPSUM}';
 $string['downloads_content'] = '<h2>Nützliche Tools für Lehrer</h2>
 <ul>
 <li><a target="_blank" href="http://www.openoffice.org">OpenOffice.org (Textverarbeitung, Kalkulationstabelle, etc.)</a>

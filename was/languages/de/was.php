@@ -18,13 +18,13 @@
 /** /program/languages/de/was.php
  *
  * Language: de (Deutsch)
- * Release:  0.90.3 / 2012041700 (2012-04-17)
+ * Release:  0.90.4 / 2013061400 (2013-06-14)
  *
  * @author David Prousch <translators@websiteatschool.eu>
  * @copyright Copyright (C) 2008-2013 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_de
- * @version $Id: was.php,v 1.3 2013/06/11 11:25:10 pfokker Exp $
+ * @version $Id: was.php,v 1.4 2013/06/14 19:59:51 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = 'Allgemein';
@@ -54,7 +54,7 @@ $string['alerts_mail_subject'] = 'Warnmeldungen für die Webseite {SITENAME}: {A
 $string['alerts_processed'] = 'Zahl der festgehaltenen Warnmeldungen: {ALERTS}';
 $string['problem_with_module'] = 'Es besteht ein Problem mit dem Modul {MODULE} auf folgender Seite: {NODE}. Bitte informieren Sie den Webmaster darüber? Vielen Dank.';
 $string['capacity_name_unknown'] = '(Unbekannt {CAPACITY})';
-$string['capacity_name_0'] = '-- None --';
+$string['capacity_name_0'] = '-- Keine --';
 $string['capacity_name_1'] = 'Schüler';
 $string['capacity_name_2'] = 'Lehrer';
 $string['capacity_name_3'] = 'Rektor';

@@ -18,13 +18,13 @@
 /** /program/languages/hu/was.php
  *
  * Language: hu (Magyar)
- * Release:  0.90.3 / 2012041700 (2012-04-17)
+ * Release:  0.90.4 / 2013061400 (2013-06-14)
  *
  * @author Erika Swiderski <translators@websiteatschool.eu>
  * @copyright Copyright (C) 2008-2013 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_hu
- * @version $Id: was.php,v 1.2 2013/06/11 11:25:13 pfokker Exp $
+ * @version $Id: was.php,v 1.3 2013/06/14 19:59:56 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = 'Általános';
@@ -74,5 +74,5 @@ $string['capacity_name_16'] = '16. szint';
 $string['capacity_name_17'] = '17. szint';
 $string['capacity_name_18'] = '18. szint';
 $string['capacity_name_19'] = '19. szint';
-$string['file_not_found'] = '404 - A fájl nem található  : "{FILE}"';
+$string['file_not_found'] = '404 - A fájl nem található: "{FILE}"';
 ?>

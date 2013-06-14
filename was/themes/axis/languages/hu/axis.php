@@ -18,19 +18,19 @@
 /** /program/themes/axis/languages/hu/axis.php
  *
  * Language: hu (Magyar)
- * Release:  0.90.3 / 2012041700 (2012-04-17)
+ * Release:  0.90.4 / 2013061400 (2013-06-14)
  *
- * @author Erika Swiderski, Gergely Sipos <translators@websiteatschool.eu>
+ * @author Gergely Sipos <translators@websiteatschool.eu>
  * @copyright Copyright (C) 2008-2013 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_hu
- * @version $Id: axis.php,v 1.2 2013/06/11 11:25:39 pfokker Exp $
+ * @version $Id: axis.php,v 1.3 2013/06/14 20:00:12 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
-$string['title'] = 'Axis Theme';
-$string['description'] = 'A simple theme with a vertical hierarchical menu';
+$string['title'] = 'Axis Téma';
+$string['description'] = 'Egy egyszerű téma egy függőleges hierarchikus menüvel';
 $string['translatetool_title'] = 'Axis';
-$string['translatetool_description'] = 'This file contains translations for the Axis Theme';
+$string['translatetool_description'] = 'Ez a fájl az Axis Témához kapcsolódó fordításokat tartalmazza';
 $string['copyright'] = '©{COPYRIGHT_YEAR} {SITENAME}';
 $string['logout_username'] = 'kilépés {USERNAME}';
 $string['logout_username_title'] = 'befejezés {FULL_NAME} részére';
@@ -42,7 +42,7 @@ $string['stylesheet_print_label'] = 'N~yomtatóbarát stíluslap';
 $string['stylesheet_print_title'] = 'A stíluslap URL-je a nyomtatási verzióhoz (ha nincs, hagyja üresen)';
 $string['style_usage_static_label'] = 'Statikus stíluslap használata';
 $string['style_usage_static_option'] = 'Statikus stíluslap-fájl ~használata';
-$string['style_usage_static_title'] = 'Jelölje be a kockát, a minden oldalhoz hozzá akarja rendelni a statikus stíluslapot';
+$string['style_usage_static_title'] = 'Jelölje be, ha minden oldalhoz hozzá akarja rendelni a statikus stíluslapot';
 $string['style_label'] = 'E~xtra stílus a terület szintjén';
 $string['style_title'] = 'További területszintű stílus-információ';
 $string['style_usage_area_label'] = 'Extrastílus-használat (terület)';

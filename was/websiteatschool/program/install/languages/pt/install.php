@@ -18,13 +18,13 @@
 /** /program/install/languages/pt/install.php
  *
  * Language: pt (Português)
- * Release:  0.90.3 / 2012041700 (2012-04-17)
+ * Release:  0.90.4 / 2013061400 (2013-06-14)
  *
  * @author Rita Valente Ribeiro da Silva <translators@websiteatschool.eu>
  * @copyright Copyright (C) 2008-2013 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_pt
- * @version $Id: install.php,v 1.2 2013/06/11 11:26:03 pfokker Exp $
+ * @version $Id: install.php,v 1.3 2013/06/14 20:00:32 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = 'Instalar';
