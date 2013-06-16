@@ -24,7 +24,7 @@
  * @copyright Copyright (C) 2008-2013 Vereniging Website At School, Amsterdam
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_el
- * @version $Id: install.php,v 1.1 2013/06/14 20:00:29 pfokker Exp $
+ * @version $Id: install.php,v 1.2 2013/06/16 07:50:40 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 $string['translatetool_title'] = 'Εγκατάσταση';
@@ -47,7 +47,7 @@ $string['ok_accesskey'] = 'Κ';
 $string['ok_title'] = 'Πατήστε [Alt-K] ή [Cmnd-K] σαν συντόμευση για αυτό το πλήκτρο';
 $string['yes'] = 'Ναι';
 $string['no'] = 'Όχι';
-$string['language_name'] = 'Αγγλικά';
+$string['language_name'] = 'Ελληνικά';
 $string['dialog_language'] = 'Γλώσσα';
 $string['dialog_language_title'] = 'Επιλέξτε τη γλώσσα εγκατάστασης';
 $string['dialog_language_explanation'] = 'Παρακαλώ επιλέξτε τη γλώσσα που θέλετε κατά τη διάρκεια της διαδικασίας εγκατάστασης.';
