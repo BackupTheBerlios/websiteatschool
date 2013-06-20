@@ -1,6 +1,10 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.156 2013/06/14 20:00:27 pfokker Exp $
+$Id: CHANGES.txt,v 1.157 2013/06/20 14:41:36 pfokker Exp $
 -------------------------------------------------------------------------------
+
+2013-06-20
+- added mailpage module
+- done with the admin-part of the mailpage module already
 
 2013-06-14
 - added new language Greek (el)
