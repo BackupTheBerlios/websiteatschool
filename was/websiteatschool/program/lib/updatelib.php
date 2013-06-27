@@ -54,7 +54,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: updatelib.php,v 1.24 2013/06/11 11:26:06 pfokker Exp $
+ * @version $Id: updatelib.php,v 1.25 2013/06/27 13:35:22 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -901,6 +901,7 @@ function update_core(&$output) {
     if (!update_core_2011051100($output)) { return; }
     if (!update_core_2011093000($output)) { return; }
     if (!update_core_2012041900($output)) { return; }
+    if (!update_core_2013062701($output)) { return; }
     // if (!update_core_2012mmdd00($output)) { return; }
     // ...
 
@@ -1064,10 +1065,8 @@ function get_manifests($path) {
  *
  * @param string $filename contains the table definitions
  * @return bool TRUE on success, FALSE otherwise + messages written to logger
- * @uses $DB
  */
 function update_create_tables($filename) {
-    global $DB;
     $retval = TRUE; // assume success
     if (!file_exists($filename)) {
         logger(sprintf('%s(): cannot include tabledefs: file \'%s\' not found',__FUNCTION__,$filename));
@@ -1076,16 +1075,32 @@ function update_create_tables($filename) {
         $tabledefs = array();
         include($filename);
         foreach($tabledefs as $tabledef) {
-            if ($DB->create_table($tabledef) === FALSE) { // oops, but we continue anyway
-                logger(sprintf('%s(): cannot create table \'%s\': %s',__FUNCTION__,$tabledef['name'],db_errormessage()));
+            if (!update_create_table($tabledef)) {
                 $retval = FALSE;
-            } else {
-                logger(sprintf('%s(): success creating table \'%s\'',__FUNCTION__,$tabledef['name']),WLOG_DEBUG);
             }
         }
     }
     return $retval;
 } // update_create_tables()
+
+
+/** create table in database from an individual tabledef
+ *
+ * @param array $tabledef contains the definition of a single table
+ * @return bool TRUE on success, FALSE otherwise + message written to logger
+ * @uses $DB
+ */
+function update_create_table($tabledef) {
+    global $DB;
+    $retval = TRUE; // assume success
+    if ($DB->create_table($tabledef) === FALSE) { // oops, but we continue anyway
+        logger(sprintf('%s(): cannot create \'%s\': %s',__FUNCTION__,$tabledef['name'],db_errormessage()));
+        $retval = FALSE;
+    } else {
+        logger(sprintf('%s(): success creating table \'%s\'',__FUNCTION__,$tabledef['name']),WLOG_DEBUG);
+    }
+    return $retval;
+} // update_create_table()
 
 
 // ==================================================================
@@ -1948,5 +1963,41 @@ function update_core_2012041900(&$output) {
     //
     return update_core_version($output,$version);
 } // update_core_2012041900()
+
+
+/** perform actual update to version 2013062701
+ *
+ * Changes between 2012041900 and 2013062701:
+ *  - addition of a new core table 'tokens'
+ *
+ * @param object &$output collects the html output
+ * @return bool TRUE on success, FALSE otherwise
+ */
+function update_core_2013062701(&$output) {
+    global $CFG,$DB;
+    $version = 2013062701;
+    $retval = TRUE; // assume success
+    if ($CFG->version >= $version) {
+        return $retval;
+    }
+    $filename = $CFG->progdir.'/install/tabledefs.php';
+    if (!file_exists($filename)) {
+        logger(sprintf('%s(): cannot include tabledefs: file \'%s\' not found',__FUNCTION__,$filename));
+        $retval = FALSE;
+    } else {
+        $tabledefs = array();
+        include($filename);
+        $table = 'tokens';
+        if ($DB->table_exists($table)) {
+            logger(sprintf("%s(): table '%s' already exists, skipping CREATE TABLE",__FUNCTION__, $table));
+        } else {
+            $retval = update_create_table($tabledefs[$table]);
+        }
+    }
+    if ($retval) {
+        $retval = update_core_version($output,$version);
+    }
+    return $retval;
+} // update_core_2013062701()
 
 ?>

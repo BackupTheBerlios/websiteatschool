@@ -64,7 +64,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasinstall
- * @version $Id: tabledefs.php,v 1.9 2013/06/11 11:25:58 pfokker Exp $
+ * @version $Id: tabledefs.php,v 1.10 2013/06/27 13:35:22 pfokker Exp $
  * @todo automatically create appropriate sequence name for serial fields??? or add seqdefs too?
  */
 if (!defined('WASENTRY')) { die('no entry'); }
@@ -2063,4 +2063,76 @@ $tabledefs['users_groups_capacities'] = array(
         ),
     );
 
+$tabledefs['tokens'] = array(
+    'name' => 'tokens',
+    'comment' => 'this table keeps track of tokens used in instances of interactive forms',
+    'fields' => array(
+        array(
+            'name' => 'token_id',
+            'type' => 'serial',
+            'comment' => 'unique identification of a token'
+            ),
+        array(
+            'name' => 'token_key',
+            'type' => 'varchar',
+            'length' => 60,
+            'notnull' => TRUE,
+            'default' => '',
+            'comment' => 'contains the unique identifier stored in the visitor\'s form'
+            ),
+        array(
+            'name' => 'token_ref',
+            'type' => 'varchar',
+            'length' => 60,
+            'notnull' => TRUE,
+            'default' => '',
+            'comment' => 'contains the identifier of a form'
+            ),
+        array(
+            'name' => 'token_start',
+            'type' => 'int',
+            'notnull' => TRUE,
+            'default' => 0,
+            'comment' => 'contains the unix timestamp the token validity starts (UTC)'
+            ),
+        array(
+            'name' => 'token_end',
+            'type' => 'int',
+            'notnull' => TRUE,
+            'default' => 0,
+            'comment' => 'contains the unix timestamp the token validity ends (UTC)'
+            ),
+        array(
+            'name' => 'token_expire',
+            'type' => 'int',
+            'notnull' => TRUE,
+            'default' => 0,
+            'comment' => 'contains the unix timestamp after which the token can be deleted (UTC)'
+            ),
+        array(
+            'name' => 'remote_addr',
+            'type' => 'varchar',
+            'length' => 150,
+            'notnull' => TRUE,
+            'comment' => 'IP-address of the visitor that sollicited this token'
+            ),
+        array(
+            'name' => 'data',
+            'type' => 'longtext',
+            'comment' => 'contains the serialised data'
+            )
+        ),
+    'keys' => array(
+        array(
+            'type' => 'primary',
+            'fields' => array('token_id')
+            ),
+        array(
+            'name' => 'tokenkey',
+            'type' => 'index',
+            'fields' => array('token_key'),
+            'unique' => FALSE
+            )        
+        )
+    );
 ?>

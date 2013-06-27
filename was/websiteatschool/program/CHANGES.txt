@@ -1,6 +1,14 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.157 2013/06/20 14:41:36 pfokker Exp $
+$Id: CHANGES.txt,v 1.158 2013/06/27 13:35:21 pfokker Exp $
 -------------------------------------------------------------------------------
+
+2013-06-27
+- finished with the 'tokens' for visitor forms; added tokenlib.php
+- temporarily increased version number to force database update for tokens
+
+2013-06-26
+- added new table 'tokens' to keep track of instances of visitor's forms
+- prepared for core update routine update_core_2013mmddxx() [updatelib.php]
 
 2013-06-20
 - added mailpage module
