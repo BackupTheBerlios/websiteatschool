@@ -42,8 +42,8 @@
  *
  * The following functions are defined.
  * <pre>
- * $token_id = token_create($reference, &$token_key, $delay_start, $delay_end, $remote_addr);
- * $token_id = token_lookup($reference, $token_key, &$timer_start, &$timer_end, &$remote_addr, &$data);
+ * $token_id = token_create($ref, &$token_key, $delay_start, $delay_end, $ip_addr);
+ * $token_id = token_lookup($ref, $token_key, &$timer_start, &$timer_end, &$ip_addr, &$data);
  * $retval   = token_store($token_id, $data);
  * $retval   = token_fetch($token_id, &$data);
  * $retval   = token_destroy($token_id);
@@ -54,7 +54,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: tokenlib.php,v 1.2 2013/06/28 08:42:32 pfokker Exp $
+ * @version $Id: tokenlib.php,v 1.3 2013/06/28 08:48:44 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -96,7 +96,7 @@ if (!defined('WASENTRY')) { die('no entry'); }
  * @param string &$token_key a generated unique identifier based on the pkey of the token
  * @param int $delay_start seconds to wait before POST'ed data will be considered valid
  * @param int $delay_end seconds after which the dialog no longer accepts POST'ed data
- * @param string $remote_addr the IP-address this visitor is calling from
+ * @param string $ip_addr the IP-address this visitor is calling from
  * @return bool|int FALSE on error or primary key of the generated token in the tokens table.
  * @todo Should we enforce valid UTF8 in $reference and $ip_addr? We might have substr() trouble...
  */
@@ -147,7 +147,7 @@ function token_create($reference, &$token_key, $delay_start=10, $delay_end=14400
  *
  * Typical use:
  *
- * <code>
+ * <pre>
  * if (($token_id = token_lookup($ref, $key, $t0, $t1, $ip_addr, $data)) === FALSE) {
  *   logger('error: no such token');
  * } elseif (time() < $t0) {
@@ -157,7 +157,7 @@ function token_create($reference, &$token_key, $delay_start=10, $delay_end=14400
  * } else {
  *   logger('welcome visitor from '.$ip_addr);
  * }
- * </code>
+ * </pre>
  *
  * This allows for accepting POST'ed information only within the time window
  * defined by $t0 and $t1 and denying access otherwise with a precise cause
@@ -165,8 +165,8 @@ function token_create($reference, &$token_key, $delay_start=10, $delay_end=14400
  *
  * @param string $reference is an identifier of the dialog requesting a token
  * @param string $token_key a unique identifier based on the pkey of the token
- * @param int &$time_start unix timestamp indicating start of the valid interval
- * @param int &$time_end unix timestamp indicating end of the valid interval
+ * @param int &$token_start unix timestamp indicating start of the valid interval
+ * @param int &$token_end unix timestamp indicating end of the valid interval
  * @param string &$remote_addr the IP-address this visitor that created this token
  * @param mixed &$data receives the unserialised data from the database
  * @return bool FALSE on failure/non-existing, token_id otherwise and values in parameters
