@@ -43,7 +43,7 @@
  * The following functions are defined.
  * <pre>
  * $token_id = token_create($reference, &$token_key, $delay_start, $delay_end, $remote_addr);
- * $token_id = token_lookup($reference, $token_key, &$timer_start, &$timer_end, &$remote_addr);
+ * $token_id = token_lookup($reference, $token_key, &$timer_start, &$timer_end, &$remote_addr, &$data);
  * $retval   = token_store($token_id, $data);
  * $retval   = token_fetch($token_id, &$data);
  * $retval   = token_destroy($token_id);
@@ -54,7 +54,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: tokenlib.php,v 1.1 2013/06/27 13:35:22 pfokker Exp $
+ * @version $Id: tokenlib.php,v 1.2 2013/06/28 08:42:32 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -148,9 +148,9 @@ function token_create($reference, &$token_key, $delay_start=10, $delay_end=14400
  * Typical use:
  *
  * <code>
- * if (($token_id = token_lookup($ref, $key, $t0, $t1, $ip_addr)) === FALSE) {
+ * if (($token_id = token_lookup($ref, $key, $t0, $t1, $ip_addr, $data)) === FALSE) {
  *   logger('error: no such token');
- * } elseif (time() < $0) {
+ * } elseif (time() < $t0) {
  *   logger('error: whoa, not so fast there!');
  * } elseif ($t1 < time()) {
  *   logger('error: too late');
@@ -168,12 +168,13 @@ function token_create($reference, &$token_key, $delay_start=10, $delay_end=14400
  * @param int &$time_start unix timestamp indicating start of the valid interval
  * @param int &$time_end unix timestamp indicating end of the valid interval
  * @param string &$remote_addr the IP-address this visitor that created this token
+ * @param mixed &$data receives the unserialised data from the database
  * @return bool FALSE on failure/non-existing, token_id otherwise and values in parameters
  */
-function token_lookup($reference, $token_key, &$token_start, &$token_end, &$remote_addr) {
+function token_lookup($reference, $token_key, &$token_start, &$token_end, &$remote_addr, &$data) {
     $token_ref = substr($reference,0,60);
     $table = 'tokens';
-    $fields = array('token_id', 'token_start', 'token_end', 'remote_addr');
+    $fields = array('token_id', 'token_start', 'token_end', 'remote_addr', 'data');
     $where = array('token_key' => strval($token_key), 'token_ref' => $token_ref);
     if (($record = db_select_single_record($table,$fields,$where)) === FALSE) {
         return FALSE; 
@@ -181,6 +182,7 @@ function token_lookup($reference, $token_key, &$token_start, &$token_end, &$remo
     $token_start = intval($record['token_start']);
     $token_end = intval($record['token_end']);
     $remote_addr = $record['remote_addr'];
+    $data = unserialize($record['data']);
     return intval($record['token_id']);
 } // token_lookup()
 
@@ -188,7 +190,7 @@ function token_lookup($reference, $token_key, &$token_start, &$token_end, &$remo
 /** retrieve the (unserialised) data from the database
  *
  * @param int $token_id the unique token_id (pkey) that identifies the token record
- * @param string &$data receives the unserialised data from the database
+ * @param mixed &$data receives the unserialised data from the database
  * @return bool TRUE on success, FALSE otherwise
  */
 function token_fetch($token_id, &$data) {
@@ -208,7 +210,7 @@ function token_fetch($token_id, &$data) {
  * serialise and store $data in the database
  *
  * @param int $token_id the unique token_id (pkey) that identifies the token record
- * @param string $data holds the unserialised data to store
+ * @param mixed $data holds the unserialised data to store
  * @return bool TRUE on success, FALSE otherwise
  */
 function token_store($token_id, $data) {
