@@ -31,7 +31,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_mailpage
- * @version $Id: mailpage_view.php,v 1.2 2013/06/28 19:37:23 pfokker Exp $
+ * @version $Id: mailpage_view.php,v 1.3 2013/06/28 19:43:36 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -138,14 +138,14 @@ function mailpage_view(&$theme,$area_id,$node_id,$module) {
                 $theme->add_message(t('error_sending_message'));
                 mailpage_show_form($theme, $config, $data);
             } else {
-                token_delete($token_id);
+                token_destroy($token_id);
                 mailpage_show_thankyou($theme, $config, $dialogdef);
             }
         } else {
             //
             // 3D -- catch all: initiate a new round (shouldn't happen)
             //
-            token_delete($token_id);
+            token_destroy($token_id);
             $token_id = FALSE;
         }
     }
@@ -306,8 +306,21 @@ function mailpage_show_preview(&$theme, $config, $dialogdef) {
 
 } // mailpage_show_preview()
 
+
+function mailpage_send_message($config, $data, $ip_addr) {
+    return TRUE; // stub!!!
+}
+
+
 function mailpage_show_thankyou(&$theme, $config, $dialogdef) {
   $theme->add_message('STUB '.__FUNCTION__.'()');
+  $theme->add_content('STUB '.__FUNCTION__.'()');
+    $thankyoudef = array(
+        'button_ok' => dialog_buttondef(BUTTON_OK),
+        );
+    $href = was_node_url($theme->node_record);
+    $theme->add_content(dialog_quickform($href,$thankyoudef));
+
 } // mailpage_show_thankyou()
 
 
