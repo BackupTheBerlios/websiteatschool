@@ -180,7 +180,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: dialoglib.php,v 1.8 2013/06/11 11:26:05 pfokker Exp $
+ * @version $Id: dialoglib.php,v 1.9 2013/06/28 19:20:20 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1270,6 +1270,20 @@ function dialog_get_widget_file(&$item,$name,$value) {
  * in an input type="submit" button (It is possible in a button tag, but we don't
  * use that because it requires HTML 4. Maybe later...)
  *
+ * If $button_type is not one of the defined values BUTTON_* the variable itself
+ * is ised as name, class and as a key for the translation of value unless a $value
+ * is specified.
+ *
+ * Typical use:
+ * <pre>
+ * $dialogdef = array(...,'button_ok' => dialog_buttondef(BUTTON_OK));
+ * </pre>
+ *
+ * Another example defining a non-standard button:
+ * <pre>
+ * $button = dialog_buttondef('button_foo','~Foo','Do not press this button!');
+ * </pre>
+ *
  * @param string $button_type one of the predefined button constants, e.g. BUTTON_OK
  * @param string $value the label used for display including hotkey, eg. '~Yes' or '~Cancel'
  * @param string $title the text displayed via a mouseover
@@ -1319,9 +1333,9 @@ function dialog_buttondef($button_type,$value='',$title='') {
         $button['value'] = t('button_edit');
         break;
     default:
-        $button['name'] = 'button_ok';
-        $button['class'] = 'button_ok';
-        $button['value'] = t('button_ok');
+        $button['name'] = $button_type;
+        $button['class'] = $button_type;
+        $button['value'] = (empty($value)) ? t($button_type) : $value;
         break;
     }
     if (!empty($value)) {
