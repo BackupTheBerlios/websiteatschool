@@ -1,9 +1,10 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.159 2013/06/28 19:20:20 pfokker Exp $
+$Id: CHANGES.txt,v 1.160 2013/06/28 19:37:24 pfokker Exp $
 -------------------------------------------------------------------------------
 
 2013-06-28
 - small improvements in buttons [dialoglib.php]
+- interim-version of mailpage_view()
 
 2013-06-27
 - finished with the 'tokens' for visitor forms; added tokenlib.php

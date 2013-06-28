@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_mailpage
- * @version $Id: mailpage.php,v 1.1 2013/06/20 14:41:35 pfokker Exp $
+ * @version $Id: mailpage.php,v 1.2 2013/06/28 19:37:23 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -85,7 +85,47 @@ $string['description_label'] = 'Description {INDEX}';
 $string['description_title'] = 'This text is displayed when the visitor selects this destination';
 $string['thankyou_label'] = 'Thank-you text {INDEX}';
 $string['thankyou_title'] = 'Text displayed after the visitor submits the message to this destination';
-$string['message_label'] = 'Default ~message';
-$string['message_title'] = 'Initial text for message from the visitor';
+$string['default_message_label'] = 'Default ~message';
+$string['default_message_title'] = 'Initial text for message from the visitor';
 $string['error_saving_data'] = 'Error saving data';
+
+$comment['error_retrieving_config'] = 'Visitor translations start here';
+$string['error_retrieving_config'] = 'Error: cannot retrieve configuration data';
+$string['error_retrieving_addresses'] = 'Error: no destination addresses for page {NODE}';
+$string['error_retrieving_data'] = 'Error: could not retrieve data';
+$string['error_token_expired'] = 'Error: the mailpage form timed out, please try again';
+$string['error_storing_data'] = 'Error: could not save data';
+$string['error_too_fast'] = 'Error: the server is no able to accept your message at this time. Please try again in a minute';
+$string['error_sending_message'] = 'Error: message could not be sent, please try again';
+$string['error_creating_token'] = 'Error: no token available for page {NODE}';
+
+
+/*
+Header
+In tro duc tion.
+~Destination: <listbox>
+~Name:
+~E-mail:
+~Subject:
+~Message:
+[~Preview] [~Cancel]
+
+*/
+$string['destination_label'] = '~Destination';
+$string['destination_title'] = 'Select the destination address for your message';
+$string['fullname_label'] = '~Name (required)';
+$string['fullname_title'] = 'Please enter your name';
+$string['email_label'] = '~E-mail (required)';
+$string['email_title'] = 'Please enter your e-mail address';
+$string['subject_label'] = '~Subject';
+$string['subject_title'] = 'Add a subject for your message';
+$string['message_label'] = '~Message';
+$string['message_title'] = 'Add a subject for your message';
+$string['button_preview'] = '~Preview';
+$string['button_send'] = '~Send';
+
+$string['preview_header'] = 'Preview';
+
+
+
 ?>

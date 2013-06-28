@@ -33,7 +33,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_mailpage
- * @version $Id: mailpage_admin.php,v 1.1 2013/06/20 14:41:33 pfokker Exp $
+ * @version $Id: mailpage_admin.php,v 1.2 2013/06/28 19:37:23 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -395,8 +395,8 @@ function mailpage_get_dialogdef(&$output, $viewonly, $node_id) {
         'maxlength' => 32768, // arbitrary; 32 kB
         'columns' => 50,
         'rows' => 10,
-        'label' => t('message_label','m_mailpage'),
-        'title' => t('message_title','m_mailpage'),
+        'label' => t('default_message_label','m_mailpage'),
+        'title' => t('default_message_title','m_mailpage'),
         'viewonly' => $viewonly,
         'value' => $message,
         'old_value' => $message

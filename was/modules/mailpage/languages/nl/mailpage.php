@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_mailpage
- * @version $Id: mailpage.php,v 1.1 2013/06/20 14:41:35 pfokker Exp $
+ * @version $Id: mailpage.php,v 1.2 2013/06/28 19:37:24 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -57,8 +57,8 @@ $string['description_label'] = 'Beschrijving {INDEX}';
 $string['description_title'] = 'Deze tekst wordt weergegeven als de bezoeker deze bestemming kiest';
 $string['thankyou_label'] = 'Bedank-tekst {INDEX}';
 $string['thankyou_title'] = 'Deze tekst wordt getoond nadat de bezoeker een bericht heeft verzonden naar deze bestemming';
-$string['message_label'] = '~Standaard-bericht';
-$string['message_title'] = 'Initiële tekst voor het bericht van de bezoeker';
+$string['default_message_label'] = '~Standaard-bericht';
+$string['default_message_title'] = 'Initiële tekst voor het bericht van de bezoeker';
 $string['error_saving_data'] = 'Fout bij opslaan gegevens';
 
 ?>
