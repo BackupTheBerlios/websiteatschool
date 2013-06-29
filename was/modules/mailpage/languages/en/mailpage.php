@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_mailpage
- * @version $Id: mailpage.php,v 1.2 2013/06/28 19:37:23 pfokker Exp $
+ * @version $Id: mailpage.php,v 1.3 2013/06/29 19:55:20 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -123,9 +123,19 @@ $string['message_label'] = '~Message';
 $string['message_title'] = 'Add a subject for your message';
 $string['button_preview'] = '~Preview';
 $string['button_send'] = '~Send';
+$string['cancelled'] = 'Cancelled';
 
 $string['preview_header'] = 'Preview';
+$string['from'] = 'From';
+$string['to'] = 'To';
+$string['subject'] = 'Subject';
+$string['message'] = 'Message';
+$string['date'] = 'Date';
+$string['ip_addr'] = 'IP-address';
 
+$string['subject_line'] = '[{NODE}] Message from {IP_ADDR}: {SUBJECT}';
+$string['thankyou_header'] = 'Message has been sent';
+$string['here_is_a_copy'] = 'Here is a copy of your message.';
 
 
 ?>

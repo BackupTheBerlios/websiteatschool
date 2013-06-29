@@ -1,6 +1,9 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.160 2013/06/28 19:37:24 pfokker Exp $
+$Id: CHANGES.txt,v 1.161 2013/06/29 19:55:21 pfokker Exp $
 -------------------------------------------------------------------------------
+
+2013-06-29
+- functional version of mailpage_view()
 
 2013-06-28
 - small improvements in buttons [dialoglib.php]

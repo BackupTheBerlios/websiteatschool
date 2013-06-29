@@ -54,7 +54,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: tokenlib.php,v 1.4 2013/06/29 12:38:03 pfokker Exp $
+ * @version $Id: tokenlib.php,v 1.5 2013/06/29 19:55:21 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
