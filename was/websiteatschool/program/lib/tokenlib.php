@@ -54,7 +54,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: tokenlib.php,v 1.3 2013/06/28 08:48:44 pfokker Exp $
+ * @version $Id: tokenlib.php,v 1.4 2013/06/29 12:38:03 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -217,10 +217,7 @@ function token_store($token_id, $data) {
     $table = 'tokens';
     $fields = array('data' => serialize($data));
     $where = array('token_id' => intval($token_id));
-    if (($retval = db_update($table, $fields, $where)) !== FALSE) {
-        $retval = ($retval == 1) ? TRUE : FALSE;
-    }
-    return $retval;
+    return (db_update($table, $fields, $where) === FALSE) ? FALSE : TRUE;
 } // token_store()
 
 
