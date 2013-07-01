@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_mailpage
- * @version $Id: mailpage.php,v 1.3 2013/06/29 19:55:20 pfokker Exp $
+ * @version $Id: mailpage.php,v 1.4 2013/07/01 19:50:09 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -100,7 +100,9 @@ $string['error_sending_message'] = 'Error: message could not be sent, please try
 $string['error_creating_token'] = 'Error: no token available for page {NODE}';
 
 
-/*
+$comment['destination_label'] = 
+'Here is the definition of the mailform as the visitor sees it.
+
 Header
 In tro duc tion.
 ~Destination: <listbox>
@@ -110,7 +112,7 @@ In tro duc tion.
 ~Message:
 [~Preview] [~Cancel]
 
-*/
+';
 $string['destination_label'] = '~Destination';
 $string['destination_title'] = 'Select the destination address for your message';
 $string['fullname_label'] = '~Name (required)';
@@ -119,12 +121,13 @@ $string['email_label'] = '~E-mail (required)';
 $string['email_title'] = 'Please enter your e-mail address';
 $string['subject_label'] = '~Subject';
 $string['subject_title'] = 'Add a subject for your message';
-$string['message_label'] = '~Message';
-$string['message_title'] = 'Add a subject for your message';
+$string['message_label'] = '~Message (required)';
+$string['message_title'] = 'Enter your nessage here';
 $string['button_preview'] = '~Preview';
 $string['button_send'] = '~Send';
 $string['cancelled'] = 'Cancelled';
 
+$comment['preview_header'] = 'Here is the text for the Preview';
 $string['preview_header'] = 'Preview';
 $string['from'] = 'From';
 $string['to'] = 'To';
@@ -133,6 +136,7 @@ $string['message'] = 'Message';
 $string['date'] = 'Date';
 $string['ip_addr'] = 'IP-address';
 
+$comment['subject_line'] = ' The subject line can contain these parameters: {NODE}, {IP_ADDR}, {SUBJECT}';
 $string['subject_line'] = '[{NODE}] Message from {IP_ADDR}: {SUBJECT}';
 $string['thankyou_header'] = 'Message has been sent';
 $string['here_is_a_copy'] = 'Here is a copy of your message.';

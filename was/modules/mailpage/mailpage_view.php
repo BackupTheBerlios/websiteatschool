@@ -31,7 +31,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_mailpage
- * @version $Id: mailpage_view.php,v 1.4 2013/06/29 19:55:20 pfokker Exp $
+ * @version $Id: mailpage_view.php,v 1.5 2013/07/01 19:50:09 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -94,7 +94,7 @@ function mailpage_view(&$theme,$area_id,$node_id,$module) {
             // 3A -- Preview button
             //
             $dialogdef = mailpage_view_get_dialogdef($config, $token_key);
-            if (!dialog_validate($dialogdef)) {
+            if (!mailpage_view_dialog_validate($dialogdef)) {
                 foreach($dialogdef as $k => $item) {
                     if ((isset($item['errors'])) && ($item['errors'] > 0)) {
                         $theme->add_message($item['error_messages']);
@@ -134,7 +134,8 @@ function mailpage_view(&$theme,$area_id,$node_id,$module) {
                 $theme->add_message($msg);
                 $theme->add_popup_top($msg);
                 mailpage_show_form($theme, $config, $data);
-            } elseif (!mailpage_send_message($config, $data, $ip_addr)) {
+                logger(sprintf('%s(): reply too fast (%ds) from %s',__FUNCTION__,$t0-$now,$ip_addr));
+            } elseif (!mailpage_send_message($config, $data, $ip_addr, $now-$t0)) {
                 $theme->add_message(t('error_sending_message'));
                 mailpage_show_form($theme, $config, $data);
             } else {
@@ -166,63 +167,20 @@ function mailpage_view(&$theme,$area_id,$node_id,$module) {
     return TRUE;
 } // mailpage_view()
 
-// DEBUGGING
-/* *********
-# echo "DEBUG:<pre>";   print_r($addresses); echo "</pre>\n".MAILPAGE_REFERENCE.'<p>';
- $token_key = '';
- $token_id = token_create(MAILPAGE_REFERENCE,$token_key);
- $data = array('foo' => 'bar', 'baz' => 'quux');
- echo "<pre>\n";
- var_dump($data);
- $retval = token_store($token_id,$data);
- var_dump($data);
- $retval = token_fetch($token_id,$data);
- var_dump($data);
-
- echo "DESTROY\n";
- $x = token_destroy(1);
- var_dump($x);
- $x = token_destroy(1);
- var_dump($x);
-
- echo "GARBAGE\n";
- $x = token_garbage_collect();
- var_dump($x);
-
- echo "DONE";
-
- var_dump($token_key);
- var_dump($token_id);
- echo strlen(MAILPAGE_REFERENCE);
- echo strlen($token_key);
-
-
- echo "<hr><pre>";
- $t0 = $t1 = 0;
- $ip_addr = '';
- $x = token_lookup(MAILPAGE_REFERENCE,$token_key,$ip_addr,$t0,$t1);
-
- var_dump($x);
- var_dump($ip_addr);
- var_dump($t0);
- var_dump($t1);
-
- echo "Bad Ref: ";
- $x = token_lookup(MAILPAGE_REFERENCE.'x',$token_key,$ip_addr,$t0,$t1);
- var_dump($x);
- echo "Bad Key: ";
- $x = token_lookup(MAILPAGE_REFERENCE,$token_key.'x',$ip_addr,$t0,$t1);
- var_dump($x);
-
- echo "</pre>";
- ****** */
-
 
 /** retrieve all configuration data for this mailpage
  *
  * this retrieves all configuration data for this mailpage,
  * i.e. both the general parameters (header/intro/etc.) and
- * the full list of configured addresses.
+ * the full list of configured destination addresses.
+ * Here is a quick reminder of the structure in $config.
+ * <pre>
+ * 'node_id'
+ * 'header'
+ * 'introduction'
+ * 'message'
+ * 'addresses' = ['mailpage_address_id','node_id','sort_order','name','email','description','thankyou'],...
+ * </pre>
  *
  * @param int $node_id identifies the page
  * @return bool|array configuration data in a (nested) array or FALSE on error
@@ -238,15 +196,14 @@ function mailpage_view_get_config($node_id) {
     }
     // 2 -- fetch all configured destinations
     $table = 'mailpages_addresses';
-    $keyfield = 'mailpage_address_id';
     $fields = '*';
     $where = array('node_id' => intval($node_id));
-    $order = array('sort_order',$keyfield);
-    if (($records = db_select_all_records($table,$fields,$where,$order,$keyfield)) === FALSE) {
+    $order = array('sort_order','mailpage_address_id');
+    if (($records = db_select_all_records($table,$fields,$where,$order)) === FALSE) {
         logger(sprintf('%s(): error retrieving addresses: %s',__FUNCTION__,db_errormessage()));
         return FALSE;
     }
-    $config['addresses'] = $records;
+    $config['addresses'] = $records; // simple 0-based array, not keyed by mailpage_address_id
     return $config;
 } // mailpage_view_get_config()
 
@@ -254,31 +211,24 @@ function mailpage_view_get_config($node_id) {
 /** construct a dialog definition for the visitor's mail form
  *
  * this defines the contact form. If there is but one destination
- * we disable the listbox (and set the title to the title of the 
- * only option because it makes no sense to tell the user to select
- * an option from a viewonly listbox with a single item).
+ * we don't even add the listbox because it makes no sense to tell
+ * the user to select an option from a listbox with a single item.
  *
  * @param array $config mailpage configuration including addresses
  * @param string $token_key
  * @return array datadefinition
  */
 function mailpage_view_get_dialogdef($config, $token_key) {
-    $addresses = array();
-    $index = 0;
-    foreach($config['addresses'] as $address) {
-        $options[$index++] = array(
+    $options = array();
+    foreach($config['addresses'] as $index => $address) {
+        $options[$index] = array(
             'option'     => $address['name'],
             'title'      => $address['description'],
             'address_id' => $address['mailpage_address_id']);
     }
-    $dialogdef = array(
-        'token' => array(
-            'type' => F_ALPHANUMERIC,
-            'name' => 'token',
-	    'hidden' => TRUE,
-            'value' => $token_key
-            ),
-        'destination' => array(
+    $dialogdef = array();
+    if (1 < sizeof($options)) {
+        $dialogdef['destination'] = array(
             'type' => F_LISTBOX,
             'name' => 'destination',
             'id' => 'mailpage_destination',
@@ -287,13 +237,21 @@ function mailpage_view_get_dialogdef($config, $token_key) {
             'viewonly' => (sizeof($options) < 2) ? TRUE : FALSE,
             'label' => t('destination_label','m_mailpage'),
             'title' => (sizeof($options) < 2) ? $options[0]['title'] : t('destination_title','m_mailpage')
+            );
+    }
+    $dialogdef = array_merge($dialogdef,array(
+        'token' => array(
+            'type' => F_ALPHANUMERIC,
+            'name' => 'token',
+	    'hidden' => TRUE,
+            'value' => $token_key
             ),
         'fullname' => array(
             'type' => F_ALPHANUMERIC,
             'name' => 'fullname',
             'minlength' => 1,
             'maxlength' => 255,
-            'columns' => 50,
+            'columns' => 44,
             'label' => t('fullname_label','m_mailpage'),
             'title' => t('fullname_title','m_mailpage'),
             'value' => '',
@@ -303,7 +261,7 @@ function mailpage_view_get_dialogdef($config, $token_key) {
             'name' => 'email',
             'minlength' => 3,
             'maxlength' => 255,
-            'columns' => 50,
+            'columns' => 44,
             'label' => t('email_label','m_mailpage'),
             'title' => t('email_title','m_mailpage'),
             'value' => '',
@@ -313,7 +271,7 @@ function mailpage_view_get_dialogdef($config, $token_key) {
             'name' => 'subject',
             'minlength' => 0,
             'maxlength' => 80,
-            'columns' => 50,
+            'columns' => 44,
             'label' => t('subject_label','m_mailpage'),
             'title' => t('subject_title','m_mailpage'),
             'value' => '',
@@ -321,7 +279,7 @@ function mailpage_view_get_dialogdef($config, $token_key) {
         'message' => array(
             'type' => F_ALPHANUMERIC,
             'name' => 'message',
-            'minlength' => 0,
+            'minlength' => 1,
             'maxlength' => 32768, // arbitrary; 32 kB
             'columns' => 50,
             'rows' => 10,
@@ -331,9 +289,38 @@ function mailpage_view_get_dialogdef($config, $token_key) {
             ),
         'button_preview' => dialog_buttondef('button_preview',t('button_preview','m_mailpage')),
         'button_cancel' => dialog_buttondef(BUTTON_CANCEL)
+        )
     );
     return $dialogdef;
 } // mailpage_view_get_dialogdef()
+
+
+/** validate the data entered by the visitor
+ *
+ * Other than the standard validation we check for at least 1 @-sign in
+ * the email address. (It is non-trivial to validate an email address,
+ * it may not even be possible to do it in a single regular expression.
+ * See http://stackoverflow.com/questions/201323 for more information.)
+ *
+ * @param object &$dialogdef defines the dialog and will hold POSTed values
+ * @return bool TRUE if valid, else FALSE + messages added to dialogdef
+ */
+function mailpage_view_dialog_validate(&$dialogdef) {
+    $retval = TRUE; // assume success
+    // 1 -- check the usual suspects (side-effect: fetch POSTed values in dialogdef)
+    if (!dialog_validate($dialogdef)) {
+        $retval = FALSE;
+    }
+
+    // 2 -- special case: there must be at least 1 @-sign in the email field
+    if (strpos($dialogdef['email']['value'],'@') === FALSE) { // no @-sign in mail address
+        $retval = FALSE;
+        ++$dialogdef['email']['errors'];
+        $params = array('{FIELD}' => str_replace('~','',$dialogdef['email']['label']));
+        $dialogdef['email']['error_messages'][] = t('validate_invalid','',$params);
+    }
+    return $retval;
+} // mailpage_view_dialog_validate()
 
 
 /** display the contact form
@@ -347,8 +334,12 @@ function mailpage_view_get_dialogdef($config, $token_key) {
  * without JS enabled AND it is screenreader-friendly.
  *
  * If there is only a single destination, the listbox is
- * viewonly: there is no point in showing a list of options
- * if there is nothing to choose from.
+ * not defined in the dialogdef and hence not rendered at all:
+ * there is no point in showing a list of options
+ * if there is nothing to choose from. This means that the
+ * necessary javascript is NOT added and also no DIVs are
+ * shown. So: a clean, uncluttered form in case of a single
+ * destination.
  *
  * @param object &$theme collects the (html) output
  * @param array mailpage configuration data in a (nested) array
@@ -369,22 +360,7 @@ function mailpage_show_form(&$theme, $config, $dialogdef) {
     }
     $href = was_node_url($theme->node_record);
     //
-    // 2 -- Prepare for a snippet of JavaScript
-    //
-    // This suppresses the DIVs that correspond to currently not selected option in the listbox
-    $js="<script><!--\n".
-        "var sel=document.getElementById('mailpage_destination');\n".
-        "sel.onchange=function() {\n".
-        "  var div;\n".
-        "  for(var i=0; i<this.length; ++i) {\n".
-        "    div=document.getElementById('mailpage_destination_'+this.options[i].value);\n".
-        "    div.style.display=(this.options[i].selected)?'block':'none';\n".
-        "  }\n".
-        "}\n".
-        "sel.onchange();\n".
-        "--></script>\n";
-    //
-    // 3 -- Render the dialog (including the additional DIVs)
+    // 2 -- Render the dialog (maybe including the additional DIVs)
     //
     $postponed = array();
     $theme->add_content(html_form($href));
@@ -413,6 +389,19 @@ function mailpage_show_form(&$theme, $config, $dialogdef) {
                                             htmlspecialchars($option['option']),
                                             htmlspecialchars($option['title'])));
             }
+            // This suppresses the DIVs that correspond to currently
+            // not selected options in the listbox
+            $js="<script><!--\n".
+                "var sel=document.getElementById('mailpage_destination');\n".
+                "sel.onchange=function() {\n".
+                "  var div;\n".
+                "  for(var i=0; i<this.length; ++i) {\n".
+                "    div=document.getElementById('mailpage_destination_'+this.options[i].value);\n".
+                "    div.style.display=(this.options[i].selected)?'block':'none';\n".
+                "  }\n".
+                "}\n".
+                "sel.onchange();\n".
+                "--></script>\n";
             $theme->add_content($js);
         }
     }
@@ -441,6 +430,7 @@ function mailpage_show_form(&$theme, $config, $dialogdef) {
  * @return void output writted to $theme
  */
 function mailpage_show_preview(&$theme, $config, $dialogdef, $ip_addr) {
+    $destinations = 
     //
     // 1 -- prepare the information to show
     //
@@ -448,8 +438,6 @@ function mailpage_show_preview(&$theme, $config, $dialogdef, $ip_addr) {
     $mailfrom = sprintf('&quot;%s&quot; &lt;%s&gt;',
                         htmlspecialchars(str_replace($forbidden,'',trim($dialogdef['fullname']['value']))),
                         htmlspecialchars(str_replace($forbidden,'',trim($dialogdef['email']['value']))));
-    $destination = $dialogdef['destination']['options'][$dialogdef['destination']['value']]['option'];
-    $sendto = htmlspecialchars('"'.str_replace($forbidden,'',trim($destination)).'"');
     $subject = htmlspecialchars(trim($dialogdef['subject']['value']));
     $message = nl2br(htmlspecialchars(trim($dialogdef['message']['value'])));
     $remote_addr = htmlspecialchars($ip_addr);
@@ -459,7 +447,12 @@ function mailpage_show_preview(&$theme, $config, $dialogdef, $ip_addr) {
     $theme->add_content(html_tag('h2','',t('preview_header','m_mailpage')));
     $theme->add_content('<div>');
     $theme->add_content(sprintf('<strong>%s</strong>: %s<br>',t('from','m_mailpage'),$mailfrom));
-    $theme->add_content(sprintf('<strong>%s</strong>: %s<br>',t('to','m_mailpage'),$sendto));
+    if (1 < sizeof($config['addresses'])) { // only show destination if there is more than 1
+        $index = (isset($dialogdef['destination'])) ? $dialogdef['destination']['value'] : 0;
+        $destination = $config['addresses'][$index]['name'];
+        $sendto = htmlspecialchars('"'.str_replace($forbidden,'',trim($destination)).'"');
+        $theme->add_content(sprintf('<strong>%s</strong>: %s<br>',t('to','m_mailpage'),$sendto));
+    }
     $theme->add_content(sprintf('<strong>%s</strong>: %s<br>',t('subject','m_mailpage'),$subject));
     $theme->add_content(sprintf('<strong>%s</strong>: %s<br>',t('date','m_mailpage'),date('r')));
     $theme->add_content(sprintf('<strong>%s</strong>: %s<br>',t('ip_addr','m_mailpage'),$remote_addr));
@@ -470,8 +463,8 @@ function mailpage_show_preview(&$theme, $config, $dialogdef, $ip_addr) {
     //
     $previewdef = array(
         'token' => $dialogdef['token'],
-        'button_send' => dialog_buttondef('button_send',t('button_send','m_mailpage')),
         'button_edit' => dialog_buttondef(BUTTON_EDIT),
+        'button_send' => dialog_buttondef('button_send',t('button_send','m_mailpage')),
         'button_cancel' => dialog_buttondef(BUTTON_CANCEL)
         );
     $href = was_node_url($theme->node_record);
@@ -481,19 +474,24 @@ function mailpage_show_preview(&$theme, $config, $dialogdef, $ip_addr) {
 
 /** actually send the visitor's message to the selected destination
  *
+ * In order to get a feeling for the time a visitor needs, we also
+ * record the delay (in seconds) next to the visitor's IP address.
+ *
  * @param array mailpage configuration data in a (nested) array
  * @param array $dialogdef array that defines the data fields including values
  * @param string $ip_addr the originating IP-address
+ * @param int $delay the # of seconds since time=t0
  * @return bool FALSE on error, TRUE on success + message sent
  * @todo extra validation of set_mailreplyto and set_subject?
  * @todo more available parameters in subject_line?
  * @todo make body of mail configuratble?
  */
-function mailpage_send_message($config, $dialogdef, $ip_addr) {
+function mailpage_send_message($config, $dialogdef, $ip_addr, $delay) {
     global $CFG;
     $mailfrom = sprintf('(%s) %s',trim($dialogdef['fullname']['value']),
                                   trim($dialogdef['email']['value']));
-    $sendto = trim($dialogdef['destination']['options'][$dialogdef['destination']['value']]['option']);
+    $index = (isset($dialogdef['destination'])) ? $dialogdef['destination']['value'] : 0;
+    $sendto = trim($config['addresses'][$index]['name']);
     $subject = trim($dialogdef['subject']['value']);
     $message = trim($dialogdef['message']['value']);
     $remote_addr = $ip_addr;
@@ -501,13 +499,10 @@ function mailpage_send_message($config, $dialogdef, $ip_addr) {
             sprintf("%s: %s\n",t('to','m_mailpage'),$sendto).
             sprintf("%s: %s\n",t('subject','m_mailpage'),$subject).
             sprintf("%s: %s\n",t('date','m_mailpage'),date('r')).
-            sprintf("%s: %s\n",t('ip_addr','m_mailpage'),$remote_addr).
+            sprintf("%s: %s (%d)\n",t('ip_addr','m_mailpage'),$remote_addr,$delay).
             sprintf("%s:\n%s\n",t('message','m_mailpage'),$message);
-
-    $index = $dialogdef['destination']['value'];
-    $mailpage_address_id = $dialogdef['destination']['options'][$index]['address_id'];
-    $email = $config['addresses'][$mailpage_address_id]['email'];
-    $name = $config['addresses'][$mailpage_address_id]['name'];
+    $email = $config['addresses'][$index]['email'];
+    $name = $config['addresses'][$index]['name'];
     $params = array(
         '{NODE}' => strval($config['node_id']),
         '{SUBJECT}' => $subject,
@@ -524,7 +519,6 @@ function mailpage_send_message($config, $dialogdef, $ip_addr) {
 
 
 /** thank the visitor for the message and show a text copy too
- *
  *
  * Almost the same as {@see mailpage_show_preview()}.
  *
@@ -543,14 +537,12 @@ function mailpage_show_thankyou(&$theme, $config, $dialogdef, $ip_addr) {
     $mailfrom = sprintf('&quot;%s&quot; &lt;%s&gt;',
                         htmlspecialchars(str_replace($forbidden,'',trim($dialogdef['fullname']['value']))),
                         htmlspecialchars(str_replace($forbidden,'',trim($dialogdef['email']['value']))));
-    $destination = $dialogdef['destination']['options'][$dialogdef['destination']['value']]['option'];
-    $sendto = htmlspecialchars('"'.str_replace($forbidden,'',trim($destination)).'"');
+
+    $index = (isset($dialogdef['destination'])) ? $dialogdef['destination']['value'] : 0;
     $subject = htmlspecialchars(trim($dialogdef['subject']['value']));
     $message = nl2br(htmlspecialchars(trim($dialogdef['message']['value'])));
     $remote_addr = htmlspecialchars($ip_addr);
-    $index = $dialogdef['destination']['value'];
-    $mailpage_address_id = $dialogdef['destination']['options'][$index]['address_id'];
-    $thankyou = trim($config['addresses'][$mailpage_address_id]['thankyou']);
+    $thankyou = trim($config['addresses'][$index]['thankyou']);
     //
     // 2 -- actually output the text
     //
@@ -561,20 +553,16 @@ function mailpage_show_thankyou(&$theme, $config, $dialogdef, $ip_addr) {
     $theme->add_content(html_tag('p','',t('here_is_a_copy','m_mailpage')));
     $theme->add_content('<div>');
     $theme->add_content(sprintf('<strong>%s</strong>: %s<br>',t('from','m_mailpage'),$mailfrom));
-    $theme->add_content(sprintf('<strong>%s</strong>: %s<br>',t('to','m_mailpage'),$sendto));
+    if (1 < sizeof($config['addresses'])) { // only show destination if there is more than 1
+        $destination = $config['addresses'][$index]['name'];
+        $sendto = htmlspecialchars('"'.str_replace($forbidden,'',trim($destination)).'"');
+        $theme->add_content(sprintf('<strong>%s</strong>: %s<br>',t('to','m_mailpage'),$sendto));
+    }
     $theme->add_content(sprintf('<strong>%s</strong>: %s<br>',t('subject','m_mailpage'),$subject));
     $theme->add_content(sprintf('<strong>%s</strong>: %s<br>',t('date','m_mailpage'),date('r')));
     $theme->add_content(sprintf('<strong>%s</strong>: %s<br>',t('ip_addr','m_mailpage'),$remote_addr));
     $theme->add_content(sprintf("<strong>%s</strong>:<br>\n%s<br>",t('message','m_mailpage'),$message));
     $theme->add_content('</div>');
-    //
-    // 3 -- finish with navigation for the visitor
-    //
-    $thankyoudef = array(
-        'button_ok' => dialog_buttondef(BUTTON_OK),
-        );
-    $href = was_node_url($theme->node_record);
-    $theme->add_content(dialog_quickform($href,$thankyoudef));
 } // mailpage_show_thankyou()
 
 ?>
