@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_mailpage
- * @version $Id: mailpage_manifest.php,v 1.1 2013/06/20 14:41:34 pfokker Exp $
+ * @version $Id: mailpage_manifest.php,v 1.2 2013/07/02 18:13:03 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -33,9 +33,9 @@ $manifests['mailpage'] = array(
     'name' => 'mailpage',
     'description' => 'This module allows visitors to send a message to a predefined email address',
     'author' => 'Peter Fokker',
-    'version' => 2013061900,
+    'version' => 2013070200,
     'release' => '0.90.5',
-    'release_date' => '2013-06-19',
+    'release_date' => '2013-07-02',
     'is_core' => TRUE,
     'has_acls' => FALSE,
     'tabledefs' => 'install/mailpage_tabledefs.php',

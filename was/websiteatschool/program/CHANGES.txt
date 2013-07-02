@@ -1,6 +1,9 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.162 2013/07/01 19:50:08 pfokker Exp $
+$Id: CHANGES.txt,v 1.163 2013/07/02 18:13:04 pfokker Exp $
 -------------------------------------------------------------------------------
+2013-07-02
+- almost done with the mailpage module including Dutch translation.
+
 2013-07-01
 - additional validation in mailpage email address
 - we now suppress the destination listbox if there's only a single option

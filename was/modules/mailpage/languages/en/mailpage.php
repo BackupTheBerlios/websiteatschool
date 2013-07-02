@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_mailpage
- * @version $Id: mailpage.php,v 1.4 2013/07/01 19:50:09 pfokker Exp $
+ * @version $Id: mailpage.php,v 1.5 2013/07/02 18:13:04 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -32,62 +32,72 @@ $string['translatetool_description'] = 'This file contains translations for the 
 
 $comment['mailpage_content_header'] = 'Here is the mailpage configuration dialog:
 
+_Link to add a new address_
+_Link to address 1 (10)_
+_Link to address 2 (20)_
+...
 ~Header
 ~Introduction
-
-Name 1
-Address 1
-Description 1
-Thankyou 1
-Sort order 1
-...
-Name N
-Address N
-Description N
-Thankyou N
-Sort order N
-
 Default ~message
 [~Save] [~Cancel]
 
-Please make sure your translation has a comparable set of hotkeys (indicated via the tildes \'~\').
-
-Note that the fields Name,...,Sort order will be repeated N times (with N=1,2,3,...) so it is
-not possible to give every field their own tilde. It may be best to place a tilde just before
-the first number, e.g. "Name ~{INDEX}" which would yield Name ~1 for the first name,
-Name ~2 for the second, and so on. In that way the user can jump to every set of addresses
-with a hotkey (assuming there are no more than 9 addresses). I think that that is better
-than nothing at all even if one cannot jump to the other fields (Address,Description,...)';
-
+Please make sure your translation has a comparable set of hotkeys (indicated via the tildes \'~\').';
 $string['mailpage_content_header'] = 'Mailpage configuration';
-$string['mailpage_content_explanation'] = 'Here you can configure the mailpage module.
-You can add an optional header and an optional introduction to the mailpage.
-The fields \'Name\', \'E-mail address\', \'Description\', \'Thank-you text\' and \'Sort order\'
-define a destination for the visitor\'s message. You MUST at least enter one destination.
-It is possible to add another destination by entering the appropriate details in the empty
-fields at the bottom. You can change the sort order by changing the numbers in the \'Sort order\'
-fields. A destination can be deleted by removing the corresponding \'Name\' and saving the changes.
-Finally, it is possible to enter a default message. The visitor will see this text in
-the message field. This allows for a simple way to let the visitor answer multiple
+$string['mailpage_content_explanation'] =
+'Here you can configure the mailpage module.
+Use the links below to add new destination
+address or edit or delete an existing destination
+address. You MUST configure at least one destination
+address for this module to work.
+<p>You can add an optional header and an optional
+introduction to the mailpage. Also, it is possible
+to enter a default message. The visitor will see
+this default message in the message field. This allows for a
+simple way to let the visitor answer multiple
 questions in a single message.';
-
+$string['add_new_address_label'] = 'Add a new destination address';
+$string['add_new_address_title'] = 'Use this link to add a new destination address to end of the list.';
+$string['edit_address_label'] = '{NAME} ({SORT_ORDER})';
+$string['edit_address_title'] = 'Edit or delete destination {ADDRESS_ID}: <{EMAIL}>';
 $string['header_label'] = '~Header';
 $string['header_title'] = 'Header for the mailpage';
 $string['introduction_label'] = '~Introduction';
 $string['introduction_title'] = 'Introduction text for the mailpage';
-$string['name_label'] = 'Name ~{INDEX}';
-$string['name_title'] = 'The name of this destination';
-$string['sort_order_label'] = 'Sort order {INDEX}';
-$string['sort_order_title'] = 'Destinations are displayed in the order determined by this number';
-$string['email_label'] = 'E-mail address {INDEX}';
-$string['email_title'] = 'The e-mail address of this destination';
-$string['description_label'] = 'Description {INDEX}';
-$string['description_title'] = 'This text is displayed when the visitor selects this destination';
-$string['thankyou_label'] = 'Thank-you text {INDEX}';
-$string['thankyou_title'] = 'Text displayed after the visitor submits the message to this destination';
 $string['default_message_label'] = 'Default ~message';
 $string['default_message_title'] = 'Initial text for message from the visitor';
+
+$comment['mailpage_add_address_header'] = 'Here is the dialog for editing a single destination address:
+
+Header (add or edit)
+Explanation (add or edit)
+~Name
+~E-mail address
+~Descr~iption
+~Thankyou
+Sort ~order
+[~Save] [~Cancel] [~Delete]
+
+Please make sure your translation has a comparable set of hotkeys (indicated via the tildes \'~\').';
+$string['mailpage_add_address_header'] = 'Add new destination address';
+$string['mailpage_add_address_explanation'] =
+'Here you can enter the details of the new destination addresses.
+You MUST add at least one destination address for this module to work.';
+$string['mailpage_edit_address_header'] = 'Edit or delete destination address';
+$string['mailpage_edit_address_explanation'] =
+'Here you can modify or delete destination addresses.
+You MUST configure at least one destination address for this module to work.';
+$string['address_name_label'] = '~Name';
+$string['address_name_title'] = 'The name of this destination';
+$string['address_email_label'] = '~E-mail address';
+$string['address_email_title'] = 'The e-mail address of this destination';
+$string['address_description_label'] = 'Descr~iption';
+$string['address_description_title'] = 'This text is displayed when the visitor selects this destination';
+$string['address_thankyou_label'] = '~Thank-you text';
+$string['address_thankyou_title'] = 'This text is displayed after the visitor submits a message to this destination';
+$string['address_sort_order_label'] = 'Sort ~order';
+$string['address_sort_order_title'] = 'Destinations are displayed in the order determined by this number';
 $string['error_saving_data'] = 'Error saving data';
+$string['error_deleting_data'] = 'Error deleting data';
 
 $comment['error_retrieving_config'] = 'Visitor translations start here';
 $string['error_retrieving_config'] = 'Error: cannot retrieve configuration data';
@@ -99,20 +109,19 @@ $string['error_too_fast'] = 'Error: the server is no able to accept your message
 $string['error_sending_message'] = 'Error: message could not be sent, please try again';
 $string['error_creating_token'] = 'Error: no token available for page {NODE}';
 
-
 $comment['destination_label'] = 
 'Here is the definition of the mailform as the visitor sees it.
 
 Header
 In tro duc tion.
-~Destination: <listbox>
+~Destination: <listbox> (but suppressed if there is only one)
 ~Name:
 ~E-mail:
 ~Subject:
 ~Message:
 [~Preview] [~Cancel]
 
-';
+Please make sure your translation has a comparable set of hotkeys (indicated via the tildes \'~\').';
 $string['destination_label'] = '~Destination';
 $string['destination_title'] = 'Select the destination address for your message';
 $string['fullname_label'] = '~Name (required)';
@@ -127,7 +136,9 @@ $string['button_preview'] = '~Preview';
 $string['button_send'] = '~Send';
 $string['cancelled'] = 'Cancelled';
 
-$comment['preview_header'] = 'Here is the text for the Preview';
+$comment['preview_header'] = 'Here is the text for the Preview. There are three buttons in this dialog:
+[~Edit] [~Send] [~Cancel]
+';
 $string['preview_header'] = 'Preview';
 $string['from'] = 'From';
 $string['to'] = 'To';
@@ -136,10 +147,9 @@ $string['message'] = 'Message';
 $string['date'] = 'Date';
 $string['ip_addr'] = 'IP-address';
 
-$comment['subject_line'] = ' The subject line can contain these parameters: {NODE}, {IP_ADDR}, {SUBJECT}';
+$comment['subject_line'] = 'The subject line can contain these parameters: {NODE}, {IP_ADDR}, {SUBJECT}';
 $string['subject_line'] = '[{NODE}] Message from {IP_ADDR}: {SUBJECT}';
 $string['thankyou_header'] = 'Message has been sent';
 $string['here_is_a_copy'] = 'Here is a copy of your message.';
-
 
 ?>
