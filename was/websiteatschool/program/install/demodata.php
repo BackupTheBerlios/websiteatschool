@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasinstall
- * @version $Id: demodata.php,v 1.14 2013/06/11 11:25:58 pfokker Exp $
+ * @version $Id: demodata.php,v 1.15 2013/07/02 20:24:45 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -645,6 +645,7 @@ function demodata_sections_pages(&$messages,&$config,&$tr) {
     }
     $htmlpage_id = intval($records['htmlpage']['module_id']);
     $sitemap_id  = intval($records['sitemap']['module_id']);
+    $mailpage_id = intval($records['mailpage']['module_id']);
 
     $replace = $config['demo_replace'];
     $year = intval($replace['{YEAR}']);
@@ -784,7 +785,7 @@ function demodata_sections_pages(&$messages,&$config,&$tr) {
             'title' => $tr['contact_title'],
             'link_text' => $tr['contact_link_text'],
             'sort_order' => 20,
-            'module_id' => $htmlpage_id),
+            'module_id' => $mailpage_id),
         'quickbottom' => array(
             'parent_id' => 'quickbottom',
             'is_page' => FALSE,
@@ -948,6 +949,44 @@ function demodata_sections_pages(&$messages,&$config,&$tr) {
                     $retval = FALSE;
                 }
                 break;
+            case $mailpage_id:
+                $mailpage_fields = array(
+                    'node_id' => $node_id,
+                    'header' => $tr['contact_title'],
+                    'introduction' => strtr($tr[$node.'_content'],$replace),
+                    'message' => $config['demo_replace']['{SIT}'],
+                    'ctime' => $now,
+                    'cuser_id' => $user_id,
+                    'mtime' => $now,
+                    'muser_id' => $user_id);
+                if (db_insert_into('mailpages',$mailpage_fields) === FALSE) {
+                    $messages[] = $tr['error'].' '.db_errormessage();
+                    $retval = FALSE;
+                }
+                $mailpage_addresses = array(
+                    array(
+                        'node_id' => $node_id,
+                        'sort_order' => 10,
+                        'name' => $tr['contact_name1'],
+                        'email' => $config['replyto'],
+                        'description' => $tr['contact_description1'],
+                        'thankyou' => $tr['contact_thankyou1']),
+                    array( 
+                        'node_id' => $node_id,
+                        'sort_order' => 20,
+                        'name' => $tr['contact_name2'],
+                        'email' => $config['user_email'],
+                        'description' => $tr['contact_description2'],
+                        'thankyou' => $tr['contact_thankyou2'])
+                    );
+                foreach ($mailpage_addresses as $mailpage_fields) {
+                    if (db_insert_into('mailpages_addresses',$mailpage_fields) === FALSE) {
+                        $messages[] = $tr['error'].' '.db_errormessage();
+                        $retval = FALSE;
+                    }
+                }
+                break;
+
             default:
                 $messages[] = 'Internal error: unknown module '.$field['module_id'];
                 break;
