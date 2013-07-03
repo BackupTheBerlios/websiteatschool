@@ -24,7 +24,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasinstall
- * @version $Id: demodata.php,v 1.6 2013/07/02 20:24:45 pfokker Exp $
+ * @version $Id: demodata.php,v 1.7 2013/07/03 13:06:56 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -221,7 +221,10 @@ Password:<br>
 ';
 $string['sitemap_content'] = 'Placeholder for the sitemap module';
 $string['about_content'] = 'Here comes some information about the school.';
-$string['contact_content'] = 'Placeholder for the mail module';
+// This text phased out 2013-07-03, no need for placeholders with the real deal available
+// $string['contact_content'] = 'Placeholder for the mail module';
+$string['contact_header'] = 'Configurable header';
+$string['contact_introduction'] = 'This introduction text is configurable too.';
 $string['contact_name1'] = 'Principal';
 $string['contact_description1'] = 'Please send all your educational questions to our principal, Amelia Cackle';
 $string['contact_thankyou1'] = 'Thank you for your message. Please allow 2 days for a reply from Amelia';

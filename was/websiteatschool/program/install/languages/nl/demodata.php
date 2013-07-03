@@ -24,7 +24,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasinstall
- * @version $Id: demodata.php,v 1.4 2013/06/11 11:26:02 pfokker Exp $
+ * @version $Id: demodata.php,v 1.5 2013/07/03 13:06:56 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -219,7 +219,16 @@ Wachtwoord:<br>
 ';
 $string['sitemap_content'] = 'Gereserveerd voor de sitemap-module';
 $string['about_content'] = 'Hier komt enige informatie over de school.';
-$string['contact_content'] = 'Gereservereerd voor de mailmodule';
+// This text phased out 2013-07-03, no need for placeholders with the real deal available
+// $string['contact_content'] = 'Gereservereerd voor de mailmodule';
+$string['contact_header'] = 'Configureerbare titel';
+$string['contact_introduction'] = 'Deze introductietekst is ook configureerbaar.';
+$string['contact_name1'] = 'Directie';
+$string['contact_description1'] = 'Stel uw vragen op onderwijsgebied aan onze directrice, Amelia Cackle';
+$string['contact_thankyou1'] = 'Dank voor uw bericht. U kunt uiterlijk over 2 dagen een antwoord verwachten van Amelia';
+$string['contact_name2'] = 'Webmaster';
+$string['contact_description2'] = 'Voor alle (technische) vragen omtrent de webstek kunt u via dit formulier contact opnemen met onze webmaster';
+$string['contact_thankyou2'] = 'Dank voor uw opmerkingen. Onze webmaster zal zo spoedig mogelijk reageren';
 $string['disclaimer_content'] = 'Hier komt de tekst van de disclaimer.';
 $string['login_content'] = '<h2>Login</h2>
 (<em>Eigenlijk gereserveerd voor de mijnpagina-module</em>)

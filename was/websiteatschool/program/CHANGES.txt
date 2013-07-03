@@ -1,6 +1,14 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.164 2013/07/02 20:24:44 pfokker Exp $
+$Id: CHANGES.txt,v 1.165 2013/07/03 13:06:55 pfokker Exp $
 -------------------------------------------------------------------------------
+2013-07-03
+- re-arranged location of contact page in demodata
+- added a demo of the redirect module (combined with contact page)
+- extra parameter 'friendly_url' now also available in demodata()
+- better failsafe loading of translations in install (always load 'en' too)
+- added Dutch translations for demo of mailpage in demodata()
+- minor cosmetics
+
 2013-07-02
 - almost done with the mailpage module including Dutch translation.
 - added demodata for the mailpage module in quicklinks (top)

@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasinstall
- * @version $Id: demodata.php,v 1.15 2013/07/02 20:24:45 pfokker Exp $
+ * @version $Id: demodata.php,v 1.16 2013/07/03 13:06:56 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -76,6 +76,7 @@ if (!defined('WASENTRY')) { die('no entry'); }
  * $config['user_id']        => numerical user_id (usually 1)
  * $config['demo_salt']      => password salt for all demodata accounts
  * $config['demo_password']  => password for all demodata accounts
+ * $config['friendly_url']   => TRUE if friendly URLs are allowed (added 2013-07-03)
  * $config['demo_areas']     => array with demo area data
  * $config['demo_groups']    => array with demo group data
  * $config['demo_users']     => array with demo user data
@@ -93,12 +94,13 @@ function demodata(&$messages,&$config) {
 
     // 0A -- get hold of our translations in $string[]
     $string = array();
+    $filename = dirname(__FILE__).'/languages/en/demodata.php';
+    @include_once($filename); // Make sure we ALWAYS have at least the 'en' strings
     $language_key = $config['language_key'];
     $filename = dirname(__FILE__).'/languages/'.$language_key.'/demodata.php';
-    if (!file_exists($filename)) {
-        $filename = dirname(__FILE__).'/languages/en/demodata.php';
+    if (file_exists($filename)) {
+        @include_once($filename); // and maybe (partially) overwrite with actual translation
     }
-    @include($filename);
     if (empty($string)) {
         $messages[] = 'Internal error: no translations in '.$filename;
         return FALSE;
@@ -646,6 +648,7 @@ function demodata_sections_pages(&$messages,&$config,&$tr) {
     $htmlpage_id = intval($records['htmlpage']['module_id']);
     $sitemap_id  = intval($records['sitemap']['module_id']);
     $mailpage_id = intval($records['mailpage']['module_id']);
+    $redirect_id = intval($records['redirect']['module_id']);
 
     $replace = $config['demo_replace'];
     $year = intval($replace['{YEAR}']);
@@ -698,6 +701,13 @@ function demodata_sections_pages(&$messages,&$config,&$tr) {
             'expiry' => sprintf('%04d-08-01 00:00:00',$year+2),
             'sort_order' => 40,
             'module_id' => $htmlpage_id),
+        'contact' => array(
+            'parent_id' => 'schoolinfo',
+            'is_page' => TRUE,
+            'title' => $tr['contact_title'],
+            'link_text' => $tr['contact_link_text'],
+            'sort_order' => 50,
+            'module_id' => $mailpage_id),
         'news' => array(
             'parent_id' => 'news',
             'is_page' => FALSE,
@@ -779,13 +789,13 @@ function demodata_sections_pages(&$messages,&$config,&$tr) {
             'link_text' => $tr['about_link_text'],
             'sort_order' => 10,
             'module_id' => $htmlpage_id),
-        'contact' => array(
+        'redirect' => array(
             'parent_id' => 'quicktop',
             'is_page' => TRUE,
-            'title' => $tr['contact_title'],
+            'title' => $tr['contact_title'], // re-use existing translations
             'link_text' => $tr['contact_link_text'],
             'sort_order' => 20,
-            'module_id' => $mailpage_id),
+            'module_id' => $redirect_id),
         'quickbottom' => array(
             'parent_id' => 'quickbottom',
             'is_page' => FALSE,
@@ -949,12 +959,21 @@ function demodata_sections_pages(&$messages,&$config,&$tr) {
                     $retval = FALSE;
                 }
                 break;
+            case $redirect_id:
+                $redirect_fields = array(
+                    'link_href' => sprintf(($config['friendly_url'])?'%s/%d':'%s?node=%d',
+                                           $replace['{INDEX_URL}'],$nodes['contact']['node_id']));
+                if (db_update('nodes', $redirect_fields, array('node_id' => $node_id)) === FALSE) {
+                    $messages[] = $tr['error'].' '.db_errormessage();
+                    $retval = FALSE;
+                }
+                break;
             case $mailpage_id:
                 $mailpage_fields = array(
                     'node_id' => $node_id,
-                    'header' => $tr['contact_title'],
-                    'introduction' => strtr($tr[$node.'_content'],$replace),
-                    'message' => $config['demo_replace']['{SIT}'],
+                    'header' => $tr[$node.'_header'],
+                    'introduction' => strtr($tr[$node.'_introduction'],$replace),
+                    'message' => '',
                     'ctime' => $now,
                     'cuser_id' => $user_id,
                     'mtime' => $now,
@@ -1131,6 +1150,7 @@ Content area 1 (public)
   - School term dates 2008-2009 (expired)
   - School term dates 2009-2010
   - School term dates 2010-2011 (embargo)
+  - (Redirect to) contact form
 - News
   - Latest news
   - Newsletter

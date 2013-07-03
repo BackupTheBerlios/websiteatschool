@@ -27,7 +27,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasinstall
- * @version $Id: install.php,v 1.18 2013/06/11 11:42:28 pfokker Exp $
+ * @version $Id: install.php,v 1.19 2013/07/03 13:06:55 pfokker Exp $
  * @todo how prevent third party-access to install.php after initial install? .htaccess? !exists(../config.php)? 
  * @todo we should make sure that autosession is disabled in php.ini, otherwise was won't work
  * @todo we should make sure that register globals is off
@@ -1940,6 +1940,7 @@ class InstallWizard {
                 'user_id'         => $user_id,
                 'demo_salt'       => $_SESSION['INSTALL']['cms_demodata_salt'],
                 'demo_password'   => $_SESSION['INSTALL']['cms_demodata_password'],
+                'friendly_url'    => $_SESSION['INSTALL']['friendly_url'], // added 2013-07-03
                 'demo_areas'      => array(), // placeholder for demo areas filled in by demodata()
                 'demo_groups'     => array(), // placeholder for demo groups filled in by demodata()
                 'demo_users'      => array(), // placeholder for demo user accounts filled in by demodata()
@@ -2705,48 +2706,57 @@ class InstallWizard {
      * That last feature is used in constructing a list of available languages where the name of the
      * language is expressed in the language itself (see {@link get_list_of_install_languages()}).
      *
+     * Because the English language is the basis for all other languages, we always read the
+     * English translation the first time around, as a backup plan for missing prompts in other
+     * languages.
+     *
      * Note:
      * By convention the keys in $replace are upper case words, with optional underscores, sandwiched
      * between curly braces. Examples: '{FIELD}', '{DATABASE}', '{RELEASE_DATE}'. The idea is that
      * these words make life easier for translators.
      *
      * @param string $key the key in the string-array with translations
-     * @param array $replace contains key-value pairs that are used to search/replace in the translated string
-     * @param string $language indicates which language we should translate into
+     * @param array $replace key-value pairs used for search/replace in the translated string
+     * @param string $lang indicates which language we should translate into
      * @return string translated text with incorporated parameters from $replace
      */
-    function t($key,$replace='',$language='') {
+    function t($key,$replace='',$lang='') {
         static $phrases = array();
 
-        if (empty($language)) {
-            $language = (isset($_SESSION['INSTALL']['language_key'])) ? $_SESSION['INSTALL']['language_key'] : 'en';
+        if (empty($lang)) {
+            $lang = (isset($_SESSION['INSTALL']['language_key'])) ? $_SESSION['INSTALL']['language_key'] : 'en';
         }
-        while (!isset($phrases[$language])) {
+        if (!isset($phrases['en'])) {
+            $string = array();
+            @include_once(dirname(__FILE__).'/install/languages/en/install.php');
+            $phrases['en'] = $string;
+            unset($string);
+        }
+        if (!isset($phrases[$lang])) {
             $languages_dir = dirname(__FILE__).'/install/languages';
-            $language_path = $languages_dir.'/'.$language;
+            $language_path = $languages_dir.'/'.$lang;
             $language_file = $language_path.'/install.php';
             if ((is_dir($languages_dir)) && (is_dir($language_path)) && (is_file($language_file))) {
                 $string = array();
-                include($language_file);
-                $phrases[$language] = $string;
+                @include_once($language_file);
+                $phrases[$lang] = $string;
                 unset($string);
-            } elseif ($language != 'en') {
-                $language = 'en';
             } else {
-                $phrases[$language] = array();
+                $phrases[$lang] = array();
             }
         }
-
-        if (isset($phrases[$language][$key])) {
-            $phrase = (empty($replace)) ? $phrases[$language][$key] : strtr($phrases[$language][$key],$replace);
+        if (isset($phrases[$lang][$key])) {
+            $phrase = (empty($replace)) ? $phrases[$lang][$key] : strtr($phrases[$lang][$key],$replace);
+        } elseif (isset($phrases['en'][$key])) {
+            $phrase = (empty($replace)) ? $phrases['en'][$key] : strtr($phrases['en'][$key],$replace);
         } else {
-            $phrase = '('.$language.') '.$key;
+            $phrase = '('.$lang.') '.$key;
             if (is_array($replace)) {
                 foreach($replace as $k => $v) {
                     $phrase .= "\n'$k'='$v'";
                 }
             }
-            $phrase .= ' (/'.$language.')';
+            $phrase .= ' (/'.$lang.')';
         }
         return $phrase;
     } // t()
@@ -3652,7 +3662,7 @@ class InstallWizard {
      *    embed an invisible image (see below) in the dialog.
      * 3. The browser will attempt to retrieve the image and to (not) show it.
      *    This means that we call $WAS_SCRIPT_NAME with a friendly url appears to point to 1x1.gif.
-     * 4a.IF (and only if) the webserver understands this friendly URL, we arrive in {@link rum()}
+     * 4a.IF (and only if) the webserver understands this friendly URL, we arrive in {@link run()}
      *    with _SERVER['PATH_INFO'] set to /friendly/test/1x1.gif. This gives us a chance to flip
      *    the parameter 'friendly_url' in the installation parameters from the default FALSE to TRUE
      * 4b.If the webserver does NOT understand the friendly url, the image file will never be found,
