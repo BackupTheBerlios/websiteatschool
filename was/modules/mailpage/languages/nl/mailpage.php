@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_mailpage
- * @version $Id: mailpage.php,v 1.3 2013/07/02 18:13:04 pfokker Exp $
+ * @version $Id: mailpage.php,v 1.4 2013/07/03 12:55:17 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -73,7 +73,7 @@ $string['error_retrieving_addresses'] = 'Fout: geen bestemming voor pagina {NODE
 $string['error_retrieving_data'] = 'Fout: kan de gegevens niet inlezen';
 $string['error_token_expired'] = 'Fout: het e-mail-formulier is verlopen, probeer het alstublieft nogmaals het formulier in te vullen';
 $string['error_storing_data'] = 'Fout: kon gegevens niet opslaan';
-$string['error_too_fast'] = 'Fout: de server is kan uw bericht momenteel niet verwerken. Probeer het nog een keer over een minuutje';
+$string['error_too_fast'] = 'Fout: de server kan uw bericht momenteel niet verwerken. Probeer het over een minuutje nog een keer';
 $string['error_sending_message'] = 'Fout: bericht kon niet verzonden worden, probeer het alstublieft nog een keer';
 $string['error_creating_token'] = 'Fout: geen \'token\' beschikbaar voor pagina {NODE}';
 $string['destination_label'] = 'Be~stemming';

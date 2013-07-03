@@ -33,7 +33,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_mailpage
- * @version $Id: mailpage_admin.php,v 1.3 2013/07/02 18:13:03 pfokker Exp $
+ * @version $Id: mailpage_admin.php,v 1.4 2013/07/03 12:55:16 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -120,7 +120,7 @@ function mailpage_connect(&$output, $area_id, $node_id, $module) {
  * Header:          __________
  * Introduction:    __________
  * Default message: __________
- * * [Save] [Cancel]
+ * [Save] [Cancel]
  * </pre>
  *
  * where the clickable links _Add an address_,...,_Address 1_ link to the second dialog:
@@ -263,7 +263,7 @@ function mailpage_show_edit(&$output, $area_id, $node_id, $module, $viewonly, $e
  *
  * this validates and saves the data that was submitted by the user.
  *
- * See also {@see mailpage_show_edit()} for the complications of having a single
+ * See also {@link mailpage_show_edit()} for the complications of having a single
  * routine to deal with two different dialogs.
  
  * If validation of dialog 1 fails, or storing the data doesn't work,

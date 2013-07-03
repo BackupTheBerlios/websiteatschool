@@ -21,7 +21,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_mailpage
- * @version $Id: mailpage.php,v 1.5 2013/07/02 18:13:04 pfokker Exp $
+ * @version $Id: mailpage.php,v 1.6 2013/07/03 12:55:17 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -44,8 +44,8 @@ Default ~message
 Please make sure your translation has a comparable set of hotkeys (indicated via the tildes \'~\').';
 $string['mailpage_content_header'] = 'Mailpage configuration';
 $string['mailpage_content_explanation'] =
-'Here you can configure the mailpage module.
-Use the links below to add new destination
+'Here you can configure the Mailpage module.
+Use the links below to add a new destination
 address or edit or delete an existing destination
 address. You MUST configure at least one destination
 address for this module to work.

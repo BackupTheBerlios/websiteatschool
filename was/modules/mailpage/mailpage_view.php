@@ -31,7 +31,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_mailpage
- * @version $Id: mailpage_view.php,v 1.5 2013/07/01 19:50:09 pfokker Exp $
+ * @version $Id: mailpage_view.php,v 1.6 2013/07/03 12:55:16 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -155,7 +155,7 @@ function mailpage_view(&$theme,$area_id,$node_id,$module) {
     //
     if ($token_id === FALSE) {
         $token_key = '';
-        if (($token_id = token_create(MAILPAGE_REFERENCE,$token_key)) === FALSE) { // 10, 30 STUB!!!!
+        if (($token_id = token_create(MAILPAGE_REFERENCE,$token_key,20)) === FALSE) { // 20s delay
             $msg = t('error_creating_token','m_mailpage',array('{NODE}' => strval($node_id)));
             $theme->add_message($msg);
             $theme->add_content($msg);
