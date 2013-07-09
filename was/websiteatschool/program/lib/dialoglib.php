@@ -180,7 +180,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: dialoglib.php,v 1.9 2013/06/28 19:20:20 pfokker Exp $
+ * @version $Id: dialoglib.php,v 1.10 2013/07/09 18:31:54 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1010,7 +1010,6 @@ function dialog_get_widget_listbox(&$item,$name,$value) {
     if (($item['type'] == F_LISTBOX) && (!isset($item['id']))) {
         $item['id'] = 'id'.strval(get_unique_number()); // assign a unique id for every item
     }
-
     $attributes = array('name' => $name);
     if ((isset($item['rows'])) && ($item['rows'] > 1)) {
         $attributes['size'] = $item['rows'];
@@ -1290,51 +1289,51 @@ function dialog_get_widget_file(&$item,$name,$value) {
  * @return array ready-to-use $item for a dialog
  */
 function dialog_buttondef($button_type,$value='',$title='') {
-    $button = array('type' => F_SUBMIT);
+    $button = array('type' => F_SUBMIT, 'class' => 'button ');
     switch($button_type) {
     case BUTTON_OK:
         $button['name'] = 'button_ok';
-        $button['class'] = 'button_ok';
+        $button['class'] .= 'button_ok';
         $button['value'] = t('button_ok');
         break;
     case BUTTON_CANCEL:
         $button['name'] = 'button_cancel';
-        $button['class'] = 'button_cancel';
+        $button['class'] .= 'button_cancel';
         $button['value'] = t('button_cancel');
         break;
     case BUTTON_SAVE:
         $button['name'] = 'button_save';
-        $button['class'] = 'button_save';
+        $button['class'] .= 'button_save';
         $button['value'] = t('button_save');
         break;
     case BUTTON_DELETE:
         $button['name'] = 'button_delete';
-        $button['class'] = 'button_delete';
+        $button['class'] .= 'button_delete';
         $button['value'] = t('button_delete');
         break;
     case BUTTON_YES:
         $button['name'] = 'button_yes';
-        $button['class'] = 'button_yes';
+        $button['class'] .= 'button_yes';
         $button['value'] = t('button_yes');
         break;
     case BUTTON_NO:
         $button['name'] = 'button_no';
-        $button['class'] = 'button_no';
+        $button['class'] .= 'button_no';
         $button['value'] = t('button_no');
         break;
     case BUTTON_GO:
         $button['name'] = 'button_go';
-        $button['class'] = 'button_go';
+        $button['class'] .= 'button_go';
         $button['value'] = t('button_go');
         break;
     case BUTTON_EDIT:
         $button['name'] = 'button_edit';
-        $button['class'] = 'button_edit';
+        $button['class'] .= 'button_edit';
         $button['value'] = t('button_edit');
         break;
     default:
         $button['name'] = $button_type;
-        $button['class'] = $button_type;
+        $button['class'] .= $button_type;
         $button['value'] = (empty($value)) ? t($button_type) : $value;
         break;
     }

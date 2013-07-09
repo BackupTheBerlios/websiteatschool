@@ -22,7 +22,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: admin_big.css,v 1.2 2013/06/11 11:26:08 pfokker Exp $
+ * @version $Id: admin_big.css,v 1.3 2013/07/09 18:31:54 pfokker Exp $
  */
 #header {
   height: 90px;
@@ -67,5 +67,9 @@ div.thumbnail_container {
 div.thumbnail_delete img {
   margin-top: 4px;
 }
-
+input,
+select,
+textarea {
+  font-size: 1.05em;
+}
 /* eof /program/styles/admin_big.css */

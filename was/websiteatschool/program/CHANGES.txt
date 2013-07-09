@@ -1,6 +1,13 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.165 2013/07/03 13:06:55 pfokker Exp $
+$Id: CHANGES.txt,v 1.166 2013/07/09 18:31:53 pfokker Exp $
 -------------------------------------------------------------------------------
+2013-07-09
+- all buttons now also have a class 'button' [dialoglib.php]
+- re-arranged styling for skins to use 'button' class
+- modified all default styles for existing themes to add
+  styling for input elements
+- minor changes in existing skins too, also with button style
+
 2013-07-03
 - re-arranged location of contact page in demodata
 - added a demo of the redirect module (combined with contact page)
