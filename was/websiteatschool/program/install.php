@@ -27,7 +27,7 @@
  * @copyright Copyright (C) 2008-2011 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasinstall
- * @version $Id: install.php,v 1.19 2013/07/03 13:06:55 pfokker Exp $
+ * @version $Id: install.php,v 1.20 2013/07/10 06:30:50 pfokker Exp $
  * @todo how prevent third party-access to install.php after initial install? .htaccess? !exists(../config.php)? 
  * @todo we should make sure that autosession is disabled in php.ini, otherwise was won't work
  * @todo we should make sure that register globals is off
@@ -2768,7 +2768,7 @@ class InstallWizard {
      * @return string ready-to-use HTML-code for a submit-button
      */
     function button($button) {
-        return sprintf('<input type="submit" name="button_%s" value="%s" accesskey="%s" title="%s" class="button_%s">',
+        return sprintf('<input type="submit" name="button_%s" value="%s" accesskey="%s" title="%s" class="button button_%s">',
                        $button,
                        $this->t($button),
                        $this->t($button.'_accesskey'),
