@@ -45,7 +45,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: base.css,v 1.8 2013/07/10 13:18:49 pfokker Exp $
+ * @version $Id: base.css,v 1.9 2013/07/10 15:13:30 pfokker Exp $
  * @todo there is an issue with the display of the tree: the graphics don't work yet and
  *       maybe we should have a different distinction in current pages/sections,e.g.
  *       "currentpage page level0" instead of "current page level0"...
@@ -419,6 +419,21 @@ textarea {
 }
 option {
   font-family: mono;
+}
+/* individual styling for different input elements (currently unused) */
+input.textfield {
+}
+input.passwordfield {
+}
+label.checkboxfield {
+}
+input.checkboxfield {
+}
+label.radiofield {
+}
+input.radiofield {
+}
+input.filefield {
 }
 /* generic button style; individual background images follow */
 input.button {

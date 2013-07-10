@@ -46,7 +46,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wastheme_sophia
- * @version $Id: style.css,v 1.4 2013/07/10 13:18:48 pfokker Exp $
+ * @version $Id: style.css,v 1.5 2013/07/10 15:13:29 pfokker Exp $
  */
 
 html, body {
@@ -343,6 +343,21 @@ textarea {
 }
 option {
   font-family: mono;
+}
+/* individual styling for different input elements (currently unused) */
+input.textfield {
+}
+input.passwordfield {
+}
+label.checkboxfield {
+}
+input.checkboxfield {
+}
+label.radiofield {
+}
+input.radiofield {
+}
+input.filefield {
 }
 /* generic button style; individual background images follow */
 input.button {

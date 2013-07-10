@@ -180,7 +180,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: dialoglib.php,v 1.10 2013/07/09 18:31:54 pfokker Exp $
+ * @version $Id: dialoglib.php,v 1.11 2013/07/10 15:13:30 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -685,6 +685,7 @@ function dialog_validate(&$dialogdef) {
  */
 function dialog_get_widget_textinput(&$item,$name,$value,$f_type) {
         $attributes = array('name' => $name);
+        $class = dialog_get_class($item);
         if ((isset($item['rows'])) && ($item['rows'] > 1)) {
             $widget = 'textarea';
             $attributes['rows'] = $item['rows'];
@@ -694,8 +695,10 @@ function dialog_get_widget_textinput(&$item,$name,$value,$f_type) {
         } else {
             if ($f_type == F_PASSWORD) {
                 $widget = 'password';
+                $class = trim('passwordfield '.$class);
             } else {
                 $widget = 'text';
+                $class = trim('textfield '.$class);
             }
             $attributes['type'] = $widget;
             $attributes['value'] = $value;
@@ -715,7 +718,6 @@ function dialog_get_widget_textinput(&$item,$name,$value,$f_type) {
         } elseif (isset($item['accesskey'])) {
             $attributes['accesskey'] = $item['accesskey'];
         }
-        $class = dialog_get_class($item);
         if (!empty($class)) {
             $attributes['class'] = $class;
         }
@@ -910,7 +912,7 @@ function dialog_get_widget_radiocheckbox(&$item,$name,$value,$f_type) {
                 if ((isset($item['viewonly'])) && ($item['viewonly'])) {
                     $attributes_input['disabled'] = NULL;
                 }
-                $class = dialog_get_class($item);
+                $class = trim($widget.'field '.dialog_get_class($item));
                 if (!empty($class)) {
                     $attributes_input['class'] = $class;
                     $attributes_label['class'] = $class;
@@ -920,8 +922,9 @@ function dialog_get_widget_radiocheckbox(&$item,$name,$value,$f_type) {
                         $attributes_label['id'] = $option['id'];
                     }
                     if (isset($option['class'])) {
-                        $attributes_label['class'] = dialog_get_class($item,$option['class']);
-                        $attributes_input['class'] = dialog_get_class($item,$option['class']);
+                        $class = trim($widget.'field '.dialog_get_class($item,$option['class']));
+                        $attributes_label['class'] = $class;
+                        $attributes_input['class'] = $class;
                     }
                     if (isset($option['title'])) {
                         $attributes_label['title'] = $option['title'];
@@ -1234,7 +1237,7 @@ function dialog_get_widget_file(&$item,$name,$value) {
         } elseif (isset($item['accesskey'])) {
             $attributes['accesskey'] = $item['accesskey'];
         }
-        $class = dialog_get_class($item);
+        $class = trim('filefield '.dialog_get_class($item));
         if (!empty($class)) {
             $attributes['class'] = $class;
         }

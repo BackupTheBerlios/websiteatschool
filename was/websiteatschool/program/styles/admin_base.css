@@ -47,7 +47,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: admin_base.css,v 1.10 2013/07/09 18:31:54 pfokker Exp $
+ * @version $Id: admin_base.css,v 1.11 2013/07/10 15:13:30 pfokker Exp $
  */
 
 body {
@@ -396,6 +396,22 @@ span.level7 { margin-left: 140px; }
 span.level8 { margin-left: 160px; }
 span.level9 { margin-left: 180px; }
 
+/* individual styling for different input elements (currently unused) */
+input.textfield {
+}
+input.passwordfield {
+}
+label.checkboxfield {
+}
+input.checkboxfield {
+}
+label.radiofield {
+}
+input.radiofield {
+}
+input.filefield {
+}
+/* generic button style; individual background images follow */
 input.button {
   background-color: #E7E7E7;
   background-repeat: no-repeat;
