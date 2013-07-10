@@ -45,7 +45,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: base.css,v 1.7 2013/07/09 18:31:54 pfokker Exp $
+ * @version $Id: base.css,v 1.8 2013/07/10 13:18:49 pfokker Exp $
  * @todo there is an issue with the display of the tree: the graphics don't work yet and
  *       maybe we should have a different distinction in current pages/sections,e.g.
  *       "currentpage page level0" instead of "current page level0"...
@@ -395,10 +395,8 @@ img {
 #address {
   display: none;
 }
-
-
 /*
- *  Styling of input elements
+ * Styling of input elements
  */
 /* visual indication of the hotkey in a label is done via a U within a LABEL */
 label u {
@@ -407,24 +405,24 @@ label u {
 }
 /* visual indication of the non-editable fields by 'dimming' the corresponding label */
 label.viewonly {
-  color: #999;
+  color: #7F7F7F;
 }
 /* visual indication of an input field that didn't pass validation */
 .error {
   color: #FF0000;
 }
-/* visual indication of editable fields (a light'ish yellow) */
+/* visual indication of editable fields using a slightly contrasting background colour */
 input,
 select,
 textarea {
-  background-color: #FFFFBF;
+  background-color: #FFFFFF;
 }
 option {
   font-family: mono;
 }
-/* Generic button stylel indivual background images follow */
+/* generic button style; individual background images follow */
 input.button {
-  background-color: #E7E7E7;
+  background-color: #CFCFCF;
   background-repeat: no-repeat;
   margin-right: 30px;
   font-weight: bold;

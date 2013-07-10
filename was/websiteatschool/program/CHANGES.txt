@@ -1,6 +1,9 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.166 2013/07/09 18:31:53 pfokker Exp $
+$Id: CHANGES.txt,v 1.167 2013/07/10 13:18:48 pfokker Exp $
 -------------------------------------------------------------------------------
+2013-07-10
+- minor tweaks in varius stylesheets (input styling)
+
 2013-07-09
 - all buttons now also have a class 'button' [dialoglib.php]
 - re-arranged styling for skins to use 'button' class
