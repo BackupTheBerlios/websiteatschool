@@ -24,7 +24,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wastheme_cornelia
- * @version $Id: cornelia_manifest.php,v 1.2 2013/06/11 11:25:41 pfokker Exp $
+ * @version $Id: cornelia_manifest.php,v 1.3 2013/07/11 10:40:29 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -32,9 +32,9 @@ $manifests['cornelia'] = array(
     'name' => 'cornelia',
     'description' => 'This is a 2-column/3-column theme using inverted L for navigation',
     'author' => 'Peter Fokker',
-    'version' => 2012110100,
-    'release' => '0.90.4',
-    'release_date' => '2012-11-01',
+    'version' => 2013071100,
+    'release' => '0.90.5',
+    'release_date' => '2013-07-11',
     'is_core' => FALSE,
     'tabledefs' => 'NULL',
     'install_script' => 'cornelia_install.php',

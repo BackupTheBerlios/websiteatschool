@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_crew
- * @version $Id: crew_manifest.php,v 1.5 2013/06/12 13:06:35 pfokker Exp $
+ * @version $Id: crew_manifest.php,v 1.6 2013/07/11 10:40:27 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -33,9 +33,9 @@ $manifests['crew'] = array(
     'name' => 'crew',
     'description' => 'This is the Collaborative Remote Educational Workshop module',
     'author' => 'Peter Fokker',
-    'version' => 2013061200,
+    'version' => 2013071100,
     'release' => '0.90.5',
-    'release_date' => '2013-06-12',
+    'release_date' => '2013-07-11',
     'is_core' => TRUE,
     'has_acls' => TRUE,
     'tabledefs' => 'install/crew_tabledefs.php',

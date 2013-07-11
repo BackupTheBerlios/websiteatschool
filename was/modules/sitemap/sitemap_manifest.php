@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_sitemap
- * @version $Id: sitemap_manifest.php,v 1.7 2013/06/11 11:25:30 pfokker Exp $
+ * @version $Id: sitemap_manifest.php,v 1.8 2013/07/11 10:40:28 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -34,8 +34,8 @@ $manifests['sitemap'] = array(
     'description' => 'This module shows a small, medium or large sitemap',
     'author' => 'Peter Fokker',
     'version' => 2011052800,
-    'release' => '0.90.4',
-    'release_date' => '2012-04-19',
+    'release' => '0.90.5',
+    'release_date' => '2013-07-11',
     'is_core' => TRUE,
     'has_acls' => FALSE,
     'tabledefs' => 'install/sitemap_tabledefs.php',

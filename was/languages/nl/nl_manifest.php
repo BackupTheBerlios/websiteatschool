@@ -24,7 +24,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package waslang_nl
- * @version $Id: nl_manifest.php,v 1.8 2013/06/11 11:25:13 pfokker Exp $
+ * @version $Id: nl_manifest.php,v 1.9 2013/07/11 10:40:26 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -34,9 +34,9 @@ $manifests['nl'] = array(
     'parent_language_key' => '',
     'description'         => 'This is the Dutch translation based on Website@School release 0.90.4',
     'author'              => 'Peter Fokker',
-    'version'             => 2012041900,
-    'release'             => '0.90.4',
-    'release_date'        => '2012-04-19',
+    'version'             => 2013071100,
+    'release'             => '0.90.5',
+    'release_date'        => '2013-07-11',
     'is_core'             => FALSE
    );
 

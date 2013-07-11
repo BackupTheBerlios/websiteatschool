@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_aggregator
- * @version $Id: aggregator_manifest.php,v 1.2 2013/06/11 11:25:17 pfokker Exp $
+ * @version $Id: aggregator_manifest.php,v 1.3 2013/07/11 10:40:26 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -33,9 +33,9 @@ $manifests['aggregator'] = array(
     'name' => 'aggregator',
     'description' => 'This module aggregates selected htmlpages and snapshots',
     'author' => 'Peter Fokker',
-    'version' => 2012070100,
-    'release' => '0.90.4',
-    'release_date' => '2012-07-01',
+    'version' => 2013071100,
+    'release' => '0.90.5',
+    'release_date' => '2013-07-11',
     'is_core' => TRUE,
     'has_acls' => FALSE,
     'tabledefs' => 'install/aggregator_tabledefs.php',

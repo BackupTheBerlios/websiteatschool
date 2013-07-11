@@ -54,7 +54,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: updatelib.php,v 1.25 2013/06/27 13:35:22 pfokker Exp $
+ * @version $Id: updatelib.php,v 1.26 2013/07/11 10:40:31 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -901,7 +901,7 @@ function update_core(&$output) {
     if (!update_core_2011051100($output)) { return; }
     if (!update_core_2011093000($output)) { return; }
     if (!update_core_2012041900($output)) { return; }
-    if (!update_core_2013062701($output)) { return; }
+    if (!update_core_2013071100($output)) { return; }
     // if (!update_core_2012mmdd00($output)) { return; }
     // ...
 
@@ -1965,17 +1965,17 @@ function update_core_2012041900(&$output) {
 } // update_core_2012041900()
 
 
-/** perform actual update to version 2013062701
+/** perform actual update to version 2013071100
  *
- * Changes between 2012041900 and 2013062701:
+ * Changes between 2012041900 and 2013071100:
  *  - addition of a new core table 'tokens'
  *
  * @param object &$output collects the html output
  * @return bool TRUE on success, FALSE otherwise
  */
-function update_core_2013062701(&$output) {
+function update_core_2013071100(&$output) {
     global $CFG,$DB;
-    $version = 2013062701;
+    $version = 2013071100;
     $retval = TRUE; // assume success
     if ($CFG->version >= $version) {
         return $retval;
@@ -1998,6 +1998,6 @@ function update_core_2013062701(&$output) {
         $retval = update_core_version($output,$version);
     }
     return $retval;
-} // update_core_2013062701()
+} // update_core_2013071100()
 
 ?>

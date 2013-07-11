@@ -1,5 +1,5 @@
 /program/INSTALL.txt
-$Id: INSTALL.txt,v 1.3 2012/04/18 10:10:55 pfokker Exp $
+$Id: INSTALL.txt,v 1.4 2013/07/11 10:40:30 pfokker Exp $
 
 
 Quick Install of Website@School
@@ -7,7 +7,7 @@ Quick Install of Website@School
 
 1. Download the latest distribution version of Website@School
    (either as a .ZIP-file or a tar.gz-file.), e.g. from
-   <http://download.websiteatschool.eu> or directly from BerliOS.
+   <http://download.websiteatschool.eu> or directly from JoinUp.
 
 2. Unpack the distribution file somewhere on your webserver,
    e.g. in /home/httpd/htdocs. This will yield a number of files
@@ -19,7 +19,7 @@ Quick Install of Website@School
 
    3A. Download the latest version of the Website@School Manual
        (either as a .ZIP-file or a tar.gz-file.), e.g. from 
-       <http://download.websiteatschool.eu> or directly from BerliOS.
+       <http://download.websiteatschool.eu> or directly from JoinUp.
 
    3B. Unpack the manual file in the same place as you did unpack
        the distribution file in step 2 above.
@@ -35,7 +35,7 @@ Quick Upgrade of Website@School
 
 1. Download the latest distribution version of Website@School
    (either as a .ZIP-file or a tar.gz-file.), e.g. from
-   <http://download.websiteatschool.eu> or directly from BerliOS.
+   <http://download.websiteatschool.eu> or directly from JoinUp.
 
 2. Unpack the distribution file in the same place on your webserver
    as you did before, e.g. in /home/httpd/htdocs. This will yield
@@ -44,7 +44,7 @@ Quick Upgrade of Website@School
    program files will be created. Note: the new version is supposed
    to overwrite the existing version.
 
-3. (optional but recommended) Instell or update the Website@School
+3. (optional but recommended) Install or update the Website@School
    Manual, by downloading the latest version and unpacking the file
    in the same directory you used before (see step 2).
 

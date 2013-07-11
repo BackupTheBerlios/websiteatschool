@@ -24,7 +24,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wastheme_axis
- * @version $Id: axis_manifest.php,v 1.3 2013/06/11 11:25:37 pfokker Exp $
+ * @version $Id: axis_manifest.php,v 1.4 2013/07/11 10:40:29 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -33,8 +33,8 @@ $manifests['axis'] = array(
     'description' => 'This is a simple theme with a vertical hierarchical menu',
     'author' => 'Peter Fokker',
     'version' => 2012041200,
-    'release' => '0.90.4',
-    'release_date' => '2012-04-19',
+    'release' => '0.90.5',
+    'release_date' => '2013-07-11',
     'is_core' => FALSE,
     'tabledefs' => 'NULL',
     'install_script' => 'axis_install.php',

@@ -1,6 +1,12 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.168 2013/07/10 15:13:29 pfokker Exp $
+$Id: CHANGES.txt,v 1.169 2013/07/11 10:40:30 pfokker Exp $
 -------------------------------------------------------------------------------
+
+### Release 0.90.5 - 2013-07-11 / 2013071100 ###
+
+2013-07-11
+- final tweaks before release (updatelib.php:update_core_20130711())
+
 2013-07-10
 - minor tweaks in varius stylesheets (input styling)
 - preparations for more tweaks in styling added [dialoglib.php]

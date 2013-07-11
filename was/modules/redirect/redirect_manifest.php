@@ -25,7 +25,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wasmod_redirect
- * @version $Id: redirect_manifest.php,v 1.2 2013/06/11 11:25:26 pfokker Exp $
+ * @version $Id: redirect_manifest.php,v 1.3 2013/07/11 10:40:28 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -33,9 +33,9 @@ $manifests['redirect'] = array(
     'name' => 'redirect',
     'description' => 'This module allows redirection of nodes to other (external) URLs',
     'author' => 'Peter Fokker',
-    'version' => 2012053100,
-    'release' => '0.90.4',
-    'release_date' => '2012-05-31',
+    'version' => 2013071100,
+    'release' => '0.90.5',
+    'release_date' => '2013-07-11',
     'is_core' => TRUE,
     'has_acls' => FALSE,
     'install_script' => 'redirect_install.php',
