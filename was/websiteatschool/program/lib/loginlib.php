@@ -100,7 +100,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: loginlib.php,v 1.7 2013/06/11 11:26:06 pfokker Exp $
+ * @version $Id: loginlib.php,v 1.8 2014/01/28 14:07:04 pfokker Exp $
  * @todo should we suppress the username in the laissez-passer routine? We _do_ leak the
  *       the username in an insecure email message. This does require making the
  *       laissez-passer code unique in the database (currently only username+code
@@ -308,7 +308,9 @@ function was_login($procedure=LOGIN_PROCEDURE_SHOWLOGIN,$message='') {
                     logger('login: \''.$username.'\' ('.$user_id.'): success',WLOG_INFO,$user_id);
                     // now that we logged on successfully, make sure that obsolete sessions
                     // will not bother us (or other logged in users). Note the 900 seconds minimum duration;
-                    $time_out = max(900,intval(ini_get('session.gc_maxlifetime')));
+                    // $time_out = max(900,intval(ini_get('session.gc_maxlifetime')));
+                    global $CFG;
+                    $time_out = max(900,intval($CFG->session_expiry));
                     dbsession_garbage_collection($time_out);
                     return $user_id; // SUCCESS! User is logged in, tell caller!
                 } else {

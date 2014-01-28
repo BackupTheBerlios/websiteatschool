@@ -23,7 +23,7 @@
  * @copyright Copyright (C) 2008-2013 Ingenieursbureau PSD/Peter Fokker
  * @license http://websiteatschool.eu/license.html GNU AGPLv3+Additional Terms
  * @package wascore
- * @version $Id: translatetool.class.php,v 1.12 2013/06/11 11:26:06 pfokker Exp $
+ * @version $Id: translatetool.class.php,v 1.13 2014/01/28 14:07:04 pfokker Exp $
  */
 if (!defined('WASENTRY')) { die('no entry'); }
 
@@ -1031,13 +1031,13 @@ class TranslateTool {
         // 3 -- Straightforward list of installation translations (located elsewhere in the /program directory tree)
         $domains['i_install'] = array(
             'grouping'    => 'install',
-            'title'       => t('translatetool_title','install','',$CFG->progdir.'/install/languages'),
-            'description' => t('translatetool_description','install','',$CFG->progdir.'/install/languages')
+            'title'       => t('translatetool_title','i_install','',$CFG->progdir.'/install/languages'),
+            'description' => t('translatetool_description','i_install','',$CFG->progdir.'/install/languages')
             );
         $domains['i_demodata'] = array(
             'grouping'    => 'install',
-            'title'       => t('translatetool_title','demodata','',$CFG->progdir.'/install/languages'),
-            'description' => t('translatetool_description','demodata','',$CFG->progdir.'/install/languages')
+            'title'       => t('translatetool_title','i_demodata','',$CFG->progdir.'/install/languages'),
+            'description' => t('translatetool_description','i_demodata','',$CFG->progdir.'/install/languages')
             );
         return $domains;
     } // get_domains()

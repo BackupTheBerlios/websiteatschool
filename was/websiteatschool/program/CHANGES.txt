@@ -1,6 +1,11 @@
 /program/CHANGES.txt
-$Id: CHANGES.txt,v 1.169 2013/07/11 10:40:30 pfokker Exp $
+$Id: CHANGES.txt,v 1.170 2014/01/28 14:07:04 pfokker Exp $
 -------------------------------------------------------------------------------
+
+2014-01-28
+- bugfix: wrong language domains caused untranslated menu-items in
+  new languages (without $progdir/install/languages/$LL dir) under
+  install
 
 ### Release 0.90.5 - 2013-07-11 / 2013071100 ###
 
